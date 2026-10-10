@@ -1,0 +1,397 @@
+[
+  {
+    "id": "horreur-bleu",
+    "name": "Horreur Bleu",
+    "stats": {
+      "mou": 5,
+      "com": 8,
+      "tir": 7,
+      "for": 3,
+      "end": 3,
+      "agi": 4,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 9
+    },
+    "skills": [],
+    "gifts": "50 pièces d'or"
+  },
+  {
+    "id": "sorcier-rose",
+    "name": "Sorcier Rose",
+    "stats": {
+      "mou": 5,
+      "com": 6,
+      "tir": 5,
+      "for": 4,
+      "end": 4,
+      "agi": 4,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 11
+    },
+    "skills": [],
+    "gifts": "1 Cristal Brut"
+  },
+  {
+    "id": "statut-animee",
+    "name": "Statut Animée",
+    "stats": {
+      "mou": 4,
+      "com": 5,
+      "tir": null,
+      "for": 5,
+      "end": 5,
+      "agi": 10,
+      "att": 1,
+      "pv": 1,
+      "cmd": 7,
+      "svg": 6
+    },
+    "skills": [],
+    "gifts": "100 pièces d'or et 1 carte objet"
+  },
+  {
+    "id": "loup-geant",
+    "name": "Loup Géant",
+    "stats": {
+      "mou": 8,
+      "com": 5,
+      "tir": null,
+      "for": 5,
+      "end": 4,
+      "agi": 5,
+      "att": 2,
+      "pv": 1,
+      "cmd": 8,
+      "svg": 11
+    },
+    "skills": [],
+    "gifts": ""
+  },
+  {
+    "id": "varghulf",
+    "name": "Varghulf",
+    "stats": {
+      "mou": 5,
+      "com": 6,
+      "tir": null,
+      "for": 6,
+      "end": 6,
+      "agi": 6,
+      "att": 3,
+      "pv": 3,
+      "cmd": 9,
+      "svg": 11
+    },
+    "skills": [
+      "Adepte du Mal",
+      "Grande Cible",
+      "Peur"
+    ],
+    "gifts": "2 cartes objets"
+  },
+  {
+    "id": "geant",
+    "name": "Géant",
+    "stats": {
+      "mou": 5,
+      "com": 7,
+      "tir": null,
+      "for": 8,
+      "end": 8,
+      "agi": 10,
+      "att": 3,
+      "pv": 4,
+      "cmd": 8,
+      "svg": 11
+    },
+    "skills": [
+      "Très Grande Cible",
+      "Peur"
+    ],
+    "gifts": "1 Cristal Brut, 100 pièces d'or et 3 cartes objets"
+  },
+  {
+    "id": "chauve-souris-geante",
+    "name": "Chauve-souris géante",
+    "stats": {
+      "mou": 5,
+      "com": 7,
+      "tir": null,
+      "for": 4,
+      "end": 4,
+      "agi": 8,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 11
+    },
+    "skills": [
+      "Vol"
+    ],
+    "gifts": ""
+  },
+  {
+    "id": "tzaangor",
+    "name": "Tzaangor",
+    "stats": {
+      "mou": 5,
+      "com": 6,
+      "tir": null,
+      "for": 4,
+      "end": 4,
+      "agi": 6,
+      "att": 1,
+      "pv": 1,
+      "cmd": 9,
+      "svg": 7
+    },
+    "skills": [
+      "Saut de coté"
+    ],
+    "gifts": "1 carte objet"
+  },
+  {
+    "id": "mutant",
+    "name": "Mutant",
+    "stats": {
+      "mou": 5,
+      "com": 7,
+      "tir": null,
+      "for": 5,
+      "end": 5,
+      "agi": 10,
+      "att": 2,
+      "pv": 2,
+      "cmd": 11,
+      "svg": 11
+    },
+    "skills": [
+      "Peur"
+    ],
+    "gifts": "1 carte objet"
+  },
+  {
+    "id": "geonosian",
+    "name": "Géonosian",
+    "stats": {
+      "mou": 6,
+      "com": 7,
+      "tir": null,
+      "for": 4,
+      "end": 4,
+      "agi": 5,
+      "att": 1,
+      "pv": 1,
+      "cmd": 11,
+      "svg": 9
+    },
+    "skills": [
+      "Vol"
+    ],
+    "gifts": "1 carte objet"
+  },
+  {
+    "id": "pyke",
+    "name": "Pyke",
+    "stats": {
+      "mou": 5,
+      "com": 5,
+      "tir": null,
+      "for": 4,
+      "end": 4,
+      "agi": 5,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 8
+    },
+    "skills": [],
+    "gifts": "1 carte objet"
+  },
+  {
+    "id": "animatrix",
+    "name": "Animatrix",
+    "stats": {
+      "mou": 4,
+      "com": 5,
+      "tir": null,
+      "for": 5,
+      "end": 5,
+      "agi": 8,
+      "att": 1,
+      "pv": 1,
+      "cmd": 8,
+      "svg": 6
+    },
+    "skills": [
+      "Coup Précis"
+    ],
+    "gifts": "1 carte objet"
+  },
+  {
+    "id": "pyro",
+    "name": "Pyro",
+    "stats": {
+      "mou": 5,
+      "com": 8,
+      "tir": 5,
+      "for": 6,
+      "end": 4,
+      "agi": 6,
+      "att": 1,
+      "pv": 1,
+      "cmd": 9,
+      "svg": 9
+    },
+    "skills": [
+      "Tir Rapide"
+    ],
+    "gifts": "1 Crital Brut et 1 carte objet"
+  },
+  {
+    "id": "decapiteur",
+    "name": "Décapiteur",
+    "stats": {
+      "mou": 5,
+      "com": 6,
+      "tir": null,
+      "for": 5,
+      "end": 4,
+      "agi": 9,
+      "att": 1,
+      "pv": 1,
+      "cmd": 8,
+      "svg": 5
+    },
+    "skills": [
+      "Coup Précis",
+      "Maître Escrimeur"
+    ],
+    "gifts": "100 pièces d'or et 1 carte objet"
+  },
+  {
+    "id": "struglu",
+    "name": "Struglu",
+    "stats": {
+      "mou": 5,
+      "com": 7,
+      "tir": null,
+      "for": 5,
+      "end": 5,
+      "agi": 10,
+      "att": 1,
+      "pv": 2,
+      "cmd": 12,
+      "svg": 10
+    },
+    "skills": [],
+    "gifts": "1 carte objet"
+  },
+  {
+    "id": "kixor",
+    "name": "Kixor",
+    "stats": {
+      "mou": 6,
+      "com": 7,
+      "tir": null,
+      "for": 3,
+      "end": 3,
+      "agi": 3,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 9
+    },
+    "skills": [
+      "Petite Cible"
+    ],
+    "gifts": "50 pièces d'or"
+  },
+  {
+    "id": "salis",
+    "name": "Salis",
+    "stats": {
+      "mou": 5,
+      "com": 6,
+      "tir": null,
+      "for": 6,
+      "end": 5,
+      "agi": 10,
+      "att": 2,
+      "pv": 2,
+      "cmd": 10,
+      "svg": 7
+    },
+    "skills": [
+      "Grande cible"
+    ],
+    "gifts": "1 Cristal Brut et 1 carte objet"
+  },
+  {
+    "id": "mantae",
+    "name": "Mantae",
+    "stats": {
+      "mou": 6,
+      "com": 7,
+      "tir": null,
+      "for": 4,
+      "end": 4,
+      "agi": 2,
+      "att": 1,
+      "pv": 1,
+      "cmd": 9,
+      "svg": 8
+    },
+    "skills": [
+      "Vol"
+    ],
+    "gifts": "50 pièces d'or et 1 carte objet"
+  },
+  {
+    "id": "bruliis",
+    "name": "Bruliis",
+    "stats": {
+      "mou": 5,
+      "com": 9,
+      "tir": 8,
+      "for": 3,
+      "end": 3,
+      "agi": 2,
+      "att": 1,
+      "pv": 1,
+      "cmd": 13,
+      "svg": 11
+    },
+    "skills": [
+      "Petite Cible"
+    ],
+    "gifts": ""
+  },
+  {
+    "id": "gardien-noir",
+    "name": "Gardien Noir",
+    "stats": {
+      "mou": 5,
+      "com": 5,
+      "tir": null,
+      "for": 5,
+      "end": 5,
+      "agi": 5,
+      "att": 2,
+      "pv": 2,
+      "cmd": 9,
+      "svg": 7
+    },
+    "skills": [
+      "Maître Escrimeur",
+      "Camouflage",
+      "Grande Cible",
+      "Peur"
+    ],
+    "gifts": "2 cartes objets"
+  }
+]

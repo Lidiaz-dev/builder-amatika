@@ -1,0 +1,2793 @@
+[
+  {
+    "id": "ustensiles",
+    "name": "Ustensiles",
+    "items": [
+      {
+        "id": "grappins",
+        "name": "Grappins",
+        "description": "La figurine équipée de ce grapin peut escalader sans effectuer de test d'agilité, si elle le fait, une fois le mouvement terminé jetez un D10, sur un 1 le grapin est hors d'usage, défaussez-vous de cette carte.",
+        "price": 10,
+        "rarity": "blanc"
+      },
+      {
+        "id": "outils-de-crochetage",
+        "name": "Outils de crochetage",
+        "description": "Après qu'une figurine équipée d'outils de crochetage doit effectuer un test de force, d'agilité ou de commandement afin d'ouvrir un coffre, si ce test est échoué, alors vous pouvez utiliser les outils de crochetage, le test est considéré comme réussit, défaussez cette carte.",
+        "price": 20,
+        "rarity": "blanc",
+        "consumable": "single"
+      },
+      {
+        "id": "longue-vue",
+        "name": "Longue vue",
+        "description": "Le porteur gagne Eclaireur 3.",
+        "price": 10,
+        "rarity": "blanc"
+      },
+      {
+        "id": "trefle-a-4-feuilles",
+        "name": "Trèfle à 4 Feuilles",
+        "description": "Le porteur peut relancer un seul de ses dès, ensuite cet objet est défaussé.",
+        "price": 6,
+        "rarity": "blanc",
+        "consumable": "single"
+      }
+    ]
+  },
+  {
+    "id": "fioles",
+    "name": "Fioles",
+    "items": [
+      {
+        "id": "petite-potion-de-force",
+        "name": "Petite potion de force",
+        "description": "Une figurine qui boit cette potion obtient +1 en force jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 20,
+        "rarity": "blanc",
+        "consumable": "potion",
+        "useMods": {
+          "for": 1
+        }
+      },
+      {
+        "id": "potion-de-force",
+        "name": "Potion de force",
+        "description": "Une figurine qui boit cette potion obtient +2 en force jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 40,
+        "rarity": "gris",
+        "consumable": "potion",
+        "useMods": {
+          "for": 2
+        }
+      },
+      {
+        "id": "grande-potion-de-force",
+        "name": "Grande potion de force",
+        "description": "Une figurine qui boit cette potion obtient +3 en force jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 100,
+        "rarity": "vert",
+        "consumable": "potion",
+        "useMods": {
+          "for": 3
+        }
+      },
+      {
+        "id": "petite-potion-d-agilite",
+        "name": "Petite potion d'agilité",
+        "description": "Une figurine qui boit cette potion obtient +1 en agilité jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 6,
+        "rarity": "blanc",
+        "consumable": "potion",
+        "useMods": {
+          "agi": -1
+        }
+      },
+      {
+        "id": "potion-d-agilite",
+        "name": "Potion d'agilité",
+        "description": "Une figurine qui boit cette potion obtient +2 en agilité jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 12,
+        "rarity": "gris",
+        "consumable": "potion",
+        "useMods": {
+          "agi": -2
+        }
+      },
+      {
+        "id": "grande-potion-d-agilite",
+        "name": "Grande potion d'agilité",
+        "description": "Une figurine qui boit cette potion obtient +3 en agilité jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 20,
+        "rarity": "vert",
+        "consumable": "potion",
+        "useMods": {
+          "agi": -3
+        }
+      },
+      {
+        "id": "potion-de-vol",
+        "name": "Potion de vol",
+        "description": "Une figurine qui boit cette potion obtient la règle spéciale vol jusque la fin de son activation.",
+        "price": 50,
+        "rarity": "gris",
+        "consumable": "potion"
+      },
+      {
+        "id": "potion-de-recuperation",
+        "name": "Potion de récupération",
+        "description": "Une figurine possédant cette potion peut la faire boire à une figurine alliée mise hors de combat (mais pas morte) au contact socle à socle. La figurine hors de combat se relève, conservant son équipement, défaussez la carte blessure, elle pourra être activée normalement si elle ne l'avait pas déjà été.",
+        "price": 100,
+        "rarity": "vert",
+        "consumable": "potion"
+      },
+      {
+        "id": "potion-de-vie",
+        "name": "Potion de vie",
+        "description": "Une figurine possédant cette potion peut la faire boire à une figurine morte au contact socle à socle. La figurine morte se relève, conservant son équipement, défaussez la carte blessure, elle pourra être activée normalement si elle ne l'avait pas déjà été.",
+        "price": 300,
+        "rarity": "jaune",
+        "consumable": "potion"
+      },
+      {
+        "id": "bouteille-passe-muraille",
+        "name": "Bouteille passe-muraille",
+        "description": "Une figurine qui boit cette potion peut se déplacer à travers les éléments de décors jusque la fin de son activation, la figurine ne peut pas termine son mouvement dans un élément de décors infranchissable.",
+        "price": 80,
+        "rarity": "gris",
+        "consumable": "potion"
+      },
+      {
+        "id": "bouteille-des-tenebres",
+        "name": "Bouteille des ténèbres",
+        "description": "Une figurine peut briser cette bouteille sur le sol, un nuage de ténèbres surnaturelles recouvre immédiatement le champ de bataille, les lignes de vue sont réduites à 12ps pour le reste de la partie.",
+        "price": 200,
+        "rarity": "jaune",
+        "consumable": "potion"
+      },
+      {
+        "id": "flasque-affolante",
+        "name": "Flasque affolante",
+        "description": "Une figurine peut briser cette bouteille sur le sol, des cris stridents envahissent le champ de bataille, le commandement de toutes les figurines est réduit de 1 jusque la fin de la partie.",
+        "price": 150,
+        "rarity": "gris",
+        "consumable": "potion"
+      },
+      {
+        "id": "bouteille-de-negation",
+        "name": "Bouteille de négation",
+        "description": "Si une figurine ouvre cette bouteille, alors tous les sorts restant en jeu sont immédiatement dissipés.",
+        "price": 100,
+        "rarity": "gris",
+        "consumable": "potion"
+      },
+      {
+        "id": "liqueur-de-clairvoyance",
+        "name": "Liqueur de clairvoyance",
+        "description": "Une figurine qui boit cette liqueur obtiendra 1D10 points d'expérience supplémentaire à la fin de la bataille.",
+        "price": 50,
+        "rarity": "gris",
+        "consumable": "potion",
+        "xpDice": 1
+      },
+      {
+        "id": "liqueur-de-discernement",
+        "name": "Liqueur de discernement",
+        "description": "Une figurine qui boit cette liqueur obtiendra 2D10 points d'expérience supplémentaire à la fin de la bataille.",
+        "price": 100,
+        "rarity": "gris",
+        "consumable": "potion",
+        "xpDice": 2
+      },
+      {
+        "id": "liqueur-de-perspicacite",
+        "name": "Liqueur de perspicacité",
+        "description": "Une figurine qui boit cette liqueur obtiendra 3D10 points d'expérience supplémentaire à la fin de la bataille.",
+        "price": 150,
+        "rarity": "vert",
+        "consumable": "potion",
+        "xpDice": 3
+      },
+      {
+        "id": "liqueur-de-puissance",
+        "name": "Liqueur de puissance",
+        "description": "Un mage qui boit cette liqueur obtiendra un bonus de +5 lors du lancement du prochain sort de ce round.",
+        "price": 80,
+        "rarity": "gris",
+        "consumable": "potion"
+      },
+      {
+        "id": "elixir-du-cameleon",
+        "name": "Elixir du caméléon",
+        "description": "Une figurine qui boit cette potion gagne la règle Camouflage jusque la fin de la partie.",
+        "price": 30,
+        "rarity": "gris",
+        "consumable": "potion",
+        "useSkills": [
+          "Camouflage"
+        ]
+      },
+      {
+        "id": "cocktail-molotov",
+        "name": "Cocktail Molotov",
+        "description": "Une figurine peut utiliser cette fiole comme une arme de tir ayant les règles suivantes : portée 6ps ; arme de jet : pas de bonus de tir à bout portant ni de malus longue portée ; force 6.",
+        "price": 20,
+        "rarity": "gris",
+        "consumable": "potion"
+      },
+      {
+        "id": "potion-de-teleportation",
+        "name": "Potion de téléportation",
+        "description": "Une figurine qui boit cette potion peut être placée n'importe ou sur le champ de bataille, à plus de 1ps de toutes figurine ennemie.",
+        "price": 200,
+        "rarity": "jaune",
+        "consumable": "potion"
+      },
+      {
+        "id": "potion-d-invisibilite",
+        "name": "Potion d'invisibilité",
+        "description": "Une figurine qui boit cette potion ne peut être prise pour cible d'une attaque de tir, de magie ou de corps à corps jusqu'au début de sa prochaine activation, une figurine ennemie ne peut venir volontairement au contact de celle-ci.",
+        "price": 200,
+        "rarity": "jaune",
+        "consumable": "potion"
+      },
+      {
+        "id": "petite-potion-de-volonte",
+        "name": "Petite potion de volonté",
+        "description": "Une figurine qui boit cette potion obtient +1 en commandement jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 20,
+        "rarity": "blanc",
+        "consumable": "potion",
+        "useMods": {
+          "cmd": -1
+        }
+      },
+      {
+        "id": "potion-de-volonte",
+        "name": "Potion de volonté",
+        "description": "Une figurine qui boit cette potion obtient +2 en commandement jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 40,
+        "rarity": "gris",
+        "consumable": "potion",
+        "useMods": {
+          "cmd": -2
+        }
+      },
+      {
+        "id": "grande-potion-de-volonte",
+        "name": "Grande potion de volonté",
+        "description": "Une figurine qui boit cette potion obtient +3 en commandement jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 60,
+        "rarity": "vert",
+        "consumable": "potion",
+        "useMods": {
+          "cmd": -3
+        }
+      },
+      {
+        "id": "petite-potion-du-dragon",
+        "name": "Petite potion du dragon",
+        "description": "Une figurine qui boit cette potion obtient +1 en armure jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 10,
+        "rarity": "blanc",
+        "consumable": "potion",
+        "useMods": {
+          "svg": -1
+        }
+      },
+      {
+        "id": "potion-du-dragon",
+        "name": "Potion du dragon",
+        "description": "Une figurine qui boit cette potion obtient +2 en armure jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 30,
+        "rarity": "gris",
+        "consumable": "potion",
+        "useMods": {
+          "svg": -2
+        }
+      },
+      {
+        "id": "grande-potion-du-dragon",
+        "name": "Grande potion du dragon",
+        "description": "Une figurine qui boit cette potion obtient +3 en armure jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 40,
+        "rarity": "vert",
+        "consumable": "potion",
+        "useMods": {
+          "svg": -3
+        }
+      },
+      {
+        "id": "petite-potion-de-resistance",
+        "name": "Petite potion de résistance",
+        "description": "Une figurine qui boit cette potion obtient +1 en endurance jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 10,
+        "rarity": "blanc",
+        "consumable": "potion",
+        "useMods": {
+          "end": 1
+        }
+      },
+      {
+        "id": "potion-de-resistance",
+        "name": "Potion de résistance",
+        "description": "Une figurine qui boit cette potion obtient +2 en endurance jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 30,
+        "rarity": "gris",
+        "consumable": "potion",
+        "useMods": {
+          "end": 2
+        }
+      },
+      {
+        "id": "grande-potion-de-resistance",
+        "name": "Grande potion de résistance",
+        "description": "Une figurine qui boit cette potion obtient +3 en endurance jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 50,
+        "rarity": "vert",
+        "consumable": "potion",
+        "useMods": {
+          "end": 3
+        }
+      },
+      {
+        "id": "petite-potion-de-rapidite",
+        "name": "Petite potion de rapidité",
+        "description": "Une figurine qui boit cette potion obtient +1 en mouvement jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 20,
+        "rarity": "blanc",
+        "consumable": "potion",
+        "useMods": {
+          "mou": 1
+        }
+      },
+      {
+        "id": "potion-de-rapidite",
+        "name": "Potion de rapidité",
+        "description": "",
+        "price": 50,
+        "rarity": "gris",
+        "consumable": "potion"
+      },
+      {
+        "id": "grande-potion-de-rapidite",
+        "name": "Grande potion de rapidité",
+        "description": "Une figurine qui boit cette potion obtient +3 en mouvement jusque la fin de la partie, ensuite défausser cette carte.",
+        "price": 120,
+        "rarity": "vert",
+        "consumable": "potion",
+        "useMods": {
+          "mou": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "poisons",
+    "name": "Poisons",
+    "items": [
+      {
+        "id": "lotus-noir",
+        "name": "Lotus noir",
+        "description": "Une arme enduite par ce poison gagne haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 50,
+        "rarity": "vert",
+        "consumable": "poison"
+      },
+      {
+        "id": "bile-de-troll",
+        "name": "Bile de Troll",
+        "description": "Un jet pour toucher de 9 ou 10 blesse automatiquement.",
+        "price": 20,
+        "rarity": "vert",
+        "consumable": "poison"
+      },
+      {
+        "id": "ombre-pourpre",
+        "name": "Ombre pourpre",
+        "description": "Une arme enduite par ce poison obtient un bonus de +1 pour blesser.",
+        "price": 30,
+        "rarity": "gris",
+        "consumable": "poison"
+      },
+      {
+        "id": "sang-de-grinotis",
+        "name": "Sang de Grinotis",
+        "description": "Une arme enduite par ce poison obtient un bonus de +2 pour blesser.",
+        "price": 80,
+        "rarity": "vert",
+        "consumable": "poison"
+      },
+      {
+        "id": "larmes-de-crocodile",
+        "name": "Larmes de crocodile",
+        "description": "Une figurine touchée par ce poison qui n'est pas mise hors de combat après l'attaque doit effectuer un test de peur après l'attaque.",
+        "price": 20,
+        "rarity": "gris",
+        "consumable": "poison"
+      },
+      {
+        "id": "huile-de-cerises-bleues",
+        "name": "Huile de cerises bleues",
+        "description": "Une figurine blessée par ce poison qui n'est pas encore activée le devient alors immédiatement, son propriétaire place un jeton d'activation à coté de celle-ci sans qu'elle n'effectue la moindre action.",
+        "price": 200,
+        "rarity": "vert",
+        "consumable": "poison"
+      },
+      {
+        "id": "fysthoren",
+        "name": "Fysthorèn",
+        "description": "Un jet pour toucher de 10 blesse automatiquement.",
+        "price": 10,
+        "rarity": "gris",
+        "consumable": "poison"
+      },
+      {
+        "id": "la-torture-de-la-peste",
+        "name": "La torture de la peste",
+        "description": "Une arme enduite par ce poison réduit de 1 la sauvegarde d'armure adverse.",
+        "price": 10,
+        "rarity": "gris",
+        "consumable": "poison"
+      },
+      {
+        "id": "chair-de-meduse",
+        "name": "Chair de méduse",
+        "description": "Une arme enduite par ce poison réduit de 2 la sauvegarde d'armure adverse.",
+        "price": 30,
+        "rarity": "gris",
+        "consumable": "poison"
+      },
+      {
+        "id": "douleur-translucide",
+        "name": "Douleur translucide",
+        "description": "Une arme enduite par ce poison gagne Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 20,
+        "rarity": "gris",
+        "consumable": "poison"
+      },
+      {
+        "id": "cendre-liquide",
+        "name": "Cendre Liquide",
+        "description": "Une touche réussie avec une arme enduite par ce poison en cause deux, jetez 1D10 différent pour chacune de ses 2 touches.",
+        "price": 50,
+        "rarity": "vert",
+        "consumable": "poison"
+      },
+      {
+        "id": "ajowan-orange",
+        "name": "Ajowan Orange",
+        "description": "Un jet pour toucher de 9 ou 10 blesse automatiquement.",
+        "price": 20,
+        "rarity": "gris",
+        "consumable": "poison"
+      }
+    ]
+  },
+  {
+    "id": "dagues",
+    "name": "Dagues",
+    "items": [
+      {
+        "id": "dague-affutee",
+        "name": "Dague affutée",
+        "description": "Force utilisateur ; une main.",
+        "price": 10,
+        "rarity": "gris"
+      },
+      {
+        "id": "dague-a-double-lame",
+        "name": "Dague à double lame",
+        "description": "Force utilisateur ; une main ; +1 à la sauvegarde adverse ; +1 Attaque.",
+        "price": 30,
+        "rarity": "gris",
+        "mods": {
+          "att": 1
+        }
+      },
+      {
+        "id": "entropie",
+        "name": "Entropie",
+        "description": "Force utilisateur +1 ; +1 pour toucher ; une main.",
+        "price": 50,
+        "rarity": "jaune",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "dague-de-l-araignee",
+        "name": "Dague de l'araignée",
+        "description": "Force utilisateur ; une main ; lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
+        "price": 30,
+        "rarity": "vert"
+      },
+      {
+        "id": "dague-legere",
+        "name": "Dague légère",
+        "description": "Force utilisateur +1 ; une main ; +1 à la sauvegarde adverse ; +1 pour toucher.",
+        "price": 30,
+        "rarity": "vert",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "paire-de-dague-de-fripon-le-brumeux",
+        "name": "Paire de dague de Fripon le Brumeux",
+        "description": "Force utilisateur ; deux mains ; +1 pour toucher +1 attaque.",
+        "price": 40,
+        "rarity": "jaune",
+        "mods": {
+          "com": -1,
+          "att": 1
+        }
+      },
+      {
+        "id": "dague-de-sombracier",
+        "name": "Dague de Sombracier",
+        "description": "Force utilisateur +1 ; une main ; +1 à la sauvegarde adverse.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "dague-de-l-assassin",
+        "name": "Dague de l'Assassin",
+        "description": "Force utilisateur ; une main ; +1 pour toucher ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 40,
+        "rarity": "vert",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "dague-de-faef-grisprune",
+        "name": "Dague de Faef Grisprune",
+        "description": "Force utilisateur ; une main ; +1 attaque ; passer d'une arme de tir à cette dague et inversement ne coûte aucune action, le porteur peut le faire quand il souhaite durant son activation.",
+        "price": 40,
+        "rarity": "jaune",
+        "mods": {
+          "att": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "batons",
+    "name": "Bâtons",
+    "items": [
+      {
+        "id": "baton-de-bois-sombre",
+        "name": "Bâton de bois sombre",
+        "description": "Force utilisateur ; deux mains ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; +1 à la sauvegarde.",
+        "price": 20,
+        "rarity": "gris",
+        "mods": {
+          "svg": -1
+        }
+      },
+      {
+        "id": "baton-bouclier",
+        "name": "Bâton bouclier",
+        "description": "Force utilisateur ; deux mains ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; +2 à la sauvegarde.",
+        "price": 50,
+        "rarity": "vert",
+        "mods": {
+          "svg": -2
+        }
+      },
+      {
+        "id": "baton-d-or-jallexel",
+        "name": "Bâton d'or Jallexel",
+        "description": "Force utilisateur ; deux mains ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; +3 à la sauvegarde.",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -3
+        }
+      },
+      {
+        "id": "baton-energetique",
+        "name": "Bâton énergétique",
+        "description": "Force utilisateur ; deux mains ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; +1 au jet de lancement de sort.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "baton-mange-sort",
+        "name": "Bâton mange sort",
+        "description": "Force utilisateur ; deux mains ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; +2 au jet de dissipation.",
+        "price": 30,
+        "rarity": "gris"
+      },
+      {
+        "id": "baton-de-puissance",
+        "name": "Bâton de puissance",
+        "description": "Force utilisateur ; deux mains ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; +2 au jet de lancement de sort.",
+        "price": 50,
+        "rarity": "vert"
+      },
+      {
+        "id": "etoile-du-jour",
+        "name": "Etoile du jour",
+        "description": "Force utilisateur ; deux mains ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; +3 au jet de lancement de sort.",
+        "price": 100,
+        "rarity": "jaune"
+      },
+      {
+        "id": "batons-de-issiryht",
+        "name": "Bâtons de Issiryht",
+        "description": "Force utilisateur +1 ; deux mains ; +1 attaque ; +2 pour toucher ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "com": -2,
+          "att": 1
+        }
+      },
+      {
+        "id": "baton-de-force",
+        "name": "Bâton de force",
+        "description": "Force utilisateur +1 ; deux mains ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+        "price": 16,
+        "rarity": "gris"
+      },
+      {
+        "id": "baton-epineux",
+        "name": "Bâton épineux",
+        "description": "Force utilisateur ; deux mains ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; -1 à la sauvegarde ennemie.",
+        "price": 8,
+        "rarity": "vert"
+      },
+      {
+        "id": "baton-vif",
+        "name": "Bâton vif",
+        "description": "Force utilisateur ; deux mains ; Parade : Vos adversaires ont -2 pour vous toucher au corps à corps.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "baton-du-sorcier-eternel",
+        "name": "Bâton du sorcier éternel",
+        "description": "Force utilisateur +1 ; deux mains ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; +1 à la sauvegarde ; +1 au jet de lancement de sort ; +1 au jet de dissipation.",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "marteaux-et-massues",
+    "name": "Marteaux et Massues",
+    "items": [
+      {
+        "id": "marteau-seigneur",
+        "name": "Marteau seigneur",
+        "description": "Force utilisateur +1 ; une main ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 30,
+        "rarity": "vert"
+      },
+      {
+        "id": "massue-epineuse",
+        "name": "Massue épineuse",
+        "description": "Force utilisateur ; une main ; -1 à la sauvegarde ennemie ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "masse-ecrasante",
+        "name": "Masse écrasante",
+        "description": "Force utilisateur ; une main ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "marteau-titanium",
+        "name": "Marteau titanium",
+        "description": "Force utilisateur +1 ; -1 à la sauvegarde ennemie ; une main ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 50,
+        "rarity": "vert"
+      },
+      {
+        "id": "massue-massive",
+        "name": "Massue massive",
+        "description": "Force utilisateur ; une main ; +1 pour toucher ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 20,
+        "rarity": "gris",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "massue-casse-geant",
+        "name": "Massue casse géant",
+        "description": "Force utilisateur +2 ; une main ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 80,
+        "rarity": "vert"
+      },
+      {
+        "id": "marteau-du-forgeron-de-selim",
+        "name": "Marteau du forgeron de Selim",
+        "description": "Force utilisateur +1 ; +1 pour toucher ; -1 à la sauvegarde ennemie ; une main ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 80,
+        "rarity": "jaune",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "marteaux-d-askar",
+        "name": "Marteaux d'Askar",
+        "description": "Force utilisateur +1 ; +1 attaque ; deux mains ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "att": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "marteaux-lourds",
+    "name": "Marteaux lourds",
+    "items": [
+      {
+        "id": "marteau-lourd-de-compression",
+        "name": "Marteau lourd de compression",
+        "description": "Force utilisateur +2 ; deux mains ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 60,
+        "rarity": "gris"
+      },
+      {
+        "id": "marteau-lourd-d-aneantissement",
+        "name": "Marteau lourd d'anéantissement",
+        "description": "Force utilisateur +2 ; deux mains ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 80,
+        "rarity": "vert"
+      },
+      {
+        "id": "massue-lourde-du-carnage",
+        "name": "Massue lourde du carnage",
+        "description": "Force utilisateur +1 ; deux mains ; -1 à la sauvegarde ennemie ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 40,
+        "rarity": "gris"
+      },
+      {
+        "id": "massue-lourde-en-bronze-runique",
+        "name": "Massue lourde en bronze runique",
+        "description": "Force utilisateur +1 ; deux mains ; -1 à la sauvegarde ennemie ; +1 pour toucher ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 60,
+        "rarity": "vert",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "ollungr",
+        "name": "Öllungr",
+        "description": "Force utilisateur +3 ; deux mains ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 150,
+        "rarity": "jaune"
+      },
+      {
+        "id": "masse-de-justice",
+        "name": "Masse de justice",
+        "description": "Force utilisateur +1 ; deux mains ; +1 pour toucher ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 40,
+        "rarity": "gris",
+        "mods": {
+          "com": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "haches",
+    "name": "Haches",
+    "items": [
+      {
+        "id": "haches-du-berserk",
+        "name": "Haches du berserk",
+        "description": "Force utilisateur ; deux mains ; +2 attaques ; -1 à la sauvegarde ennemie.",
+        "price": 40,
+        "rarity": "vert",
+        "mods": {
+          "att": 2
+        }
+      },
+      {
+        "id": "hache-d-aleph",
+        "name": "Hache d'Aleph",
+        "description": "Force utilisateur +1 ; une main ; +1 pour toucher ; -1 à la sauvegarde ennemie ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 70,
+        "rarity": "jaune",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "hache-touche-toujours",
+        "name": "Hache touche toujours",
+        "description": "Force utilisateur ; une main ; +1 pour toucher ; -1 à la sauvegarde ennemie.",
+        "price": 20,
+        "rarity": "gris",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "hache-de-bucheron",
+        "name": "Hache de bucheron",
+        "description": "Force utilisateur +1 ; une main ; -1 à la sauvegarde ennemie.",
+        "price": 30,
+        "rarity": "gris"
+      },
+      {
+        "id": "hache-d-albatre",
+        "name": "Hache d'albâtre",
+        "description": "Force utilisateur ; une main ; -1 à la sauvegarde ennemie ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 20,
+        "rarity": "vert"
+      },
+      {
+        "id": "hache-du-rhinoceros",
+        "name": "Hache du rhinocéros",
+        "description": "Force utilisateur +2 ; une main ; -2 à la sauvegarde ennemie ; -1 pour toucher.",
+        "price": 50,
+        "rarity": "vert",
+        "mods": {
+          "com": 1
+        }
+      },
+      {
+        "id": "chuchoteuse",
+        "name": "Chuchoteuse",
+        "description": "Force utilisateur ; une main ; -1 à la sauvegarde ennemie mains ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps et au tir ; +1 à la sauvegarde.",
+        "price": 50,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -1
+        }
+      },
+      {
+        "id": "hache-plate",
+        "name": "Hache plate",
+        "description": "Force utilisateur ; une main ; -1 à la sauvegarde ennemie ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 20,
+        "rarity": "gris"
+      }
+    ]
+  },
+  {
+    "id": "haches-lourdes",
+    "name": "Haches lourdes",
+    "items": [
+      {
+        "id": "hache-lourde-des-forges-naines",
+        "name": "Hache lourde des forges naines",
+        "description": "Force utilisateur +1 ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie.",
+        "price": 30,
+        "rarity": "gris",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "hache-lourde-de-pulverisation",
+        "name": "Hache lourde de pulvérisation",
+        "description": "Force utilisateur +2 ; deux mains ; -1 à la sauvegarde ennemie.",
+        "price": 40,
+        "rarity": "gris"
+      },
+      {
+        "id": "grande-hache-vengeresse",
+        "name": "Grande hache vengeresse",
+        "description": "Force utilisateur +1 ; deux mains ; +1 attaque ; -1 à la sauvegarde ennemie.",
+        "price": 40,
+        "rarity": "gris",
+        "mods": {
+          "att": 1
+        }
+      },
+      {
+        "id": "hache-modele-45tp",
+        "name": "Hache modèle 45TP",
+        "description": "Force utilisateur +2 ; deux mains ; -1 à la sauvegarde ennemie ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 60,
+        "rarity": "vert"
+      },
+      {
+        "id": "hache-fulgure",
+        "name": "Hache fulgure",
+        "description": "Force utilisateur +1 ; deux mains ; +2 pour toucher ; -2 à la sauvegarde ennemie.",
+        "price": 60,
+        "rarity": "vert",
+        "mods": {
+          "com": -2
+        }
+      },
+      {
+        "id": "croc-de-sang",
+        "name": "Croc de sang",
+        "description": "Force utilisateur +2 ; deux mains ; +1 pour toucher ; -2 à la sauvegarde ennemie ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 120,
+        "rarity": "jaune",
+        "mods": {
+          "com": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "epees",
+    "name": "Epées",
+    "items": [
+      {
+        "id": "epee-energisante",
+        "name": "Épée énergisante",
+        "description": "Force utilisateur ; une main ; +1 pour toucher ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+        "price": 20,
+        "rarity": "gris",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "epee-batarde",
+        "name": "Épée bâtarde",
+        "description": "Force utilisateur +1 ; une main ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+        "price": 30,
+        "rarity": "gris"
+      },
+      {
+        "id": "sabre",
+        "name": "Sabre",
+        "description": "Force utilisateur ; une main ; -1 à la sauvegarde ennemie ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "katana",
+        "name": "Katana",
+        "description": "Force utilisateur ; une main ; +1 pour toucher ; -1 à la sauvegarde ennemie ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+        "price": 40,
+        "rarity": "gris",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "epee-luisante",
+        "name": "Épée luisante",
+        "description": "Force utilisateur ; une main ; +1 attaque ; +2 pour toucher ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+        "price": 60,
+        "rarity": "vert",
+        "mods": {
+          "com": -2,
+          "att": 1
+        }
+      },
+      {
+        "id": "epee-d-outre-monde",
+        "name": "Épée d'outre-monde",
+        "description": "Force utilisateur ; une main ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 30,
+        "rarity": "vert"
+      },
+      {
+        "id": "epee-anti-magie",
+        "name": "Épée anti-magie",
+        "description": "Ne peut pas être équipé par une figurine ayant la règle spéciale Mage ; Force utilisateur ; une main ; tout sort dans un rayon de 6ps du porteur est automatique dissipé, le porteur ne peut pas être la cible d'un sort ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+        "price": 100,
+        "rarity": "vert"
+      },
+      {
+        "id": "lame-de-minuit",
+        "name": "Lame de minuit",
+        "description": "Force utilisateur +2 ; une main ; +1 attaque ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "att": 1
+        }
+      },
+      {
+        "id": "katana-de-jinnouchi-shigenaga",
+        "name": "Katana de Jinnouchi Shigenaga",
+        "description": "Force utilisateur +1 ; une main ; +2 pour toucher ; -2 à la sauvegarde ennemie ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+        "price": 120,
+        "rarity": "jaune",
+        "mods": {
+          "com": -2
+        }
+      },
+      {
+        "id": "sabre-laser",
+        "name": "Sabre laser",
+        "description": "Force utilisateur +3 ; une main ; -3 à la sauvegarde ennemie ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+        "price": 200,
+        "rarity": "jaune"
+      }
+    ]
+  },
+  {
+    "id": "epees-lourdes",
+    "name": "Epées lourdes",
+    "items": [
+      {
+        "id": "claymore",
+        "name": "Claymore",
+        "description": "Force utilisateur +2 ; deux mains ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 70,
+        "rarity": "gris"
+      },
+      {
+        "id": "espadon",
+        "name": "Espadon",
+        "description": "Force utilisateur +1 ; deux mains ; -1 à la sauvegarde ennemie ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 50,
+        "rarity": "gris"
+      },
+      {
+        "id": "zweihander",
+        "name": "Zweihander",
+        "description": "Force utilisateur +1 ; deux mains ; -1 à la sauvegarde ennemie ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 70,
+        "rarity": "vert"
+      },
+      {
+        "id": "epee-lourde-devoreuse",
+        "name": "Épée lourde dévoreuse",
+        "description": "Force utilisateur +3 ; deux mains ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 100,
+        "rarity": "vert"
+      },
+      {
+        "id": "lame-torpille",
+        "name": "Lame torpille",
+        "description": "Force utilisateur +2 ; deux mains ; -1 à la sauvegarde ennemie ; très haute létalité : une figurine blessée par cette arme pioches 3 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 120,
+        "rarity": "jaune"
+      }
+    ]
+  },
+  {
+    "id": "morgenstern",
+    "name": "Morgenstern",
+    "items": [
+      {
+        "id": "double-morgenstern",
+        "name": "Double Morgenstern",
+        "description": "Force utilisateur +1 ; une main ; +1 attaque ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps ; Ne peut pas être utilisé avec une seconde arme de corps à corps (possible avec un bouclier).",
+        "price": 30,
+        "rarity": "gris",
+        "mods": {
+          "com": 1,
+          "att": 1
+        }
+      },
+      {
+        "id": "morgenstern-leger",
+        "name": "Morgenstern léger",
+        "description": "Force utilisateur +1 ; une main ; Ne peut pas être utilisé avec une seconde arme de corps à corps (possible avec un bouclier).",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "morgenstern-torpille",
+        "name": "Morgenstern torpille",
+        "description": "Force utilisateur +1 ; une main ; +2 pour toucher ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps ; Ne peut pas être utilisé avec une seconde arme de corps à corps (possible avec un bouclier).",
+        "price": 40,
+        "rarity": "vert",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "troorhinus",
+        "name": "Troorhinus",
+        "description": "Force utilisateur +2 ; une main ; +1 pour toucher ; -1 à la sauvegarde ennemie ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps ; Ne peut pas être utilisé avec une seconde arme de corps à corps (possible avec un bouclier).",
+        "price": 70,
+        "rarity": "jaune"
+      }
+    ]
+  },
+  {
+    "id": "fleaux",
+    "name": "Fléaux",
+    "items": [
+      {
+        "id": "fleau-carnage",
+        "name": "Fléau carnage",
+        "description": "Force utilisateur +2 ; deux mains ; -1 à la sauvegarde ennemie ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps.",
+        "price": 40,
+        "rarity": "gris",
+        "mods": {
+          "com": 1
+        }
+      },
+      {
+        "id": "fleau-attrape-cotes",
+        "name": "Fléau attrape côtes",
+        "description": "Force utilisateur +2 ; deux mains ; -1 à la sauvegarde ennemie ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 70,
+        "rarity": "vert"
+      },
+      {
+        "id": "fleau-de-sir-moffebvre",
+        "name": "Fléau de Sir Moffebvre",
+        "description": "Force utilisateur +3 ; deux mains ; +1 pour toucher ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 150,
+        "rarity": "jaune",
+        "mods": {
+          "com": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "hallebardes",
+    "name": "Hallebardes",
+    "items": [
+      {
+        "id": "hallebarde-longue",
+        "name": "Hallebarde longue",
+        "description": "Force utilisateur +1 ; deux mains ; utilisation d'un bouclier possible uniquement contre les tirs ; une figurine équipée de cette hallebarde gagne une action d'attaque gratuite contre un ennemie venant se mettre au contact socle à socle, y compris lors d'une mise en contact.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "hallebarde-tranchante",
+        "name": "Hallebarde tranchante",
+        "description": "Force utilisateur +1 ; deux mains ; -1 à la sauvegarde ennemie ; utilisation d'un bouclier possible uniquement contre les tirs.",
+        "price": 30,
+        "rarity": "gris"
+      },
+      {
+        "id": "hallebarde-lourde",
+        "name": "Hallebarde lourde",
+        "description": "Force utilisateur +3 ; deux mains ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps ; utilisation d'un bouclier possible uniquement contre les tirs.",
+        "price": 50,
+        "rarity": "vert",
+        "mods": {
+          "com": 1
+        }
+      },
+      {
+        "id": "hallebarde-blanche",
+        "name": "Hallebarde blanche",
+        "description": "Force utilisateur +1 ; deux mains ; +1 pour toucher ; utilisation d'un bouclier possible uniquement contre les tirs ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 50,
+        "rarity": "vert",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "lady-emlyn",
+        "name": "Lady Emlyn",
+        "description": "Force utilisateur +2 ; deux mains ; +1 pour toucher ; utilisation d'un bouclier possible uniquement contre les tirs ; une figurine équipée de cette hallebarde gagne une action d'attaque gratuite contre un ennemie venant se mettre au contact socle à socle, y compris lors d'une mise en contact ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 120,
+        "rarity": "jaune",
+        "mods": {
+          "com": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "lances",
+    "name": "Lances",
+    "items": [
+      {
+        "id": "lance-solide",
+        "name": "Lance solide",
+        "description": "Force utilisateur +1 ; une main ; ne peut pas être utilisé avec une seconde arme de corps à corps (possible avec un bouclier) ; une figurine équipée d'une lance gagne une action d'attaque gratuite contre un ennemie venant se mettre au contact socle à socle, y compris lors d'une mise en contact.",
+        "price": 30,
+        "rarity": "gris"
+      },
+      {
+        "id": "lance-habile",
+        "name": "Lance habile",
+        "description": "Force utilisateur ; une main ; +1 pour toucher ; ne peut pas être utilisé avec une seconde arme de corps à corps (possible avec un bouclier) ; une figurine équipée d'une lance gagne une action d'attaque gratuite contre un ennemie venant se mettre au contact socle à socle, y compris lors d'une mise en contact.",
+        "price": 20,
+        "rarity": "gris",
+        "mods": {
+          "com": -1
+        }
+      },
+      {
+        "id": "lance-de-protection",
+        "name": "Lance de protection",
+        "description": "Force utilisateur ; une main ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; ne peut pas être utilisé avec une seconde arme de corps à corps (possible avec un bouclier) ; une figurine équipée d'une lance gagne une action d'attaque gratuite contre un ennemie venant se mettre au contact socle à socle, y compris lors d'une mise en contact.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "lance-facon-belmur",
+        "name": "Lance façon Belmur",
+        "description": "Force utilisateur +1 ; une main ; -1 à la sauvegarde ennemie ; ne peut pas être utilisé avec une seconde arme de corps à corps (possible avec un bouclier) ; une figurine équipée d'une lance gagne une action d'attaque gratuite contre un ennemie venant se mettre au contact socle à socle, y compris lors d'une mise en contact.",
+        "price": 50,
+        "rarity": "vert"
+      },
+      {
+        "id": "lance-sombre",
+        "name": "Lance sombre",
+        "description": "Force utilisateur ; une main ; +2 attaques ; ne peut pas être utilisé avec une seconde arme de corps à corps (possible avec un bouclier) ; une figurine équipée d'une lance gagne une action d'attaque gratuite contre un ennemie venant se mettre au contact socle à socle, y compris lors d'une mise en contact.",
+        "price": 50,
+        "rarity": "vert",
+        "mods": {
+          "att": 2
+        }
+      },
+      {
+        "id": "pique-glaciale",
+        "name": "Pique glaciale",
+        "description": "Force utilisateur +1 ; une main ; +1 attaque ; +1 pour toucher ; -1 à la sauvegarde ennemie ; ne peut pas être utilisé avec une seconde arme de corps à corps (possible avec un bouclier) ; une figurine équipée d'une lance gagne une action d'attaque gratuite contre un ennemie venant se mettre au contact socle à socle, y compris lors d'une mise en contact ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 120,
+        "rarity": "jaune",
+        "mods": {
+          "com": -1,
+          "att": 1
+        }
+      },
+      {
+        "id": "lance-d-oberyn",
+        "name": "Lance d'Oberyn",
+        "description": "Force utilisateur +2 ; deux mains ; +1 attaque ; une figurine équipée d'une lance gagne une action d'attaque gratuite contre un ennemie venant se mettre au contact socle à socle, y compris lors d'une mise en contact ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps ; lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "att": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "arcs-courts",
+    "name": "Arcs courts",
+    "items": [
+      {
+        "id": "arc-court-en-bois-dignane",
+        "name": "Arc court en bois dignane",
+        "description": "Force 4 ; portée 16ps ; deux mains ; +1 pour toucher.",
+        "price": 20,
+        "rarity": "gris",
+        "mods": {
+          "tir": -1
+        }
+      },
+      {
+        "id": "arc-court-des-steppes-jaunes",
+        "name": "Arc court des steppes jaunes",
+        "description": "Force 5 ; portée 18ps ; deux mains.",
+        "price": 40,
+        "rarity": "vert"
+      },
+      {
+        "id": "arc-court-de-iksriks-le-premier-gobelin",
+        "name": "Arc court de Iksriks le premier gobelin",
+        "description": "Force 4 ; portée 16ps ; deux mains ; +1 pour toucher ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 50,
+        "rarity": "jaune",
+        "mods": {
+          "tir": -1
+        }
+      },
+      {
+        "id": "dul",
+        "name": "Dul",
+        "description": "Force 6 ; portée 18ps ; deux mains ; +2 pour toucher.",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "tir": -2
+        }
+      }
+    ]
+  },
+  {
+    "id": "arcs",
+    "name": "Arcs",
+    "items": [
+      {
+        "id": "arc-attrape-reve",
+        "name": "Arc attrape rêve",
+        "description": "Force 5 ; portée 24ps ; deux mains.",
+        "price": 30,
+        "rarity": "gris"
+      },
+      {
+        "id": "arc-tieffelin",
+        "name": "Arc Tieffelin",
+        "description": "Force 4 ; portée 20ps ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie.",
+        "price": 30,
+        "rarity": "gris",
+        "mods": {
+          "tir": -1
+        }
+      },
+      {
+        "id": "arc-krogbe",
+        "name": "Arc Krogbé",
+        "description": "Force 4 ; portée 24ps ; deux mains ; +1 pour toucher ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 40,
+        "rarity": "vert",
+        "mods": {
+          "tir": -1
+        }
+      },
+      {
+        "id": "arc-cabalite",
+        "name": "Arc cabalite",
+        "description": "Force 4 ; portée 24ps ; deux mains ; +3 pour toucher et pour blesser les figurines ayant la capacité Mage, le porteur peut cibler des ennemies ayant le mot clef Mage même si cette figurine n'est pas la plus proche.",
+        "price": 60,
+        "rarity": "vert"
+      },
+      {
+        "id": "aile-d-eternite",
+        "name": "Aile d'éternité",
+        "description": "Force 6 ; portée 24ps ; +1 pour toucher ; deux mains.",
+        "price": 80,
+        "rarity": "jaune",
+        "mods": {
+          "tir": -1
+        }
+      },
+      {
+        "id": "arc-du-rubis-flamboyant",
+        "name": "Arc du rubis flamboyant",
+        "description": "Force 4 ; portée 24ps ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie ; lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3 ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "tir": -1
+        }
+      },
+      {
+        "id": "arc-de-faef-grisprune",
+        "name": "Arc de Faef Grisprune",
+        "description": "Force 5 ; portée 30ps ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie.",
+        "price": 80,
+        "rarity": "jaune",
+        "mods": {
+          "tir": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "arcs-longs",
+    "name": "Arcs longs",
+    "items": [
+      {
+        "id": "arc-elfique",
+        "name": "Arc Elfique",
+        "description": "Force 4 ; portée 30ps ; +1 pour toucher ; -1 à la sauvegarde ennemie ; deux mains.",
+        "price": 50,
+        "rarity": "gris",
+        "mods": {
+          "tir": -1
+        }
+      },
+      {
+        "id": "arc-cigogne-des-mers",
+        "name": "Arc Cigogne des mers",
+        "description": "Force 5 ; portée 36ps ; deux mains.",
+        "price": 60,
+        "rarity": "vert"
+      },
+      {
+        "id": "arc-long-de-legolas",
+        "name": "Arc long de Legolas",
+        "description": "Force 5 ; portée 30ps ; +1 pour toucher ; -1 à la sauvegarde ennemie ; deux mains ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "tir": -1
+        }
+      },
+      {
+        "id": "alok-zinharice",
+        "name": "Alok Zinharice",
+        "description": "Force 5 ; portée 30ps ; deux mains ; le porteur peut cibler n'importe quel ennemi visible même si cette figurine n'est pas la plus proche ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 80,
+        "rarity": "jaune"
+      }
+    ]
+  },
+  {
+    "id": "arbaletes",
+    "name": "Arbalètes",
+    "items": [
+      {
+        "id": "arbalete-naine",
+        "name": "Arbalète naine",
+        "description": "Force 5 ; portée 30ps ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie ; rechargement.",
+        "price": 60,
+        "rarity": "gris",
+        "mods": {
+          "tir": -1
+        }
+      },
+      {
+        "id": "arbalete-rapide",
+        "name": "Arbalète rapide",
+        "description": "Force 5 ; portée 30ps ; deux mains.",
+        "price": 50,
+        "rarity": "vert"
+      },
+      {
+        "id": "arbalete-noire",
+        "name": "Arbalète noire",
+        "description": "Force 6 ; portée 30ps ; deux mains ; rechargement ; lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
+        "price": 80,
+        "rarity": "vert"
+      },
+      {
+        "id": "arbalete-de-hendp-barbedacier",
+        "name": "Arbalète de Hendp Barbedacier",
+        "description": "Force 6 ; portée 30ps ; deux mains ; rechargement ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 100,
+        "rarity": "jaune"
+      },
+      {
+        "id": "chenkovine",
+        "name": "Chenkovine",
+        "description": "Force 5 ; portée 30ps ; une main ; +2 pour toucher.",
+        "price": 80,
+        "rarity": "jaune",
+        "mods": {
+          "tir": -2
+        }
+      }
+    ]
+  },
+  {
+    "id": "arbaletes-de-poings",
+    "name": "Arbalètes de poings",
+    "items": [
+      {
+        "id": "arbalete-de-poing-nordique",
+        "name": "Arbalète de poing nordique",
+        "description": "Force 6 ; portée 10ps ; rechargement ; une main ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
+        "price": 40,
+        "rarity": "gris"
+      },
+      {
+        "id": "arbalete-de-poing-vendetta",
+        "name": "Arbalète de poing Vendetta",
+        "description": "Force 5 ; portée 10ps ; une main ; -1 à la sauvegarde ennemie ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
+        "price": 50,
+        "rarity": "vert"
+      },
+      {
+        "id": "vetid-rose",
+        "name": "Vetid rose",
+        "description": "Force 8 ; portée 6ps ; rechargement ; une main ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
+        "price": 90,
+        "rarity": "jaune"
+      }
+    ]
+  },
+  {
+    "id": "frondes",
+    "name": "Frondes",
+    "items": []
+  },
+  {
+    "id": "etoiles-couteaux-et-haches-de-jet",
+    "name": "Etoiles, Couteaux et haches de jet",
+    "items": [
+      {
+        "id": "etoiles-de-ninja",
+        "name": "Étoiles de ninja",
+        "description": "force utilisateur ; portée 6ps ; une main ; -1 à la sauvegarde ennemie ; arme de jet : pas de bonus de tir à bout portant ni de malus longue portée.",
+        "price": 10,
+        "rarity": "vert"
+      },
+      {
+        "id": "couteaux-circus",
+        "name": "Couteaux Circus",
+        "description": "force utilisateur ; portée 10ps ; une main ; arme de jet : pas de bonus de tir à bout portant ni de malus longue portée.",
+        "price": 8,
+        "rarity": "gris"
+      },
+      {
+        "id": "tomahawk",
+        "name": "Tomahawk",
+        "description": "force utilisateur +1 ; portée 6ps ; une main ; arme de jet : pas de bonus de tir à bout portant ni de malus longue portée.",
+        "price": 16,
+        "rarity": "jaune"
+      }
+    ]
+  },
+  {
+    "id": "sarbacanes",
+    "name": "Sarbacanes",
+    "items": [
+      {
+        "id": "sarbacane-skink",
+        "name": "Sarbacane skink",
+        "description": "Force 3 ; portée 16ps ; une main ; Lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
+        "price": 10,
+        "rarity": "gris"
+      },
+      {
+        "id": "sarbacane-bambou",
+        "name": "Sarbacane bambou",
+        "description": "Force 3 ; portée 16ps ; une main ; +2 pour toucher ; faible létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus basse. Lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
+        "price": 20,
+        "rarity": "vert",
+        "mods": {
+          "tir": -2
+        }
+      },
+      {
+        "id": "sarbacane-de-xejosah",
+        "name": "Sarbacane de Xejosah",
+        "description": "Force 4 ; portée 20ps ; une main ; Lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
+        "price": 40,
+        "rarity": "jaune"
+      }
+    ]
+  },
+  {
+    "id": "javelots",
+    "name": "Javelots",
+    "items": [
+      {
+        "id": "javelot-paamidien",
+        "name": "Javelot Paamidien",
+        "description": "Force utilisateur +1 ; portée 16ps ; une main.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "javelot-ferpaeg",
+        "name": "Javelot Ferpaeg",
+        "description": "Force utilisateur ; portée 16ps ; une main ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 30,
+        "rarity": "vert"
+      },
+      {
+        "id": "javelot-de-zelezny",
+        "name": "Javelot de Zelezny",
+        "description": "Force utilisateur +1 ; portée 20ps ; +2 pour toucher ; une main.",
+        "price": 50,
+        "rarity": "jaune",
+        "mods": {
+          "tir": -2
+        }
+      }
+    ]
+  },
+  {
+    "id": "pistolets",
+    "name": "Pistolets",
+    "items": [
+      {
+        "id": "pistolet-a-barillet",
+        "name": "Pistolet à barillet",
+        "description": "Force 5 ; portée 10ps ; -1 à la sauvegarde ennemie ; une main ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
+        "price": 40,
+        "rarity": "gris"
+      },
+      {
+        "id": "pistolet-tromblon",
+        "name": "Pistolet tromblon",
+        "description": "Force 6 ; portée 10ps ; +1 pour toucher ; -1 à la sauvegarde ennemie ; une main ; rechargement ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
+        "price": 60,
+        "rarity": "vert",
+        "mods": {
+          "tir": -1
+        }
+      },
+      {
+        "id": "paire-de-pistolets-brandilleras",
+        "name": "Paire de Pistolets Brandilleras",
+        "description": "Force 6 ; 2 tirs à la fois ; portée 10ps ; -1 à la sauvegarde ennemie ; deux mains ; rechargement ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 100,
+        "rarity": "jaune"
+      }
+    ]
+  },
+  {
+    "id": "arquebuses",
+    "name": "Arquebuses",
+    "items": [
+      {
+        "id": "arquebuse-renforcee",
+        "name": "Arquebuse renforcée",
+        "description": "Force 6 ; portée 20ps ; -1 à la sauvegarde ennemie ; deux mains ; rechargement.",
+        "price": 60,
+        "rarity": "gris"
+      },
+      {
+        "id": "fusil-sniper",
+        "name": "Fusil Sniper",
+        "description": "Force 5 ; portée 36ps ; -1 à la sauvegarde ennemie ; deux mains ; rechargement ; très haute létalité : une figurine blessée par cette arme pioches 3 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "price": 100,
+        "rarity": "jaune"
+      },
+      {
+        "id": "arquebuse-precise",
+        "name": "Arquebuse précise",
+        "description": "Force 5 ; portée 24ps ; +1 pour toucher ; -1 à la sauvegarde ennemie ; deux mains ; rechargement ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 80,
+        "rarity": "vert",
+        "mods": {
+          "tir": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "armures-de-cuir",
+    "name": "Armures de cuir",
+    "items": [
+      {
+        "id": "armure-de-cuir-tanne",
+        "name": "Armure de cuir tanné",
+        "description": "+2 à la sauvegarde.",
+        "price": 20,
+        "rarity": "gris",
+        "mods": {
+          "svg": -2
+        }
+      },
+      {
+        "id": "armure-de-cuir-de-rhinox",
+        "name": "Armure de cuir de Rhinox",
+        "description": "+1 à la sauvegarde ; -1 à la force de l'arme ennemie.",
+        "price": 30,
+        "rarity": "gris",
+        "mods": {
+          "svg": -1
+        }
+      },
+      {
+        "id": "armure-cameleon",
+        "name": "Armure Caméléon",
+        "description": "+1 à la sauvegarde ; le porteur gagne la règle spéciale « Camouflage ».",
+        "price": 16,
+        "rarity": "gris",
+        "mods": {
+          "svg": -1
+        },
+        "skills": [
+          "Camouflage"
+        ]
+      },
+      {
+        "id": "armure-cousue-de-fil-d-or",
+        "name": "Armure cousue de fil d'Or",
+        "description": "+1 à la sauvegarde ; +1 en commandement ; +1 de prestige.",
+        "price": 30,
+        "rarity": "gris",
+        "mods": {
+          "svg": -1,
+          "cmd": -1
+        }
+      },
+      {
+        "id": "armure-de-cuir-flexible",
+        "name": "Armure de cuir flexible",
+        "description": "+1 à la sauvegarde ; +2 en agilité.",
+        "price": 20,
+        "rarity": "vert",
+        "mods": {
+          "svg": -1,
+          "agi": -2
+        }
+      },
+      {
+        "id": "armure-de-l-assassin",
+        "name": "Armure de l'assassin",
+        "description": "+1 à la sauvegarde ; +1 en mouvement ; +1 pour toucher.",
+        "price": 30,
+        "rarity": "vert",
+        "mods": {
+          "svg": -1,
+          "mou": 1
+        }
+      },
+      {
+        "id": "armure-legere",
+        "name": "Armure légère",
+        "description": "+1 à la sauvegarde ; +1 pour toucher au corps à corps ; le porteur gagne la règle spéciale « léger ».",
+        "price": 50,
+        "rarity": "vert",
+        "mods": {
+          "svg": -1,
+          "com": -1
+        },
+        "skills": [
+          "Léger"
+        ]
+      },
+      {
+        "id": "armure-en-peau-de-geant",
+        "name": "Armure en peau de Géant",
+        "description": "+1 à la sauvegarde ; le porteur provoque la peur.",
+        "price": 40,
+        "rarity": "vert",
+        "mods": {
+          "svg": -1
+        },
+        "skills": [
+          "Peur"
+        ]
+      },
+      {
+        "id": "armure-de-cuir-de-fripon-le-brumeux",
+        "name": "Armure de cuir de Fripon le Brumeux",
+        "description": "+2 à la sauvegarde ; le porteur gagne la règle spéciale « Camouflage » ; le porteur gagne la règle spéciale « léger ».",
+        "price": 70,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -2
+        },
+        "skills": [
+          "Camouflage",
+          "Léger"
+        ]
+      },
+      {
+        "id": "armure-de-l-eclaireur",
+        "name": "Armure de l'éclaireur",
+        "description": "+1 à la sauvegarde ; +1 en mouvement ; le porteur gagne « éclaireur 12 ».",
+        "price": 50,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -1,
+          "mou": 1
+        }
+      },
+      {
+        "id": "kert",
+        "name": "Kert",
+        "description": "+3 à la sauvegarde.",
+        "price": 50,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -3
+        }
+      }
+    ]
+  },
+  {
+    "id": "armures-legeres",
+    "name": "Armures légères",
+    "items": [
+      {
+        "id": "armure-semi-legere",
+        "name": "Armure semi-légère",
+        "description": "+3 à la sauvegarde.",
+        "price": 40,
+        "rarity": "gris",
+        "mods": {
+          "svg": -3
+        }
+      },
+      {
+        "id": "armure-de-cotte-de-maille",
+        "name": "Armure de cotte de maille",
+        "description": "+2 à la sauvegarde ; cette armure ne peut pas être prise par une figurine fouillant le propriétaire.",
+        "price": 30,
+        "rarity": "gris",
+        "mods": {
+          "svg": -2
+        }
+      },
+      {
+        "id": "armure-ebene",
+        "name": "Armure ébène",
+        "description": "+2 à la sauvegarde ; les ennemies subissent un malus de -1 pour toucher le propriétaire au tir comme au corps à corps.",
+        "price": 30,
+        "rarity": "gris",
+        "mods": {
+          "svg": -2
+        }
+      },
+      {
+        "id": "armure-des-archers",
+        "name": "Armure des archers",
+        "description": "+2 à la sauvegarde ; les attaques de tirs gagnent un bonus de +1 pour toucher.",
+        "price": 30,
+        "rarity": "gris",
+        "mods": {
+          "svg": -2
+        }
+      },
+      {
+        "id": "armure-de-mithril",
+        "name": "Armure de Mithril",
+        "description": "+4 à la sauvegarde.",
+        "price": 60,
+        "rarity": "vert",
+        "mods": {
+          "svg": -4
+        }
+      },
+      {
+        "id": "armure-de-parade",
+        "name": "Armure de parade",
+        "description": "+1 à la sauvegarde ; +5 en prestige.",
+        "price": 150,
+        "rarity": "vert",
+        "mods": {
+          "svg": -1
+        }
+      },
+      {
+        "id": "armure-legere-des-cieux",
+        "name": "Armure légère des Cieux",
+        "description": "+3 à la sauvegarde ; +1 en mouvement.",
+        "price": 50,
+        "rarity": "vert",
+        "mods": {
+          "svg": -3,
+          "mou": 1
+        }
+      },
+      {
+        "id": "armure-pourpre",
+        "name": "Armure pourpre",
+        "description": "+3 à la sauvegarde ; le porteur provoque la peur.",
+        "price": 60,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -3
+        },
+        "skills": [
+          "Peur"
+        ]
+      },
+      {
+        "id": "armure-d-olfat-xar",
+        "name": "Armure d'Olfat Xàr",
+        "description": "+3 à la sauvegarde ; +1 en commandement ; le porteur gagne la compétence « dissipation ».",
+        "price": 60,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -3,
+          "cmd": -1
+        },
+        "skills": [
+          "Dissipation"
+        ]
+      },
+      {
+        "id": "armure-legere-doublee",
+        "name": "Armure légère doublée",
+        "description": "+4 à la sauvegarde ; -1 à la force de l'arme ennemie.",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -4
+        }
+      },
+      {
+        "id": "arc-de-faef-grisprune",
+        "name": "Arc de Faef Grisprune",
+        "description": "+3 à la sauvegarde ; +1 en mouvement ; le porteur gagne les compétences « Camouflage « et « Infiltration ».",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -3,
+          "mou": 1
+        },
+        "skills": [
+          "Camouflage",
+          "Infiltration"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "armures-lourdes",
+    "name": "Armures lourdes",
+    "items": [
+      {
+        "id": "armure-super-lourde",
+        "name": "Armure super-lourde",
+        "description": "+4 à la sauvegarde ; -1 au mouvement.",
+        "price": 50,
+        "rarity": "gris",
+        "mods": {
+          "svg": -4,
+          "mou": -1
+        }
+      },
+      {
+        "id": "armure-lourde-humaine",
+        "name": "Armure lourde humaine",
+        "description": "+3 à la sauvegarde.",
+        "price": 50,
+        "rarity": "gris",
+        "mods": {
+          "svg": -3
+        }
+      },
+      {
+        "id": "armure-de-resistance",
+        "name": "Armure de résistance",
+        "description": "+3 à la sauvegarde ; -1 au mouvement ; Les attaques contre le porteur réduisent leur létalité de la manière suivante : Très Haute létalité devient Haute létalité ; Haute létalité devient normale ; normal devient Basse létalité.",
+        "price": 70,
+        "rarity": "vert",
+        "mods": {
+          "svg": -3,
+          "mou": -1
+        }
+      },
+      {
+        "id": "armure-lourde-des-forges-de-maj-hanoy",
+        "name": "Armure lourde des forges de Maj' Hanoy",
+        "description": "+4 à la sauvegarde.",
+        "price": 70,
+        "rarity": "vert",
+        "mods": {
+          "svg": -4
+        }
+      },
+      {
+        "id": "armure-lourde-de-la-confrerie-du-lion",
+        "name": "Armure lourde de la confrérie du Lion",
+        "description": "+3 à la sauvegarde ; -1 au mouvement ; le porteur gagne la règle « sans peur » ; +2 prestige.",
+        "price": 100,
+        "rarity": "vert",
+        "mods": {
+          "svg": -3,
+          "mou": -1
+        },
+        "skills": [
+          "Sans peur"
+        ]
+      },
+      {
+        "id": "armure-de-issiryht",
+        "name": "Armure de Issiryht",
+        "description": "+4 à la sauvegarde ; -1 au mouvement ; cette armure peut être portée par un mage même s'il n'a normalement pas accès à cet objet.",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -4,
+          "mou": -1
+        }
+      },
+      {
+        "id": "armure-pieuse",
+        "name": "Armure pieuse",
+        "description": "+3 à la sauvegarde ; -1 au mouvement ; le porteur peut relancer tous ces jets de sauvegarde manqués.",
+        "price": 90,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -3,
+          "mou": -1
+        }
+      },
+      {
+        "id": "armure-incassable",
+        "name": "Armure Incassable",
+        "description": "+5 à la sauvegarde ; -1 à la force de l'arme ennemie ; -1 au mouvement.",
+        "price": 120,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -5,
+          "mou": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "armures-completes",
+    "name": "Armures complètes",
+    "items": [
+      {
+        "id": "armure-complete-ajustee",
+        "name": "Armure complète ajustée",
+        "description": "+4 à la sauvegarde.",
+        "price": 60,
+        "rarity": "gris",
+        "mods": {
+          "svg": -4
+        }
+      },
+      {
+        "id": "armure-dragon",
+        "name": "Armure Dragon",
+        "description": "+5 à la sauvegarde.",
+        "price": 80,
+        "rarity": "vert",
+        "mods": {
+          "svg": -5
+        }
+      },
+      {
+        "id": "armure-royale",
+        "name": "Armure Royale",
+        "description": "+4 à la sauvegarde ; -1 au mouvement ; +1 en commandement ; le porteur gagne la règle « sans peur » ; +2 prestige.",
+        "price": 130,
+        "rarity": "vert",
+        "mods": {
+          "svg": -4,
+          "mou": -1,
+          "cmd": -1
+        },
+        "skills": [
+          "Sans peur"
+        ]
+      },
+      {
+        "id": "kavacha",
+        "name": "Kavacha",
+        "description": "+5 à la sauvegarde ; -1 à la force de l'arme ennemie ; Les attaques contre le porteur réduisent leur létalité de la manière suivante : Très Haute létalité devient Haute létalité ; Haute létalité devient normale ; normal devient Basse létalité.",
+        "price": 200,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -5
+        }
+      },
+      {
+        "id": "faucheuse-de-murailles",
+        "name": "Faucheuse de Murailles",
+        "description": "+4 à la sauvegarde d'armure ; +1 en Endurance ; le porteur gagne la règle « Charge Furieuse », cette touche gratuite suit la règle Haute létalité.",
+        "price": 160,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -4,
+          "end": 1
+        },
+        "skills": [
+          "Charge Furieuse"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "boucliers",
+    "name": "Boucliers",
+    "items": [
+      {
+        "id": "bouclier-leger",
+        "name": "Bouclier léger",
+        "description": "+2 à la sauvegarde.",
+        "price": 40,
+        "rarity": "gris",
+        "mods": {
+          "svg": -2
+        }
+      },
+      {
+        "id": "bouclier-solide",
+        "name": "Bouclier solide",
+        "description": "+3 à la sauvegarde ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps.",
+        "price": 40,
+        "rarity": "gris",
+        "mods": {
+          "svg": -3,
+          "com": 1
+        }
+      },
+      {
+        "id": "bouclier-khajiit",
+        "name": "Bouclier Khajiit",
+        "description": "+2 à la sauvegarde ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps (-2 si utilisé avec une épée) ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps.",
+        "price": 40,
+        "rarity": "gris",
+        "mods": {
+          "svg": -2,
+          "com": 1
+        }
+      },
+      {
+        "id": "bouclier-de-jade",
+        "name": "Bouclier de Jade",
+        "description": "+1 à la sauvegarde ; +1 attaque avec ce bouclier avec la règle Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "price": 40,
+        "rarity": "gris",
+        "mods": {
+          "svg": -1,
+          "att": 1
+        }
+      },
+      {
+        "id": "bouclier-des-larmes",
+        "name": "Bouclier des larmes",
+        "description": "+2 à la sauvegarde ; le porteur provoque la peur ; -1 à la force de l'arme ennemie ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps.",
+        "price": 50,
+        "rarity": "vert",
+        "mods": {
+          "svg": -2,
+          "com": 1
+        },
+        "skills": [
+          "Peur"
+        ]
+      },
+      {
+        "id": "bouclier-de-cristal",
+        "name": "Bouclier de Cristal",
+        "description": "+2 à la sauvegarde ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps ; +2 en renommé.",
+        "price": 80,
+        "rarity": "vert",
+        "mods": {
+          "svg": -2,
+          "com": 1
+        }
+      },
+      {
+        "id": "bouclier-etherique",
+        "name": "Bouclier Ethérique",
+        "description": "+2 à la sauvegarde ; le porteur gagne la compétence « dissipation » ; les ennemies subissent un malus de -1 pour toucher le propriétaire au tir comme au corps à corps.",
+        "price": 70,
+        "rarity": "vert",
+        "mods": {
+          "svg": -2
+        },
+        "skills": [
+          "Dissipation"
+        ]
+      },
+      {
+        "id": "bouclier-de-jon-hest",
+        "name": "Bouclier de Jon Hest",
+        "description": "+4 à la sauvegarde.",
+        "price": 70,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -4
+        }
+      },
+      {
+        "id": "bouclier-moqueur",
+        "name": "Bouclier Moqueur",
+        "description": "+2 à la sauvegarde ; ce bouclier ne peut pas être prise par une figurine fouillant le propriétaire ; Les attaques contre le porteur réduisent leur létalité de la manière suivante : Très Haute létalité devient Haute létalité ; Haute létalité devient normale ; normal devient Basse létalité.",
+        "price": 140,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -2
+        }
+      },
+      {
+        "id": "mur-d-argent-envoute",
+        "name": "Mur d'argent envouté",
+        "description": "+3 à la sauvegarde ; les ennemies subissent un malus de -1 pour toucher le propriétaire au tir comme au corps à corps ; +1 pour toucher ; -1 à la force de l'arme ennemie ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps.",
+        "price": 100,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -3,
+          "com": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "casques",
+    "name": "Casques",
+    "items": [
+      {
+        "id": "casque-du-roque",
+        "name": "Casque du Roque",
+        "description": "+2 à la sauvegarde.",
+        "price": 24,
+        "rarity": "gris",
+        "mods": {
+          "svg": -2
+        }
+      },
+      {
+        "id": "casque-murmurant",
+        "name": "Casque murmurant",
+        "description": "+1 à la sauvegarde ; +1 en commandement.",
+        "price": 20,
+        "rarity": "gris",
+        "mods": {
+          "svg": -1,
+          "cmd": -1
+        }
+      },
+      {
+        "id": "casque-a-plume",
+        "name": "Casque à plume",
+        "description": "+1 à la sauvegarde ; +1 en prestige.",
+        "price": 30,
+        "rarity": "gris",
+        "mods": {
+          "svg": -1
+        }
+      },
+      {
+        "id": "casque-de-chevalier",
+        "name": "Casque de chevalier",
+        "description": "+1 à la sauvegarde ; +1 pour toucher au corps à corps.",
+        "price": 24,
+        "rarity": "gris",
+        "mods": {
+          "svg": -1,
+          "com": -1
+        }
+      },
+      {
+        "id": "casque-demoniaque",
+        "name": "Casque Démoniaque",
+        "description": "+1 à la sauvegarde ; -1 à la force de l'arme ennemie.",
+        "price": 30,
+        "rarity": "vert",
+        "mods": {
+          "svg": -1
+        }
+      },
+      {
+        "id": "casque-bleu",
+        "name": "Casque bleu",
+        "description": "+2 à la sauvegarde ; les ennemies subissent un malus de -1 pour toucher le propriétaire au tir comme au corps à corps.",
+        "price": 40,
+        "rarity": "vert",
+        "mods": {
+          "svg": -2
+        }
+      },
+      {
+        "id": "casque-des-champions-croises",
+        "name": "Casque des champions croisés",
+        "description": "+3 à la sauvegarde.",
+        "price": 50,
+        "rarity": "vert",
+        "mods": {
+          "svg": -3
+        }
+      },
+      {
+        "id": "grand-heaume-d-os",
+        "name": "Grand heaume d'os",
+        "description": "+2 à la sauvegarde ; le porteur gagne la compétence « dissipation » ; le porteur provoque la peur.",
+        "price": 60,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -2
+        },
+        "skills": [
+          "Dissipation",
+          "Peur"
+        ]
+      },
+      {
+        "id": "crane-epais",
+        "name": "Crâne épais",
+        "description": "+2 à la sauvegarde ; les ennemies subissent un malus de -1 pour toucher le propriétaire au tir comme au corps à corps ; +1 pour toucher ; -1 à la force de l'arme ennemie ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps.",
+        "price": 90,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -2,
+          "com": 1
+        }
+      },
+      {
+        "id": "heaume-de-sir-moffebvre",
+        "name": "Heaume de Sir Moffebvre",
+        "description": "+1 à la sauvegarde ; le porteur gagne les compétences : « Etendard », « Enchanteur », « Peur », « Eclaireur 4 », « Prospection », « maîtrise Technique », « Forestier » et « Marin ».",
+        "price": 150,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -1
+        },
+        "skills": [
+          "Etendard",
+          "Enchanteur",
+          "Peur",
+          "Eclaireur 4",
+          "Prospection",
+          "Maîtrise Technique",
+          "Forestier",
+          "Marin"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gants",
+    "name": "Gants",
+    "items": [
+      {
+        "id": "bracelet-de-force",
+        "name": "Bracelet de Force",
+        "description": "+1 en Force.",
+        "price": 20,
+        "rarity": "gris",
+        "mods": {
+          "for": 1
+        }
+      },
+      {
+        "id": "gants-du-voleur",
+        "name": "Gants du voleur",
+        "description": "+1 en Agilité, le porteur gagne la compétence « Soldat de la Pègre ».",
+        "price": 20,
+        "rarity": "gris",
+        "mods": {
+          "agi": -1
+        },
+        "skills": [
+          "Soldat de la Pègre"
+        ]
+      },
+      {
+        "id": "mitaines-du-tireur",
+        "name": "Mitaines du tireur",
+        "description": "+1 pour toucher au tir.",
+        "price": 10,
+        "rarity": "gris",
+        "mods": {
+          "tir": -1
+        }
+      },
+      {
+        "id": "brassard-de-la-poigne-de-fer",
+        "name": "Brassard de la poigne de Fer",
+        "description": "+1 en Force, +1 pour toucher au corps à corps.",
+        "price": 40,
+        "rarity": "vert",
+        "mods": {
+          "for": 1,
+          "com": -1
+        }
+      },
+      {
+        "id": "gants-de-velours-acides",
+        "name": "Gants de Velours Acides",
+        "description": "L'équipement de cette figurine ne peut pas être prise par une figurine fouillant le propriétaire.",
+        "price": 80,
+        "rarity": "vert"
+      },
+      {
+        "id": "menottes-de-l-evades-de-la-prison-de-l-ile-fantome",
+        "name": "Menottes de l'Evadés de la Prison de l'Île Fantôme",
+        "description": "le porteur gagne les compétences « Connaissance du Terrain », « Enchanteur », « Prospection », « maîtrise Technique », « Forestier » et « Marin ».",
+        "price": 80,
+        "rarity": "jaune",
+        "skills": [
+          "Connaissance du Terrain",
+          "Enchanteur",
+          "Prospection",
+          "Maîtrise Technique",
+          "Forestier",
+          "Marin"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "chapeaux",
+    "name": "Chapeaux",
+    "items": [
+      {
+        "id": "chapeau-pointu",
+        "name": "Chapeau Pointu",
+        "description": "+1 au jet de lancement de sorts.",
+        "price": 10,
+        "rarity": "gris"
+      },
+      {
+        "id": "couronne",
+        "name": "Couronne",
+        "description": "+2 en commandement si portée par une figurine ayant la règle « Chef » ; Le porteur gagne la règle « Etendard ».",
+        "price": 80,
+        "rarity": "jaune",
+        "skills": [
+          "Etendard"
+        ]
+      },
+      {
+        "id": "couvre-chef-malin",
+        "name": "Couvre-Chef Malin",
+        "description": "+1 en Agilité ; +1 pour toucher au tir et au corps à corps.",
+        "price": 30,
+        "rarity": "vert",
+        "mods": {
+          "agi": -1,
+          "tir": -1,
+          "com": -1
+        }
+      },
+      {
+        "id": "bicorne",
+        "name": "Bicorne",
+        "description": "Le porteur gagne la règle « prospection ».",
+        "price": 20,
+        "rarity": "gris",
+        "skills": [
+          "Prospection"
+        ]
+      },
+      {
+        "id": "chapeau-des-5-secondes-plus-tot",
+        "name": "Chapeau des 5 secondes plus tôt",
+        "description": "Le porteur gagne les compétences « Esquive » et « Saut de côté ».",
+        "price": 30,
+        "rarity": "vert",
+        "skills": [
+          "Esquive",
+          "Saut de côté"
+        ]
+      },
+      {
+        "id": "diademe-au-mille-rubis",
+        "name": "Diadème au mille Rubis",
+        "description": "+2 au jet de lancement de sorts ; +2 au jet de dissipation ; +1 à la sauvegarde d'armure.",
+        "price": 60,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "chaussures",
+    "name": "Chaussures",
+    "items": [
+      {
+        "id": "sandales-de-rapidite",
+        "name": "Sandales de Rapidité",
+        "description": "+1 en mouvement.",
+        "price": 10,
+        "rarity": "gris",
+        "mods": {
+          "mou": 1
+        }
+      },
+      {
+        "id": "solerets",
+        "name": "Solerets",
+        "description": "+1 à la sauvegarde d'armure.",
+        "price": 14,
+        "rarity": "gris",
+        "mods": {
+          "svg": -1
+        }
+      },
+      {
+        "id": "chausses-de-mangechairs",
+        "name": "Chausses de Mangechairs",
+        "description": "Le porteur gagne la compétence « Saut ».",
+        "price": 20,
+        "rarity": "gris",
+        "skills": [
+          "Saut"
+        ]
+      },
+      {
+        "id": "chausses-legeres",
+        "name": "Chausses légères",
+        "description": "Le porteur gagne la règle spéciale « Infiltration ».",
+        "price": 20,
+        "rarity": "gris",
+        "skills": [
+          "Infiltration"
+        ]
+      },
+      {
+        "id": "chaussures-de-l-escrimeur",
+        "name": "Chaussures de l'Escrimeur",
+        "description": "Le porteur gagne la règle spéciale « Saut de côté ».",
+        "price": 10,
+        "rarity": "gris",
+        "skills": [
+          "Saut de côté"
+        ]
+      },
+      {
+        "id": "solerets-de-joute",
+        "name": "Solerets de joute",
+        "description": "+2 à la sauvegarde d'armure.",
+        "price": 30,
+        "rarity": "vert",
+        "mods": {
+          "svg": -2
+        }
+      },
+      {
+        "id": "souliers-de-mage",
+        "name": "Souliers de Mage",
+        "description": "+1 au jet de lancement de sorts ; +1 au jet de dissipation.",
+        "price": 30,
+        "rarity": "vert"
+      },
+      {
+        "id": "chaussures-de-salon",
+        "name": "Chaussures de salon",
+        "description": "+2 en renommé ; +1 en commandement.",
+        "price": 60,
+        "rarity": "vert",
+        "mods": {
+          "cmd": -1
+        }
+      },
+      {
+        "id": "chaussures-d-ara",
+        "name": "Chaussures d'Ara",
+        "description": "+2 à la sauvegarde d'armure ; +1 en Agilité ; Le porteur gagne la compétence « Maître Escrimeur ».",
+        "price": 70,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -2,
+          "agi": -1
+        },
+        "skills": [
+          "Maître Escrimeur"
+        ]
+      },
+      {
+        "id": "chausses-de-issiryht",
+        "name": "Chausses de Issiryht",
+        "description": "Si porté par un Mage : +2 à la sauvegarde d'armure ; le porteur apprend immédiatement un sort comme s'il passait de niveau, ce sort sera perdu si le porteur ne porte plus cet objet.",
+        "price": 70,
+        "rarity": "jaune",
+        "mods": {
+          "svg": -2
+        }
+      },
+      {
+        "id": "bottes-de-7-lieux",
+        "name": "Bottes de 7 lieux",
+        "description": "+2 en mouvement ; le porteur gagne la compétence « Saut ».",
+        "price": 60,
+        "rarity": "jaune",
+        "mods": {
+          "mou": 2
+        },
+        "skills": [
+          "Saut"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "talismans",
+    "name": "Talismans",
+    "items": [
+      {
+        "id": "collier-de-perles",
+        "name": "Collier de perles",
+        "description": "Le porteur gagne les compétences : « Marin » ; 1 renommé.",
+        "price": 16,
+        "rarity": "gris",
+        "skills": [
+          "Marin"
+        ]
+      },
+      {
+        "id": "cape-d-invisibilite",
+        "name": "Cape d'invisibilité",
+        "description": "Le porteur réussit automatiquement ses tests d'agilité pour se cacher.",
+        "price": 80,
+        "rarity": "jaune"
+      },
+      {
+        "id": "ceinture-noir-de-teddy",
+        "name": "Ceinture noir de Teddy",
+        "description": "Le porteur gagne les compétences « Etendard », « Esquive » et « Saut de côté ».",
+        "price": 60,
+        "rarity": "jaune",
+        "skills": [
+          "Etendard",
+          "Esquive",
+          "Saut de côté"
+        ]
+      },
+      {
+        "id": "porte-bonheur",
+        "name": "Porte bonheur",
+        "description": "Lors de chacun de ses tour, cette figurine peut relancer un seul de ses dès.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "anneau-runique",
+        "name": "Anneau Runique",
+        "description": "Le porteur gagne la compétence « Dissipation », il obtient un bonus de +2 à ses tentatives de dissipation.",
+        "price": 50,
+        "rarity": "vert",
+        "skills": [
+          "Dissipation"
+        ]
+      },
+      {
+        "id": "art-de-la-guerre-de-su-tzun",
+        "name": "Art de la Guerre de Su Tzun",
+        "description": "Lors des prochains passage de niveau du porteur, celui-ci peut choisir des compétences de la catégorie « Combat ». Si le porteur perd cet objet, les compétences acquises sont conservées.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "exemplaire-du-tireur-de-l-ouest",
+        "name": "Exemplaire du Tireur de l'Ouest",
+        "description": "Lors des prochains passage de niveau du porteur, celui-ci peut choisir des compétences de la catégorie « Tir ». Si le porteur perd cet objet, les compétences acquises sont conservées.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "encyclopedia-universalis",
+        "name": "Encyclopedia Universalis",
+        "description": "Lors des prochains passage de niveau du porteur, celui-ci peut choisir des compétences de la catégorie « Erudition ». Si le porteur perd cet objet, les compétences acquises sont conservées.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "haltere-de-plomb",
+        "name": "Haltère de plomb",
+        "description": "Lors des prochains passage de niveau du porteur, celui-ci peut choisir des compétences de la catégorie « Force ». Si le porteur perd cet objet, les compétences acquises sont conservées.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "recueil-du-gymnaste-de-l-est",
+        "name": "Recueil du Gymnaste de l'Est",
+        "description": "Lors des prochains passage de niveau du porteur, celui-ci peut choisir des compétences de la catégorie « Agilité ». Si le porteur perd cet objet, les compétences acquises sont conservées.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "grand-guide-des-eclaireurs",
+        "name": "Grand Guide des Eclaireurs",
+        "description": "Lors des prochains passage de niveau du porteur, celui-ci peut choisir des compétences de la catégorie « Reconnaissance ». Si le porteur perd cet objet, les compétences acquises sont conservées.",
+        "price": 20,
+        "rarity": "gris"
+      },
+      {
+        "id": "sceptre-de-pouvoir",
+        "name": "Sceptre de Pouvoir",
+        "description": "+1 en Force ; +1 en Commandement ; Le porteur gagne la compétence « Etendard ».",
+        "price": 70,
+        "rarity": "vert",
+        "mods": {
+          "for": 1,
+          "cmd": -1
+        },
+        "skills": [
+          "Etendard"
+        ]
+      },
+      {
+        "id": "cube-d-incoherence",
+        "name": "Cube d'Incohérence",
+        "description": "Cet objet ne peut pas être revendu, le personnage trouvant cet objet doit obligatoirement s'en équiper, remplaçant un possible autre Talisman si le porteur en avait déjà un. En début de partie, une fois le déploiements de joueurs terminé, le porteur jette 1D10. 1 : +2 en mouvement. 2 : +3 en combat. 3 : +3 en tir. 4 : +2 en force. 5 : +2 en endurance. 6 : +4 en agilité. 7 : +1 attaque. 8 : +1 point de vie. 9 : +2 en commandement. 10 : la figurine ne participe pas à la partie, elle gagnera néanmoins 20xp à la fin de celle-ci.",
+        "price": 0,
+        "rarity": "jaune"
+      },
+      {
+        "id": "robe-du-mage",
+        "name": "Robe du Mage",
+        "description": "Seul un mage peut s'équiper de ce Talisman, +3 en armure ; +1 au jet de lancement de sort.",
+        "price": 60,
+        "rarity": "vert",
+        "mods": {
+          "svg": -3
+        }
+      },
+      {
+        "id": "epaulieres-en-peau-de-wyvern",
+        "name": "Epaulières en peau de Wyvern",
+        "description": "+2 en armure ; le porteur gagne la compétence « Peur ».",
+        "price": 50,
+        "rarity": "vert",
+        "mods": {
+          "svg": -2
+        },
+        "skills": [
+          "Peur"
+        ]
+      },
+      {
+        "id": "roche-du-volcan-kaelpougloihistil",
+        "name": "Roche du Volcan Kaelpougloihistil",
+        "description": "+1 en armure ; +1 en combat ; +1 en tir ; +1 en agilité.",
+        "price": 50,
+        "rarity": "vert",
+        "mods": {
+          "svg": -1,
+          "agi": -1,
+          "com": -1,
+          "tir": -1
+        }
+      },
+      {
+        "id": "cape-de-fripon-le-brumeux",
+        "name": "Cape de Fripon le Brumeux",
+        "description": "Le porteur gagne Eclaireur 10 et les compétences « Camouflage » et « Infiltration ».",
+        "price": 60,
+        "rarity": "jaune",
+        "skills": [
+          "Éclaireur 10"
+        ]
+      },
+      {
+        "id": "foulard-de-sir-moffebvre",
+        "name": "Foulard de Sir Moffebvre",
+        "description": "Le porteur gagne 5xp de plus à la fin de chaque partie à laquelle il a participé, de plus le porteur peut choisir des compétences de toutes les catégories. Si le porteur perd cet objet, les compétences acquises sont conservées.",
+        "price": 150,
+        "rarity": "jaune"
+      }
+    ]
+  },
+  {
+    "id": "renomme",
+    "name": "Renommé",
+    "items": [
+      {
+        "id": "carte-d-amatika",
+        "name": "Carte d'Amatika",
+        "description": "La bande possédant cet objet dans son camp gagne Eclaireur 10.",
+        "price": null,
+        "rarity": "jaune"
+      },
+      {
+        "id": "vase-de-toiton",
+        "name": "Vase de Toiton",
+        "description": "+20 en prestige.",
+        "price": null,
+        "rarity": "jaune"
+      },
+      {
+        "id": "disperseur-de-temps",
+        "name": "Disperseur de Temps",
+        "description": "Une bande possédant cet objet gagne +5 en prestige à la fin de chaque partie.",
+        "price": null,
+        "rarity": "jaune"
+      },
+      {
+        "id": "astraios",
+        "name": "Astraios",
+        "description": "Une bande possédant cet objet gagne +20PO à la fin de chaque partie.",
+        "price": null,
+        "rarity": "jaune"
+      },
+      {
+        "id": "statuette-de-platine",
+        "name": "Statuette de Platine",
+        "description": "Une bande possédant cet objet peut aligner 11 figurines à chaque partie au lieu de 10.",
+        "price": null,
+        "rarity": "jaune"
+      },
+      {
+        "id": "pierre-du-donjon-de-naheulbeuk",
+        "name": "Pierre du Donjon de Naheulbeuk",
+        "description": "+5 en prestige.",
+        "price": null,
+        "rarity": "jaune"
+      },
+      {
+        "id": "clefs-du-repaire-secret",
+        "name": "Clefs du Repaire Secret",
+        "description": "Une bande possédant cet objet se voit distribuer 3 cartes « Marché Noir supplémentaire ».",
+        "price": null,
+        "rarity": "jaune"
+      },
+      {
+        "id": "serviteur-nocchian",
+        "name": "Serviteur Nocchian",
+        "description": "+15 en prestige.",
+        "price": null,
+        "rarity": "jaune"
+      },
+      {
+        "id": "tableau-de-daphimeine",
+        "name": "Tableau de Daphimeine",
+        "description": "+10 en prestige.",
+        "price": null,
+        "rarity": "jaune"
+      },
+      {
+        "id": "insigne-de-l-ordre-de-vaillance",
+        "name": "Insigne de l'Ordre de Vaillance",
+        "description": "+25 en prestige.",
+        "price": null,
+        "rarity": "jaune"
+      }
+    ]
+  }
+]

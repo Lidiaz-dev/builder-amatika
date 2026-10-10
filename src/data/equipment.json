@@ -1,0 +1,282 @@
+[
+  {
+    "id": "dague",
+    "name": "Dague",
+    "category": "melee",
+    "hands": 1,
+    "price": 4,
+    "strength": "Utilisateur",
+    "rules": "+1 à la sauvegarde adverse."
+  },
+  {
+    "id": "baton",
+    "name": "Bâton",
+    "category": "melee",
+    "hands": 2,
+    "price": 8,
+    "strength": "Utilisateur",
+    "rules": "Parade : vos adversaires ont -1 pour vous toucher au corps à corps."
+  },
+  {
+    "id": "marteau",
+    "name": "Marteau / Massue",
+    "category": "melee",
+    "hands": 1,
+    "price": 10,
+    "strength": "Utilisateur",
+    "rules": "Contondant : l'adversaire qui tire une carte blessure peut être forcé à en tirer une seconde."
+  },
+  {
+    "id": "marteau-lourd",
+    "name": "Marteau lourd / Massue lourde",
+    "category": "melee",
+    "hands": 2,
+    "price": 30,
+    "strength": "Utilisateur +1",
+    "rules": "Contondant."
+  },
+  {
+    "id": "hache",
+    "name": "Hache",
+    "category": "melee",
+    "hands": 1,
+    "price": 10,
+    "strength": "Utilisateur",
+    "rules": "-1 à la sauvegarde ennemie."
+  },
+  {
+    "id": "hache-lourde",
+    "name": "Hache lourde",
+    "category": "melee",
+    "hands": 2,
+    "price": 20,
+    "strength": "Utilisateur +1",
+    "rules": "-1 à la sauvegarde ennemie."
+  },
+  {
+    "id": "epee",
+    "name": "Épée",
+    "category": "melee",
+    "hands": 1,
+    "price": 10,
+    "strength": "Utilisateur",
+    "rules": "Parade : vos adversaires ont -1 pour vous toucher au corps à corps."
+  },
+  {
+    "id": "epee-lourde",
+    "name": "Épée lourde",
+    "category": "melee",
+    "hands": 2,
+    "price": 40,
+    "strength": "Utilisateur +1",
+    "rules": "Haute létalité : la cible pioche 2 cartes blessure et applique la plus haute."
+  },
+  {
+    "id": "morgenstern",
+    "name": "Morgenstern",
+    "category": "melee",
+    "hands": 1,
+    "price": 10,
+    "strength": "Utilisateur +1",
+    "rules": "Encombrée (-1 pour toucher au corps à corps). Pas de seconde arme de corps à corps (bouclier possible).",
+    "exclusiveMelee": true,
+    "encumbered": true
+  },
+  {
+    "id": "fleau",
+    "name": "Fléau",
+    "category": "melee",
+    "hands": 2,
+    "price": 30,
+    "strength": "Utilisateur +2",
+    "rules": "Encombrée (-1 pour toucher au corps à corps).",
+    "encumbered": true
+  },
+  {
+    "id": "hallebarde",
+    "name": "Hallebarde",
+    "category": "melee",
+    "hands": 2,
+    "price": 16,
+    "strength": "Utilisateur +1",
+    "rules": "Bouclier utilisable uniquement contre les tirs.",
+    "shieldVsShots": true
+  },
+  {
+    "id": "lance",
+    "name": "Lance",
+    "category": "melee",
+    "hands": 1,
+    "price": 10,
+    "strength": "Utilisateur",
+    "rules": "Pas de seconde arme de corps à corps (bouclier possible). Attaque gratuite contre un ennemi qui vient au contact.",
+    "exclusiveMelee": true
+  },
+  {
+    "id": "arc-court",
+    "name": "Arc court",
+    "category": "ranged",
+    "hands": 2,
+    "price": 8,
+    "strength": "4",
+    "range": 16,
+    "rules": ""
+  },
+  {
+    "id": "arc",
+    "name": "Arc",
+    "category": "ranged",
+    "hands": 2,
+    "price": 12,
+    "strength": "4",
+    "range": 24,
+    "rules": ""
+  },
+  {
+    "id": "arc-long",
+    "name": "Arc long",
+    "category": "ranged",
+    "hands": 2,
+    "price": 20,
+    "strength": "4",
+    "range": 30,
+    "rules": ""
+  },
+  {
+    "id": "arbalete",
+    "name": "Arbalète",
+    "category": "ranged",
+    "hands": 2,
+    "price": 30,
+    "strength": "5",
+    "range": 30,
+    "rules": "Rechargement."
+  },
+  {
+    "id": "fronde",
+    "name": "Fronde",
+    "category": "ranged",
+    "hands": 1,
+    "price": 4,
+    "strength": "3",
+    "range": 20,
+    "rules": "+1 à la sauvegarde ennemie."
+  },
+  {
+    "id": "arme-de-jet",
+    "name": "Étoiles / Couteaux / Haches de jet",
+    "category": "ranged",
+    "hands": 1,
+    "price": 4,
+    "strength": "Utilisateur",
+    "range": 6,
+    "rules": "Arme de jet : ni bonus à bout portant ni malus longue portée."
+  },
+  {
+    "id": "arbalete-de-poing",
+    "name": "Arbalète de poing",
+    "category": "ranged",
+    "hands": 1,
+    "price": 14,
+    "strength": "5",
+    "range": 10,
+    "rules": "Rechargement. Tir au corps à corps (touche sur 3+)."
+  },
+  {
+    "id": "sarbacane",
+    "name": "Sarbacane",
+    "category": "ranged",
+    "hands": 1,
+    "price": 4,
+    "strength": "3",
+    "range": 16,
+    "rules": "Faible létalité. Poison perdu seulement sur 1, 2 ou 3."
+  },
+  {
+    "id": "javelot",
+    "name": "Javelot",
+    "category": "ranged",
+    "hands": 1,
+    "price": 8,
+    "strength": "Utilisateur",
+    "range": 16,
+    "rules": ""
+  },
+  {
+    "id": "pistolet",
+    "name": "Pistolet",
+    "category": "ranged",
+    "hands": 1,
+    "price": 20,
+    "strength": "5",
+    "range": 10,
+    "rules": "-1 à la sauvegarde ennemie. Rechargement. Tir au corps à corps (touche sur 3+)."
+  },
+  {
+    "id": "arquebuse",
+    "name": "Arquebuse",
+    "category": "ranged",
+    "hands": 2,
+    "price": 40,
+    "strength": "5",
+    "range": 24,
+    "rules": "-1 à la sauvegarde ennemie. Rechargement."
+  },
+  {
+    "id": "armure-de-cuir",
+    "name": "Armure de cuir",
+    "category": "armor",
+    "hands": 0,
+    "price": 10,
+    "save": 1,
+    "rules": "+1 à la sauvegarde."
+  },
+  {
+    "id": "armure-legere",
+    "name": "Armure légère",
+    "category": "armor",
+    "hands": 0,
+    "price": 20,
+    "save": 2,
+    "rules": "+2 à la sauvegarde."
+  },
+  {
+    "id": "armure-lourde",
+    "name": "Armure lourde",
+    "category": "armor",
+    "hands": 0,
+    "price": 30,
+    "save": 3,
+    "move": 1,
+    "rules": "+3 à la sauvegarde, -1 au mouvement."
+  },
+  {
+    "id": "armure-complete",
+    "name": "Armure complète",
+    "category": "armor",
+    "hands": 0,
+    "price": 40,
+    "save": 4,
+    "move": 1,
+    "rules": "+4 à la sauvegarde, -1 au mouvement."
+  },
+  {
+    "id": "bouclier",
+    "name": "Bouclier",
+    "category": "shield",
+    "hands": 1,
+    "price": 20,
+    "save": 2,
+    "rules": "+2 à la sauvegarde. Encombrée (-1 pour toucher au corps à corps).",
+    "encumbered": true
+  },
+  {
+    "id": "casque",
+    "name": "Casque",
+    "category": "helmet",
+    "hands": 0,
+    "price": 10,
+    "save": 1,
+    "rules": "+1 à la sauvegarde."
+  }
+]

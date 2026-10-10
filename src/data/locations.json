@@ -1,0 +1,1227 @@
+[
+  {
+    "id": "coffre",
+    "name": "Coffre",
+    "color": "#d9b43a",
+    "cards": [
+      {
+        "id": "coffre-1",
+        "text": "Le coffre est vide."
+      },
+      {
+        "id": "coffre-2",
+        "text": "La figurine doit effectuer un test de force afin de pouvoir ouvrir le coffre."
+      },
+      {
+        "id": "coffre-3",
+        "text": "La figurine doit effectuer un test de force afin de pouvoir ouvrir le coffre."
+      },
+      {
+        "id": "coffre-4",
+        "text": "La figurine doit effectuer un test d'agilité afin de pouvoir ouvrir le coffre."
+      },
+      {
+        "id": "coffre-5",
+        "text": "La figurine doit effectuer un test d'agilité afin de pouvoir ouvrir le coffre."
+      },
+      {
+        "id": "coffre-6",
+        "text": "La figurine doit effectuer un test de commandement afin de pouvoir ouvrir le coffre."
+      },
+      {
+        "id": "coffre-7",
+        "text": "La figurine doit effectuer un test de commandement afin de pouvoir ouvrir le coffre."
+      },
+      {
+        "id": "coffre-8",
+        "text": "Le coffre est piégé, la figurine subit une touche force 3."
+      },
+      {
+        "id": "coffre-9",
+        "text": "Le coffre est piégé, la figurine subit une touche force 4."
+      },
+      {
+        "id": "coffre-10",
+        "text": "Le coffre est piégé, la figurine subit une touche force 5."
+      },
+      {
+        "id": "coffre-11",
+        "text": "Le coffre est piégé, la figurine subit une touche force 6."
+      },
+      {
+        "id": "coffre-12",
+        "text": "Le coffre est piégé, la figurine subit une touche force 7."
+      },
+      {
+        "id": "coffre-13",
+        "text": "Le coffre contient 50 pièces d'or."
+      },
+      {
+        "id": "coffre-14",
+        "text": "Le coffre contient 100 pièces d'or."
+      },
+      {
+        "id": "coffre-15",
+        "text": "Le coffre contient 100 pièces d'or."
+      },
+      {
+        "id": "coffre-16",
+        "text": "Le coffre contient 150 pièces d'or."
+      },
+      {
+        "id": "coffre-17",
+        "text": "Le coffre contient un objet."
+      },
+      {
+        "id": "coffre-18",
+        "text": "Le coffre contient un objet."
+      },
+      {
+        "id": "coffre-19",
+        "text": "Le coffre contient un objet."
+      },
+      {
+        "id": "coffre-20",
+        "text": "Le coffre contient un objet."
+      },
+      {
+        "id": "coffre-21",
+        "text": "Le coffre contient un objet."
+      },
+      {
+        "id": "coffre-22",
+        "text": "Le coffre contient deux objets."
+      },
+      {
+        "id": "coffre-23",
+        "text": "Le coffre contient deux objets."
+      },
+      {
+        "id": "coffre-24",
+        "text": "Le coffre contient deux objets."
+      },
+      {
+        "id": "coffre-25",
+        "text": "Le coffre contient trois objets."
+      },
+      {
+        "id": "coffre-26",
+        "text": "Le coffre contient un objet."
+      },
+      {
+        "id": "coffre-27",
+        "text": "Le coffre contient un cristal brut."
+      },
+      {
+        "id": "coffre-28",
+        "text": "Le coffre contient un cristal brut."
+      },
+      {
+        "id": "coffre-29",
+        "text": "Le coffre contient un cristal brut."
+      },
+      {
+        "id": "coffre-30",
+        "text": "Le coffre contient deux cristaux bruts."
+      },
+      {
+        "id": "coffre-31",
+        "text": "Le coffre contient 50 pièces d'or et un objet."
+      },
+      {
+        "id": "coffre-32",
+        "text": "Le coffre contient 50 pièces d'or et un objet."
+      },
+      {
+        "id": "coffre-33",
+        "text": "Le coffre contient 50 pièces d'or et deux objets."
+      },
+      {
+        "id": "coffre-34",
+        "text": "Le coffre contient 100 pièces d'or et un objet."
+      },
+      {
+        "id": "coffre-35",
+        "text": "Le coffre contient 50 pièces d'or et un crital brut."
+      },
+      {
+        "id": "coffre-36",
+        "text": "Le coffre contient 50 pièces d'or, un objet et un crital brut."
+      },
+      {
+        "id": "coffre-37",
+        "text": "Le coffre ne s'ouvre qu'avec l'utilisation d'outils de crochetage"
+      },
+      {
+        "id": "coffre-38",
+        "text": "Le coffre ne s'ouvre qu'avec l'utilisation d'outils de crochetage"
+      },
+      {
+        "id": "coffre-39",
+        "text": "Le coffre ne s'ouvre qu'avec l'utilisation d'outils de crochetage"
+      },
+      {
+        "id": "coffre-40",
+        "text": "Le coffre contient trois objets."
+      },
+      {
+        "id": "coffre-41",
+        "text": "Le coffre contient 100 pièces d'or, un objet et un crital brut."
+      },
+      {
+        "id": "coffre-42",
+        "text": "Le coffre contient deux cristaux bruts."
+      }
+    ]
+  },
+  {
+    "id": "naturel",
+    "name": "Naturel",
+    "color": "#8fbf5a",
+    "cards": [
+      {
+        "id": "naturel-1",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "naturel-2",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "naturel-3",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "naturel-4",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "naturel-5",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 3."
+      },
+      {
+        "id": "naturel-6",
+        "text": "La figurine doit effectuer un test de force afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "naturel-7",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 4."
+      },
+      {
+        "id": "naturel-8",
+        "text": "La figurine doit effectuer un test d'agilité afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "naturel-9",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 5."
+      },
+      {
+        "id": "naturel-10",
+        "text": "La figurine doit effectuer un test de commandement afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "naturel-11",
+        "text": "Placez une figurine de Salis à coté de la figurine active."
+      },
+      {
+        "id": "naturel-12",
+        "text": "Placez une figurine de Loup Géant à coté de la figurine active."
+      },
+      {
+        "id": "naturel-13",
+        "text": "Le lieu contient 50 pièces d'or."
+      },
+      {
+        "id": "naturel-14",
+        "text": "Le lieu contient 50 pièces d'or."
+      },
+      {
+        "id": "naturel-15",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "naturel-16",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "naturel-17",
+        "text": "Le lieu contient 150 pièces d'or."
+      },
+      {
+        "id": "naturel-18",
+        "text": "Le lieu contient 150 pièces d'or."
+      },
+      {
+        "id": "naturel-19",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "naturel-20",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "naturel-21",
+        "text": "Le lieu contient deux cristaux bruts."
+      },
+      {
+        "id": "naturel-22",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "naturel-23",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "naturel-24",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "naturel-25",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "naturel-26",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "naturel-27",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "naturel-28",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "naturel-29",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "naturel-30",
+        "text": "La figurine doit effectuer un test de force afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "naturel-31",
+        "text": "La figurine doit effectuer un test d'agilité afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "naturel-32",
+        "text": "La figurine doit effectuer un test de commandement afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "naturel-33",
+        "text": "Placez une figurine de Tzaangor à coté de la figurine active."
+      },
+      {
+        "id": "naturel-34",
+        "text": "Tirez 2 cartes \"Naturel\" et appliquez les 2 résultats l'un après l'autre."
+      },
+      {
+        "id": "naturel-35",
+        "text": "Tirez une cartes d'un autre paquet lieu de votre choix."
+      },
+      {
+        "id": "naturel-36",
+        "text": "Tirez une cartes d'un autre paquet lieu de votre choix."
+      },
+      {
+        "id": "naturel-37",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "naturel-38",
+        "text": "Le lieu contient 50 pièces d'or."
+      },
+      {
+        "id": "naturel-39",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "naturel-40",
+        "text": "Tirez 2 cartes \"Naturel\" et appliquez les 2 résultats l'un après l'autre."
+      },
+      {
+        "id": "naturel-41",
+        "text": "Tirez une cartes d'un autre paquet lieu de votre choix."
+      },
+      {
+        "id": "naturel-42",
+        "text": "Le lieu contient 100 pièces d'or."
+      }
+    ]
+  },
+  {
+    "id": "magique",
+    "name": "Magique",
+    "color": "#d77fb0",
+    "cards": [
+      {
+        "id": "magique-1",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "magique-2",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "magique-3",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 4."
+      },
+      {
+        "id": "magique-4",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 4."
+      },
+      {
+        "id": "magique-5",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 5."
+      },
+      {
+        "id": "magique-6",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 5."
+      },
+      {
+        "id": "magique-7",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 6."
+      },
+      {
+        "id": "magique-8",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 6."
+      },
+      {
+        "id": "magique-9",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 7."
+      },
+      {
+        "id": "magique-10",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 8."
+      },
+      {
+        "id": "magique-11",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 9."
+      },
+      {
+        "id": "magique-12",
+        "text": "Placez une figurine de Sorcier Rose à coté de la figurine active."
+      },
+      {
+        "id": "magique-13",
+        "text": "Placez une figurine de Sorcier Rose à coté de la figurine active."
+      },
+      {
+        "id": "magique-14",
+        "text": "Placez une figurine d'Horreur Bleu à coté de la figurine active."
+      },
+      {
+        "id": "magique-15",
+        "text": "Placez une figurine d'Horreur Bleu à coté de la figurine active."
+      },
+      {
+        "id": "magique-16",
+        "text": "Placez une figurine de Mantae à coté de la figurine active."
+      },
+      {
+        "id": "magique-17",
+        "text": "Placez une figurine de Statue Animée à coté de la figurine active."
+      },
+      {
+        "id": "magique-18",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "magique-19",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "magique-20",
+        "text": "Le lieu contient deux cristaux bruts."
+      },
+      {
+        "id": "magique-21",
+        "text": "Le lieu contient deux cristaux bruts."
+      },
+      {
+        "id": "magique-22",
+        "text": "Le lieu contient trois cristaux bruts."
+      },
+      {
+        "id": "magique-23",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "magique-24",
+        "text": "Le lieu contient 200 pièces d'or."
+      },
+      {
+        "id": "magique-25",
+        "text": "Le lieu contient 150 pièces d'or."
+      },
+      {
+        "id": "magique-26",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "magique-27",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "magique-28",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "magique-29",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "magique-30",
+        "text": "Le lieu contient trois objets."
+      },
+      {
+        "id": "magique-31",
+        "text": "Le lieu contient 100 pièces d'or et un objet."
+      },
+      {
+        "id": "magique-32",
+        "text": "Le lieu contient 150 pièces d'or et un objet."
+      },
+      {
+        "id": "magique-33",
+        "text": "Le lieu contient 100 pièces d'or et deux objets."
+      },
+      {
+        "id": "magique-34",
+        "text": "Le lieu contient un cristal brut et un objet."
+      },
+      {
+        "id": "magique-35",
+        "text": "Le lieu contient un cristal brut et un objet."
+      },
+      {
+        "id": "magique-36",
+        "text": "Le lieu contient un cristal brut et deux objets."
+      },
+      {
+        "id": "magique-37",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "magique-38",
+        "text": "Le lieu contient deux cristaux bruts."
+      },
+      {
+        "id": "magique-39",
+        "text": "Le lieu contient trois cristaux bruts."
+      },
+      {
+        "id": "magique-40",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "magique-41",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "magique-42",
+        "text": "Le lieu contient un cristal brut et un objet."
+      }
+    ]
+  },
+  {
+    "id": "ville",
+    "name": "Ville",
+    "color": "#f2ede1",
+    "cards": [
+      {
+        "id": "ville-1",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "ville-2",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "ville-3",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 3."
+      },
+      {
+        "id": "ville-4",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 4."
+      },
+      {
+        "id": "ville-5",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 5."
+      },
+      {
+        "id": "ville-6",
+        "text": "Placez une figurine d'Animatrix à coté de la figurine active."
+      },
+      {
+        "id": "ville-7",
+        "text": "Placez une figurine de Pyke à coté de la figurine active."
+      },
+      {
+        "id": "ville-8",
+        "text": "La figurine doit effectuer un test de force afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "ville-9",
+        "text": "La figurine doit effectuer un test de force afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "ville-10",
+        "text": "La figurine doit effectuer un test d'agilité afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "ville-11",
+        "text": "La figurine doit effectuer un test d'agilité afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "ville-12",
+        "text": "Le lieu contient 50 pièces d'or."
+      },
+      {
+        "id": "ville-13",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "ville-14",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "ville-15",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "ville-16",
+        "text": "Le lieu contient 150 pièces d'or."
+      },
+      {
+        "id": "ville-17",
+        "text": "Le lieu contient 150 pièces d'or."
+      },
+      {
+        "id": "ville-18",
+        "text": "Le lieu contient 200 pièces d'or."
+      },
+      {
+        "id": "ville-19",
+        "text": "Le lieu contient 50 pièces d'or."
+      },
+      {
+        "id": "ville-20",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "ville-21",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "ville-22",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "ville-23",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "ville-24",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "ville-25",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "ville-26",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "ville-27",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "ville-28",
+        "text": "Le lieu contient 50 pièces d'or."
+      },
+      {
+        "id": "ville-29",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "ville-30",
+        "text": "Le lieu contient 150 pièces d'or."
+      },
+      {
+        "id": "ville-31",
+        "text": "Le lieu contient 200 pièces d'or."
+      },
+      {
+        "id": "ville-32",
+        "text": "Le lieu contient 250 pièces d'or."
+      },
+      {
+        "id": "ville-33",
+        "text": "Le lieu contient 100 pièces d'or et un objet."
+      },
+      {
+        "id": "ville-34",
+        "text": "Le lieu contient 50 pièces d'or et un objet."
+      },
+      {
+        "id": "ville-35",
+        "text": "Le lieu contient un cristal brut et un objet."
+      },
+      {
+        "id": "ville-36",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 4."
+      },
+      {
+        "id": "ville-37",
+        "text": "Le lieu ne s'ouvre qu'avec l'utilisation d'outils de crochetage"
+      },
+      {
+        "id": "ville-38",
+        "text": "Le lieu contient 150 pièces d'or."
+      },
+      {
+        "id": "ville-39",
+        "text": "Le lieu contient 50 pièces d'or et un objet."
+      },
+      {
+        "id": "ville-40",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "ville-41",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "ville-42",
+        "text": "La figurine doit effectuer un test de commandement afin de pouvoir ouvrir le lieu."
+      }
+    ]
+  },
+  {
+    "id": "cimetiere",
+    "name": "Cimetière",
+    "color": "#7d5a9e",
+    "cards": [
+      {
+        "id": "cimetiere-1",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "cimetiere-2",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 5."
+      },
+      {
+        "id": "cimetiere-3",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 5."
+      },
+      {
+        "id": "cimetiere-4",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 6."
+      },
+      {
+        "id": "cimetiere-5",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 7."
+      },
+      {
+        "id": "cimetiere-6",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 8."
+      },
+      {
+        "id": "cimetiere-7",
+        "text": "Placez une figurine de Varghulf à coté de la figurine active."
+      },
+      {
+        "id": "cimetiere-8",
+        "text": "Placez une figurine de Struglu à coté de la figurine active."
+      },
+      {
+        "id": "cimetiere-9",
+        "text": "Placez une figurine de Gardien Noir à coté de la figurine active."
+      },
+      {
+        "id": "cimetiere-10",
+        "text": "Placez une figurine de Bruliis à coté de la figurine active."
+      },
+      {
+        "id": "cimetiere-11",
+        "text": "La figurine doit effectuer un test de commandement afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "cimetiere-12",
+        "text": "La figurine doit effectuer un test de commandement afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "cimetiere-13",
+        "text": "La figurine doit effectuer un test de commandement afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "cimetiere-14",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "cimetiere-15",
+        "text": "Le lieu contient 150 pièces d'or."
+      },
+      {
+        "id": "cimetiere-16",
+        "text": "Le lieu contient 200 pièces d'or."
+      },
+      {
+        "id": "cimetiere-17",
+        "text": "Le lieu contient 250 pièces d'or."
+      },
+      {
+        "id": "cimetiere-18",
+        "text": "Le lieu contient 300 pièces d'or."
+      },
+      {
+        "id": "cimetiere-19",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "cimetiere-20",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "cimetiere-21",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "cimetiere-22",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "cimetiere-23",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "cimetiere-24",
+        "text": "Le lieu contient trois objets."
+      },
+      {
+        "id": "cimetiere-25",
+        "text": "Le lieu contient trois objets."
+      },
+      {
+        "id": "cimetiere-26",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "cimetiere-27",
+        "text": "Le lieu contient quatres objets."
+      },
+      {
+        "id": "cimetiere-28",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "cimetiere-29",
+        "text": "Le lieu contient deux cristaux bruts."
+      },
+      {
+        "id": "cimetiere-30",
+        "text": "Le lieu contient trois cristaux bruts."
+      },
+      {
+        "id": "cimetiere-31",
+        "text": "Le lieu contient un cristal brut et un objet."
+      },
+      {
+        "id": "cimetiere-32",
+        "text": "Le lieu contient un cristal brut et deux objets."
+      },
+      {
+        "id": "cimetiere-33",
+        "text": "Le lieu contient 200 pièces d'or et un objet."
+      },
+      {
+        "id": "cimetiere-34",
+        "text": "Le lieu contient 150 pièces d'or et un objet."
+      },
+      {
+        "id": "cimetiere-35",
+        "text": "Le lieu contient 100 pièces d'or et deux objets."
+      },
+      {
+        "id": "cimetiere-36",
+        "text": "Le lieu contient 150 pièces d'or, un cristal brut et un objet."
+      },
+      {
+        "id": "cimetiere-37",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 6."
+      },
+      {
+        "id": "cimetiere-38",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "cimetiere-39",
+        "text": "Le lieu contient 200 pièces d'or."
+      },
+      {
+        "id": "cimetiere-40",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "cimetiere-41",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "cimetiere-42",
+        "text": "Le lieu contient un cristal brut et un objet."
+      }
+    ]
+  },
+  {
+    "id": "ruines",
+    "name": "Ruines",
+    "color": "#d9822b",
+    "cards": [
+      {
+        "id": "ruines-1",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "ruines-2",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "ruines-3",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "ruines-4",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "ruines-5",
+        "text": "Placez une figurine de Chauve-souris Géante à coté de la figurine active."
+      },
+      {
+        "id": "ruines-6",
+        "text": "Placez une figurine de Mutant à coté de la figurine active."
+      },
+      {
+        "id": "ruines-7",
+        "text": "Placez une figurine de Pyro à coté de la figurine active."
+      },
+      {
+        "id": "ruines-8",
+        "text": "Placez une figurine de Décapiteur à coté de la figurine active."
+      },
+      {
+        "id": "ruines-9",
+        "text": "La figurine doit effectuer un test de commandement afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "ruines-10",
+        "text": "La figurine doit effectuer un test de force afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "ruines-11",
+        "text": "La figurine doit effectuer un test d'agilité afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "ruines-12",
+        "text": "Le lieu contient 50 pièces d'or."
+      },
+      {
+        "id": "ruines-13",
+        "text": "Le lieu contient 50 pièces d'or."
+      },
+      {
+        "id": "ruines-14",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "ruines-15",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "ruines-16",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "ruines-17",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "ruines-18",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "ruines-19",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "ruines-20",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "ruines-21",
+        "text": "Le lieu contient 50 pièces d'or."
+      },
+      {
+        "id": "ruines-22",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "ruines-23",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "ruines-24",
+        "text": "Le lieu contient 150 pièces d'or."
+      },
+      {
+        "id": "ruines-25",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "ruines-26",
+        "text": "Le lieu contient deux cristaux bruts."
+      },
+      {
+        "id": "ruines-27",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 4."
+      },
+      {
+        "id": "ruines-28",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 4."
+      },
+      {
+        "id": "ruines-29",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 4."
+      },
+      {
+        "id": "ruines-30",
+        "text": "Le lieu contient 200 pièces d'or."
+      },
+      {
+        "id": "ruines-31",
+        "text": "Le lieu contient 100 pièces d'or et un objet."
+      },
+      {
+        "id": "ruines-32",
+        "text": "Tirez une cartes d'un autre paquet lieu de votre choix."
+      },
+      {
+        "id": "ruines-33",
+        "text": "Tirez une carte de deux autres paquets lieu de votre choix et appliquer le résultat de votre choix d'une des 2 cartes"
+      },
+      {
+        "id": "ruines-34",
+        "text": "Le lieu contient un cristal brut et un objet."
+      },
+      {
+        "id": "ruines-35",
+        "text": "Le lieu contient un cristal brut et 50 pièces d'or."
+      },
+      {
+        "id": "ruines-36",
+        "text": "Le lieu contient 150 pièces d'or."
+      },
+      {
+        "id": "ruines-37",
+        "text": "Tirez une cartes d'un autre paquet lieu de votre choix."
+      },
+      {
+        "id": "ruines-38",
+        "text": "Tirez une carte de deux autres paquets lieu de votre choix et appliquer le résultat de votre choix d'une des 2 cartes"
+      },
+      {
+        "id": "ruines-39",
+        "text": "Le lieu contient 150 pièces d'or."
+      },
+      {
+        "id": "ruines-40",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "ruines-41",
+        "text": "Le lieu contient trois objets."
+      },
+      {
+        "id": "ruines-42",
+        "text": "Le lieu contient 100 pièces d'or et deux objets."
+      }
+    ]
+  },
+  {
+    "id": "rivage",
+    "name": "Rivage",
+    "color": "#2f5fae",
+    "cards": [
+      {
+        "id": "rivage-1",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "rivage-2",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "rivage-3",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "rivage-4",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 4."
+      },
+      {
+        "id": "rivage-5",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 5."
+      },
+      {
+        "id": "rivage-6",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 6."
+      },
+      {
+        "id": "rivage-7",
+        "text": "La figurine doit effectuer un test de force afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "rivage-8",
+        "text": "La figurine doit effectuer un test de force afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "rivage-9",
+        "text": "La figurine doit effectuer un test d'agilité afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "rivage-10",
+        "text": "La figurine doit effectuer un test d'agilité afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "rivage-11",
+        "text": "La figurine doit effectuer un test de commandement afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "rivage-12",
+        "text": "La figurine doit effectuer un test de commandement afin de pouvoir ouvrir le lieu."
+      },
+      {
+        "id": "rivage-13",
+        "text": "Placez une figurine de Kixor à coté de la figurine active."
+      },
+      {
+        "id": "rivage-14",
+        "text": "Placez une figurine de Géonosian à coté de la figurine active."
+      },
+      {
+        "id": "rivage-15",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "rivage-16",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "rivage-17",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "rivage-18",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "rivage-19",
+        "text": "Le lieu contient deux cristaux bruts."
+      },
+      {
+        "id": "rivage-20",
+        "text": "Le lieu contient deux cristaux bruts."
+      },
+      {
+        "id": "rivage-21",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "rivage-22",
+        "text": "Le lieu contient 100 pièces d'or."
+      },
+      {
+        "id": "rivage-23",
+        "text": "Le lieu contient 150 pièces d'or."
+      },
+      {
+        "id": "rivage-24",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "rivage-25",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "rivage-26",
+        "text": "Le lieu contient un objet."
+      },
+      {
+        "id": "rivage-27",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "rivage-28",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "rivage-29",
+        "text": "Tirez 2 cartes \"Rivage\" et appliquez les 2 résultats l'un après l'autre."
+      },
+      {
+        "id": "rivage-30",
+        "text": "Tirez 2 cartes \"Rivage\" et appliquez les 2 résultats l'un après l'autre."
+      },
+      {
+        "id": "rivage-31",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "rivage-32",
+        "text": "Placez une figurine de Kixor à coté de la figurine active."
+      },
+      {
+        "id": "rivage-33",
+        "text": "Placez une figurine de Géonosian à coté de la figurine active."
+      },
+      {
+        "id": "rivage-34",
+        "text": "Le lieu contient un cristal brut."
+      },
+      {
+        "id": "rivage-35",
+        "text": "Le lieu contient deux cristaux bruts."
+      },
+      {
+        "id": "rivage-36",
+        "text": "Le lieu contient un cristal brut et un objet."
+      },
+      {
+        "id": "rivage-37",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "rivage-38",
+        "text": "Le lieu est vide."
+      },
+      {
+        "id": "rivage-39",
+        "text": "Le lieu contient deux objets."
+      },
+      {
+        "id": "rivage-40",
+        "text": "Tirez 2 cartes \"Rivage\" et appliquez les 2 résultats l'un après l'autre."
+      },
+      {
+        "id": "rivage-41",
+        "text": "Le lieu contient deux cristaux bruts."
+      },
+      {
+        "id": "rivage-42",
+        "text": "Le lieu est piégée, la figurine subit une touche de force 6."
+      }
+    ]
+  }
+]

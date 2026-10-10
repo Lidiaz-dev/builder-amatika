@@ -1,0 +1,266 @@
+import factionsJson from './factions.json'
+import equipmentJson from './equipment.json'
+import skillsJson from './skills.json'
+import rulesJson from './rules.json'
+import spellsJson from './spells.json'
+import itemsJson from './items.json'
+import loreJson from './lore.json'
+import injuriesJson from './injuries.json'
+import locationsJson from './locations.json'
+import creaturesJson from './creatures.json'
+
+export type StatKey = 'mou' | 'com' | 'tir' | 'for' | 'end' | 'agi' | 'att' | 'pv' | 'cmd' | 'svg'
+export type Stats = Record<StatKey, number | null>
+export type Role = 'chef' | 'recrue' | 'specialiste' | 'monstre'
+
+export interface Profile {
+  id: string
+  name: string
+  cost: number
+  min: number
+  max: number
+  role: Role
+  stats: Stats
+  skills: string[]
+  /** Chaque entrée est un choix « A OU B » à faire au recrutement. */
+  skillChoices: string[][]
+  equipment: string[]
+  trees: string[]
+  upkeep: { po: number; perLevel: boolean; cristaux: number }
+  /** Expérience gagnée par point de vie retiré à cette figurine. */
+  xpValue: number | null
+  notes: string[]
+  /** Nombre de sorts connus au recrutement (2 par défaut pour un mage). */
+  startingSpells?: number
+  /** Nombre de mains disponibles pour armes et bouclier (2 par défaut). */
+  hands?: number
+}
+
+export interface Faction {
+  id: string
+  name: string
+  /** Règles propres à toute la faction. */
+  notes: string[]
+  profiles: Profile[]
+}
+
+export type EquipmentCategory = 'melee' | 'ranged' | 'armor' | 'shield' | 'helmet'
+
+export interface Equipment {
+  id: string
+  name: string
+  category: EquipmentCategory
+  hands: number
+  price: number
+  strength?: string
+  range?: number
+  rules: string
+  save?: number
+  move?: number
+  exclusiveMelee?: boolean
+  shieldVsShots?: boolean
+  /** Encombrée : -1 pour toucher au corps à corps, cumulable. */
+  encumbered?: boolean
+}
+
+export interface Skill {
+  id: string
+  name: string
+  tree: string
+  description: string
+}
+
+export interface Spell {
+  id: string
+  name: string
+  type: string
+  /** Valeur de lancement à obtenir sur 2D10. */
+  value: number | null
+  range: number | null
+  target: string
+  description: string
+  racial: string | null
+  factions: string[]
+  /** Connu de tous les mages (Orbe mineur). */
+  universal: boolean
+  /** Sorts « Nécromant bonus » : réservés à la faction mais pas donnés au recrutement. */
+  bonus: boolean
+  /** Restreint à certains profils (ex. Chaman Capuchard). */
+  profiles?: string[]
+  summon?: Stats
+  summonSkills?: string
+}
+
+export type Rarity = 'blanc' | 'gris' | 'vert' | 'jaune'
+
+export const RARITIES: Rarity[] = ['blanc', 'gris', 'vert', 'jaune']
+
+export const RARITY_LABELS: Record<Rarity, string> = {
+  blanc: 'Commun (blanc)',
+  gris: 'Spécial (gris)',
+  vert: 'Rare (vert)',
+  jaune: 'Épique (jaune)',
+}
+
+export interface TreasureItem {
+  id: string
+  name: string
+  description: string
+  price: number | null
+  rarity: Rarity
+  /** Effet sur la fiche quand l'objet est porté (valeurs brutes, voir StatMods). */
+  mods?: Partial<Record<StatKey, number>>
+  /** Compétences données au porteur. */
+  skills?: string[]
+  /** Objet à usage unique : potion (défaussée après la partie), poison (jet de réserve) ou autre. */
+  consumable?: 'potion' | 'poison' | 'single'
+  /** Effet sur la fiche une fois utilisé, jusqu'à la fin de la partie. */
+  useMods?: Partial<Record<StatKey, number>>
+  useSkills?: string[]
+  /** Liqueurs : nombre de D10 d'XP gagnés à la fin de la bataille. */
+  xpDice?: number
+}
+
+export interface ItemCategory {
+  id: string
+  name: string
+  items: TreasureItem[]
+}
+
+/** Carte du paquet Blessure. */
+export interface Injury {
+  id: string
+  /** Identifiant commun aux cartes de même nom (ex. les différents « Assommé »). */
+  kind: string
+  name: string
+  value: number
+  description: string
+  quantity: number
+  /** La carte laisse une trace après la bataille. */
+  lasting: boolean
+  mods?: Partial<Record<StatKey, number>>
+  gainSkill?: string
+  missNextGame?: boolean
+  dead?: boolean
+  /** Amputation ou œil crevé : la deuxième fois, la figurine quitte la bande. */
+  mark?: 'jambe' | 'bras' | 'oeil'
+  leavesOnSecond?: boolean
+  handsLost?: number
+  special?: 'negotiate' | 'multiple' | 'bag'
+}
+
+export interface RuleSection {
+  id: string
+  title: string
+  level: number
+  paragraphs: string[]
+}
+
+export const factions = factionsJson as Faction[]
+export const equipment = equipmentJson as Equipment[]
+export const skills = skillsJson as Skill[]
+export const rules = rulesJson as RuleSection[]
+export const spells = spellsJson as Spell[]
+export const itemCategories = itemsJson as ItemCategory[]
+export const lore = loreJson as { title: string; paragraphs: string[] }
+export const injuries = injuriesJson as Injury[]
+
+/** Paquet d'un type de lieu d'intérêt (42 cartes). */
+export interface LocationDeck {
+  id: string
+  name: string
+  /** Couleur du dos des cartes. */
+  color: string
+  cards: { id: string; text: string }[]
+}
+
+/** Créature de la faune d'Amatika. */
+export interface Creature {
+  id: string
+  name: string
+  stats: Stats
+  skills: string[]
+  /** Ce que l'on gagne en la fouillant. */
+  gifts: string
+}
+
+export const locationDecks = locationsJson as LocationDeck[]
+export const creatures = creaturesJson as Creature[]
+export const injuryById = (id: string) => injuries.find((i) => i.id === id)
+/** Clé unique d'un objet de trésor : « catégorie/objet » (certains noms existent dans deux catégories). */
+export const itemKey = (categoryId: string, itemId: string) => `${categoryId}/${itemId}`
+
+export function itemByKey(key: string) {
+  const [catId, id] = key.split('/')
+  const cat = itemCategories.find((c) => c.id === catId)
+  const it = cat?.items.find((i) => i.id === id)
+  return it && cat ? { ...it, key, category: cat.name } : undefined
+}
+
+export const STAT_COLUMNS: { key: StatKey; label: string; dice: boolean }[] = [
+  { key: 'mou', label: 'Mou', dice: false },
+  { key: 'com', label: 'Com', dice: true },
+  { key: 'tir', label: 'Tir', dice: true },
+  { key: 'for', label: 'For', dice: false },
+  { key: 'end', label: 'End', dice: false },
+  { key: 'agi', label: 'Agi', dice: true },
+  { key: 'att', label: 'Att', dice: false },
+  { key: 'pv', label: 'PV', dice: false },
+  { key: 'cmd', label: 'Comm', dice: true },
+  { key: 'svg', label: 'Svg', dice: true },
+]
+
+export const TREE_LABELS: Record<string, string> = {
+  general: 'Général',
+  combat: 'Combat',
+  tir: 'Tir',
+  erudition: 'Érudition',
+  force: 'Force',
+  agilite: 'Agilité',
+  reconnaissance: 'Reconnaissance',
+  divers: 'Divers',
+}
+
+export const ROLE_LABELS: Record<Role, string> = {
+  chef: 'Chef',
+  recrue: 'Recrue',
+  specialiste: 'Spécialiste',
+  monstre: 'Monstre',
+}
+
+export const CATEGORY_LABELS: Record<EquipmentCategory, string> = {
+  melee: 'Armes de corps à corps',
+  ranged: 'Armes de tir',
+  armor: 'Armures',
+  shield: 'Boucliers',
+  helmet: 'Casques',
+}
+
+export const factionById = (id: string) => factions.find((f) => f.id === id)
+export const spellById = (id: string) => spells.find((s) => s.id === id)
+
+/** Sorts qu'un mage de ce profil peut connaître : sorts communs + sorts raciaux de sa faction. */
+export function spellsFor(factionId: string, profileId: string) {
+  return spells.filter((s) => {
+    if (s.profiles && !s.profiles.includes(profileId)) return false
+    return s.universal || s.factions.length === 0 || s.factions.includes(factionId)
+  })
+}
+
+/** Sorts connus au recrutement : Orbe mineur + le sort racial de la faction. */
+export function startingSpellIds(factionId: string, profile: Profile) {
+  const universal = spells.filter((s) => s.universal).map((s) => s.id)
+  if ((profile.startingSpells ?? 2) <= 1) return universal
+  const racial = spells.find(
+    (s) => s.factions.includes(factionId) && !s.bonus && (!s.profiles || s.profiles.includes(profile.id)),
+  )
+  return racial ? [...universal, racial.id] : universal
+}
+
+export const equipmentById = (id: string) => equipment.find((e) => e.id === id)
+
+export function skillByName(name: string): Skill | undefined {
+  const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+  if (/^[eé]claireur \d+$/i.test(name)) return skills.find((s) => s.id === 'eclaireur-x')
+  return skills.find((s) => norm(s.name) === norm(name))
+}

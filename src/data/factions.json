@@ -1,0 +1,7102 @@
+[
+  {
+    "id": "cites-etats",
+    "name": "Cités-Etats",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 70,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "chef",
+        "name": "Chef",
+        "cost": 122,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 5,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Chef"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 133,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 5,
+          "end": 5,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "marteau",
+          "hache",
+          "epee"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "pretre-guerrier",
+        "name": "Prêtre Guerrier",
+        "cost": 98,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "champion",
+        "name": "Champion",
+        "cost": 108,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Maître escrimeur"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "epee",
+          "epee-lourde",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "tireur-d-elite",
+        "name": "Tireur d'élite",
+        "cost": 101,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 5,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Œil de Faucon"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "arc-court",
+          "arc",
+          "arc-long",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "tir"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "rodeur",
+        "name": "Rodeur",
+        "cost": 102,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 5"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "agilite",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "ingenieur",
+        "name": "Ingénieur",
+        "cost": 87,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 2",
+          "Maîtrise Technique"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "repurgateur",
+        "name": "Répurgateur",
+        "cost": 110,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Chasseur de Damnés",
+          "Sans Peur"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "combat",
+          "tir",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "nains",
+    "name": "Nains",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 85,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 4,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 5,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "thane",
+        "name": "Thane",
+        "cost": 137,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 5,
+          "tir": 5,
+          "for": 4,
+          "end": 5,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 7,
+          "svg": 11
+        },
+        "skills": [
+          "Chef",
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "ingenieur",
+        "name": "Ingénieur",
+        "cost": 102,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 5,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 2",
+          "Maîtrise Technique",
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "runique",
+        "name": "Runique",
+        "cost": 103,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 5,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Dissipation",
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "baton",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "tueur",
+        "name": "Tueur",
+        "cost": 148,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 5,
+          "tir": 7,
+          "for": 4,
+          "end": 5,
+          "agi": 6,
+          "att": 2,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Sans Peur",
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "hache",
+          "hache-lourde"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "combat",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "brasseur",
+        "name": "Brasseur",
+        "cost": 96,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 5,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Lieutenant",
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "orques",
+    "name": "Orques",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 88,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 7,
+          "for": 5,
+          "end": 5,
+          "agi": 8,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "hache-lourde",
+          "lance",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "orque-noir",
+        "name": "Orque noir",
+        "cost": 277,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 6,
+          "for": 6,
+          "end": 5,
+          "agi": 8,
+          "att": 2,
+          "pv": 2,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Chef",
+          "Sans Peur"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "hache-lourde",
+          "lance",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "combat",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 7,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "chaman",
+        "name": "Chaman",
+        "cost": 123,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 7,
+          "for": 5,
+          "end": 5,
+          "agi": 8,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "hache",
+          "hache-lourde",
+          "lance",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "javelot"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "kostos",
+        "name": "Kostos",
+        "cost": 127,
+        "min": 0,
+        "max": 2,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 7,
+          "for": 6,
+          "end": 5,
+          "agi": 8,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Sans Peur"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "hache-lourde",
+          "lance",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "egorgeur",
+        "name": "Egorgeur",
+        "cost": 119,
+        "min": 0,
+        "max": 2,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 7,
+          "for": 5,
+          "end": 5,
+          "agi": 7,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Léger",
+          "Éclaireur 1"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "lance",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "gobelins",
+    "name": "Gobelins",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 23,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 5,
+          "com": 8,
+          "tir": 7,
+          "for": 3,
+          "end": 3,
+          "agi": 3,
+          "att": 1,
+          "pv": 1,
+          "cmd": 13,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern",
+          "lance",
+          "arc-court",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "agilite"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 2,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "chef",
+        "name": "Chef",
+        "cost": 99,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 3,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [
+          "Chef",
+          "Éclaireur 2",
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "lance",
+          "arc-court",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition",
+          "agilite",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "chaman",
+        "name": "Chaman",
+        "cost": 58,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 8,
+          "tir": 7,
+          "for": 3,
+          "end": 3,
+          "agi": 3,
+          "att": 1,
+          "pv": 1,
+          "cmd": 13,
+          "svg": 11
+        },
+        "skills": [
+          "Mage",
+          "Dissipation",
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern",
+          "lance",
+          "arc-court",
+          "fronde",
+          "arme-de-jet",
+          "javelot"
+        ],
+        "trees": [
+          "general",
+          "agilite",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "zigouilleur",
+        "name": "Zigouilleur",
+        "cost": 46,
+        "min": 0,
+        "max": 2,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 3,
+          "end": 3,
+          "agi": 3,
+          "att": 1,
+          "pv": 1,
+          "cmd": 12,
+          "svg": 11
+        },
+        "skills": [
+          "Maîtrise Technique",
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern",
+          "lance",
+          "arc-court",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "agilite",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "capuchard",
+        "name": "Capuchard",
+        "cost": 53,
+        "min": 0,
+        "max": 2,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 6,
+          "for": 3,
+          "end": 3,
+          "agi": 3,
+          "att": 1,
+          "pv": 1,
+          "cmd": 12,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 2",
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern",
+          "lance",
+          "arc-court",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "agilite",
+          "tir",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "chaman-capuchard",
+        "name": "Chaman Capuchard",
+        "cost": 84,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 6,
+          "for": 3,
+          "end": 3,
+          "agi": 3,
+          "att": 1,
+          "pv": 1,
+          "cmd": 12,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern",
+          "lance",
+          "arc-court",
+          "fronde",
+          "arme-de-jet",
+          "javelot"
+        ],
+        "trees": [
+          "general",
+          "agilite",
+          "erudition",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "troll",
+        "name": "Troll",
+        "cost": 262,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": null,
+          "for": 6,
+          "end": 6,
+          "agi": 10,
+          "att": 3,
+          "pv": 3,
+          "cmd": 14,
+          "svg": 8
+        },
+        "skills": [
+          "Peur",
+          "N'apprend Rien",
+          "Grande cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "armure-de-cuir",
+          "casque"
+        ],
+        "trees": [],
+        "upkeep": {
+          "po": 30,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 7,
+        "notes": [],
+        "role": "monstre"
+      }
+    ]
+  },
+  {
+    "id": "haut-elfe",
+    "name": "Haut Elfe",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 100,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 6,
+          "com": 7,
+          "tir": 6,
+          "for": 4,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Chasseur de Damnés"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "arc-long",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "prince",
+        "name": "Prince",
+        "cost": 156,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 5,
+          "tir": 5,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 6,
+          "svg": 11
+        },
+        "skills": [
+          "Chef",
+          "Chasseur de Damnés"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "arc-long",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition",
+          "agilite"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 135,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 7,
+          "tir": 6,
+          "for": 4,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Mage",
+          "Dissipation",
+          "Chasseur de Damnés"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "epee",
+          "hallebarde",
+          "lance",
+          "arc-long",
+          "javelot"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "maitre-des-epees",
+        "name": "Maître des épées",
+        "cost": 145,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 5,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 7,
+          "svg": 11
+        },
+        "skills": [
+          "Sans Peur",
+          "Chasseur de Damnés"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "epee-lourde",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "garde-de-feu",
+        "name": "Garde de feu",
+        "cost": 134,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 7,
+          "svg": 11
+        },
+        "skills": [
+          "Lieutenant",
+          "Sans Peur",
+          "Chasseur de Damnés"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "hallebarde",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "fantome",
+        "name": "Fantôme",
+        "cost": 142,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 6,
+          "tir": 5,
+          "for": 4,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 7,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 8",
+          "Chasseur de Damnés"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "epee",
+          "arc-long",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "tir",
+          "agilite",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "elfe-des-bois",
+    "name": "Elfe des bois",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 87,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 6,
+          "com": 7,
+          "tir": 6,
+          "for": 4,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Forestier"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "orion",
+        "name": "Orion",
+        "cost": 125,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 6,
+          "tir": 5,
+          "for": 4,
+          "end": 3,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 7,
+          "svg": 11
+        },
+        "skills": [
+          "Forestier",
+          "Chef"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition",
+          "agilite",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 122,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 7,
+          "tir": 6,
+          "for": 4,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Forestier",
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "epee",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "druide",
+        "name": "Druide",
+        "cost": 117,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Forestier",
+          "Dissipation",
+          "Éclaireur 1"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "erudition",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "danseur-de-guerre",
+        "name": "Danseur de guerre",
+        "cost": 129,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 5,
+          "tir": 6,
+          "for": 4,
+          "end": 3,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Forestier",
+          "Chasseur de Damnés"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "armure-de-cuir",
+          "armure-legere",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "guide",
+        "name": "Guide",
+        "cost": 103,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 7,
+          "tir": 5,
+          "for": 4,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 4",
+          "Forestier"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "epee",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "tir",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "drow",
+    "name": "Drow",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 88,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 6,
+          "com": 7,
+          "tir": 6,
+          "for": 4,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Toxine apprivoisée"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "capitaine",
+        "name": "Capitaine",
+        "cost": 152,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 5,
+          "tir": 4,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 7,
+          "svg": 11
+        },
+        "skills": [
+          "Chef",
+          "Toxine apprivoisée"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 123,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 7,
+          "tir": 6,
+          "for": 4,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Toxine apprivoisée",
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "hache",
+          "epee",
+          "morgenstern",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "assassin",
+        "name": "Assassin",
+        "cost": 143,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 5,
+          "tir": 4,
+          "for": 4,
+          "end": 3,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Toxine apprivoisée",
+          "Léger"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere"
+        ],
+        "trees": [
+          "general",
+          "agilite"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "corsaire",
+        "name": "Corsaire",
+        "cost": 123,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Toxine apprivoisée",
+          "Marin"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "ombre",
+        "name": "Ombre",
+        "cost": 124,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 6,
+          "tir": 5,
+          "for": 4,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Toxine apprivoisée",
+          "Éclaireur 5"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "reconnaissance",
+          "tir"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "ogre",
+    "name": "Ogre",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 317,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 9,
+          "for": 6,
+          "end": 6,
+          "agi": 10,
+          "att": 3,
+          "pv": 3,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [
+          "Grande cible",
+          "Peur",
+          "Charge furieuse"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force"
+        ],
+        "upkeep": {
+          "po": 15,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 8,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "tyran",
+        "name": "Tyran",
+        "cost": 372,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 8,
+          "for": 6,
+          "end": 6,
+          "agi": 10,
+          "att": 3,
+          "pv": 3,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Grande cible",
+          "Peur",
+          "Chef",
+          "Charge furieuse"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "combat",
+          "tir",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 9,
+        "notes": [],
+        "role": "chef"
+      }
+    ]
+  },
+  {
+    "id": "skaven",
+    "name": "Skaven",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 34,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 3,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 13,
+          "svg": 11
+        },
+        "skills": [],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "agilite"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 2,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "chef",
+        "name": "Chef",
+        "cost": 102,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 5,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [
+          "Chef"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "arquebuse",
+          "pistolet",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition",
+          "agilite"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "vermine-de-choc",
+        "name": "Vermine de choc",
+        "cost": 88,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 12,
+          "svg": 11
+        },
+        "skills": [
+          "Saut de Côté"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "hallebarde",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "agilite",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "prophete-gris",
+        "name": "Prophète gris",
+        "cost": 69,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 3,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 13,
+          "svg": 11
+        },
+        "skills": [
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot"
+        ],
+        "trees": [
+          "general",
+          "agilite",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "ingenieur",
+        "name": "Ingénieur",
+        "cost": 56,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 3,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 12,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 2",
+          "Maîtrise Technique",
+          "Marin"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "arquebuse",
+          "pistolet",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "agilite",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "assassin",
+        "name": "Assassin",
+        "cost": 112,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 5,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 3,
+          "att": 1,
+          "pv": 1,
+          "cmd": 12,
+          "svg": 11
+        },
+        "skills": [
+          "Camouflage",
+          "Léger",
+          "Toxine apprivoisée"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere"
+        ],
+        "trees": [
+          "general",
+          "agilite",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "coureur-nocturne",
+        "name": "Coureur nocturne",
+        "cost": 67,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 7,
+          "tir": 7,
+          "for": 3,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 13,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 6",
+          "Léger",
+          "Toxine apprivoisée"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere"
+        ],
+        "trees": [
+          "general",
+          "agilite",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "pretre-de-la-peste",
+        "name": "Prêtre de la peste",
+        "cost": 74,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 3,
+          "end": 5,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 12,
+          "svg": 11
+        },
+        "skills": [
+          "Dissipation",
+          "Adepte du Mal"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "epee",
+          "morgenstern",
+          "fleau",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "agilite",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "rat-ogre",
+        "name": "Rat-ogre",
+        "cost": 244,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": null,
+          "for": 6,
+          "end": 6,
+          "agi": 7,
+          "att": 3,
+          "pv": 3,
+          "cmd": 13,
+          "svg": 11
+        },
+        "skills": [
+          "Peur",
+          "N'apprend Rien",
+          "Grande cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "armure-de-cuir",
+          "armure-legere",
+          "casque"
+        ],
+        "trees": [],
+        "upkeep": {
+          "po": 30,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 7,
+        "notes": [],
+        "role": "monstre"
+      }
+    ]
+  },
+  {
+    "id": "drakeide",
+    "name": "Drakéide",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue-skink",
+        "name": "Recrue skink",
+        "cost": 61,
+        "min": 0,
+        "max": 5,
+        "stats": {
+          "mou": 5,
+          "com": 8,
+          "tir": 7,
+          "for": 3,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 10
+        },
+        "skills": [
+          "Amphibien",
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "epee",
+          "lance",
+          "arc-court",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "chaman-skink",
+        "name": "Chaman skink",
+        "cost": 96,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 8,
+          "tir": 7,
+          "for": 3,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 10
+        },
+        "skills": [
+          "Amphibien",
+          "Petite cible",
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "hache",
+          "epee",
+          "lance",
+          "arc-court",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "skink-cameleon",
+        "name": "Skink caméléon",
+        "cost": 84,
+        "min": 0,
+        "max": 2,
+        "stats": {
+          "mou": 5,
+          "com": 8,
+          "tir": 6,
+          "for": 3,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 10
+        },
+        "skills": [
+          "Amphibien",
+          "Petite cible",
+          "Camouflage",
+          "Éclaireur 4"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "epee",
+          "lance",
+          "arc-court",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "recrue-saurus",
+        "name": "Recrue saurus",
+        "cost": 98,
+        "min": 0,
+        "max": 5,
+        "stats": {
+          "mou": 4,
+          "com": 7,
+          "tir": null,
+          "for": 5,
+          "end": 5,
+          "agi": 8,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 8
+        },
+        "skills": [
+          "Sans Peur"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "kurak-saurus",
+        "name": "Kurak saurus",
+        "cost": 162,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 5,
+          "tir": null,
+          "for": 6,
+          "end": 6,
+          "agi": 8,
+          "att": 1,
+          "pv": 1,
+          "cmd": 7,
+          "svg": 8
+        },
+        "skills": [
+          "Chef",
+          "Sans Peur"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "combat",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 6,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "gardien-du-temple-saurus",
+        "name": "Gardien du temple saurus",
+        "cost": 136,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 4,
+          "com": 6,
+          "tir": null,
+          "for": 5,
+          "end": 5,
+          "agi": 8,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 8
+        },
+        "skills": [
+          "Sans Peur",
+          "Dissipation",
+          "Chasseur de Damnés"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "kroxigor",
+        "name": "Kroxigor",
+        "cost": 462,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 6,
+          "tir": null,
+          "for": 7,
+          "end": 7,
+          "agi": 9,
+          "att": 3,
+          "pv": 3,
+          "cmd": 8,
+          "svg": 7
+        },
+        "skills": [
+          "Peur",
+          "Grande cible",
+          "N'apprend Rien"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "armure-de-cuir",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [],
+        "upkeep": {
+          "po": 30,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 10,
+        "notes": [],
+        "role": "monstre"
+      }
+    ]
+  },
+  {
+    "id": "mangechair",
+    "name": "Mangechair",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 81,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 6,
+          "com": 6,
+          "tir": null,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Goulu",
+          "Mains Griffues"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "chef",
+        "name": "Chef",
+        "cost": 157,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 4,
+          "tir": null,
+          "for": 5,
+          "end": 5,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 7,
+          "svg": 11
+        },
+        "skills": [
+          "Goulu",
+          "Mains Griffues",
+          "Chef",
+          "Éclaireur 2",
+          "Peur"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "erudition",
+          "force"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 116,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 6,
+          "tir": null,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Goulu",
+          "Mains Griffues",
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "baton"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "decapiteur",
+        "name": "Décapiteur",
+        "cost": 125,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 6,
+          "com": 5,
+          "tir": null,
+          "for": 5,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Goulu",
+          "Mains Griffues",
+          "Adepte du Mal"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "hache-lourde",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "herault",
+        "name": "Hérault",
+        "cost": 112,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 5,
+          "tir": null,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Goulu",
+          "Mains Griffues",
+          "Lieutenant",
+          "Éclaireur 1"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau-lourd",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "maitre-depeceur",
+        "name": "Maître dépeceur",
+        "cost": 109,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 6,
+          "tir": null,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Goulu",
+          "Mains Griffues",
+          "Éclaireur 4",
+          "Peur"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "epee",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "pretre",
+        "name": "Prêtre",
+        "cost": 155,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 6,
+          "tir": null,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Goulu",
+          "Mains Griffues",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "devoreur",
+        "name": "Dévoreur",
+        "cost": 384,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 5,
+          "tir": null,
+          "for": 6,
+          "end": 6,
+          "agi": 7,
+          "att": 3,
+          "pv": 3,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Goulu",
+          "Mains Griffues",
+          "Peur",
+          "Grande cible",
+          "N'apprend Rien"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [],
+        "upkeep": {
+          "po": 30,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 9,
+        "notes": [],
+        "role": "monstre"
+      }
+    ]
+  },
+  {
+    "id": "la-harde",
+    "name": "La Harde",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue-ungor",
+        "name": "Recrue Ungor",
+        "cost": 26,
+        "min": 0,
+        "max": 3,
+        "stats": {
+          "mou": 5,
+          "com": 8,
+          "tir": 7,
+          "for": 3,
+          "end": 4,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 12,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 1"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern",
+          "lance",
+          "arc-court",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 2,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "eclaireur-ungor",
+        "name": "Eclaireur Ungor",
+        "cost": 56,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 8,
+          "tir": 6,
+          "for": 3,
+          "end": 4,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 8",
+          "Forestier"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "arc-court",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "recrue-gor",
+        "name": "Recrue Gor",
+        "cost": 59,
+        "min": 0,
+        "max": 5,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 7,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [
+          "Forestier"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "mage-gor",
+        "name": "Mage Gor",
+        "cost": 94,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 7,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [
+          "Mage",
+          "Dissipation",
+          "Forestier"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "baton",
+          "marteau",
+          "hache",
+          "epee",
+          "arc",
+          "arme-de-jet",
+          "javelot"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "recrue-bestigor",
+        "name": "Recrue Bestigor",
+        "cost": 84,
+        "min": 0,
+        "max": 3,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 7,
+          "for": 5,
+          "end": 4,
+          "agi": 8,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "chef-bestigor",
+        "name": "Chef Bestigor",
+        "cost": 142,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 4,
+          "tir": 7,
+          "for": 5,
+          "end": 5,
+          "agi": 8,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Chef",
+          "Peur"
+        ],
+        "skillChoices": [
+          [
+            "Adepte du Mal",
+            "Chasseur de Damnés"
+          ]
+        ],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "force",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "gardien-bestigor",
+        "name": "Gardien Bestigor",
+        "cost": 122,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 7,
+          "for": 5,
+          "end": 4,
+          "agi": 8,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Maîtrise Technique",
+          "Sans Peur"
+        ],
+        "skillChoices": [
+          [
+            "Adepte du Mal",
+            "Chasseur de Damnés"
+          ]
+        ],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "force"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "minotaure",
+        "name": "Minotaure",
+        "cost": 290,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": null,
+          "for": 6,
+          "end": 6,
+          "agi": 10,
+          "att": 3,
+          "pv": 3,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Peur",
+          "Grande cible",
+          "N'apprend Rien"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [],
+        "upkeep": {
+          "po": 30,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 7,
+        "notes": [],
+        "role": "monstre"
+      }
+    ]
+  },
+  {
+    "id": "halfling",
+    "name": "Halfling",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 39,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 4,
+          "com": 8,
+          "tir": 7,
+          "for": 3,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 2,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "napo",
+        "name": "Napo",
+        "cost": 95,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 6,
+          "tir": 5,
+          "for": 3,
+          "end": 3,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 7,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Chef"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 74,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 8,
+          "tir": 7,
+          "for": 3,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "ingenieur",
+        "name": "Ingénieur",
+        "cost": 56,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 8,
+          "tir": 7,
+          "for": 3,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Éclaireur 2",
+          "Maîtrise Technique"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "inquisiteur",
+        "name": "Inquisiteur",
+        "cost": 90,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 7,
+          "tir": 6,
+          "for": 3,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Chasseur de Damnés",
+          "Enchanteur",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "vaillant",
+        "name": "Vaillant",
+        "cost": 91,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 6,
+          "tir": 6,
+          "for": 3,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Sans Peur",
+          "Lieutenant"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "eclaireur",
+        "name": "Eclaireur",
+        "cost": 80,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 8,
+          "tir": 6,
+          "for": 3,
+          "end": 3,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Éclaireur 7",
+          "Léger"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "reconnaissance",
+          "agilite"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "tireur-d-elite",
+        "name": "Tireur d'élite",
+        "cost": 79,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 8,
+          "tir": 5,
+          "for": 3,
+          "end": 3,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Camouflage",
+          "Œil de Faucon"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "tir"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "tieffelin",
+    "name": "Tieffelin",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 78,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 1"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "chef",
+        "name": "Chef",
+        "cost": 130,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 4,
+          "tir": 4,
+          "for": 4,
+          "end": 4,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Chef",
+          "Éclaireur 1"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 113,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [
+          "Mage",
+          "Dissipation",
+          "Éclaireur 1"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "tireur-d-elite",
+        "name": "Tireur d'élite",
+        "cost": 109,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 4,
+          "for": 4,
+          "end": 4,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 1",
+          "Œil de Faucon"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "tir"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "porte-etendard",
+        "name": "Porte étendard",
+        "cost": 115,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 5,
+          "for": 4,
+          "end": 4,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 1",
+          "Lieutenant"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [
+          "Le porte étendard ne dispose que d'une seule main libre pour son équipement, il ne peut donc pas porte une arme et un bouclier ou 2 armes. Si le porte étendard subis « bras amputé » comme blessure, alors il ne peut plus porter ni arme, ni bouclier."
+        ],
+        "role": "specialiste",
+        "hands": 1
+      },
+      {
+        "id": "fouetteur",
+        "name": "Fouetteur",
+        "cost": 116,
+        "min": 0,
+        "max": 2,
+        "stats": {
+          "mou": 5,
+          "com": 4,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 6,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Éclaireur 1",
+          "Maître escrimeur"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "nain-d-ashut",
+    "name": "Nain d'Ashut",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 109,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 4,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 5,
+          "agi": 7,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Adepte du Mal"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "despote",
+        "name": "Despote",
+        "cost": 177,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 4,
+          "tir": 4,
+          "for": 5,
+          "end": 5,
+          "agi": 7,
+          "att": 1,
+          "pv": 1,
+          "cmd": 7,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Adepte du Mal",
+          "Chef"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "combat",
+          "tir",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 6,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 137,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 5,
+          "agi": 7,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Adepte du Mal",
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [
+          "Le mage Nain d'Ashut ne commence qu'avec un seul sort : l'Orbe Mineur."
+        ],
+        "role": "specialiste",
+        "startingSpells": 1
+      },
+      {
+        "id": "garde-noir",
+        "name": "Garde noir",
+        "cost": 143,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 5,
+          "tir": 6,
+          "for": 4,
+          "end": 5,
+          "agi": 7,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Adepte du Mal",
+          "Sans Peur",
+          "Lieutenant"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "ravageur",
+        "name": "Ravageur",
+        "cost": 132,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 6,
+          "tir": 5,
+          "for": 4,
+          "end": 5,
+          "agi": 7,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Adepte du Mal",
+          "Œil de Faucon"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "hache",
+          "epee",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "tir"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "necromant",
+    "name": "Nécromant",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "squelette",
+        "name": "Squelette",
+        "cost": 35,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 8,
+          "att": 1,
+          "pv": 1,
+          "cmd": 12,
+          "svg": 11
+        },
+        "skills": [
+          "Mort-Vivant",
+          "N'apprend Rien"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 2,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "vampire",
+        "name": "Vampire",
+        "cost": 269,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 5,
+          "for": 5,
+          "end": 5,
+          "agi": 5,
+          "att": 1,
+          "pv": 2,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Mort-Vivant",
+          "Immortel",
+          "Dissipation",
+          "Chef"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arc",
+          "arc-long",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 1
+        },
+        "xpValue": 7,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "necromancien",
+        "name": "Nécromancien",
+        "cost": 105,
+        "min": 1,
+        "max": 2,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "bretonniens",
+    "name": "Bretonniens",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 70,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hallebarde",
+          "lance",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "noble",
+        "name": "Noble",
+        "cost": 124,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Chasseur de Damnés",
+          "Chef"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 115,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Chasseur de Damnés",
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "marteau",
+          "hache",
+          "epee"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "chevalier",
+        "name": "Chevalier",
+        "cost": 108,
+        "min": 0,
+        "max": 3,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Chasseur de Damnés"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "armure-complete",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "ecuyer",
+        "name": "Ecuyer",
+        "cost": 43,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 8,
+          "tir": 8,
+          "for": 3,
+          "end": 3,
+          "agi": 3,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [
+          "Petite cible",
+          "Éclaireur 6"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern",
+          "hallebarde",
+          "lance",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 3,
+        "notes": [
+          "Vous êtes obligé de posséder un écuyer dans votre bande."
+        ],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "cathay",
+    "name": "Cathay",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 78,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "shogun",
+        "name": "Shogun",
+        "cost": 147,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 5,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 7,
+          "svg": 11
+        },
+        "skills": [
+          "Chef",
+          "Maître escrimeur",
+          "Œil de Faucon"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 113,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "hache",
+          "epee",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "javelot"
+        ],
+        "trees": [
+          "general",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "samourai",
+        "name": "Samouraï",
+        "cost": 121,
+        "min": 0,
+        "max": 3,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Maître escrimeur",
+          "Œil de Faucon"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "hallebarde",
+          "lance",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "porte-etendard",
+        "name": "Porte Etendard",
+        "cost": 107,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 5,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Lieutenant"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "epee",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "ninja",
+        "name": "Ninja",
+        "cost": 135,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 6,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 11
+        },
+        "skills": [
+          "Léger",
+          "Éclaireur 3",
+          "Saut"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "hache",
+          "epee",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "armure-de-cuir",
+          "armure-legere"
+        ],
+        "trees": [
+          "general",
+          "agilite",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "oni",
+        "name": "Oni",
+        "cost": 264,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 4,
+          "com": 6,
+          "tir": null,
+          "for": 5,
+          "end": 5,
+          "agi": 8,
+          "att": 2,
+          "pv": 2,
+          "cmd": 9,
+          "svg": 6
+        },
+        "skills": [
+          "Démons",
+          "Grande cible"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance"
+        ],
+        "trees": [],
+        "upkeep": {
+          "po": 30,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 7,
+        "notes": [],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "khajiit",
+    "name": "Khajiit",
+    "notes": [],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 73,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [
+          "Mains Griffues"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "agilite"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "ajani",
+        "name": "Ajani",
+        "cost": 125,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 5,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Mains Griffues",
+          "Chef"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition",
+          "agilite"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 108,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 11
+        },
+        "skills": [
+          "Mains Griffues",
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "marteau",
+          "hache",
+          "epee"
+        ],
+        "trees": [
+          "general",
+          "erudition",
+          "agilite"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "neuvieme-vie",
+        "name": "Neuvième vie",
+        "cost": 113,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Mains Griffues",
+          "Dissipation",
+          "Éclaireur 2"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition",
+          "agilite"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "inquisiteur",
+        "name": "Inquisiteur",
+        "cost": 122,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Mains Griffues",
+          "Chasseur de Damnés",
+          "Sans Peur"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "exterminateur",
+        "name": "Exterminateur",
+        "cost": 124,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 11
+        },
+        "skills": [
+          "Mains Griffues",
+          "Adepte du Mal",
+          "Sans Peur"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "protecteur",
+        "name": "Protecteur",
+        "cost": 111,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Mains Griffues",
+          "Maître escrimeur"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "morgenstern",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "armure-lourde",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "assassin",
+        "name": "Assassin",
+        "cost": 128,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 2,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Mains Griffues",
+          "Léger",
+          "Éclaireur 2"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "arc",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "agilite",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "vigile",
+        "name": "Vigile",
+        "cost": 104,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 5,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 11
+        },
+        "skills": [
+          "Mains Griffues",
+          "Œil de Faucon"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet",
+          "arbalete-de-poing",
+          "sarbacane",
+          "javelot",
+          "pistolet",
+          "arquebuse",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "tir"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "specialiste"
+      }
+    ]
+  },
+  {
+    "id": "ondin",
+    "name": "Ondin",
+    "notes": [
+      "Les figurines de cette faction ne peuvent pas porter d'équipement du type « Chaussure »"
+    ],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 84,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 6,
+          "for": 4,
+          "end": 3,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 10
+        },
+        "skills": [
+          "Amphibien"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arc",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "tir"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 4,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "chef",
+        "name": "Chef",
+        "cost": 148,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 4,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 10
+        },
+        "skills": [
+          "Amphibien",
+          "Chef"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arc",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 129,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 6,
+          "for": 4,
+          "end": 3,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 11,
+          "svg": 10
+        },
+        "skills": [
+          "Amphibien",
+          "Mage",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "marteau",
+          "hache",
+          "epee",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arc",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot"
+        ],
+        "trees": [
+          "general",
+          "tir",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "deesse-des-mers",
+        "name": "Déesse des Mers",
+        "cost": 121,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 5,
+          "for": 4,
+          "end": 3,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 10
+        },
+        "skills": [
+          "Amphibien",
+          "Dissipation",
+          "Lieutenant"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arc",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "tir",
+          "erudition"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "garde-bleu",
+        "name": "Garde bleu",
+        "cost": 134,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 10
+        },
+        "skills": [
+          "Amphibien",
+          "Saut de Côté"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arc",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat",
+          "tir"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "harponiste",
+        "name": "Harponiste",
+        "cost": 115,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 4,
+          "for": 4,
+          "end": 3,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 10
+        },
+        "skills": [
+          "Amphibien",
+          "Œil de Faucon"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arc",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "combat"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "guide",
+        "name": "Guide",
+        "cost": 124,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 5,
+          "for": 4,
+          "end": 3,
+          "agi": 4,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 10
+        },
+        "skills": [
+          "Amphibien",
+          "Éclaireur 7"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "hallebarde",
+          "lance",
+          "arc-court",
+          "arc",
+          "arc-long",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "armure-legere",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "tir",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "avatar-d-eau",
+        "name": "Avatar d'eau",
+        "cost": 433,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 5,
+          "tir": null,
+          "for": 6,
+          "end": 5,
+          "agi": 7,
+          "att": 3,
+          "pv": 3,
+          "cmd": 10,
+          "svg": 7
+        },
+        "skills": [
+          "Amphibien",
+          "Grande cible",
+          "N'apprend Rien",
+          "Peur",
+          "Mains Griffues"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "aucun"
+        ],
+        "trees": [],
+        "upkeep": {
+          "po": 30,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 9,
+        "notes": [],
+        "role": "monstre"
+      }
+    ]
+  }
+]

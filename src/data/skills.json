@@ -1,0 +1,302 @@
+[
+  {
+    "id": "chasseur-de-damnes",
+    "name": "Chasseur de Damnés",
+    "tree": "general",
+    "description": "Cette figurine peut relancer ses jets pour toucher les Démons, Morts Vivants et Adepte du mal. De plus, elle réussit automatiquement tout test de peur provoqué par ces mêmes figurines. Une figurine avec la compétence « Adepte du Mal » ne peut pas choisir cette compétence."
+  },
+  {
+    "id": "adepte-du-mal",
+    "name": "Adepte du Mal",
+    "tree": "general",
+    "description": "Cette figurine peut pour 1 action attaquer au corps à corps un ennemie au sol, dans ce cas le jet pour toucher se fait toujours sur un 2+ sans aucun modificateur. Cette figurine pour fouiller des alliés mis hors de combat. De plus cette figurine gagne 10xp de plus lorsqu'elle tue une figurine ennemie au combat (y compris si celui-ci était déjà hors de combat). Enfin, cette figurine peut tirer ou lancer un sort dans un corps à corps même si une figurine allié s'y trouve. Une figurine avec la compétence « Chasseur de Damnés » ne peut pas choisir cette compétence."
+  },
+  {
+    "id": "prospection",
+    "name": "Prospection",
+    "tree": "general",
+    "description": "Lors de la phase « transformer les cristaux brut », la bande jette 1D10 supplémentaire par figurine possédant cette compétence, en ne conservant que les résultats les plus élevés (en fonction du nombre de cristaux brut)."
+  },
+  {
+    "id": "maitrise-technique",
+    "name": "Maîtrise Technique",
+    "tree": "general",
+    "description": "Cette figurine peut relancer tout test de force ou d'agilité pour ouvrir un trésor."
+  },
+  {
+    "id": "connaissance-du-terrain",
+    "name": "Connaissance du Terrain",
+    "tree": "general",
+    "description": "Lors du jet d'initiative, la bande jette 1D10 supplémentaire par figurine ayant cette compétence, et ne conserve que le plus grand."
+  },
+  {
+    "id": "coup-precis",
+    "name": "Coup précis",
+    "tree": "combat",
+    "description": "Les attaques de corps à corps de cette figurine infligent un malus de -1 à la sauvegarde ennemie."
+  },
+  {
+    "id": "connaissance-des-armes-de-combat",
+    "name": "Connaissance des Armes de combat",
+    "tree": "combat",
+    "description": "La figurine peut être équipée de toutes les armes de corps à corps, au lieu de seulement celles de ses options d'équipement."
+  },
+  {
+    "id": "maitre-escrimeur",
+    "name": "Maître escrimeur",
+    "tree": "combat",
+    "description": "Les ennemies subissent un malus de -1 pour toucher cette figurine au corps à corps."
+  },
+  {
+    "id": "saut-de-cote",
+    "name": "Saut de Côté",
+    "tree": "combat",
+    "description": "Lorsque cette figurine doit subir une blessure suite à une attaque au corps à corps, lancez 1D10, sur un résultat de 8+, la blessure est annulée. Ce jet n'étant pas une sauvegarde, il ne peut être modifié d'aucune sorte."
+  },
+  {
+    "id": "soldat-de-la-pegre",
+    "name": "Soldat de la Pègre",
+    "tree": "combat",
+    "description": "La bande obtient une carte marché noir supplémentaire par figurine possédant cette compétence."
+  },
+  {
+    "id": "tir-rapide",
+    "name": "Tir Rapide",
+    "tree": "tir",
+    "description": "La figurine ne subit pas de malus de -1 pour toucher au tir à la suite d'un tir supplémentaire."
+  },
+  {
+    "id": "oeil-de-faucon",
+    "name": "Œil de Faucon",
+    "tree": "tir",
+    "description": "La portée des armes de tir, hors arme de jet, utilisées par la figurine est augmentée de 4ps."
+  },
+  {
+    "id": "connaissance-des-armes-de-tir",
+    "name": "Connaissance des Armes de tir",
+    "tree": "tir",
+    "description": "La figurine peut être équipée de toutes les armes de tir, au lieu de seulement celles de ses options d'équipement."
+  },
+  {
+    "id": "tireur-d-elite",
+    "name": "Tireur d'élite",
+    "tree": "tir",
+    "description": "La figurine ne subit pas de malus de -1 pour toucher due au couvert."
+  },
+  {
+    "id": "rechargement-express",
+    "name": "Rechargement express",
+    "tree": "tir",
+    "description": "Les armes de tir nécessitant un rechargement sont considérées comme toujours rechargées entre les mains de la figurine."
+  },
+  {
+    "id": "chef",
+    "name": "Chef",
+    "tree": "erudition",
+    "description": "Cette figurine est le chef de votre bande, une seule figurine par bande peut posséder cette règle. Les autres figurines de la bande dans un rayon de 6ps peuvent utiliser le commandement de cette figurine, il est interdit de choisir volontairement cette compétence. Une figurine possédant cette compétence pourra par la suite choisir des compétences de la catégorie « Erudition » lors de passage de niveau."
+  },
+  {
+    "id": "lieutenant",
+    "name": "Lieutenant",
+    "tree": "erudition",
+    "description": "Les figurines alliées dans un rayon de 6ps peuvent relancer leur test de commandement ratés. De plus, tant que cette figurine est présente sur le champ de bataille et n'est ni morte ni hors de combat, vous pouvez relancer votre jet de test de déroute."
+  },
+  {
+    "id": "enchanteur",
+    "name": "Enchanteur",
+    "tree": "erudition",
+    "description": "Lorsque cette figurine ramasse un trésor du type « magique », vous pouvez annuler la première pioche pour en tirer une seconde, si vous le faite, vous devez conserver la deuxième carte tirée."
+  },
+  {
+    "id": "parler-fort",
+    "name": "Parler Fort",
+    "tree": "erudition",
+    "description": "Seul une figurine avec « Chef » ou « Lieutenant » peut choisir cette compétence, la portée de la capacité « Chef » ou « Lieutenant » est augmentée de 4ps, passant donc à 10ps."
+  },
+  {
+    "id": "mage-de-bataille",
+    "name": "Mage de Bataille",
+    "tree": "erudition",
+    "description": "Seul un mage peut choisir cette compétence, la figurine obtient +1 à ses jets de lancement de sorts."
+  },
+  {
+    "id": "peur",
+    "name": "Peur",
+    "tree": "force",
+    "description": "La figurine provoque la peur comme expliqué dans les règles."
+  },
+  {
+    "id": "frappe-puissante",
+    "name": "Frappe puissante",
+    "tree": "force",
+    "description": "Les attaques de corps à corps de la figurine augmentent leur létalité de la manière suivante : Faible létalité devient Normal ; normal devient haute létalité ; Haute létalité devient Très Haute létalité."
+  },
+  {
+    "id": "montagne-de-muscles",
+    "name": "Montagne de muscles",
+    "tree": "force",
+    "description": "La figurine peut combiner une arme à 2 mains avec un bouclier ou une seconde arme (obligatoirement à une main)."
+  },
+  {
+    "id": "charge-furieuse",
+    "name": "Charge furieuse",
+    "tree": "force",
+    "description": "Lorsque cette figurine arrive en contact d'un ennemi à la suite d'un mouvement (pas une mise en contact) inflige une touche automatique Force utilisateur Faible Létalité."
+  },
+  {
+    "id": "passage-en-force",
+    "name": "Passage en Force",
+    "tree": "force",
+    "description": "Cette figurine peut utiliser sa Force lorsqu'elle doit effectuer un test d'agilité."
+  },
+  {
+    "id": "leger",
+    "name": "Léger",
+    "tree": "agilite",
+    "description": "Si cette figurine est équipée uniquement de dagues en arme de corps et corps, et porte seulement une armure de cuir, sans casque ni bouclier, alors les adversaires ont -1 pour la toucher au corps à corps et la ou les dagues réduisent de 1 la sauvegarde ennemie au lieu de l'augmenter."
+  },
+  {
+    "id": "toxine-apprivoisee",
+    "name": "Toxine apprivoisée",
+    "tree": "agilite",
+    "description": "Après la bataille, le poison utilisée par cette figurine n'est perdu que sur un résultat de 5 ou moins pour les armes classiques (au d'un 8 ou moins), en cas d'utilisation d'une sarbacane, le poison est perdu sur un résultat de 1 ou 2."
+  },
+  {
+    "id": "grimpeur-ne",
+    "name": "Grimpeur né",
+    "tree": "agilite",
+    "description": "La figurine réussit automatiquement ses tests d'agilité lorsqu'elle escalade."
+  },
+  {
+    "id": "saut",
+    "name": "Saut",
+    "tree": "agilite",
+    "description": "La figurine est capable de bondir aisément, lors de ses mouvement, elle peut passer par-dessus tout élément de 1ps ou moins, et ce sur une distance équivalente à sa valeur de mouvement."
+  },
+  {
+    "id": "esquive",
+    "name": "Esquive",
+    "tree": "agilite",
+    "description": "Lorsque cette figurine est la cible d'un tir, une fois le jet de touche effectué (et réussi), lancez 1D10, sur un résultat de 8+, la touche est annulée."
+  },
+  {
+    "id": "eclaireur-3",
+    "name": "Eclaireur 3",
+    "tree": "reconnaissance",
+    "description": "Lors du jet de dés d'initiative avant le placement des figurines, cette figurine ajoute 3 au résultat obtenu."
+  },
+  {
+    "id": "camouflage",
+    "name": "Camouflage",
+    "tree": "reconnaissance",
+    "description": "Les tirs ennemies subissent un malus de -1 pour toucher."
+  },
+  {
+    "id": "infiltration",
+    "name": "Infiltration",
+    "tree": "reconnaissance",
+    "description": "La figurine est déployée après que toutes les bandes se sont déployées. Elle peut être placée n'importe où sur le champ de bataille à plus de 12ps et hors de vue de toute figurine ennemie. Si plusieurs bandes possèdent des figurines avec ces compétences, placez les figurines dans l'ordre d'initiative des bandes. Cette figurine peut également être placée de manière classique en début de partie."
+  },
+  {
+    "id": "forestier",
+    "name": "Forestier",
+    "tree": "reconnaissance",
+    "description": "Lorsque cette figurine ramasse un trésor du type « naturel », vous pouvez annuler la première pioche pour en tirer une seconde, si vous le faite, vous devez conserver la deuxième carte tirée."
+  },
+  {
+    "id": "marin",
+    "name": "Marin",
+    "tree": "reconnaissance",
+    "description": "Lorsque cette figurine ramasse un trésor du type « rivage », vous pouvez annuler la première pioche pour en tirer une seconde, si vous le faite, vous devez conserver la deuxième carte tirée."
+  },
+  {
+    "id": "mage",
+    "name": "Mage",
+    "tree": "divers",
+    "description": "Cette figurine peut lancer des sorts comme expliqué dans les règles."
+  },
+  {
+    "id": "dissipation",
+    "name": "Dissipation",
+    "tree": "divers",
+    "description": "Cette figurine peut annuler des sorts « reste en jeu » comme expliqué dans les règles."
+  },
+  {
+    "id": "eclaireur-x",
+    "name": "Eclaireur X",
+    "tree": "divers",
+    "description": "Lors du jet de dés d'initiative avant le placement des figurines, cette figurine ajoute X au résultat obtenu."
+  },
+  {
+    "id": "n-apprend-rien",
+    "name": "N'apprend Rien",
+    "tree": "divers",
+    "description": "La figurine ne gagne jamais d'expérience."
+  },
+  {
+    "id": "petite-cible",
+    "name": "Petite cible",
+    "tree": "divers",
+    "description": "Les tirs ennemies subissent un malus de -1 pour toucher."
+  },
+  {
+    "id": "grande-cible",
+    "name": "Grande cible",
+    "tree": "divers",
+    "description": "Les tirs ennemies subissent un bonus de +1 pour toucher."
+  },
+  {
+    "id": "tres-grande-cible",
+    "name": "Très grande cible",
+    "tree": "divers",
+    "description": "Les tirs ennemies subissent un bonus de +1 pour toucher."
+  },
+  {
+    "id": "mort-vivant",
+    "name": "Mort-Vivant",
+    "tree": "divers",
+    "description": "Cette figurine n'effectue jamais de test de peur, lorsqu'elle ramasse un trésor du type « cimetière », vous pouvez annuler la première pioche pour en tirer une seconde, si vous le faite, vous devez conserver la deuxième carte tirée. De plus, elle possède la compétence régénération."
+  },
+  {
+    "id": "sans-peur",
+    "name": "Sans Peur",
+    "tree": "divers",
+    "description": "Cette figurine n'effectue jamais de test de peur."
+  },
+  {
+    "id": "goulu",
+    "name": "Goulu",
+    "tree": "divers",
+    "description": "Cette figurine peut pour 1 action manger une figurine morte au contact. Si elle le fait, elle gagne immédiatement 20xp. Ensuite retirez la figurine mangée de la table."
+  },
+  {
+    "id": "mains-griffues",
+    "name": "Mains Griffues",
+    "tree": "divers",
+    "description": "Lorsque cette figurine combat à mains nues, elle ne subit pas les malus de -1 en force, +1 à la sauvegarde ennemie et faible létalité."
+  },
+  {
+    "id": "demons",
+    "name": "Démons",
+    "tree": "divers",
+    "description": "La figurine possède les règles Mains Griffues, Sans Peur, Régénération et N'apprend Rien. Si elle dispose d'une capacité de tir, alors elle peut tirer (porté 15ps force utilisateur)."
+  },
+  {
+    "id": "vol",
+    "name": "Vol",
+    "tree": "divers",
+    "description": "La figurine peut passer par-dessus tout obstacle, elle ne peut pas terminer son mouvement sur un terrain infranchissable, il est possible de combiner des actions de mouvements."
+  },
+  {
+    "id": "regeneration",
+    "name": "Régénération",
+    "tree": "divers",
+    "description": "La figurine ne subit ni les bonus ni les malus des cartes blessures. Elle est soit morte, soit vivante. Ainsi, lorsque cette figurine doit piocher une carte blessure, jetez 1D10 à la place, sur un résultat de 1 à 8, la figurine est mise hors de combat, sur un 9 ou 10 elle est morte. Si la blessure a été causée par une arme à faible létalité, alors la figurine est morte sur un 10 ; si la blessure a été causée par une arme à haute létalité ou contondant, alors la figurine est morte sur un 8 à 10 ; si la blessure a été causée par une arme à très haute létalité, alors la figurine est morte sur un 7 à 10."
+  },
+  {
+    "id": "amphibien",
+    "name": "Amphibien",
+    "tree": "divers",
+    "description": "Cette figurine peut se déplacer librement dans les terrains aquatiques (normalement infranchissable). Lorsqu'elle se trouve dans ce genre de terrain ses adversaires ont -1 pour la toucher au tir. Néanmoins, tant qu'elle se trouve dans ce genre de terrain, il lui est impossible d'utiliser une arme de tir ou de lancer un sort. Une figurine avec cette règle dispose automatiquement de la règle « Marin »."
+  }
+]

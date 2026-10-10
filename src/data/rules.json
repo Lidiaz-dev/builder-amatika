@@ -1,0 +1,695 @@
+[
+  {
+    "id": "introduction",
+    "title": "Introduction",
+    "level": 2,
+    "paragraphs": [
+      "Amatika est un jeu de figurines sur table décorée.\nChaque joueur rassemble une bande de guerrier, appelée « Récolteur de cristaux » de la race de son choix parmi un large choix, paye l'équipement de chacun de ses courageux soldat, puis parcours les terres de l'île d'Amatika afin de ramasser le précieux cristal laissé par les vents éthériques, fouille les trésors présents sur l'île, mais également empêche les récolteurs des autres bandes de faire de même. La faune locale se dressera contre vous tout autant que les groupes adverses, mais voyons le bon côté des choses, une tête de Troll est un excellent trophée à poser sur le buffet à coté de sa cheminée.",
+      "Tous les moyens sont bons pour obtenir le maximum de trésors et de prestige (hormis la triche, bien entendu), alors sortez vos armes de fourreaux, l'heure n'est plus à faire des pâtés de sable sur la plage.",
+      "Amatika se veut avant tout être un jeu narratif, ou l'esprit de la règle prend toujours le dessus sur une lecture de celle-ci permettant des actions non voulues par le créateur.\nCe jeu est fait pour être joué en campagne avec un groupe d'ami, ainsi il est toujours bon de prévoir une solution et d'adapter les règles à votre convenance si un des joueurs du groupe est trop en retard.\nS'amuser est la seule raison de pratiquer le wargame, l'humiliation n'a pas sa place ici.",
+      "Nous vous conseillons néanmoins avant de vous lancer dans une campagne de faire quelques parties test, afin de bien assimiler les règles génériques ensemble, ainsi que de se faire la main sur les spécificités de son groupe de collecteur, chaque faction ayant son propre style de jeu avec ses points forts et ses points faibles."
+    ]
+  },
+  {
+    "id": "ce-dont-vous-aurez-besoin",
+    "title": "Ce dont vous aurez besoin",
+    "level": 2,
+    "paragraphs": [
+      "Chaque joueur devra posséder sa propre bande de collecteurs de cristaux, bien qu'il soit possible de se faire prêter les figurines.\nLes joueurs devront également posséder une petite poignée de dés à 10 faces, que l'on appelle D10, il n'est pas nécessaire que chaque joueur possède ses propre dés, un pot commun est tout à fait possible.\nUne table de jeu dont la taille varie en fonction du nombre de joueur, cette table doit être pourvue de nombreux décors : bâtiments, ruines, rivières, lacs, murets, bois, champs, collines, etc. il est important que les figurines est des endroits ou se cacher (les couards) afin d'éviter le tir au pigeon, mais il faut également que des angles de tirs soient possibles sur toute la table, la vie extérieur n'est pas un labyrinthe.\nUn mètre ruban, ou n'importe quel accessoire permettant de mesurer des distances.\nDivers pions : d'activation, caché, de trésors, cristaux brut etc.\nLes fiches d'unités de ses figurines ainsi que les cartes équipements que chacun porte."
+    ]
+  },
+  {
+    "id": "caracteristiques-de-figurines",
+    "title": "Caractéristiques de figurines",
+    "level": 2,
+    "paragraphs": [
+      "Les collecteurs d'Amatika possèdent chacun des caractéristiques différentes, parfois orientées vers des domaines particuliers comme le combat, le tir ou encore l'exploration. Cette diversité est représentée par les caractéristiques et les compétences. Concentrons-nous dans un premier temps sur les caractéristiques.",
+      "Chaque figurine est définie par un ensemble de caractéristiques : mouvement, combat, tir, force, endurance, agilité, attaque, point de vie, commandement et armure.\nCertaines de ces caractéristiques possède un chiffre seul, souvent compris entre 0 et 10, plus le chiffre est élevé, meilleur sera le personnage.\nD'autres possède un chiffre suivi d'un « + », c'est le résultat à obtenir sur un D10. Par exemple une caractéristique de tir de 6+ signifie que les résultats 6, 7, 8, 9 et 10 sur un D10 sont des réussites, les autres sont des échecs. Ainsi, dans ce cas, plus le chiffre est petit, meilleur sera le personnage.",
+      "Mouvement : elle représente la vitesse de déplacement d'une figurine, exprimée en pas, ou pouce (1 pouce = 2,54cm).",
+      "Combat : elle représente la faculté du personnage de se battre au corps à corps.",
+      "Tir : elle représente la faculté du personnage de toucher un adversaire lointain avec une arme de tir.",
+      "Force : elle représente la puissance physique de la figurine, un chétif gobelin aura une force bien plus faible qu'un ogre par exemple.",
+      "Endurance : elle représente la capacité de la figurine à encaisser les coups sans broncher.",
+      "Agilité : elle représente l'aptitude de la figurine à effectuer des actions non combattantes, comme escalader, se cacher ou détecter des ennemis embusqués.",
+      "Attaque : elle représente le nombre de dès qu'il faut lancer lorsque la figurine effectue une attaque de corps à corps.",
+      "Point de vie : elle représente le nombre de blessure que la figurine peut subir avant d'être blessée, voir morte.",
+      "Commandement : elle représente le mental du combattant, sa capacité à ne pas fuir le combat ou à diriger le groupe, cette caractéristique s'échelonne de 2 à 20.",
+      "Armure : elle représente la résistance de l'armure portée par le combattant, elle est évolutive en fonction de l'équipement, une très grande majorité des combattant ne possède aucune armure lors du recrutement, et donc aucune sauvegarde, on dit qu'ils sont « en slip ».",
+      "Certaines caractéristiques peuvent être nulles, cela signifie que la figurine ne peut pas utiliser cette caractéristique. Une figurine avec un mouvement de 0 ne peut pas se déplacer, une caractéristique de combat de 0 signifie être touché automatiquement au corps à corps et ne pas pouvoir attaquer, un tir de 0 empêche d'utiliser des armes de tir, une caractéristique de force, endurance ou point de vie égale à 0, et c'est la mort immédiate. Une agilité de 0, ça n'existe pas dans un monde comme celui-ci, les nouveau-nés n'intègrent pas de compagnie de collecteurs de cristaux, il en va de même pour le commandement. Une armure égale à 0+ est assez rare, cela signifie simplement que la figurine porte de lourdes pièces d'armures lui permettant de se protéger de presque tous les coups reçus. Bien entendu cette situation est exceptionnelle. L'armure de base d'une grande majorité des soldats est de 11+, ce qui avec un D10 est assez compliqué à réaliser.",
+      "Test de caractéristique : Lorsqu'une figurine doit effectuer un test de caractéristique, le joueur jette un D10, le résultat à obtenir pour que le test soit un succès est un résultat égal ou inférieur à la caractéristique concernée. Des modificateurs peuvent être appliqués à ce test, bonus comme malus.",
+      "Le bonus en force apporté par certaines armes n'est pas pris en compte lors d'un test de force, pour ce test, on parle bien de la force brute de la figurine.\nNéanmoins, sur un résultat de 10, le résultat est automatiquement une réussite, et un 1 un échec, peu importe les modificateurs.",
+      "Il existe néanmoins une exception à cela : le test de commandement : celui-ci est effectué en lançant deux D10 et en additionnant les deux résultats, l'objectif étant cette fois d'obtenir un résultat supérieur ou égal à la valeur de commandement de la figurine. Un résultat de 20 est toujours une réussite, et un 2 toujours un échec.",
+      "Les soldats dans Amatika sont représentés par des figurines statiques, mais il faut bien s'imaginer qu'elles sont tout le temps en mouvement, regardant à droite et à gauche. Ainsi les figurines possèdent une ligne de vue à 360°, peu importe la forme du socle ou l'orientation de celle-ci.",
+      "En plus de ces caractéristiques, il existe une grande liste de Compétences.\nCertains soldats possèdent nativement des compétences, d'autres n'en possèdent aucune.",
+      "Dans tous les cas, au fil du temps, il sera possible d'apprendre de nouvelles compétences.\nLes compétences sont classées en 8 catégories :"
+    ]
+  },
+  {
+    "id": "generique",
+    "title": "Générique",
+    "level": 3,
+    "paragraphs": [
+      "Chasseur de Damnés : Cette figurine peut relancer ses jets pour toucher les Démons, Morts Vivants et Adepte du mal. De plus, elle réussit automatiquement tout test de peur provoqué par ces mêmes figurines. Une figurine avec la compétence « Adepte du Mal » ne peut pas choisir cette compétence.",
+      "Adepte du Mal : Cette figurine peut pour 1 action attaquer au corps à corps un ennemie au sol, dans ce cas le jet pour toucher se fait toujours sur un 2+ sans aucun modificateur. Cette figurine pour fouiller des alliés mis hors de combat. De plus cette figurine gagne 10xp de plus lorsqu'elle tue une figurine ennemie au combat (y compris si celui-ci était déjà hors de combat). Enfin, cette figurine peut tirer ou lancer un sort dans un corps à corps même si une figurine allié s'y trouve. Une figurine avec la compétence « Chasseur de Damnés » ne peut pas choisir cette compétence.",
+      "Prospection : Lors de la phase « transformer les cristaux brut », la bande jette 1D10 supplémentaire par figurine possédant cette compétence, en ne conservant que les résultats les plus élevés (en fonction du nombre de cristaux brut).",
+      "Maîtrise Technique : Cette figurine peut relancer tout test de force ou d'agilité pour ouvrir un trésor.",
+      "Connaissance du Terrain : Lors du jet d'initiative, la bande jette 1D10 supplémentaire par figurine ayant cette compétence, et ne conserve que le plus grand."
+    ]
+  },
+  {
+    "id": "combat",
+    "title": "Combat",
+    "level": 3,
+    "paragraphs": [
+      "Coup précis : Les attaques de corps à corps de cette figurine infligent un malus de -1 à la sauvegarde ennemie.",
+      "Connaissance des Armes de combat : La figurine peut être équipée de toutes les armes de corps à corps, au lieu de seulement celles de ses options d'équipement.",
+      "Maître escrimeur : Les ennemies subissent un malus de -1 pour toucher cette figurine au corps à corps.",
+      "Saut de Côté : Lorsque cette figurine doit subir une blessure suite à une attaque au corps à corps, lancez 1D10, sur un résultat de 8+, la blessure est annulée. Ce jet n'étant pas une sauvegarde, il ne peut être modifié d'aucune sorte.",
+      "Soldat de la Pègre : La bande obtient une carte marché noir supplémentaire par figurine possédant cette compétence."
+    ]
+  },
+  {
+    "id": "tir",
+    "title": "Tir",
+    "level": 3,
+    "paragraphs": [
+      "Tir Rapide : La figurine ne subit pas de malus de -1 pour toucher au tir à la suite d'un tir supplémentaire.",
+      "Œil de Faucon : La portée des armes de tir, hors arme de jet, utilisées par la figurine est augmentée de 4ps.",
+      "Connaissance des Armes de tir : La figurine peut être équipée de toutes les armes de tir, au lieu de seulement celles de ses options d'équipement.",
+      "Tireur d'élite : La figurine ne subit pas de malus de -1 pour toucher due au couvert.",
+      "Rechargement express : Les armes de tir nécessitant un rechargement sont considérées comme toujours rechargées entre les mains de la figurine."
+    ]
+  },
+  {
+    "id": "erudition",
+    "title": "Erudition",
+    "level": 3,
+    "paragraphs": [
+      "Chef : Cette figurine est le chef de votre bande, une seule figurine par bande peut posséder cette règle. Les autres figurines de la bande dans un rayon de 6ps peuvent utiliser le commandement de cette figurine, il est interdit de choisir volontairement cette compétence. Une figurine possédant cette compétence pourra par la suite choisir des compétences de la catégorie « Erudition » lors de passage de niveau.",
+      "Lieutenant : Les figurines alliées dans un rayon de 6ps peuvent relancer leur test de commandement ratés. De plus, tant que cette figurine est présente sur le champ de bataille et n'est ni morte ni hors de combat, vous pouvez relancer votre jet de test de déroute.",
+      "Enchanteur : Lorsque cette figurine ramasse un trésor du type « magique », vous pouvez annuler la première pioche pour en tirer une seconde, si vous le faite, vous devez conserver la deuxième carte tirée.",
+      "Parler Fort : Seul une figurine avec « Chef » ou « Lieutenant » peut choisir cette compétence, la portée de la capacité « Chef » ou « Lieutenant » est augmentée de 4ps, passant donc à 10ps.",
+      "Mage de Bataille : Seul un mage peut choisir cette compétence, la figurine obtient +1 à ses jets de lancement de sorts."
+    ]
+  },
+  {
+    "id": "force",
+    "title": "Force",
+    "level": 3,
+    "paragraphs": [
+      "Peur : La figurine provoque la peur comme expliqué dans les règles.",
+      "Frappe puissante : Les attaques de corps à corps de la figurine augmentent leur létalité de la manière suivante : Faible létalité devient Normal ; normal devient haute létalité ; Haute létalité devient Très Haute létalité.",
+      "Montagne de muscles : La figurine peut combiner une arme à 2 mains avec un bouclier ou une seconde arme (obligatoirement à une main).",
+      "Charge furieuse : Lorsque cette figurine arrive en contact d'un ennemi à la suite d'un mouvement (pas une mise en contact) inflige une touche automatique Force utilisateur Faible Létalité.",
+      "Passage en Force : Cette figurine peut utiliser sa Force lorsqu'elle doit effectuer un test d'agilité."
+    ]
+  },
+  {
+    "id": "agilite",
+    "title": "Agilité",
+    "level": 3,
+    "paragraphs": [
+      "Léger : Si cette figurine est équipée uniquement de dagues en arme de corps et corps, et porte seulement une armure de cuir, sans casque ni bouclier, alors les adversaires ont -1 pour la toucher au corps à corps et la ou les dagues réduisent de 1 la sauvegarde ennemie au lieu de l'augmenter.",
+      "Toxine apprivoisée : Après la bataille, le poison utilisée par cette figurine n'est perdu que sur un résultat de 5 ou moins pour les armes classiques (au d'un 8 ou moins), en cas d'utilisation d'une sarbacane, le poison est perdu sur un résultat de 1 ou 2.",
+      "Grimpeur né : La figurine réussit automatiquement ses tests d'agilité lorsqu'elle escalade.",
+      "Saut : La figurine est capable de bondir aisément, lors de ses mouvement, elle peut passer par-dessus tout élément de 1ps ou moins, et ce sur une distance équivalente à sa valeur de mouvement.",
+      "Esquive : Lorsque cette figurine est la cible d'un tir, une fois le jet de touche effectué (et réussi), lancez 1D10, sur un résultat de 8+, la touche est annulée."
+    ]
+  },
+  {
+    "id": "reconnaissance",
+    "title": "Reconnaissance",
+    "level": 3,
+    "paragraphs": [
+      "Eclaireur 3 : Lors du jet de dés d'initiative avant le placement des figurines, cette figurine ajoute 3 au résultat obtenu.",
+      "Camouflage : Les tirs ennemies subissent un malus de -1 pour toucher.",
+      "Infiltration : La figurine est déployée après que toutes les bandes se sont déployées. Elle peut être placée n'importe où sur le champ de bataille à plus de 12ps et hors de vue de toute figurine ennemie. Si plusieurs bandes possèdent des figurines avec ces compétences, placez les figurines dans l'ordre d'initiative des bandes. Cette figurine peut également être placée de manière classique en début de partie.",
+      "Forestier : Lorsque cette figurine ramasse un trésor du type « naturel », vous pouvez annuler la première pioche pour en tirer une seconde, si vous le faite, vous devez conserver la deuxième carte tirée.",
+      "Marin : Lorsque cette figurine ramasse un trésor du type « rivage », vous pouvez annuler la première pioche pour en tirer une seconde, si vous le faite, vous devez conserver la deuxième carte tirée."
+    ]
+  },
+  {
+    "id": "divers",
+    "title": "Divers",
+    "level": 3,
+    "paragraphs": [
+      "Chef : Cette figurines est le chef de votre bande, une seule figurine par bande peut posséder cette règle. Les autres figurines de la bande dans un rayon de 6ps peuvent utiliser le commandement du cette figurine.",
+      "Mage : Cette figurine peut lancer des sorts comme expliqué dans les règles.",
+      "Dissipation : Cette figurine peut annuler des sorts « reste en jeu » comme expliqué dans les règles.",
+      "Eclaireur X : Lors du jet de dés d'initiative avant le placement des figurines, cette figurine ajoute X au résultat obtenu.",
+      "N'apprend Rien : La figurine ne gagne jamais d'expérience.",
+      "Petite cible : Les tirs ennemies subissent un malus de -1 pour toucher.",
+      "Grande cible : Les tirs ennemies subissent un bonus de +1 pour toucher.",
+      "Très grande cible : Les tirs ennemies subissent un bonus de +1 pour toucher.",
+      "Mort-Vivant : Cette figurine n'effectue jamais de test de peur, lorsqu'elle ramasse un trésor du type « cimetière », vous pouvez annuler la première pioche pour en tirer une seconde, si vous le faite, vous devez conserver la deuxième carte tirée. De plus, elle possède la compétence régénération.",
+      "Sans Peur : Cette figurine n'effectue jamais de test de peur.",
+      "Goulu : Cette figurine peut pour 1 action manger une figurine morte au contact. Si elle le fait, elle gagne immédiatement 20xp. Ensuite retirez la figurine mangée de la table.",
+      "Mains Griffues : Lorsque cette figurine combat à mains nues, elle ne subit pas les malus de -1 en force, +1 à la sauvegarde ennemie et faible létalité.",
+      "Démons : La figurine possède les règles Mains Griffues, Sans Peur, Régénération et N'apprend Rien. Si elle dispose d'une capacité de tir, alors elle peut tirer (porté 15ps force utilisateur).",
+      "Vol : La figurine peut passer par-dessus tout obstacle, elle ne peut pas terminer son mouvement sur un terrain infranchissable, il est possible de combiner des actions de mouvements.",
+      "Régénération : La figurine ne subit ni les bonus ni les malus des cartes blessures. Elle est soit morte, soit vivante. Ainsi, lorsque cette figurine doit piocher une carte blessure, jetez 1D10 à la place, sur un résultat de 1 à 8, la figurine est mise hors de combat, sur un 9 ou 10 elle est morte. Si la blessure a été causée par une arme à faible létalité, alors la figurine est morte sur un 10 ; si la blessure a été causée par une arme à haute létalité ou contondant, alors la figurine est morte sur un 8 à 10 ; si la blessure a été causée par une arme à très haute létalité, alors la figurine est morte sur un 7 à 10.",
+      "Amphibien : Cette figurine peut se déplacer librement dans les terrains aquatiques (normalement infranchissable). Lorsqu'elle se trouve dans ce genre de terrain ses adversaires ont -1 pour la toucher au tir. Néanmoins, tant qu'elle se trouve dans ce genre de terrain, il lui est impossible d'utiliser une arme de tir ou de lancer un sort. Une figurine avec cette règle dispose automatiquement de la règle « Marin »."
+    ]
+  },
+  {
+    "id": "la-fiche-personnage",
+    "title": "La fiche personnage",
+    "level": 2,
+    "paragraphs": [
+      "Chaque personnage doit posséder une fiche comme ci-dessous. Lorsque vous achetez un nouveau soldat (voir Rassemblez sa bande de collecteurs) il est important de remplir une fiche par personnage, en lui donnant un nom qui sonne bien (Franckie le Dominant est un parfait exemple), notant le type de figurine (Recrue, Chef, Mage etc...), ces compétences de départs, son coût d'entretien ainsi que ces caractéristiques. Cela vous permettra d'avoir sous les yeux toutes les informations nécessaires lorsque cette figurine s'active plutôt que de devoir sans cesse rechercher dans ce satané livre de règles.\nAu fil des parties, de nouvelles compétences pourront être ajoutées à cette fiche, ainsi que possiblement des blessures persistantes. De plus, il sera important de bien prendre note de l'expérience emmagasinée par la figurine, lui permettant de passer de niveau.",
+      "Sous la fiche, la ou il est noté « Équipement porté », vous placerez les cartes d'équipements que la figurine porte actuellement sur elle. Cet équipement doit néanmoins suivre les restriction suivantes :\nLes armes et bouclier portés par la figurine ne peuvent pas excéder 2 mains.\nAinsi une figurine équipée d'une arme à 2 mains ne peut porter aucune autre arme ni de bouclier.\nUne figurine peut si elle le souhaite porter 1 arme de corps à corps à une main et un bouclier.\nIl est également possible de porter 2 armes de corps à corps à une main, dans ce cas la figurine gagne une attaque supplémentaire, et lorsqu'elle se bat au corps à corps elle pourra répartir ses attaques entre ses 2 armes, avec un minimum de 1 attaque par arme.\nUne autre choix possible est de s'équiper d'1 arme de corps à corps à une main et 1 arme de tir à une main, lui permettant de tirer puis de se battre sans avoir à perdre une action pour changer d'équipement (ceci sera vu plus tard)\n1 arme de tir à une main et 1 bouclier est aussi une possibilité, servant à protéger le tireur, dans ce cas le bouclier est plutôt utilisé en tant que pavois.\nPour finir un soldat peut choisir de s'équiper d'1 arme de tir à deux mains.",
+      "Il est en revanche interdit de s'équiper de 2 boucliers ni de 2 armes de tir à 1 main.",
+      "En plus de l'armement, vous pouvez équiper chaque figurine d'une armure au maximum (de cuir, légère, lourde ou complète), mais en aucun cas de 2, qu'elles soient différentes ou identiques.\nAfin de compléter sa protection, il est possible d'équiper une figurine d'un casque, ou d'un équipement du type chapeau, mais pas les 2.\nD'autres équipement plus spécifiques, et rares, peuvent être pris en un seul exemplaire de chaque : 1 gant (1 carte équivaut à une paire); 1 chaussure (1 carte équivaut à une paire) et 1 talisman. Il est donc bien interdit de posséder 2 gants, 2 chaussures ou 2 talismans.",
+      "Certaines blessures vont parfois faire perdre un bras (et donc une main) à vos soldats. 2 soldats ayant tous deux perdus un bras ne peuvent en aucun cas se partager une carte d'équipement de gants, il en est de même pour les chaussures. Je vous vois venir, petits malins que vous êtes !!!!",
+      "Enfin, au-dessus de la fiche de personnage se trouve le sac à dos de celui-ci, vous allez pouvoir poser toutes les cartes équipements que le soldat apporte avec lui pour la partie (une arme de corps à corps par exemple si la figurine est équipée d'une arme de tir à 2 mains), du poison, des fioles ou toute autre chose qui pourrait vous sembler utile. De plus, tout équipement récupéré en cours de partie est automatiquement placé dans son sac à dos."
+    ]
+  },
+  {
+    "id": "le-round",
+    "title": "Le round",
+    "level": 2,
+    "paragraphs": [
+      "Amatika vous place à la tête d'une bande tandis que votre, ou vos, adversaires en dirigent une autre.",
+      "Les guerriers, les décors et les divers pions objectifs du jeu sont mis en place sur la table d'une manière libre pour certaines parties, séquencés pour d'autres, ne vous souciez pas de tout cela pour le moment, tout vous sera expliqué en détail par la suite.",
+      "Pendant la partie, les joueurs activent une figurine chacun leur tour.\nUn joueur pioche au hasard un pion d'activation parmi ceux se trouvant dans le sac d'activation (ceci sera vu par la suite), la couleur du pion tiré indique le joueur devant activer une figurine.\nLors de son tour d'activation, le joueur actif choisit une de ses figurines qui ne s'est pas encore activée ce tour-ci, elle devient la figurine active, celle-ci dispose en grande majorité de 3 actions possibles, une fois ces 3 actions réalisées, le tour du joueur prend fin, le jeton d'activation de la couleur du joueur est placé à côté de la figurine afin d'indiquer qu'elle a déjà jouée et ne pourra plus le faire durant ce round, puis ce joueur pioche au hasard un nouveau pion d'activation. Répétez ce processus jusqu'à ce que les joueurs aient activé toutes leurs figurines. Alors le round prend fin, chacun récupère ses jetons d'activation, les créatures s'activent, puis un nouveau round commence.",
+      "Les créatures sont des figurines représentant la faune locale. Celle-ci n'étant pas franchement ravie de voir débarquer sur leur île des soldats armés jusqu'aux dents, elle envoie régulièrement ces créatures dans le but de détruire un maximum de soldats des groupes de collecteurs.",
+      "Chaque créature est activée, à tour de rôle en commençant par celle ayant la valeur de menace la plus élevée jusqu'à la plus faible, jetez un dé en cas d'égalité.\nLes créatures peuvent effectuer 3 actions, comme toutes les figurines, en suivant la procédure suivante :",
+      "La créature est-elle engagée au corps à corps ?\nSi oui, allez en 2, si non, allez en 3",
+      "Effectuez une attaque de corps à corps contre la ou les figurines au contact. Répartissez aussi équitablement que possible les attaques, lancez un dé s'il y plus de figurines ennemies au contact que d'attaques.\nUne fois l'attaque résolue, si la créature dispose encore d'au moins une action, alors allez en 1, sinon son activation prend fin, passez à la créature suivante.",
+      "La créature dispose-t-elle d'une arme de tir ou de magie ?\nSi oui, allez au 4, si non, allez au 6",
+      "La créature a-t-elle une ligne de vue sur une figurine ennemie et à porte de tir ou magique ?\nSi oui, allez au 5, si non, allez au 6",
+      "Effectuez une action de tir ou de magie normalement sur la figurine éligible. Une fois cette action réalisée, si la créature dispose encore d'au moins une action, alors allez en 3, sinon son activation prend fin, passez à la créature suivante.",
+      "La créature se déplace de sa valeur de mouvement complète, le plus rapidement possible, en direction de la figurine ennemie visible la plus proche, l'emmenant au contact si possible. Une fois cette action réalisée, si la créature dispose encore d'au moins une action, alors allez en 1, sinon son activation prend fin, passez à la créature suivante.",
+      "Une fois toutes les créatures activées, faites le test afin de voir si la partie continue ou prend fin, puis possiblement un nouveau round commence.",
+      "A chaque début de round, les joueurs comptent leur nombre d'activations restantes, le plus simple est de compter ses jetons d'activations, le joueur ayant le nombre le plus élevé doit commencer, en cas d'égalité, les joueurs se disputant l'égalité jettent chacun un D10, le résultat le plus élevé commence, relancez en cas d'égalité (seulement l'égalité la plus élevée relance, pas tous les joueurs).",
+      "Avant de laisser place aux joueurs, et seulement à partir du deuxième round, la nature d'Amatika va envoyer sa faune contre les collecteurs.\nPour se faire, le joueur qui a activé la dernière figurine tire une carte Créature par rang de 2 bandes toujours présente sur le champ de bataille, avec un minimum de 1 créature.",
+      "De 1 à 3 bandes : 1 créature\nDe 4 à 5 bandes : 2 créatures\nDe 6 à 7 bandes : 3 créatures\nEtc.",
+      "Chaque créature arrive par un des points de déploiement utilisé par les joueurs en début de partie, tiré aléatoirement, relancez si une créature est déjà apparue ce round-ci au même point.",
+      "Ces créatures représentent une menace dans le dos des joueurs, mais elles sont aussi bien souvent une source de ressources en PO, cristaux, prestige, expérience et/ou objets. Les créatures ne portent aucun équipement classique, les compétences et caractéristiques sont toutes notées sur la fiche de la créature.",
+      "Chaque carte de créature indique ces caractéristiques, compétences, ainsi que les gains si on la met hors de combat (en prestige) et si on la fouille.\nUne bande parvenant à mettre hors de combat une créature obtient immédiatement le prestige notée sur la fiche, certaines créatures trop faibles n'apportent aucun prestige. En revanche pour les PO, cristaux et autres objets, ce sera la figurine fouillant la créature qui remportera le pactole, s'il y en a un."
+    ]
+  },
+  {
+    "id": "tour-de-joueur",
+    "title": "Tour de joueur",
+    "level": 2,
+    "paragraphs": [
+      "Enfin vient le moment d'activer sa première figurine !\nC'est à votre tour de jouer, un pion de votre couleur a été tiré dans le sac d'activation. Vous choisissez donc une des figurines de votre bande ne s'étant pas encore activée lors de ce round, ce sera la seule qui pourra effectuer des actions, le reste de votre bande ainsi que les figurines de vos adversaires vous regarderont avec admiration ou moquerie, l'avenir le dira.",
+      "Avant toute action, vérifier si le combattant que vous avez séléctioné n'est pas en fuite (possède un jeton paniqué à côté d'elle), si tel est le cas, effectuez un test de commandement, si le résultat est supérieur ou égal à son commandement, la figurine reprend ses esprits, vous pouvez retirer le pion paniqué et activer le personnage, celui-ci perd néanmoins une activation lors de son tour. En revanche, en cas d'échec, vous devez déplacer la figurine du triple de son mouvement vers le bord de table le plus proche, en contournant les obstacles et les ennemies, laissez bien entendu le jeton paniqué proche de la figurine. Votre tour prend alors immédiatement fin, ce sont des choses qui arrivent lorsqu'on recrute des incompétents, ou lorsque l'on croise le chemin d'un monstre particulièrement terrifiant.",
+      "Si votre figurine n'est pas paniquée, vous aurez la liberté de choisir ces 3 actions, c'est ce qui devrait se passer dans une grande majorité de cas. Vous êtes libre d'effectuer ces actions dans l'ordre qu'il vous plaît, il est même tout à fait possible de répéter plusieurs fois la même. Une fois les 3 actions faites, votre tour prend fin et c'est à votre voisin de gauche de faire de même."
+    ]
+  },
+  {
+    "id": "voici-donc-la-liste-des-actions",
+    "title": "Voici donc la liste des actions",
+    "level": 3,
+    "paragraphs": [
+      "Se déplacer\nTirer\nCharger\nAttaquer au corps à corps\nFouiller\nRamasser\nViser\nRecharger\nSe Cacher\nRester cacher\nSe Révéler\nLancer un sort\nDissiper un sort en jeu\nSe désengager\nUtiliser un objet de son sac",
+      "Cette liste de 15 actions possibles peut vous sembler longue et complexe, pas de panique, la situation de la figurine active vous aiguillera forcément sur la ou les actions intéressantes à faire sur le moment."
+    ]
+  },
+  {
+    "id": "se-deplacer",
+    "title": "Se déplacer",
+    "level": 3,
+    "paragraphs": [
+      "Votre figurine se déplace d'un nombre de pas égale à sa valeur de mouvement, il est tout à fait possible de se déplacer de moins que sa valeur de mouvement. \nVotre déplacement ne peut pas vous emmener au contact d'une figurine ennemie debout.\nVotre déplacement peut vous emmener au contact d'un objectif, de cristaux bruts ou d'un ennemi mort ou inconscient, vous pourrez alors interagir avec s'il vous reste une action disponible.",
+      "Vous ne pouvez pas passer à travers une figurine ennemie, les figurines de votre groupe en revanche ne bloquent pas votre mouvement.\nSi lors de votre mouvement vous passez à 1ps ou moins d'une figurine ennemie, celle-ci peut (mais n'en est pas obligée) alors essayer de stopper votre mouvement et venir se mettre en contact socle à socle avec la figurine active, on appelle cela la «mise au contact». \nL'action de mouvement prend fin, le reste du mouvement est perdu, et la figurine active n'est pas considérée comme ayant réalisée une charge. La figurine active peut essayer de se faufiler, pour se faire elle doit réussir un test d'agilité, en cas de réussite, l'interception échoue et le mouvement continue normalement, en cas d'échec, l'interception est une réussite.",
+      "Il est fort possible que vous rencontriez des terrains avec des effets particulier, voici les principaux :",
+      "Terrain dégagé : il s'agit-là de la majorité des terrains du jeu, aucune modification des règles.\nTerrain difficile : ce peut être un amas de roches, une rivière peu profonde, un marécage, mettez-vous d'accord avec votre groupe de jeu avant le début de la partie sur les terrains reconnus comme difficile. Une figurine dont le mouvement passe par un terrain difficile voit son mouvement divisé par 2.\nTerrain dangereux : il peut s'agir de piques plantées dans le sol, d'un lac acide ou d'une forêt de plantes carnivores, là encore, il est important de se mettre d'accord sur les terrains avant le début de la partie. Une figurine dont le mouvement passe par un terrain dangereux subit une touche de force 5 à la fin de son action de mouvement.\nTerrain infranchissable : tous les murs hauts ou les rivières profondes sont totalement infranchissable, passer à travers ou y finir son mouvement est tout bonnement impossible.",
+      "Vos figurines peuvent également escalader des murs. Un muret de 1 pas ou moins ne bloque pas le mouvement, le soldat l'enjambe tout simplement, en revanche sur une hauteur supérieur à 1 pas, il faut escalader, une figurine ne peut pas escalader un mur dont la hauteur dépasse son mouvement.\nLors d'une tentative d'escalade, le joueur effectue un test d'agilité, il lance donc un D10 et doit obtenir un résultat supérieur à son agilité, en cas de réussite, placez la figurine au sommet du lieu escaladé, si la hauteur était inférieur à la distance de mouvement, alors la figurine peut continuer à se déplacer. En cas d'échec la figurine reste en place, son action de mouvement prend immédiatement fin (et seulement cette action ci, pas le tour de joueur), de plus la figurine subit une touche de force 4 sans modification d'armure.\nIl est tout à fait possible de cumuler 2 mouvements d'affilée afin de s'approcher d'un mur, l'escalader puis se déplacer une fois en haut.",
+      "Par exemple, un humain dont la valeur de mouvement est de 5 se trouve à 4ps d'une maison avec un balcon, ce balcon est à 5ps de haut. L'humain annonce faire 2 mouvements (donc 10ps max), il se déplace de 4ps afin de venir au pied du mur, il tente de l'escalader, fait son test d'agilité qu'il réussit, la figurine est donc placée sur le balcon, il reste à présent à l'humain 1ps de mouvement à effectuer sur le balcon s'il le souhaite.",
+      "Lors d'un mouvement, il est possible pour une figurine en hauteur de se laisser tomber vers un endroit plus bas.\nIl n'est possible de se laisser tomber que d'une hauteur de 5ps maximum, personne ne serait assez fou pour sauter dans le vide d'une hauteur plus importante en portant tout son matériel de combat.",
+      "Aucun jet n'est nécessaire pour cette action, elle réussit automatiquement, la distance parcourue en tombant ne compte pas dans la distance de mouvement.\nUn humain au sommet d'une ruine peut donc décider d'avancer de 2ps afin de se rapprocher du bord de plancher, se laisser tomber sur la terre ferme (la distance verticale est ici de 4ps), puis d'avancer ensuite dans la direction de son choix des 3ps restant de son mouvement.",
+      "Toutes les figurines peuvent sauter à travers un trou de 1ps de large et ce sans jet de dé, au-delà de 1ps, le passage est considéré comme infranchissable."
+    ]
+  },
+  {
+    "id": "tirer",
+    "title": "Tirer",
+    "level": 3,
+    "paragraphs": [
+      "Votre figurine équipée d'une arme de tir peut effectuer un tir.\nCertaines circonstances empêchent néanmoins une figurine de tirer :\n- la figurine a échoué un test d'agilité lors de son activation.\n- la figurine est engagée au corps à corps.",
+      "Une fois ceci vérifié, vous devez déclarer la cible de votre tir. Il est possible de mesurer les distances à tout moment.\nLa cible doit être à portée d'arme de tir de votre figurine, et bien entendu en ligne de vue. La magie existe sur Amatika, mais faire tourner les flèches en plein tir, personne n'a encore jamais réussi.",
+      "La cible du tir doit néanmoins être la figurine ennemie visible la plus proche du tireur si celle-ci est à 12ps ou moins, celui-ci préférant naturellement éliminer une menace immédiate plutôt qu'un adversaire lointain. Toutefois, si votre figurine est située en hauteur (2ps minimum) et qu'aucun ennemi ne se trouve à la même hauteur et à 12ps ou moins, alors vous êtes libre de choisir la cible de votre choix.",
+      "Il est tout à fait envisageable de tirer sur une figurine engagée au corps à corps à condition qu'aucune figurine alliée ne se trouve dans ce corps à corps, si tel est le cas, effectuer normalement le jet pour toucher, puis jeter un dé pour savoir quelle fera aura la malchance de subir le tir.\nLors de ce jet de dé, répartissez aussi équitablement que possible les chances de toucher chaque figurine.\nPar exemple, dans un corps à corps entre 2 figurines (A contre B), avant de jeter le dé, indiquez que de 1 à 5, ce sera la figurine A qui sera touchée, et de 6 à 10 ce sera la figurine B.\nDans un corps à corps entre 3 figurines (A, B et C), de 1 à 3 = figurine A, de 4 à 6 = figurine B, de 7 à 9 ce sera figurine C, et sur un 10 on relance le dé.\nSi au moins une figurine du corps à corps possède la règle Grande cible, ou Très grande cible, alors le jet pour toucher obtient le bonus approprié."
+    ]
+  },
+  {
+    "id": "toucher-la-cible",
+    "title": "Toucher la cible",
+    "level": 3,
+    "paragraphs": [
+      "Pour déterminer si la cible est touchée, lancez un D10, le résultat nécessaire dépend de l'habileté du tireur (comme indiqué sur sa caractéristique « Tir »), le résultat à obtenir doit donc être supérieur ou égal à la caractéristique de tir de la figurine active.",
+      "Il existe néanmoins des modificateurs pour toucher pouvant s'appliquer sur le jet, il est en effet bien plus simple de planter un carreau dans un ogre planté debout juste devant soi que dans un gobelin caché derrière un mur à l'autre bout de la table.\nCes situations sont représentées par les modificateurs de jet pour toucher suivant :",
+      "-1 Couvert Si une partie de la figurine est cachée par un décor ou une autre figurine, elle compte comme étant à couvert.\n -1 Longue portée Si vous visez une figurine située à plus de la moitié de la portée maximale de votre arme, vous êtes à longue portée.\n +1 Bout portant Si vous êtes à 5ps ou moins de la figurine visée, vous êtes à bout portant.\n -1 Tir supplémentaire Si vous avez déjà effectué une action de tir dans le même tour, alors votre second tir subit ce malus. S'il s'agit de votre troisième tir, appliquez 2 fois ce malus, 3 fois pour un quatrième tir etc.\n +2 Viser Si vous avez effectué l'action Viser durant votre tour juste avant le tir, non répétable.\n -1 Petite Cible La cible à la règle spéciale Petite Cible.\n +1 Grande Cible La cible à la règle spéciale Grande cible.\n +2 Très grande cible La cible à la règle spéciale Très grande cible.",
+      "-1 Camouflage La cible à la règle spéciale Camouflage.",
+      "-1 Tirer en haut La cible du tir se trouve 3ps ou plus haut que le tireur.",
+      "+1 Tirer en bas La cible du tir se trouve 3ps ou plus bas que le tireur.",
+      "+1 Grand corps à corps Le tir est effectué dans un corps à corps comprenant 3 figurines ou plus.",
+      "Lors d'un tir, quel que soit les modificateurs, un jet pour toucher de 1 naturel est toujours un échec, et un jet pour toucher de 10 naturel est toujours une réussite."
+    ]
+  },
+  {
+    "id": "jet-pour-blesser",
+    "title": "Jet pour blesser",
+    "level": 3,
+    "paragraphs": [
+      "Lorsque vous touchez une cible, vous devez ensuite faire un jet pour voir si une blessure est infligée. Un tir peut ne causer aucune blessure en ne touchant que l'équipement de la cible, ou en s'infligeant qu'une blessure très superficielle que le guerrier ignore bravement, ou bêtement. Si vous ne parvenez pas à blesser votre cible, celle-ci s'en tire sans dommage.",
+      "Pour déterminer si un tir inflige une blessure, comparez la force de l'arme à endurance de la cible. La description complète, la force et les règles spéciales des différentes armes se trouvent dans le chapitre Armes et Équipements.",
+      "Le tableau ci-dessous indique le résultat requis sur un D10 pour infliger une blessure."
+    ]
+  },
+  {
+    "id": "armure",
+    "title": "Armure",
+    "level": 3,
+    "paragraphs": [
+      "Si un guerrier disposant d'une capacité de sauvegarde est blessé, lancez un D10. Si le résultat est assez grand, le coup a été dévié par l'armure sans dommages. Le résultat à obtenir varie selon le type d'armure.",
+      "Le tableau ci-dessous récapitule les types d'armures les plus communs avec le résultat à obtenir sur un D10 pour réussir sa sauvegarde. Par exemple, un guerrier en armure légère avec un bouclier aura une sauvegarde de 7+, un guerrier sans armure mais avec un casque aura une sauvegarde de 10+, tout ceci est repris plus loin dans le chapitre Équipement.",
+      "armure de cuir +1\narmure légère +2\narmure lourde +3\narmure complète +4\nbouclier +2\ncasque +1",
+      "Certaines pièces d'armures magiques peuvent modifier ces valeurs, de plus certaines figurines (comme les saurus) disposent d'une sauvegarde d'armure naturelle venant s'ajouter à la sauvegarde."
+    ]
+  },
+  {
+    "id": "modificateurs-de-sauvegarde",
+    "title": "Modificateurs de sauvegarde",
+    "level": 3,
+    "paragraphs": [
+      "Certaines armes pénètrent mieux les armures que d'autres. Un tir avec un arc court peut être dévié assez facilement, mais un tir d'arquebuse traverse plus efficacement les armures.\nPlus la force d'une arme est élevée, plus elle traverse facilement les armures. Le tableau ci-dessous indique la réduction de la sauvegarde adverse selon les différentes forces des armes :",
+      "1 à 4 aucun modificateur\n5 -1\n6 -2\n7 -3\n8 -4\n9 -5\n10 -6",
+      "Certaines armes ont un pouvoir de pénétration plus important par rapport à leur force (comme les pistolets). Ceci est indiqué le cas échéant dans la description de l'arme (voir le chapitre Armes et Armures)."
+    ]
+  },
+  {
+    "id": "degats",
+    "title": "Dégâts",
+    "level": 3,
+    "paragraphs": [
+      "Une figurine ayant échoué son jet d'armure perd un point de vie.\nSi la figurine possède plusieurs points de vie, placez un pion blessure à côté de celle-ci.\nSi ce point de vie était le seul qu'elle possédait, ou s'il s'agit de son dernier point de vie\nPiochez alors une carte de paquet Blessure (rouge) et appliquez le résultat tiré. Il arrive que certaines armes demandent de tirer 2 cartes et d'appliquer un seul des deux résultats tiré (le plus impactant ou le plus protecteur), pour se faire, choisissez la carte avec le résultat le plus élevé ou le plus faible."
+    ]
+  },
+  {
+    "id": "charger",
+    "title": "Charger",
+    "level": 3,
+    "paragraphs": [
+      "Votre figurine se déplace d'un nombre de pas égale à sa valeur de mouvement, il est tout à fait possible de se déplacer de moins que sa valeur de mouvement. \nVotre déplacement doit vous amener au contact d'une figurine ennemie debout.",
+      "Cette action de mouvement est immédiatement suivie d'une action gratuite d'attaque au corps à corps.\nDe plus, la figurine visée par la charge ne peut pas faire d'interception."
+    ]
+  },
+  {
+    "id": "attaquer-au-corps-a-corps",
+    "title": "Attaquer au corps à corps",
+    "level": 3,
+    "paragraphs": [
+      "Une figurine dont le socle est en contact d'une figurine adverse peut effectuer une attaque de corps à corps.",
+      "Seule la figurine active effectue la ou les attaques, il n'y a pas de riposte."
+    ]
+  },
+  {
+    "id": "toucher-l-ennemie",
+    "title": "Toucher l'ennemie",
+    "level": 3,
+    "paragraphs": [
+      "Pour savoir si vous touchez, lancer un D10 par attaque de votre figurine. Si vous êtes engagés contre plusieurs ennemis, il faudra avant de lancer le ou les dés désigner la ou les figurines ennemies que vous allez tenter de frapper.\nSi votre figurine active ne possède qu'une seule attaque (comme ce sera souvent le cas), alors désignez une figurine au contact qui sera la cible. En revanche si votre figurine possède plusieurs attaques, vous pouvez alors choisir plusieurs cibles différentes (une par attaque), ou alors déchaîner votre fureur sur une seule figurine.",
+      "Si votre figurine possède 3 attaques, il est donc possible de répartir celles-ci entre 3 ennemies au contact (une attaque chacun), de tout mettre sur une seule figurine, ou alors d'effectuer 2 attaques sur un ennemi et une sur un autre. Le choix est totalement libre, mais il doit obligatoirement être effectué avant de jeter les dés pour toucher. Si le partage n'a pas été fait avant, le jet de dés ne compte pas.",
+      "Une fois le partage des attaques effectué, vous pouvez faire le jet pour toucher. De la même manière que pour le tir, le résultat à obtenir dépend de la capacité de la figurine. Pour le corps à corps c'est la caractéristique de combat qui est utilisée. Une figurine avec une caractéristique de combat de 6+ doit donc obtenir un résultat de 6 ou plus sur chaque D10 lancé afin de toucher la figurine.",
+      "De la même manière que pour le tir, des bonus et/ou malus peuvent s'appliquer sur le résultat du jet de dé :",
+      "-1 Seul contre tous -1 pour toucher pour chaque figurine ennemie au contact de l'attaquant, hors la figurine ciblée par l'attaque.\n +1 Soutien allié +1 pour toucher pour chaque figurine alliée au contact de la cible, hors la figurine active.\n -1 Encombrée La figurine est soumise à la règle encombrée, cumulable pour chaque équipement ayant la règle Encombrée.\n -1 Parade La figurine ciblée par l'attaque possède la règle parade.\n -1 Fatigue Chaque action Attaquer effectuée précédemment lors de l'activation de la figurine réduit les chances de toucher de la prochaine.",
+      "Souvenez-vous, un jet naturel de 1 pour toucher est toujours un échec, et un 10 toujours une réussite."
+    ]
+  },
+  {
+    "id": "jets-pour-blesser",
+    "title": "Jets pour blesser",
+    "level": 3,
+    "paragraphs": [
+      "Là encore, la même règle s'applique au corps à corps que pour le tir.\nLe tableau comparatif est exactement le même, la seule différence est que cette fois c'est la force de l'attaquant qui est utilisée plutôt que la force de l'arme (bien que celle-ci puisse faire évoluer la force dans un sens comme dans l'autre)."
+    ]
+  },
+  {
+    "id": "armure-et-degats",
+    "title": "Armure et Dégâts",
+    "level": 3,
+    "paragraphs": [
+      "Aucun changement en comparaison du tir. La cible de l'attaque peut effectuer un jet de sauvegarde par blessure infligée, puis en cas d'échec placer un pion blessure à côté de la cible ou tirer une ou plusieurs cartes blessures. Référez-vous au chapitres Tir et Dégâts."
+    ]
+  },
+  {
+    "id": "fouiller",
+    "title": "Fouiller",
+    "level": 3,
+    "paragraphs": [
+      "La figurine active peut dépenser une action pour fouiller un corps étendu sur le sol. Il peut s'agir d'une figurine blessée ou morte plus tôt dans la partie.\nEn cas de figurine blessée, il n'est possible de fouiller que les figurines ennemies. Il ne viendrait (presque) à personne l'idée de faire les poches d'un compagnon de combat en train de souffrir sur le sol.\nEn cas de figurine morte, il est tout à fait envisageable de fouiller un ancien combattant gisant sans vie au sol, après tout, il vaut mieux que son équipement reste entre les mains de vos collecteurs plutôt que de les voir tomber dans les escarcelles de vos rivaux.",
+      "Afin de pouvoir fouiller, il faut que la figurine active soit au contact de la figurine laissée au sol, et qu'aucune figurine ennemie ne se trouve à 5ps ou moins de la figurine active. Les figurines au corps à corps, blessées, mortes, démoralisées en hors de vue ne sont pas prises en compte pour cette restriction car elle ne représente pas une menace immédiate.\nDe plus, si une figurine alliée se trouve plus proche de l'ennemie libre que vous ne l'êtes, alors vous pouvez fouiller, vous sentant protégé par celle-ci.",
+      "Lorsque vous fouillez une figurine au sol, vous pouvez prendre tout ou partie de l'équipement possédé par celle-ci. Ces équipements sont alors placés dans votre sac, vous ne vous en équipez pas automatiquement."
+    ]
+  },
+  {
+    "id": "ramasser",
+    "title": "Ramasser",
+    "level": 3,
+    "paragraphs": [
+      "Ramasser des trésors et des cristaux bruts sont les réels objectifs de vos collecteurs.\nLes règles de limitations et interdictions valable pour la fouille le sont aussi concernant l'action Ramasser.\nLorsque vous ramasser des cristaux brut, placez simplement l'objet utilisé pour représenter ces cristaux brut dans le sac de la figurine.\nS'il s'agit d'un lieu d'intérêt, alors il faudra tirer une carte du paquet trésor correspondant afin de voir ce qui se passe.\nDe nombreuses fois le trésor est accessible sans entrave, vous gagnez alors des cristaux, de l'or et/ou un objet de grande valeur à placer dans le sac de votre figurine (il n'est là encore pas possible de s'équiper immédiatement des objets). Parfois le coffre vous résistera, il faudra effectuer un test de force, d'agilité ou de commandement (ce sera clairement notifié sur la carte que vous aurez tiré), en cas de succès tirez une carte suivante afin de découvrir le contenu du trésor, en cas d'échec le coffre (ou tout autre chose) vous résiste, vous ne parvenez pas à l'ouvrir et votre action prend fin, laissez la carte à côté du trésors, la prochaine figurine cherchant à ouvrir le coffre ne tirera pas de nouvelles cartes mais appliquera celle-ci.\nS' il vous reste une action à réaliser, vous pourrez immédiatement retenter votre chance, ou partir.",
+      "Hélas certains trésors sont tout simplement vide, vous avez perdu votre temps pour rien.\nMais pire encore, certaines cachettes renferment des créatures agressives ou des pièges. Si tel est le cas, placez une figurine représentant cette créature au contact socle à socle avec la figurine active ou résolvez l'effet du piège. Ce coffre ne contient hélas aucun trésor à récupérer.\nS'il vous reste au moins une action, vous pourrez alors continuer son activation, en général en attaquant la créature ou en fuyant lâchement.",
+      "Dans tous les cas, si le lieu d'intérêt a été ouvert avec succès, retirer le jeton lieu d'intérêt correspondant, il ne pourra plus être ramassé de la partie."
+    ]
+  },
+  {
+    "id": "viser",
+    "title": "Viser",
+    "level": 3,
+    "paragraphs": [
+      "Une figurine (souvent équipée d'une arme de tir) peut effectuer l'action viser.\nDans ce cas, si sa prochaine action du même tour est un Tir, alors le jet pour toucher de ce tir obtient un bonus de +2.",
+      "Il n'est d'aucune utilité d'effectuer l'action viser afin d'avoir le bonus lors du prochain tour, il y a fort à parier que d'ici-là, la figurine « visée » par le tireur soit partie."
+    ]
+  },
+  {
+    "id": "recharger",
+    "title": "Recharger",
+    "level": 3,
+    "paragraphs": [
+      "Certaines armes de tir nécessitent un temps de rechargement assez long, c'est par exemple le cas de l'arbalète et des armes à poudre noir.\nLes figurines équipées de telles armes commencent toutes avec un jeton chargement à côté de leur figurine, cela signifie que leurs armes de tirs sont prêtes à tirer.\nMais une fois le premier tir effectué, retirer ce pion chargement, afin de pouvoir tirer à nouveau avec cette arme, la figurine doit effectuer l'action Recharger.",
+      "Contrairement au visé, il est tout à fait possible de recharger son arme lors d'un tour, et de ne tirer avec que le tour suivant.\nCes armes ont donc une cadence de tir inférieur aux arcs par exemple, mais aussi une puissance létale bien supérieure."
+    ]
+  },
+  {
+    "id": "se-cacher",
+    "title": "Se Cacher",
+    "level": 3,
+    "paragraphs": [
+      "Cette action n'est réalisable qu'en dernière action de la figurine, et seulement si aucune figurine ennemie n'est visible dans un rayon de 6ps. Elle permet de se dissimuler aux yeux des adversaires afin de les surprendre par la suite, au détriment d'un mouvement réduit.",
+      "Afin de voir si la figurine trouve un endroit où se cacher autour d'elle, faite un jet d'agilité. En cas d'échec la figurine reste sur place, son action est perdue, et son tour prend fin.",
+      "En cas de succès, placez un pion « caché » à la place de la figurine, puis le tour de la figurine prend fin. La prochaine action de la figurine sera obligatoirement « Se Révéler » ou« Rester cacher ».\nUne figurine cachée ne peut pas être prise pour cible d'un tir, ni attaquée au corps à corps, en revanche les effets de zones comme certains sorts peuvent l'affecter, considérez le pion caché la position de la figurine."
+    ]
+  },
+  {
+    "id": "rester-cacher",
+    "title": "Rester cacher",
+    "level": 3,
+    "paragraphs": [
+      "Cette action n'est réalisable que si la figurine débute son tour cachée et si aucune figurine ennemie ne se trouve à 5ps ou moins.\nAlors cette figurine reste automatiquement cachée, sans jeter de dés et son tour prend fin."
+    ]
+  },
+  {
+    "id": "se-reveler",
+    "title": "Se Révéler",
+    "level": 3,
+    "paragraphs": [
+      "Cette action spécifique n'est réalisable que par une figurine « cachée », ce doit alors être obligatoirement la première action de son tour.",
+      "Placez la figurine intégralement dans un rayon de 3ps du centre du pion caché. \nLa figurine révélée ne peut en aucun cas être placée à moins de 1ps de toute figurine ennemie debout. Il est en revanche tout à fait possible d'être placé au contact d'une figurine au sol, d'un trésor, de cristaux ou de tout autre objet inerte."
+    ]
+  },
+  {
+    "id": "lancer-un-sort",
+    "title": "Lancer un sort",
+    "level": 3,
+    "paragraphs": [
+      "Certaines figurines ont la capacité de lancer des sorts. Ces personnages puissants sont appelés des mages.\nAfin de pouvoir lancer un sort, une figurine doit donc posséder le mot clef « mage » dans sa fiche d'unité, une figurine sans ce mot clé ne peut en aucun cas essayer de lancer un sort. De plus certaines circonstances empêchent néanmoins une figurine de lancer un sort (les mêmes que pour un tir) :\n- la figurine a échoué un test d'agilité lors de son activation.\n- la figurine est engagée au corps à corps.",
+      "Chaque sort ne peut être lancé qu'une seule fois par activation, bien qu'un mage puisse lancer plusieurs sorts différents lors d'un même tour, chaque lancement prenant une action distincte.",
+      "Lorsqu'un mage tente de lancer un sort, il doit dans un premier temps choisir quel sort lancer. Puis le joueur jette 2D10 cherchant à obtenir un résultat supérieur ou égal à la valeur de lancement du sort noté sur sa carte.\nDe la même manière que pour le tir ou le corps à corps, des bonus et/ou malus peuvent s'appliquer :",
+      "-1 sort resté en jeu Certains sorts reste en jeu, chaque sort « reste en jeu » doit être maintenu par le mage l'ayant lancé, puisant dans son énergie. Ainsi pour chaque sort restant en jeu déjà lancé par le mage précédemment, appliquez un malus de -1 au résultat du jet de dés.",
+      "-1 invocation contrôlée Pour chaque figurine d'invocation sous le contrôle du mage, appliquez un malus de -1 au résultat du jet de dés.\n\n +1 niveau de magie Chaque niveau de magie du lanceur ajoute 1 au résultat du jet de dés.\n\nDe nombreux objets magiques peuvent également aider votre mage à lancer des sorts.",
+      "Si le sort est lancé avec succès, appliquez les effets de celui-ci. Les sorts peuvent faire toute sorte de choses comme infliger des débats, décourager un adversaire, déplacer des figurines, voir l'avenir ou jouer de la musique dansante (bien qu'un tel sort ne soit d'aucune utilité dans ce jeu). Leurs effets sont toujours notés clairement sur la carte du sort, référez-vous donc à ces cartes à chaque fois.\nCertains sorts ont un effet immédiat puis se dissipent alors ensuite, comme une bonne vieille boule de feu. D'autre reste en jeu, parfois un tour, parfois aussi longtemps que possible, comme c'est le cas du sort Brouillard, les sorts restants en jeu peuvent être dissipé par les figurines ennemies ayant le mot clef « dissipation » ou bien annulé à tout moment par le lanceur lors d'une de ses activations. Annuler son propre sort ne consomme aucune action.",
+      "Fiasco : si lors de la tentative de lancement de sort vous avez obtenu un double, alors après que les effets du sort aient était résolu (si celui-ci est lancé avec succès), le lanceur subit une touche de force égal au résultat des D10. Par exemple, un double 6 inflige une touche de force 6 au lanceur. La magie est puissante, mais sur Amatika, elle a la fâcheuse tendance à se retourner contre ceux qui l'utilisent."
+    ]
+  },
+  {
+    "id": "dissiper-un-sort",
+    "title": "Dissiper un sort",
+    "level": 3,
+    "paragraphs": [
+      "Vos adversaires prenant un malin plaisir à vous mettre des bâtons dans les roues avec leurs satanés sorts, ne restez pas les bras croisés et dissipez ceux qui vous entravent le plus.\nSeuls les sorts restant en jeu peuvent être dissipés, et seule une figurine possédant le mot clef « dissipation » peut tenter une dissipation.\nDe plus, cette action n'est réalisable qu'une seule fois par activation de figurine, alors choisissez bien quel sort vous avez envie de dissiper.",
+      "Pour dissiper un sort, vous devez obtenir un résultat supérieur ou égal à la valeur de lancement du sort en lançant 2D10.\nComme pour le lancement d'un sort, quelques malus et bonus peuvent influer le résultat.",
+      "-1 sort resté en jeu Certains sorts reste en jeu, chaque sort qui reste en jeu doit être maintenu par le mage l'ayant lancé, puisant dans son énergie. Ainsi pour chaque sort restant en jeu déjà lancé par le mage précédemment, appliquez un malus de -1 au résultat du jet de dés.\n-1 invocation contrôlée Pour chaque figurine d'invocation sous le contrôle du mage, appliquez un malus de -1 au résultat du jet de dés.\n +1 niveau de magie Chaque niveau de magie du lanceur ajoute 1 au résultat du jet de dés.",
+      "De nombreux objets magiques peuvent également vous aider à dissiper des sorts."
+    ]
+  },
+  {
+    "id": "canaliser",
+    "title": "Canaliser",
+    "level": 3,
+    "paragraphs": [
+      "Une figurine possédant la règle « Mage » ou « Dissipation » peut effectuer l'action canaliser.\nDans ce cas, sa prochaine action du même tour devra être soit « lancer un sort » ou « dissiper un sort ».\n\nCette figurine jettera 3D10 au lieu de 2D10 et ne conservera que les deux ayant obtenu le résultat de son choix.",
+      "Il n'est d'aucune utilité d'effectuer l'action canaliser afin d'avoir le bonus lors du prochain tour."
+    ]
+  },
+  {
+    "id": "se-desengager",
+    "title": "Se désengager",
+    "level": 3,
+    "paragraphs": [
+      "Une figurine au contact socle à socle avec un ennemi pourrait avoir envie de fuir le combat, soit parce que celui-ci est perdu d'avance, soit parce qu'un autre objectif plus juteux ailleurs a été repéré.",
+      "Si tel est le cas, il est alors possible d'effectuer un mouvement normal, il n'est en revanche pas possible d'escalader, dans n'importe quelle direction en ignorant totalement la ou les figurines ennemies au contact. Oui, il est tout à fait possible de passer à travers les adversaires avec qui vous étiez au contact lors d'un désengagement.\nToutefois, avant de réaliser ce mouvement, chaque adversaire au contact peut effectuer une attaque au corps à corps gratuite contre la figurine active. Se désengager est donc un choix dangereux car cela pour emmener votre figurine à subir une blessure, si tel est le cas, son action prend alors immédiatement fin.",
+      "Lors d'un désengagement, les figurines au contact socle à socle avec la figurine active ne peuvent utiliser la règle « mise en contact », sans quoi il serait impossible de se désengager."
+    ]
+  },
+  {
+    "id": "utiliser-un-objet-de-son-sac",
+    "title": "Utiliser un objet de son sac",
+    "level": 3,
+    "paragraphs": [
+      "Certains objets placés dans le sac d'une figurine sont utilisables lors de la partie.",
+      "Les premiers sont classés dans la catégorie des fioles, portant le nom de potion, élixir breuvage etc. L'effet de la fiole est noté sur la carte de celle-ci, une fois la fiole consommée, la carte perdue est replacée dans le paquet correspondant. Certains effets peuvent durer jusqu'à la fin de la partie, nous vous invitons à conserver la carte proche de la figurine afin de vous souvenir de son effet, mais pensez bien à vous en défaire à la fin de la partie.\nUne figurine ayant consommé une fiole en début de partie (une potion de Force par exemple, dont l'effet perdure jusqu'à la fin de la partie) garde la carte à côté de sa fiche afin de se souvenir du bonus. En revanche, si la figurine est mise hors de combat et fouillée par une autre figurine, il n'est pas possible de récupérer la potion de force, le flacon est vide.",
+      "Une figurine engagée au corps à corps ne peut pas utiliser de potion.",
+      "Il existe également des poisons.\nTrès prisé des Drow, des assassins et autres spécialistes misant sur la discrétion plutôt que sur la force brute, bien que toutes les figurines puissent utiliser du poison bien entendu.\nEn guise d'action il est possible d'enduire une arme d'un poison dont la figurine dispose dans son sac. Si l'arme empoisonnée est une arme de tir, on considère que ce sont les projectiles de l'arme qui sont empoisonnés, en cas de changement d'arme, le poison ne fonctionne plus, même si c'est le même type de projectile qui est utilisé. \nLes effets du poison sont notés sur la carte, placez celle-ci à côté de l'arme empoisonnée afin de vous en souvenir.\nA la fin de la bataille, jetez 1D10 pour chaque poison utilisé, sur un résultat de 1 à 8, la réserve de poison est vide et celui-ci est perdu, remettez la carte dans le paquet approprié, sur un 9 et 10, il reste assez de poison, vous pouvez garder la carte."
+    ]
+  },
+  {
+    "id": "moral-et-commandement",
+    "title": "Moral et commandement",
+    "level": 2,
+    "paragraphs": [
+      "Au début de chaque nouveau round, les joueurs ayant au moins 25% de ses figurines misent hors de combat doivent effectuer un test de déroute. Pour ce faire, il doit réussir un test de commandement en utilisant le moral le plus élevé de sa bande. Le commandement des figurines mises hors de combat ou en fuite n'est pas utilisé.\nEn cas de succès, le joueur peut jouer normalement. En cas d'échec, ses collecteurs prennent la fuite. Retirez du jeu toutes ces figurines qui ne sont pas au sol (blessées ou mortes). Les trésors et autres cristaux sont conservés dans les sacs des figurines, ils n'abandonnent pas leur butin, juste le champ de bataille.",
+      "Un joueur ayant réussi un test de déroute au début d'un round devra en faire un autre au début de chaque nouveau round, sauf à pouvoir relever les morts, ce qui semble assez peu probable si vous ne jouez pas un Nécromancien.",
+      "Un joueur peut également au début du round effectuer une déroute volontaire. En effet, s'il considère avoir récolté suffisamment de butin, ou si le risque de rester encore sur le champ de bataille est trop élevé. Dans ce cas, n'effectuez pas de test de commandement, retirez simplement les figurines de la même manière que si un test de déroute avait échoué, ce choix n'est réalisable qu'à partir du quatrième round.",
+      "Un joueur ayant vu sa bande de collecteurs quitter le champ de bataille ne pourra en aucun cas y revenir par la suite et les sorts restant en jeu qu'il avait lancé sont alors tous automatiquement dissipés."
+    ]
+  },
+  {
+    "id": "peur",
+    "title": "Peur",
+    "level": 3,
+    "paragraphs": [
+      "Certaines figurines provoquent la peur, la taille et la puissance de celles-ci peuvent parfois faire fuir les ennemies sans même avoir besoin de sortir une arme. Les ogres et les démons en sont des exemples flagrants.\nLorsqu'une figurine active termine un mouvement à 5ps ou moins et en ligne de vue d'une figurine provoquant la peur doit effectuer un test de commandement.\nEn cas de succès, rien ne se passe. En cas d'échec la figurine est mise en fuite, placer un jeton Fuite proche de la figurine. Le joueur perd le contrôle de celle-ci. S'il lui reste des points d'action ceux-ci doivent obligatoirement être utilisés en mouvement afin de s'éloigner le plus possible de la créature ayant provoqué la peur.\nChaque figurine n'effectue qu'un seul test de peur par activation, peu importe le nombre de fois où elle croise le regard d'un adversaire terrifiant.\nUne figurine commençant son activation à moins de 5ps d'une figurine provoquant la peur doit effectuer immédiatement un test de commandement.",
+      "Lorsque la figurine active provoque elle-même la peur, alors après chaque mouvement toutes les figurines ennemies à 5ps ou moins doivent effectuer un test de peur, en cas d'échec, déplacez la figurine de sa valeur de mouvement en ligne droite, dans la direction opposée de la figurine active et placez un jeton fuite à côté du fuyard.",
+      "Une figurine provoquant la peur est elle-même immunisée à la peur et n'a pas à effectuer un tel test."
+    ]
+  },
+  {
+    "id": "chef",
+    "title": "Chef",
+    "level": 3,
+    "paragraphs": [
+      "Un guerrier à moins de 6ps de son chef peut utiliser le commandement de ce dernier pour ces tests de commandement. Cela représente la capacité du chef à encourager ses guerriers pour qu'ils dépassent leurs limites. Aucune ligne de vue n'est nécessaire, savoir que le chef n'est pas loin est suffisant.\nUn chef ne peut pas conférer son commandement s'il est lui-même mort ou en fuite. La vue d'un chef qui court se cacher n'est pas vraiment encourageante pour ses hommes."
+    ]
+  },
+  {
+    "id": "mise-en-place-d-une-partie",
+    "title": "Mise en place d'une partie",
+    "level": 2,
+    "paragraphs": [
+      "La taille du champ de bataille dépend du nombre de joueurs. Il faut prévoir en moyenne un carré de 50cm de côté par joueur. Ceci est bien entendu donné à titre indicatif et les dimensions peuvent être variables.\nUn tapis de 100cm de large sur 150 de long sera parfait pour 6 joueurs, mais il est tout à fait possible d'y jouer à 5 ou 7 joueurs. Mettez-vous d'accord avec votre groupe de joueur sur la taille du champ de bataille, notez bien qu'un champ de bataille trop vaste réduit les interactions entre les joueurs, et donc l'intérêt du jeu, et qu'un tapis trop petit aura tendance à favoriser le combat, et donc des pertes plus importantes.",
+      "Ensuite, placez autant de point de déploiement que de joueurs en faisant en sorte que ces points soient aussi éloignés que possible, et à même distance du point de déploiement de droite comme de gauche.\nIl va parfois falloir sortir sa calculatrice, mais je vous sais courageux.",
+      "Placez des décors sur l'intégralité du champ de bataille. Maisons, ruines, forêts, lacs, rivières (avec des ponts de passage), collines, décombres, tout ce qui vous passe par la tête peut être utilisé comme décor, l'important est que la table en soit couverte. Il est possible de tracer des rues entre les maisons ou les ruines, des champs bordant le village. Les joueurs ne sachant pas où se trouvera leur point de départ, il est important que le placement des décors rende le champ de bataille aussi équitable que possible.",
+      "Ensuite placer un nombre de lieu d'intérêt égale au nombre de joueurs plus 1 (donc dans une partie à 6 joueurs, il faudra en placer 7).\nCes lieux de fouilles doivent être séparés d'un minimum de 8ps les uns des autres, et éparpillés sur tout le champ de bataille.",
+      "Pour ce placement, nous conseillons d'utiliser la méthode suivante : \n1- Le joueur ayant le moins de prestige acquise place le premier lieu d'intérêt ou bon lui semble, l'endroit du placement indiquera quel type utiliser (si l'endroit désigné se trouve sur une tombe, utiliser alors un pion cimetière).\n2- Les joueurs (y compris celui ayant déjà placé un lieu d'intérêt plus tôt) placent chacun leur tour un lieu d'intérêt à plus de 8ps de tout autre lieu d'intérêt. En commençant par le joueur ayant la plus grande valeur d'Eclaireur et en finissant par celui possédant la plus faible (jetez 1D10 en cas d'égalité).\nDe cette manière, le joueur dernier au classement place 2 lieux d'intérêts, les joueurs ayant le plus de chance de choisir leur point de départ placent leur lieu d'intérêt avant ceux ayant plus de risque de se retrouver dans un endroit moins prolifique, cherchant ainsi à équilibrer la table au maximum.\n\nIl existe plusieurs types de lieu d'intérêt : Coffre (jaune), Magique (rose), Naturel (vert), Ville (blanc), Ruines (orange), Cimeterre (violet) ou rivage (bleu). Chaque type correspond à un paquet de cartes à la couleur correspondante. Il n'est en aucun cas obligatoire que toutes les types de cachettes soient représentées sur le champ de bataille, placez-les seulement en fonction de vos envies et des décors que vous avez utilisés. Nous vous conseillons néanmoins de ne pas placer plus de 4 fois le même type de lieu d'intérêt.",
+      "Ensuite il faut placer les fameux cristaux bruts qui sont la raison pour laquelle vous êtes ici. Le placement est simple : 3 cristaux brut par joueur, répartis aussi équitablement que possible sur le champ de bataille en quadrillant celui-ci.\nPar exemple, pour une partie à 6 joueurs sur un tapis de jeu de 120 par 180cm, placez 3 lignes de 6 cristaux brut sur les longueurs de la table, chaque ligne séparée de 30cm des autres ou d'un bord de table. Puis sur ces lignes chaque cristal brut se trouve à 25cm du bord de table ou d'un autre cristal brut sans vous soucier de l'accessibilité des cristaux pour le moment, comme sur le schéma ci dessous :",
+      "Une telle disposition des cristaux brut est certes parfaitement équilibrée, mais cela ne fait pas très naturel, il est donc conseillé de déplacer aléatoirement chaque cristal brut, pour se faire, jetez 1D10 ainsi qu'un dé de dispersion (un dé avec des flèches sur chaque face) pour le premier cristal brut et de déplacer le cristal d'un nombre de cm égal au D10 dans la direction du dé de dispersion. La position finale du cristal brut doit permettre aux figurines d'accéder à celui-ci, il ne faut donc pas qu'il soit au sommet d'un bâtiment inaccessible ni sur un terrain infranchissable, placez le cristal brut sur le point accessible le plus proche.\nPuis répétez l'opération pour chaque cristal brut.",
+      "Le champ de bataille est prêt pour la partie, vous pouvez néanmoins si vous le souhaitez ajouter des créatures neutres sur le champ de bataille, mais cela n'est pas obligatoire. Pour vos premières parties, nous vous déconseillons de le faire.",
+      "Il va falloir à présent que chaque bande prenne place sur le champ de bataille. Pour ce faire, chaque joueur jette un D10 et ajoute son bonus éclaireur, certaines figurines peuvent en effet apporter un bonus à ce jet de dé, permettant de choisir son point de départ. Le résultat est appelé Initiative.",
+      "Le joueur ayant obtenu la valeur d'initiative la plus élevée choisit un des points de déploiement possible et place ses collecteurs intégralement dans un rayon de 6ps de ce point, chaque bande ne peut avoir que 10 figurines maximum sur la table, même si la bande en possède plus en stock, les autres ne participent pas à la partie, cela peut permettre d'adapter ses soldats au besoin du scénario, décor et lieu d'intérêt.\nPuis c'est au joueur ayant obtenu la seconde valeur d'initiative de déployer sa bande autour d'un point de déploiement laissé libre.\nRépétez l'opération jusqu'à ce que chaque joueur a déployé ses figurines. Le moment est alors venu de se lancer dans l'exploration des lieux, ramasser les cristaux, récupérer les trésors et rendre silencieuses les armes adverses.",
+      "Nous avons déjà vu plus haut comment se déroulent les rounds. Chaque joueur active tour à tour une de ses figurines en fonction de l'ordre du tirage au hasard.",
+      "Chaque figurine n'ayant que 3 actions à réaliser, les tours de joueurs doivent se faire assez vite, et il est demandé aux joueurs de réfléchir à leur prochaine activation durant les tours de joueurs adverses. Il n'a pas été prévu d'inclure un temps maximum d'activation par joueur, mais si le besoin s'en fait sentir, cela reste tout à fait envisageable, la victoire par l'endormissement n'a rien d'honorable.",
+      "Continuez les rounds jusqu'à la fin de la partie. Celle-ci arrive soit lorsque toutes les bandes de collecteurs ont quitté le champ de bataille (suite à un test de déroute manqué ou volontairement) ou alors lorsque le soleil se couche.\nAfin de savoir si le soleil se couche, à la fin de chaque round, le dernier joueur à avoir activé une figurine jette un D10 et ajoute le numéro de round en cours fois 2.\nSi le résultat est supérieur ou égal à 18, alors le soleil se couche et la partie prend immédiatement fin, si le résultat est de 17 ou moins, alors la partie continue.",
+      "Par exemple, à la fin du tour quatre, la partie s'arrête uniquement si le D10 à donner un 10 (10+4x2=18).",
+      "Voici un récapitulatif des résultats annonçant la fin de partie suite au coucher du soleil :\nRound 4 : 10\nRound 5 : 8+\nRound 6 : 6+\nRound 7 : 4+\nRound 8 : 2+\nRound 9 : automatique",
+      "La partie prend immédiatement fin si plus aucune bande n'est présente sur le champ de bataille."
+    ]
+  },
+  {
+    "id": "equipement-commun",
+    "title": "Équipement commun",
+    "level": 2,
+    "paragraphs": [
+      "La liste des pièces d'équipement (et leurs règles spéciales) qui va suivre est accessible à l'achat par toutes les bandes lors de la création ainsi que lors de la phase Commerce entre chaque partie. Le prix d'achat et de revente sera noté plus tard."
+    ]
+  },
+  {
+    "id": "armes-de-corps-a-corps",
+    "title": "Armes de corps à corps",
+    "level": 3,
+    "paragraphs": [
+      "Chaque figurine dispose (normalement) de 2 mains. Il lui est donc possible de s'équiper soit d'une arme à 2 mains, soit de 2 armes à une main, soit d'une arme à une main (auquel cas elle pourra alors aussi avoir un bouclier).\nIl est impossible de s'équiper d'objets nécessitant 3 mains, et un guerrier ayant perdu l'usage d'un bras suite à une blessure ne peut plus porter qu'une seule arme à une main, et plus de bouclier (ceci est également valable pour les armes de tir plus bas).\nUne figurine possédant une seule arme de corps à corps effectuera toutes ces attaques avec celle-ci. Une figurine possédant 2 armes de corps à corps gagne une attaque supplémentaire et peut répartir librement ces attaques entres ces 2 armes, avec un minimum de 1 attaque par arme.",
+      "Combat à mains nues : Force utilisateur -1 ; +1 à la sauvegarde ennemie ; deux mains ; faible létalité : une figurine blessée par cette arme pioche 2 cartes blessures et n'applique que celle ayant la valeur le plus basse ; utilisation du poison impossible.",
+      "Dague : Force utilisateur ; une main ; +1 à la sauvegarde adverse.",
+      "Bâton : Force utilisateur ; deux mains ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+      "Marteau / Massue : Force utilisateur ; une main ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faites, vous devez obligatoirement accepter le second tirage.",
+      "Marteau lourd / Massue lourde : Force utilisateur +1 ; deux mains ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+      "Hache : Force utilisateur ; une main ; -1 à la sauvegarde ennemie.",
+      "Hache lourde : Force utilisateur +1 ; deux mains ; -1 à la sauvegarde ennemie.",
+      "Épée : Force utilisateur ; une main ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps.",
+      "Épée lourde : Force utilisateur +1 ; deux mains ; haute létalité : une figurine blessée par cette arme pioche 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+      "Morgenstern : Force utilisateur +1 ; une main ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps ; Ne peut pas être utilisé avec une seconde arme de corps à corps (possible avec un bouclier).",
+      "Fléau : Force utilisateur +2 ; deux mains ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps.",
+      "Hallebarde : Force utilisateur +1 ; deux mains, utilisation d'un bouclier possible uniquement contre les tirs.",
+      "Lance : Force utilisateur ; une main ; ne peut pas être utilisé avec une seconde arme de corps à corps (possible avec un bouclier) ; une figurine équipée d'une lance gagne une action d'attaque gratuite contre un ennemie venant se mettre au contact socle à socle, y compris lors d'une mise en contact."
+    ]
+  },
+  {
+    "id": "armes-de-tir",
+    "title": "Armes de tir",
+    "level": 3,
+    "paragraphs": [
+      "Une figurine ne peut s'équiper que d'une seule arme de tir.",
+      "Arc court : Force 4 ; portée 16ps ; deux mains.",
+      "Arc : Force 4 ; portée 24ps ; deux mains.",
+      "Arc long : Force 4 ; portée 30ps ; deux mains.",
+      "Arbalète : Force 5 ; portée 30ps ; deux mains ; rechargement.",
+      "Fronde : Force 3 ; portée 20ps ; une main ; +1 à la sauvegarde ennemie.",
+      "Étoiles / Couteaux et Haches de jet : force utilisateur ; portée 6ps ; une main ; arme de jet : pas de bonus de tir à bout portant ni de malus longue portée.",
+      "Arbalète de poing : Force 5 ; portée 10ps ; rechargement ; une main ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
+      "Sarbacane : Force 3 ; portée 16ps ; une main ; faible létalité : une figurine blessée par cette arme pioche 2 cartes blessures et n'applique que celle ayant la valeur la plus basse. Lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
+      "Javelot : Force utilisateur ; portée 16ps ; une main.",
+      "Pistolet : Force 5 ; portée 10ps ; -1 à la sauvegarde ennemie ; une main ; rechargement ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
+      "Arquebuse : Force 5 ; portée 24ps ; -1 à la sauvegarde ennemie ; deux mains ; rechargement."
+    ]
+  },
+  {
+    "id": "pieces-d-armure",
+    "title": "Pièces d'armure",
+    "level": 3,
+    "paragraphs": [
+      "Une figurine ne peut s'équiper de chaque pièce d'armure qu'une seule fois. Il est interdit d'empiler les casques sur la tête. Notez qu'il n'est possible pour une figurine de ne porter qu'une seule armure (de cuir, légère, lourde ou complète), il n'est en aucun cas possible de porter 2 armures, ou plus, qu'elles soient différentes ou identiques.",
+      "Afin de vous aider à calculer la sauvegarde de votre figurine, dites-vous que sa sauvegarde naturelle est (dans une très grande majorité de cas) de 11+, ce qui est bien entendu impossible à obtenir avec un D10, mais les pièces d'armure viennent améliorer vos résultats du dé de la manière suivante :",
+      "Armure de cuir : +1 à la sauvegarde.",
+      "Armure légère : +2 à la sauvegarde.",
+      "Armure lourde : +3 à la sauvegarde ; -1 au mouvement.",
+      "Armure complète : +4 à la sauvegarde ; -1 au mouvement.",
+      "Bouclier : +2 à la sauvegarde, Encombrée : vous avez un malus de -1 pour toucher au corps à corps.",
+      "Casque : +1 à la sauvegarde."
+    ]
+  },
+  {
+    "id": "organiser-une-campagne",
+    "title": "Organiser une campagne",
+    "level": 2,
+    "paragraphs": [
+      "Bien qu'il soit tout à fait possible de ne faire qu'une partie de temps en temps sans que celles-ci n'aient de liens entre elles, le cœur du jeu Amatika repose sur l'organisation d'une campagne entre amis.",
+      "Recrutez ses premiers collecteurs de cristaux, leur acheter l'équipement adéquat, les voir prendre de l'expérience au fur et à mesure des rencontres et devenir des véritables professionnels du combat de rue (ou des personnages complètement cassés par les coups subis), trouver des objets magiques, dont certains sont particulièrement rare, ramasser un maximum de cristaux magique, abattre des créatures toujours plus féroces, pour au final être la groupe à avoir obtenu le plus de prestige et remporter la campagne.",
+      "Nous allons voir dans ce chapitre comment assembler sa bande de collecteurs en début de campagne, ainsi que les séquences d'après partie comme le gain d'expérience et la montée de niveau, les blessures subies, l'achat et la revente d'objets, la gestion de son camp de regroupement, la vente de cristaux pour obtenir de l'or, permettant ainsi de recruter de nouveaux soldats et finalement l'accumulation de prestige menant à la victoire finale.",
+      "Une fois votre groupe de joueurs trouvé, chacun choisit parmi les groupes de collecteurs celui qu'il va jouer, le choix se fait souvent en fonction des figurines que chacun possède, puis il est important de définir un objectif ou une fin de partie. Cela peut être un nombre défini de rencontres, par exemple un groupe de 6 amis se réunissent un week-end entier afin de faire une campagne, ils décident de jouer 10 parties durant ce laps de temps, le vainqueur sera celui ayant obtenu le plus de prestige après la 10éme partie.\nUn autre groupe d'amis peut se dire que le vainqueur sera le premier à accumuler 1000 de prestige. Vous êtes libre de fixer l'objectif de fin de partie qui vous plaira, du moment que tous les joueurs sont en accord avec le choix fait."
+    ]
+  },
+  {
+    "id": "rassemblez-sa-bande-de-collecteurs",
+    "title": "Rassemblez sa bande de collecteurs",
+    "level": 3,
+    "paragraphs": [
+      "Le budget classique afin de créer son groupe est de 500 pièces d'or (PO), mais il est tout à fait possible de réduire ou augmenter celui-ci, du moment que tous les joueurs sont en accord avec ce changement. Il est en général préférable que toutes les bandes débutent avec le même budget, mais si un des joueurs est connu pour être d'un niveau plus élevé que les autres (ou plus faible), il est envisageable de réduire (ou augmenter) le budget de départ de celui-ci. A condition, encore et toujours, que tout le monde soit d'accord avec ceci.",
+      "Vous avez choisi la race de votre bande, et le budget de départ a été validé par l'assemblée, alors passons au recrutement :",
+      "Vous devez commencer par acheter un chef, son nom peut varier selon les races, mais en avoir un est obligatoire en début de campagne, cette figurine vous représente sur le champ de bataille, et c'est le seul moment où vous pourrez recruter un tel personnage. S'il vient à mourir au cours de la campagne, il sera alors remplacé par un autre membre du groupe.\nLe chef débute avec la compétence Chef et est toujours meilleur combattant que les autres soldats recrutables (en plus d'être particulièrement charismatique, bien entendu, puisque c'est vous!!!).\n\nChaque soldat, y compris votre chef, que vous allez recruter ne porte aucun équipement, il arrive avec une vieille paire de sandales, une chemise qu'il a porté durant toute la traversée en bateau et un pantalon (si vous avez de la chance) dans un état déplorable. Mais surtout absolument rien pour ne se battre ni se protéger, pensez donc à équiper un minimum vos guerriers, le combat à mains nues est vraiment inefficace.",
+      "Une fois votre glorieux chef recruté et équipé, il va lui falloir des hommes de main, ou des orcs de main, des elfes de mains et des mangechairs de main etc. Bref, de bons petits soldats prêts à appliquer vos ordres.\nEn plus de votre chef, vous pouvez embaucher des « recrues », c'est à dire des pas bons à grands choses, mais avec le temps, ils vont s'améliorer, peut-être. Pensez aussi à leur prendre de l'équipement. Le choix vous appartient entre avoir de nombreux soldats faiblement équipés, ou une petite poignée de guerriers armés jusqu'aux dents.",
+      "Il existe également des spécialistes, toutes figurines n'étant ni une recrue, ni votre chef sera un spécialiste. Mage, Ingénieur, Assassins en sont des exemples flagrants. Ces guerriers sont bien meilleurs que les recrues, mais ils coûtent également plus cher à l'achat, ainsi qu'à l'entretien, ils sont également recrutables dans un nombre restreint, variable selon les bandes.",
+      "Vous n'êtes bien entendu pas obligé de dépenser l'intégralité de votre budget, en effet après chaque partie vos soldats vont réclamer leur solde, et être en incapacité de la leur payer aura pour effet de les voir quitter votre groupe sans sommation."
+    ]
+  },
+  {
+    "id": "phase-d-apres-bataille",
+    "title": "Phase d'après bataille",
+    "level": 2,
+    "paragraphs": []
+  },
+  {
+    "id": "1-reserve-de-poison",
+    "title": "1 : Réserve de poison",
+    "level": 3,
+    "paragraphs": [
+      "Chaque joueur jette 1D10 par poison utilisé au cours de la partie, même si finalement l'arme empoisonnée n'a pas été utilisée. Sur un résultat de 1 à 8, la réserve de poison est vide et celui-ci est perdu, remettez la carte dans le paquet approprié, sur un 9 et 10, il reste assez de poison, vous pouvez garder la carte."
+    ]
+  },
+  {
+    "id": "2-transformer-les-cristaux-bruts",
+    "title": "2 : Transformer les cristaux bruts",
+    "level": 3,
+    "paragraphs": [
+      "Tous les cristaux bruts récoltés n'ont pas la même valeur, et il n'est possible d'observer ceux-ci afin de connaître le nombre de cristaux contenu dans chaque cristal brut qu'une fois au calme, de retour au camp.\nPour ce faire, jetez 1D10 pour chaque cristal brut récupéré, ainsi si vous avez obtenu 3 cristaux brut lors de la partie, jetez 3D10. Le résultat obtenu vous donne le nombre de cristaux magique obtenu. Bien entendu, plus ce résultat est élevé, plus vous serez heureux."
+    ]
+  },
+  {
+    "id": "3-morts-et-blessures",
+    "title": "3 : Morts et blessures",
+    "level": 3,
+    "paragraphs": [
+      "Lorsqu'une bande quitte le champ de bataille (à la suite d'un test de déroute manqué ou une déroute volontaire, ou lorsque le soleil se couche, sifflant la fin de la partie), son propriétaire peut alors immédiatement s'occuper de ses morts.\nLes figurines mortes sont supprimées de la bande, et l'équipement, les cristaux et les pièces d'or qu'elles portent sur elles sont perdus, laissés sur le champ de bataille, laissez la figurine morte sur le champ de bataille tant qu'il lui reste de l'équipement à piller.",
+      "Les figurines blessées restent sur le champ de bataille jusqu'au coucher du soleil, après quoi le reste de la bande se faufile discrètement afin de ramener ses compagnons au camp pour se faire soigner.\nSi ces figurines portent encore de l'équipement, celui-ci est également ramené au camp, en revanche si elles ne portent plus rien, il faudra les équiper pour la prochaine partie.",
+      "Le joueur applique ensuite les dégâts notés sur les cartes blessures en modifiant si nécessaire la fiche de l'unité, puis les cartes blessures sont remises dans le paquet pour la prochaine bataille.",
+      "Si le chef de la bande est tué, le combattant de la bande avec le plus haut commandement prend le relais. Il bénéficie alors gratuitement de la règle spéciale Chef. Si plusieurs figurines possèdent le commandement le plus élevé, alors celle qui possède le plus d'expérience devient le chef, en cas d'égalité jetez un dé.\nIl est impossible de recruter une nouvelle figurine de chef."
+    ]
+  },
+  {
+    "id": "4-payer-l-entretien-de-sa-bande",
+    "title": "4 : Payer l'entretien de sa bande",
+    "level": 3,
+    "paragraphs": [
+      "Comme cela a été dit rapidement plus tôt, vos soldats vont demander leurs soldes après chaque bataille. En effet, s'ils acceptent de partager leur butin, ils en réclament néanmoins une partie.",
+      "Chaque soldat demande une solde différente. La figurine ayant la capacité « Chef » ne coûte aucun entretien, il récolte déjà tout le butin pour lui. Les recrues ont un coût d'entretien de 2PO par figurine par niveau. Les spécialistes sont bien plus efficaces et vous réclament donc 5PO par niveau. Les figurines ayant de base 3PV (comme les trolls ou les minotaures) nécessitent 30PO d'entretien.",
+      "Faites la somme de toutes les soldes de vos soldats, y compris ceux n'ayant pas participé à la dernière bataille, sans compter les morts qui ne vont plus rien réclamer du tout, mais en pensant aux blessés, même si finalement vous pourriez avoir en tête de vous en séparer. Puis soustrayez de votre trésor le coût en PO ou en cristaux magique.\nIl est tout à fait possible de vendre des cristaux magiques ainsi que des objets afin de pouvoir payer les soldes (chaque cristal magique vendu pour rapporte 25PO).",
+      "Si vous êtes dans l'incapacité de payer les soldes (ou si vous ne voulez pas payer), alors chaque soldat non payé quitte immédiatement votre groupe et vous perdez 10 de prestige par soldat ayant quitté le groupe ainsi.\nCette perte de prestige est irrémédiable, vous êtes à présent connu pour être un mauvais payeur."
+    ]
+  },
+  {
+    "id": "5-gains-d-experience",
+    "title": "5 : Gains d'expérience",
+    "level": 3,
+    "paragraphs": [
+      "Les figurines ayant participé à la bataille vont à présent pouvoir gagner de l'expérience de la manière suivante :",
+      "Participation à la bataille : 1D10 points d'expérience.\nLieu d'intérêt fouiller : 5 points d'expérience.\nPour chaque point de vie supprimé à une figurine ennemie : 2 à 10 points d'expérience en fonction de la figurine blessée.\nEnnemi tué : 5 points d'expérience en plus des points d'expériences pour avoir fait perdre un point de vie.",
+      "Les soldats passent de niveau automatiquement une fois un certain palier atteint.",
+      "Niveau 1 à niveau 2 : 10xp\nNiveau 2 à niveau 3 : 30xp\nNiveau 3 à niveau 4 : 60xp\nNiveau 4 à niveau 5 : 100xp\nNiveau 5 à niveau 6 : 150xp\nNiveau 6 à niveau 7 : 210xp\nNiveau 7 à niveau 8 : 280xp\nNiveau 8 à niveau 9 : 360xp\nNiveau 9 à niveau 10 : 450xp",
+      "Il est assez peu probable qu'une figurine atteigne ou dépasse un tel niveau. Mais si cela devait arriver, on peut considérer que la figurine a atteint le summum de ces compétences et que plus aucune progression n'est possible, elle ne gagne plus aucun point d'expérience au-delà de 450.",
+      "Lorsqu'une figurine passe niveau 2 ou plus, alors jetez un D10 :\n1 : +1 en agilité et en mouvement\n2 : réduire de 1 le résultat nécessaire pour toucher au tir OU au corps à corps\n3 : +1 en force\n4 : +1 en endurance\n5 : +1 point de vie\n6 : +1 en commandement\n7 : +1 en attaque\n8 : choisissez une compétence parmi celles disponibles selon la classe du personnage\n9 : choisissez une compétence parmi celles disponibles selon la classe du personnage\n10 : choisissez le résultat désiré",
+      "Lorsqu'une figurine passe niveau 6, en plus de jeter un D10 afin de voir quelle sera son évolution, cette figurine gagne une action supplémentaire à chacune de ses activations (la faisant généralement passer à 4 actions)."
+    ]
+  },
+  {
+    "id": "6-ameliorer-sa-bande",
+    "title": "6 : Améliorer sa bande",
+    "level": 3,
+    "paragraphs": [
+      "Une fois les gains d'expérience fait et les montées de niveaux validées, il est possible d'acheter ou vendre de l'équipement, et de recruter de nouveaux personnages.\nLe coût d'achat des objets est noté sur la carte de l'objet, le prix de revente est la moitié du coût d'achat.\nAinsi un objet ayant un prix d'achat de 10PO pourra être revendu pour 5PO.",
+      "Il n'y a aucune limite dans le nombre du combattant que vous pouvez posséder dans votre bande (hormis le coût d'entretien qui pourrait exploser) ni dans le nombre d'objets commun que vous pouvez vendre et/ou acheter, ceux-ci sont disponible en quantité illimité, mais souvenez-vous que seul 10 soldats pourront participer aux parties.",
+      "Durant cette phase, nous vous conseillons d'utiliser la règle Marché noir, bien que si tout le groupe est d'accord, il est possible de ne pas s'en servir.\nLe Marché noir ouvre l'accès aux joueurs à des objets différents, voir magiques plus facilement, permettant à un joueur ayant gagné beaucoup de PO ou de cristaux brut mais aucun objet spécial d'en acheter quand même, avec un peu de chance.",
+      "Si vous jouez avec les règles du Marché noir, au début de cette phase d'après bataille, distribuez 4 cartes Marché noir (cartes à dos noir) à chaque joueur. Chaque carte correspond à un objet, il n'y a pas de monstres, pièges ou effet négatif. Chaque joueur peut alors acheter les objets qui lui ont été distribué, en plus des objets communs. En revanche il n'est pas possible d'acheter une carte distribuée à un autre joueur. Le marché noir est fluctuant, on n'y trouve hélas pas toujours son bonheur, les cartes qui ne seront pas achetée retourneront dans le paquet Marché noir.",
+      "Si le paquet de carte n'est pas suffisant afin d'en distribuer 4 à chaque joueur, alors distribuez en une de moins, et ainsi de suite, jusqu'à une distribution équitable.\nCertaines compétences permettent d'avoir plus de cartes Marché noir distribuée, si un joueur est dans ce cas, on lui distribue en priorité ces cartes bonus, puis la répartition de 4 cartes par joueurs (ou moins) se fait, les cartes bonus ne comptent pas dans la répartition équitable.",
+      "Durant cette phase, il est également possible de vendre des cristaux magiques, le taux d'échange est de 25PO par cristal magique vendu.",
+      "Une fois que tous les joueurs ont terminé leurs achats, notés les équipements etc., vous êtes prêt pour une nouvelle partie."
+    ]
+  },
+  {
+    "id": "les-mages-et-les-sorts",
+    "title": "Les Mages et les sorts",
+    "level": 2,
+    "paragraphs": [
+      "Les mages sont des soldats capables de lancer des sorts de combats.",
+      "Lorsque vous recrutez un mage, il connait automatiquement 2 sorts qui lui sont associés, notés sur sa fiche de recrutement. Il s'agit très souvent de Orbe Mineur ainsi qu'un sort variable en fonction de la race du mage. Prenez donc les cartes sorts correspondants.",
+      "Lorsqu'un mage gagne un niveau, en plus de l'effet habituel (jeter 1D10 et voir son gain), celui-ci apprend un sort supplémentaire. Pour ce faire le joueur pioche 5 cartes sorts du paquet, choisi parmi ceux-ci. Ce sort sélectionné est à présent maitrisé par le mage qui pourra le lancer lors des prochaines parties.\nRemettez les 4 autres cartes dans le paquet. Si plusieurs mages de différentes bandes passent de niveau en même temps, distribuez les cartes sorts à tous les joueurs afin qu'ils fassent leur choix en même temps, et secrètement."
+    ]
+  },
+  {
+    "id": "il-existe-plusieurs-types-de-sorts",
+    "title": "Il existe plusieurs types de sorts",
+    "level": 3,
+    "paragraphs": [
+      "Projectile",
+      "Invocation",
+      "Ephémère",
+      "Reste en jeu",
+      "Les projectiles sont proches des armes de tir dans leur fonctionnement.\nLa cible d'un projectile doit être la figurine éligible ennemie la plus proche, sauf si le mage est dans une position en hauteur.\nUne fois le jet de lancement effectué, si celui-ci est une réussite, alors la figurine cible subit une touche dont la valeur de force et les règles spéciales sont notées sur la carte du sort. Une fois les effets résolus, l'action prend fin et le mage peut en faire une suivante s'il lui en reste.",
+      "Les invocations permettent au mage de faire apparaître des alliées. Ceux-ci peuvent être des animaux arrivant à la rescousse de la bande, des constructions vivantes ou des créatures magiques. Dans tous les cas lorsque le sort d'invocation est lancé avec succès, le joueur place une figurine correspondante dans un rayon de 6ps du lanceur. \nUn mage peut contrôler plusieurs invocations différentes en même temps mais une même invocation ne peut être présente qu'une seule fois sur le champ de bataille par même le mage.\nLes figurines d'invocations sont activée dans le même tour que le mage ayant lancé le sort, dans l'ordre souhaité par le joueur. Une figurine doit néanmoins terminer toutes ces activations avant de passer à la figurine suivante.\nUne figurine invoquée ne peu pas être activée lors du même tour.\nLes invocations suivent les règles, compétences et capacités notées sur la carte du sort, elles ne possèdent que 2 actions et ne peuvent pas ramasser de Cristaux Brut, fouiller de lieu d'intérêt ni de figurine au sol. Elles ne portent aucun équipement.\nLes invocations sont considérée comme ayant la règle « Mains Griffues ».\nLorsqu'une figurine invoquée perd son dernier point de vie, ne piochez pas de carte blessure, la figurine est simplement retirée du champ de bataille, le mage pourra alors tenter de l'invoquer à nouveau par la suite.\nMême si la figurine reste sur le champ de bataille, les sorts d'invocations ne sont pas considérés comme restant en jeu et ne peuvent être dissipés par les ennemies, pour ce débarrasser d'une figurine invoquée, il faudra la mettre hors de combat.\nLorsque la bande d'un mage quitte le champ de bataille, toutes les créature invoquée par ce mage quittent également le champ de bataille. Les invocations ne gagnent aucune expérience et ne sont pas conservée pour la partie suivante.",
+      "Les éphémères sont des sorts qui ont un effet immédiat, comme obliger une figurine à effectuer un test de peur ou effectuer un mouvement gratuit sans aucun bonus sur la durée (sauf rares exceptions noté sur la carte sort).",
+      "Les sorts reste en jeu fonctionne bien souvent comme les éphémères, à ceci près qu'ils restent en jeu (si si). Placez la carte sort proche de la figurine ciblée, du point de champ de bataille visé ou sur le bord de table afin de se souvenir de l'effet.\nUn mage ne peut pas garder en jeu plusieurs fois les même sort reste en jeu, il devra annuler son sort avant de pouvoir le lancer à nouveau ailleurs s'il le souhaite (annuler un sort de la sorte ne coute aucune action).\nCes sorts sont les seuls à pouvoir être par la suite dissipés par une figurine ennemie."
+    ]
+  }
+]

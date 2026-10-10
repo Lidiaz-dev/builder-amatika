@@ -1,0 +1,42 @@
+Bandes.docx : le premier bloc « 0-10 Recrue : 45PO » n'a pas de faction, il est ignoré.
+Drakéide / Gardien du temple saurus : spécialiste en 0-10, conservé tel quel (à confirmer).
+Drakéide / Kroxigor : pas d'effectif indiqué, fixé à 0-1.
+Mangechair / Décapiteur : spécialiste en 0-10, conservé tel quel (à confirmer).
+La Harde / Chef Bestigor : « Adepte du mal OU Chasseur de damnés » se choisit à la création.
+La Harde / Gardien Bestigor : « Adepte du mal OU Chasseur de damnés » se choisit à la création.
+Nain d'Ashut / Garde noir : pas d'effectif indiqué, fixé à 0-1.
+Nécromant : le Vampire n'a pas d'effectif, il est fixé à 1 (c'est le chef).
+Bretonniens / Chevalier : spécialiste en 0-3, conservé tel quel (à confirmer).
+Cathay / Samouraï : spécialiste en 0-3, conservé tel quel (à confirmer).
+Écart Bandes / Compendium pour Cités-Etats / Mage : coût 67 → 133 PO, For 4 → 5, End 4 → 5 (Compendium retenu).
+Écart Bandes / Compendium pour Orques / Orque noir : coût 311 → 277 PO (Compendium retenu).
+Écart Bandes / Compendium pour Gobelins / Troll : coût 288 → 262 PO (Compendium retenu).
+Écart Bandes / Compendium pour Haut Elfe / Fantôme : Com 7 → 6, Tir 6 → 5, Comm 8 → 7 (Compendium retenu).
+Écart Bandes / Compendium pour Elfe des bois / Druide : Com 7 → 6, Comm 9 → 8 (Compendium retenu).
+Écart Bandes / Compendium pour Elfe des bois / Guide : Comm 8 → 9 (Compendium retenu).
+Écart Bandes / Compendium pour Ogre / Recrue : coût 347 → 317 PO (Compendium retenu).
+Écart Bandes / Compendium pour Ogre / Tyran : coût 407 → 372 PO, Comm 9 → 10 (Compendium retenu).
+Écart Bandes / Compendium pour Skaven / Assassin : For 3 → 4 (Compendium retenu).
+Écart Bandes / Compendium pour Skaven / Coureur nocturne : Comm 12 → 13 (Compendium retenu).
+Écart Bandes / Compendium pour Skaven / Rat-ogre : coût 267 → 244 PO (Compendium retenu).
+Écart Bandes / Compendium pour Drakéide / Skink caméléon : Tir 7 → 6 (Compendium retenu).
+Écart Bandes / Compendium pour Drakéide / Kroxigor : coût 506 → 462 PO (Compendium retenu).
+Compendium : Commandement 1 impossible pour Mangechair / Prêtre, valeur de Bandes.docx conservée (8+).
+Écart Bandes / Compendium pour Mangechair / Dévoreur : coût 421 → 384 PO (Compendium retenu).
+Écart Bandes / Compendium pour La Harde / Minotaure : coût 317 → 290 PO (Compendium retenu).
+Écart Bandes / Compendium pour Nécromant / Vampire : coût 286 → 269 PO (Compendium retenu).
+Écart Bandes / Compendium pour Cathay / Ninja : Mou 5 → 6 (Compendium retenu).
+Écart Bandes / Compendium pour Cathay / Oni : Mou 5 → 4 (Compendium retenu).
+Écart Bandes / Compendium pour Khajiit / Ajani : coût 73 → 125 PO (Compendium retenu).
+Écart Bandes / Compendium pour Ondin / Guide : coût 84 → 124 PO (Compendium retenu).
+Écart Bandes / Compendium pour Ondin / Avatar d'eau : coût 133 → 433 PO (Compendium retenu).
+Compétences de Nains / Brasseur alignées sur le Compendium (ajoutées : lieutenant; retirées : etendard).
+Compétences de Gobelins / Chaman Capuchard alignées sur le Compendium (retirées : eclaireur-2).
+Compétences de Skaven / Ingénieur alignées sur le Compendium (ajoutées : marin).
+Compétences de Drakéide / Gardien du temple saurus alignées sur le Compendium (ajoutées : chasseur-de-damnes, dissipation).
+Compétences de Drakéide / Kroxigor alignées sur le Compendium (ajoutées : grande-cible, n-apprend-rien, peur).
+Compétences de Mangechair / Maître dépeceur alignées sur le Compendium (ajoutées : eclaireur-4, peur).
+Compétences de La Harde / Gardien Bestigor alignées sur le Compendium (ajoutées : sans-peur; retirées : peur).
+Compétences de La Harde / Minotaure alignées sur le Compendium (ajoutées : grande-cible, n-apprend-rien, peur).
+Compétence « Immortel » sans description dans Règles.docx.
+Objet « Potion de rapidité » : pas de description, son effet n'est pas appliqué.

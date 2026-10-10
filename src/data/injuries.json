@@ -1,0 +1,310 @@
+[
+  {
+    "id": "meme-pas-mal-1",
+    "kind": "meme-pas-mal",
+    "name": "Même pas mal !",
+    "value": 1,
+    "description": "La blessure n'était finalement que partiel, la figurine n'est pas mise hors de combat, comme si la blessure n'avait pas eu lieu, le point de vie n'est pas perdu. La figurine ayant effectuée l'attaque gagne tout de même l'expérience suite au point de vie enlevé.",
+    "quantity": 6,
+    "lasting": false
+  },
+  {
+    "id": "au-sol-13",
+    "kind": "au-sol",
+    "name": "Au sol",
+    "value": 13,
+    "description": "La figurine est mise hors de combat, lors de sa prochaine activation celle-ci devra se relever. Se relever de la sorte lui enlève 1 action. Ensuite remettez cette carte sous la pile Blessure.",
+    "quantity": 3,
+    "lasting": false
+  },
+  {
+    "id": "au-sol-14",
+    "kind": "au-sol",
+    "name": "Au sol",
+    "value": 14,
+    "description": "La figurine est mise hors de combat, lors de sa prochaine activation celle-ci devra se relever. Se relever de la sorte lui enlève 2 actions. Ensuite remettez cette carte sous la pile Blessure.",
+    "quantity": 3,
+    "lasting": false
+  },
+  {
+    "id": "au-sol-15",
+    "kind": "au-sol",
+    "name": "Au sol",
+    "value": 15,
+    "description": "La figurine est mise hors de combat, lors de sa prochaine activation celle-ci devra se relever. Se relever de la sorte lui enlève 3 actions. Ensuite remettez cette carte sous la pile Blessure.",
+    "quantity": 2,
+    "lasting": false
+  },
+  {
+    "id": "assome-20",
+    "kind": "assome",
+    "name": "Assomé",
+    "value": 20,
+    "description": "La figurine est mise hors de combat, lors de chacune de ses prochaines actions, elle pourra tenter se relever sur un 2+, en cas de réussite remettez la figurine debout, Se relever de la sorte lui enlève 2 actions. Ensuite remettez cette carte sous la pile Blessure.",
+    "quantity": 3,
+    "lasting": false
+  },
+  {
+    "id": "assome-21",
+    "kind": "assome",
+    "name": "Assomé",
+    "value": 21,
+    "description": "La figurine est mise hors de combat, lors de chacune de ses prochaines actions, elle pourra tenter se relever sur un 3+, en cas de réussite remettez la figurine debout, Se relever de la sorte lui enlève 2 actions. Ensuite remettez cette carte sous la pile Blessure.",
+    "quantity": 3,
+    "lasting": false
+  },
+  {
+    "id": "assome-22",
+    "kind": "assome",
+    "name": "Assomé",
+    "value": 22,
+    "description": "La figurine est mise hors de combat, lors de chacune de ses prochaines actions, elle pourra tenter se relever sur un 4+, en cas de réussite remettez la figurine debout, Se relever de la sorte lui enlève 2 actions. Ensuite remettez cette carte sous la pile Blessure.",
+    "quantity": 3,
+    "lasting": false
+  },
+  {
+    "id": "assome-23",
+    "kind": "assome",
+    "name": "Assomé",
+    "value": 23,
+    "description": "La figurine est mise hors de combat, lors de chacune de ses prochaines actions, elle pourra tenter se relever sur un 5+, en cas de réussite remettez la figurine debout, Se relever de la sorte lui enlève 2 actions. Ensuite remettez cette carte sous la pile Blessure.",
+    "quantity": 2,
+    "lasting": false
+  },
+  {
+    "id": "assome-24",
+    "kind": "assome",
+    "name": "Assomé",
+    "value": 24,
+    "description": "La figurine est mise hors de combat, lors de chacune de ses prochaines actions, elle pourra tenter se relever sur un 6+, en cas de réussite remettez la figurine debout, Se relever de la sorte lui enlève 2 actions. Ensuite remettez cette carte sous la pile Blessure.",
+    "quantity": 2,
+    "lasting": false
+  },
+  {
+    "id": "assome-25",
+    "kind": "assome",
+    "name": "Assomé",
+    "value": 25,
+    "description": "La figurine est mise hors de combat, lors de chacune de ses prochaines actions, elle pourra tenter se relever sur un 7+, en cas de réussite remettez la figurine debout, Se relever de la sorte lui enlève 2 actions. Ensuite remettez cette carte sous la pile Blessure.",
+    "quantity": 2,
+    "lasting": false
+  },
+  {
+    "id": "assome-26",
+    "kind": "assome",
+    "name": "Assomé",
+    "value": 26,
+    "description": "La figurine est mise hors de combat, lors de chacune de ses prochaines actions, elle pourra tenter se relever sur un 8+, en cas de réussite remettez la figurine debout, Se relever de la sorte lui enlève 2 actions. Ensuite remettez cette carte sous la pile Blessure.",
+    "quantity": 1,
+    "lasting": false
+  },
+  {
+    "id": "assome-27",
+    "kind": "assome",
+    "name": "Assomé",
+    "value": 27,
+    "description": "La figurine est mise hors de combat, lors de chacune de ses prochaines actions, elle pourra tenter se relever sur un 9+, en cas de réussite remettez la figurine debout, Se relever de la sorte lui enlève 2 actions. Ensuite remettez cette carte sous la pile Blessure.",
+    "quantity": 1,
+    "lasting": false
+  },
+  {
+    "id": "assome-28",
+    "kind": "assome",
+    "name": "Assomé",
+    "value": 28,
+    "description": "La figurine est mise hors de combat, lors de chacune de ses prochaines actions, elle pourra tenter se relever sur un 10+, en cas de réussite remettez la figurine debout, Se relever de la sorte lui enlera 2 enlève. Ensuite remettez cette carte sous la pile Blessure.",
+    "quantity": 1,
+    "lasting": false
+  },
+  {
+    "id": "ce-qui-ne-me-tue-pas-me-rend-plus-fort-8",
+    "kind": "ce-qui-ne-me-tue-pas-me-rend-plus-fort",
+    "name": "Ce qui ne me tue pas me rend plus fort !",
+    "value": 8,
+    "description": "La figurine est mise hors de combat, à la fin de la bataille elle gagne la règle \"Sans peur\"",
+    "quantity": 1,
+    "gainSkill": "Sans Peur",
+    "lasting": true
+  },
+  {
+    "id": "defigure-6",
+    "kind": "defigure",
+    "name": "Défiguré",
+    "value": 6,
+    "description": "La figurine est mise hors de combat, à la fin de la bataille elle gagne la règle \"Peur\"",
+    "quantity": 1,
+    "gainSkill": "Peur",
+    "lasting": true
+  },
+  {
+    "id": "sauve-par-son-sac-12",
+    "kind": "sauve-par-son-sac",
+    "name": "Sauvé par son sac",
+    "value": 12,
+    "description": "Si la figurine possède au moins un objet dans son sac à dos, séléctionné au hasard un de ses objets (en jetant un dè), celui-ci est detruit (remettez le sous sa pile de carte), puis la blessure est annulée. La figurine ayant effectuée l'attaque gagne tout de même l'expérience suite au point de vie enlevé.",
+    "quantity": 3,
+    "special": "bag",
+    "lasting": false
+  },
+  {
+    "id": "blessure-legere-50",
+    "kind": "blessure-legere",
+    "name": "Blessure légère",
+    "value": 50,
+    "description": "La figurine est mise hors de combat.",
+    "quantity": 6,
+    "lasting": false
+  },
+  {
+    "id": "blessure-grave-60",
+    "kind": "blessure-grave",
+    "name": "Blessure grâve",
+    "value": 60,
+    "description": "La figurine est mise hors de combat, de plus elle ne pourra pas participer à la prochaine partie afin de se remettre de ses blessures.",
+    "quantity": 5,
+    "missNextGame": true,
+    "lasting": true
+  },
+  {
+    "id": "negociation-avec-la-mort-30",
+    "kind": "negociation-avec-la-mort",
+    "name": "Négociation avec la mort",
+    "value": 30,
+    "description": "La figurine peut payer immédiatement 20PO (elle peut utilisez des objets de son sac ou équipée afin de payer cete somme, comme si les objets avaient été vendu). Si elle le fait, alors la blessure est annulée (La figurine ayant effectuée l'attaque gagne tout de même l'expérience suite au point de vie enlevé), sinon piochez une nouvelle carte Blessure.",
+    "quantity": 1,
+    "special": "negotiate",
+    "lasting": false
+  },
+  {
+    "id": "jambe-emputee-97",
+    "kind": "jambe-emputee",
+    "name": "Jambe emputée",
+    "value": 97,
+    "description": "La figurine perd 2 en Mouvement. Si cette figurine a déjà été amputée d'une jambe, alors elle devra quitter la bande après la partie, une fois son entretien payé. Notez \"jambe emputé\" sur sa fiche.",
+    "quantity": 1,
+    "mods": {
+      "mou": -2
+    },
+    "mark": "jambe",
+    "leavesOnSecond": true,
+    "lasting": true
+  },
+  {
+    "id": "blessure-multiple-99",
+    "kind": "blessure-multiple",
+    "name": "Blessure multiple",
+    "value": 99,
+    "description": "Piochez 2 cartes blessures et appliquez les 2 résultat (si assomé ou au sol 2 fois, n'appliquez que la plus mauvaise).",
+    "quantity": 1,
+    "special": "multiple",
+    "lasting": false
+  },
+  {
+    "id": "bras-empute-95",
+    "kind": "bras-empute",
+    "name": "Bras Emputé",
+    "value": 95,
+    "description": "La figurine est emputée d'un de ses bras, elle ne peut donc plus utiliser d'arme à 2 mains, ni utiliser 2 objets à 1 main en même temps. Si cette figurine a déjà été amputée d'un bras, alors elle devra quitter la bande après la partie, une fois son entretien payé. Notez \"Bras emputé\" sur sa fiche.",
+    "quantity": 1,
+    "mark": "bras",
+    "leavesOnSecond": true,
+    "handsLost": 1,
+    "lasting": true
+  },
+  {
+    "id": "jambe-cassee-94",
+    "kind": "jambe-cassee",
+    "name": "Jambe cassée",
+    "value": 94,
+    "description": "La figurine est mise hors de combat, de plus elle perd 1 en Mouvement",
+    "quantity": 1,
+    "mods": {
+      "mou": -1
+    },
+    "lasting": true
+  },
+  {
+    "id": "cheville-tordue-86",
+    "kind": "cheville-tordue",
+    "name": "Cheville tordue",
+    "value": 86,
+    "description": "La figurine est mise hors de combat, de plus elle perd 1 en Agilité",
+    "quantity": 2,
+    "mods": {
+      "agi": 1
+    },
+    "lasting": true
+  },
+  {
+    "id": "folie-88",
+    "kind": "folie",
+    "name": "Folie",
+    "value": 88,
+    "description": "La figurine est mise hors de combat, de plus elle perd 1 en Commandement",
+    "quantity": 1,
+    "mods": {
+      "cmd": 1
+    },
+    "lasting": true
+  },
+  {
+    "id": "main-ecrasee-92",
+    "kind": "main-ecrasee",
+    "name": "Main ecrasée",
+    "value": 92,
+    "description": "La figurine est mise hors de combat, de plus elle perd 1 en Combat",
+    "quantity": 1,
+    "mods": {
+      "com": 1
+    },
+    "lasting": true
+  },
+  {
+    "id": "oeil-creve-90",
+    "kind": "oeil-creve",
+    "name": "Œil crevé",
+    "value": 90,
+    "description": "La figurine est mise hors de combat, de plus elle perd 1 en Tir. Si cette figurine a déjà eu un œil crevée, alors elle devra quitter la bande après la partie, une fois son entretien payé. Notez \"Œil crevé\" sur sa fiche.",
+    "quantity": 1,
+    "mods": {
+      "tir": 1
+    },
+    "mark": "oeil",
+    "leavesOnSecond": true,
+    "lasting": true
+  },
+  {
+    "id": "cote-cassee-96",
+    "kind": "cote-cassee",
+    "name": "Côte cassée",
+    "value": 96,
+    "description": "La figurine est mise hors de combat, de plus elle perd 1 en Endurance",
+    "quantity": 1,
+    "mods": {
+      "end": -1
+    },
+    "lasting": true
+  },
+  {
+    "id": "bras-casse-98",
+    "kind": "bras-casse",
+    "name": "Bras cassé",
+    "value": 98,
+    "description": "La figurine est mise hors de combat, de plus elle perd 1 en Force",
+    "quantity": 1,
+    "mods": {
+      "for": -1
+    },
+    "lasting": true
+  },
+  {
+    "id": "morte-100",
+    "kind": "morte",
+    "name": "Morte",
+    "value": 100,
+    "description": "La figurine est morte",
+    "quantity": 12,
+    "dead": true,
+    "lasting": true
+  }
+]
