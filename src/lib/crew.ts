@@ -26,6 +26,8 @@ export interface LootRef {
   slot: Slot
   /** Consommable utilisé pendant la partie en cours (défaussé ou testé après la bataille). */
   used?: boolean
+  /** Objet racial acheté à la création : son prix compte dans le coût de la bande. */
+  racial?: boolean
 }
 
 export type StatMods = Partial<Record<StatKey, number>>
@@ -210,7 +212,8 @@ export function lootItems(member: Member) {
 
 export function memberCost(faction: Faction | undefined, member: Member) {
   const profile = profileOf(faction, member)
-  return (profile?.cost ?? 0) + items(member).reduce((sum, e) => sum + e.price, 0)
+  const racial = lootItems(member).reduce((sum, l) => sum + (l.ref.racial ? (l.item?.price ?? 0) : 0), 0)
+  return (profile?.cost ?? 0) + items(member).reduce((sum, e) => sum + e.price, 0) + racial
 }
 
 export function crewCost(crew: Crew) {

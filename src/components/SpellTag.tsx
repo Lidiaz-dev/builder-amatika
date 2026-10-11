@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import type { Spell } from '../data'
 import InfoTag from './InfoTag'
 import StatLine from './StatLine'
+import RuleText from './RuleText'
 
 /** Détail d'un sort : valeur de lancement, portée, cible, effet ou profil de l'invocation. */
 export function SpellDetails({ spell }: { spell: Spell }) {
@@ -13,11 +14,11 @@ export function SpellDetails({ spell }: { spell: Spell }) {
         {spell.target && <span><strong>Cible :</strong> {spell.target}</span>}
         {spell.racial && <span><strong>Sort racial :</strong> {spell.racial}</span>}
       </p>
-      {spell.description && <p>{spell.description}</p>}
+      {spell.description && <p><RuleText text={spell.description} /></p>}
       {spell.summon && (
         <>
           <StatLine stats={spell.summon} />
-          {spell.summonSkills && <p className="small"><strong>Règles :</strong> {spell.summonSkills}</p>}
+          {spell.summonSkills && <p className="small"><strong>Règles :</strong> <RuleText text={spell.summonSkills} /></p>}
         </>
       )}
     </>

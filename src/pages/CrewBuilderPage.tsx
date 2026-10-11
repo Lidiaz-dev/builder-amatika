@@ -13,6 +13,7 @@ import {
   type Faction,
   type Profile,
   type Spell,
+  racialItemsOf,
 } from '../data'
 import {
   actionsOf,
@@ -67,6 +68,7 @@ import AdvancePicker from '../components/AdvancePicker'
 import LootPicker, { type LootPick } from '../components/LootPicker'
 import PhaseBar from '../components/PhaseBar'
 import LiveGamePanel from '../components/LiveGamePanel'
+import RuleText from '../components/RuleText'
 
 const SPELL_GROUPS: { label: string; match: (s: Spell) => boolean }[] = [
   { label: 'Sorts de la faction', match: (s) => s.factions.length > 0 && !s.bonus },
@@ -233,7 +235,7 @@ export default function CrewBuilderPage() {
               <input type="number" min={0} step={10} value={crew.budget} onChange={(e) => update({ budget: Number(e.target.value) })} />
             </label>
           )}
-          <label className="switch">
+          <label className="switch field-switch">
             <input type="checkbox" checked={!!crew.unrestricted} onChange={(e) => update({ unrestricted: e.target.checked })} />
             <span className="switch-track" aria-hidden="true" />
             <span>Sans restrictions</span>
@@ -247,7 +249,7 @@ export default function CrewBuilderPage() {
             {phase === 'partie' ? null : campaign ? (
               <>
                 <button className="btn primary" onClick={() => setLaunchOpen(true)} disabled={active.length === 0}>⚔ Lancer la partie</button>
-                <button className="btn ghost small" onClick={() => saveThenGo(`/bandes/${crew.id}/apres-partie`)} title="Saisir après coup une partie jouée sans le mode Partie en cours">
+                <button className="btn" onClick={() => saveThenGo(`/bandes/${crew.id}/apres-partie`)} title="Saisir après coup une partie jouée sans le mode Partie en cours">
                   Saisir une partie déjà jouée
                 </button>
               </>
@@ -257,7 +259,7 @@ export default function CrewBuilderPage() {
               </button>
             )}
             <button className="btn" onClick={() => saveThenGo(`/bandes/${crew.id}/fiches`)}>Fiches à imprimer</button>
-            <button className="btn danger ghost" onClick={remove}>Supprimer</button>
+            <button className="btn danger" onClick={remove}>Supprimer</button>
           </div>
         </div>
       </div>
@@ -281,7 +283,7 @@ export default function CrewBuilderPage() {
               <Total label="Entretien" value={`${upkeep.po} PO${upkeep.cristaux ? ` + ${upkeep.cristaux} cristal` : ''}`} />
               <Total label="Membres" value={`${active.length}`} alert={active.length > MAX_ON_TABLE} />
               <Total label="Parties" value={`${campaign.games.length}`} />
-              <button className="btn small" onClick={() => setTreasuryOpen(true)}>Trésor…</button>
+              <button className="btn totals-btn" onClick={() => setTreasuryOpen(true)}>Trésor…</button>
             </>
           ) : (
             <>
@@ -317,7 +319,7 @@ export default function CrewBuilderPage() {
                       {ROLE_LABELS[p.role]} · {p.cost} PO · {count}/{p.max}
                     </div>
                   </div>
-                  <button className="btn small" disabled={full || locked} onClick={() => addMember(p)} aria-label={`Recruter ${p.name}`}>
+                  <button className="btn recruit-add" disabled={full || locked} onClick={() => addMember(p)} aria-label={`Recruter ${p.name}`}>
                     +
                   </button>
                 </li>
@@ -569,6 +571,8 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
   const skillsShown = memberSkills(profile, member)
   const choiceSkills = new Set(member.skillChoices)
   const loot = lootItems(member)
+  // Un objet racial n'est proposé qu'aux profils qui ont accès à l'équipement de base (arbalète, arc…).
+  const racialItems = racialItemsOf(faction.id).filter((it) => unrestricted || !it.requires || profile.equipment.includes(it.requires))
 
   const setSlot = (index: number, slot: Slot) =>
     onChange({ ...member, equipment: member.equipment.map((r, i) => (i === index ? { ...r, slot } : r)) })
@@ -580,6 +584,12 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
   }
   const addItem = (itemId: string) => {
     if (!itemId) return
+    if (itemId.startsWith('racial:')) {
+      // Objet racial acheté à la création : payé sur le budget de la bande.
+      onChange({ ...member, loot: [...(member.loot ?? []), { id: newId(), key: itemId.slice(7), slot: 'porte' as Slot, racial: true }] })
+      setAdding('')
+      return
+    }
     const item = equipment.find((e) => e.id === itemId)
     const next = { ...member, equipment: [...member.equipment, { itemId, slot: 'porte' as Slot }] }
     if (campaign && item) onChange(next, { po: -item.price }, `Achat : ${item.name} (${who})`)
@@ -764,8 +774,8 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
               <li key={ref.id} className={ref.used ? 'used' : undefined}>
                 <span>
                   <RarityDot rarity={item?.rarity ?? 'blanc'} />{' '}
-                  <InfoTag label={item?.name ?? ref.key} kicker={item?.category} className="loot-tag">
-                    <p>{item?.description}</p>
+                  <InfoTag label={item?.name ?? ref.key} kicker={ref.racial ? 'Objet racial' : item?.category} className="loot-tag">
+                    <p><RuleText text={item?.description ?? ''} /></p>
                     {(item?.mods || item?.skills) && (
                       <p className="notice small">
                         Effet sur la fiche quand il est porté : {[formatMods(item.mods), ...(item.skills ?? [])].filter(Boolean).join(', ')}
@@ -773,6 +783,7 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
                     )}
                     {item?.price !== null && item?.price !== undefined && <p className="small muted">Valeur : {item.price} PO (revente {Math.floor(item.price / 2)} PO)</p>}
                   </InfoTag>
+                  {ref.racial && <span className="badge racial-badge" title="Objet racial acheté à la création">Racial</span>}
                 </span>
                 {item?.consumable && ref.used ? (
                   ref.used ? (
@@ -801,6 +812,13 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
                 ))}
               </optgroup>
             ))}
+            {!campaign && racialItems.length > 0 && (
+              <optgroup label={`Objet racial (${faction.name})`}>
+                {racialItems.map((it) => (
+                  <option key={it.key} value={`racial:${it.key}`}>{it.name} — {it.price ?? 0} PO</option>
+                ))}
+              </optgroup>
+            )}
           </select>
         </div>
       </details>
@@ -909,7 +927,9 @@ function ItemActions({ campaign, onSell, onDrop }: { campaign: boolean; onSell: 
   return (
     <span className="row item-actions">
       {campaign && <button className="btn small ghost" onClick={onSell} title="Vendre pour la moitié du prix">Vendre</button>}
-      <button className="icon-btn" onClick={onDrop} aria-label={campaign ? 'Jeter' : 'Retirer'} title={campaign ? 'Jeter (sans revente)' : 'Retirer'}>×</button>
+      <button className="icon-btn drop-btn" onClick={onDrop} aria-label={campaign ? 'Jeter' : 'Retirer'} title={campaign ? 'Jeter (sans revente)' : 'Retirer'}>
+        <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
+      </button>
     </span>
   )
 }

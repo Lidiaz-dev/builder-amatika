@@ -3672,7 +3672,7 @@
       {
         "id": "pretre",
         "name": "Prêtre",
-        "cost": 155,
+        "cost": 99,
         "min": 0,
         "max": 1,
         "stats": {
@@ -4027,7 +4027,7 @@
       {
         "id": "chef-bestigor",
         "name": "Chef Bestigor",
-        "cost": 142,
+        "cost": 150,
         "min": 1,
         "max": 1,
         "stats": {
@@ -4091,7 +4091,7 @@
       {
         "id": "gardien-bestigor",
         "name": "Gardien Bestigor",
-        "cost": 122,
+        "cost": 120,
         "min": 0,
         "max": 1,
         "stats": {
@@ -4108,7 +4108,7 @@
         },
         "skills": [
           "Maîtrise Technique",
-          "Sans Peur"
+          "Peur"
         ],
         "skillChoices": [
           [

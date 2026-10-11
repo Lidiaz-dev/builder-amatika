@@ -264,3 +264,56 @@ export function skillByName(name: string): Skill | undefined {
   if (/^[eé]claireur \d+$/i.test(name)) return skills.find((s) => s.id === 'eclaireur-x')
   return skills.find((s) => norm(s.name) === norm(name))
 }
+
+/**
+ * Objets raciaux : chaque faction peut acheter le sien dès la création de la bande.
+ * `key` : clé « catégorie/objet » de items.json. `requires` : équipement de base que le profil
+ * doit pouvoir porter (une arbalète naine reste une arbalète). Sans `requires`, tout le monde y a accès.
+ * Renégats (variable) et Démons (aucun) n'en ont pas ; Chaos est prêt pour le jour où la faction existera.
+ */
+export interface RacialItem {
+  key: string
+  requires?: string
+}
+
+export const RACIAL_ITEMS: Record<string, RacialItem[]> = {
+  'haut-elfe': [{ key: 'armures-legeres/armure-semi-legere', requires: 'armure-legere' }],
+  'cites-etats': [{ key: 'armures-lourdes/armure-lourde-humaine', requires: 'armure-lourde' }],
+  skaven: [{ key: 'gants/gants-du-voleur' }],
+  nains: [{ key: 'arbaletes/arbalete-naine', requires: 'arbalete' }],
+  mangechair: [{ key: 'chaussures/chausses-de-mangechairs' }],
+  orques: [{ key: 'haches/hache-touche-toujours', requires: 'hache' }],
+  tieffelin: [{ key: 'arcs/arc-tieffelin', requires: 'arc' }],
+  gobelins: [{ key: 'lances/lance-habile', requires: 'lance' }],
+  drow: [{ key: 'poisons/fysthoren' }],
+  'la-harde': [{ key: 'arcs-courts/arc-court-en-bois-dignane', requires: 'arc-court' }],
+  drakeide: [{ key: 'sarbacanes/sarbacane-skink', requires: 'sarbacane' }],
+  'elfe-des-bois': [{ key: 'arcs-longs/arc-elfique', requires: 'arc-long' }],
+  halfling: [{ key: 'talismans/porte-bonheur' }],
+  ogre: [{ key: 'fioles/potion-de-force' }],
+  necromant: [{ key: 'batons/baton-energetique', requires: 'baton' }],
+  'nain-d-ashut': [{ key: 'haches-lourdes/hache-lourde-des-forges-naines', requires: 'hache-lourde' }],
+  bretonniens: [{ key: 'casques/casque-de-chevalier', requires: 'casque' }],
+  chaos: [{ key: 'fioles/cocktail-molotov' }],
+  cathay: [{ key: 'epees/katana', requires: 'epee' }],
+  khajiit: [{ key: 'boucliers/bouclier-khajiit', requires: 'bouclier' }],
+  ondin: [{ key: 'javelots/javelot-paamidien', requires: 'javelot' }],
+}
+
+/** Objets raciaux d'une faction, prêts à afficher. */
+export const racialItemsOf = (factionId: string) =>
+  (RACIAL_ITEMS[factionId] ?? []).flatMap((r) => {
+    const it = itemByKey(r.key)
+    return it ? [{ ...it, requires: r.requires }] : []
+  })
+
+/** Équipement de base exigé pour porter cet objet racial (undefined si aucun). */
+export const racialRequirement = (key: string) =>
+  Object.values(RACIAL_ITEMS).flat().find((r) => r.key === key)?.requires
+
+/** Factions (noms) pour lesquelles cet objet est racial. */
+export function racialFactionsOf(key: string) {
+  return Object.entries(RACIAL_ITEMS)
+    .filter(([, list]) => list.some((r) => r.key === key))
+    .map(([id]) => factions.find((f) => f.id === id)?.name ?? (id === 'chaos' ? 'Chaos' : id))
+}

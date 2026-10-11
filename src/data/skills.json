@@ -141,7 +141,7 @@
     "id": "charge-furieuse",
     "name": "Charge furieuse",
     "tree": "force",
-    "description": "Lorsque cette figurine arrive en contact d'un ennemi à la suite d'un mouvement (pas une mise en contact) inflige une touche automatique Force utilisateur Faible Létalité."
+    "description": "Lorsque cette figurine arrive en contact d'un ennemi à la suite d'une charge(pas une mise en contact) inflige une touche automatique Force utilisateur Faible Létalité."
   },
   {
     "id": "passage-en-force",

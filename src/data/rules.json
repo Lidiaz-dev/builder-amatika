@@ -100,7 +100,7 @@
       "Peur : La figurine provoque la peur comme expliqué dans les règles.",
       "Frappe puissante : Les attaques de corps à corps de la figurine augmentent leur létalité de la manière suivante : Faible létalité devient Normal ; normal devient haute létalité ; Haute létalité devient Très Haute létalité.",
       "Montagne de muscles : La figurine peut combiner une arme à 2 mains avec un bouclier ou une seconde arme (obligatoirement à une main).",
-      "Charge furieuse : Lorsque cette figurine arrive en contact d'un ennemi à la suite d'un mouvement (pas une mise en contact) inflige une touche automatique Force utilisateur Faible Létalité.",
+      "Charge furieuse : Lorsque cette figurine arrive en contact d'un ennemi à la suite d'une charge(pas une mise en contact) inflige une touche automatique Force utilisateur Faible Létalité.",
       "Passage en Force : Cette figurine peut utiliser sa Force lorsqu'elle doit effectuer un test d'agilité."
     ]
   },

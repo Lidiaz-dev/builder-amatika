@@ -1,5 +1,6 @@
 import { skillByName, TREE_LABELS } from '../data'
 import InfoTag from './InfoTag'
+import RuleText from './RuleText'
 
 /** Étiquette de compétence : un clic ouvre la règle complète. */
 export default function SkillTag({ name }: { name: string }) {
@@ -7,7 +8,7 @@ export default function SkillTag({ name }: { name: string }) {
   return (
     <InfoTag label={name} kicker={skill ? TREE_LABELS[skill.tree] ?? skill.tree : undefined}>
       {skill ? (
-        <p>{skill.description}</p>
+        <p><RuleText text={skill.description} self={skill.name} /></p>
       ) : (
         <p className="muted">Cette compétence n'a pas encore de description dans les règles.</p>
       )}

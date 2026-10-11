@@ -63,8 +63,8 @@ def docx_paragraphs(path):
     paras = []
     for m in re.finditer(r"<w:p[ >].*?</w:p>", xml, re.S):
         p = m.group(0)
-        p = re.sub(r"<w:br/>", "<w:t>\n</w:t>", p)
-        p = re.sub(r"<w:tab/>", "<w:t>\t</w:t>", p)
+        p = re.sub(r"<w:br(?: [^>]*)?/>", "<w:t>\n</w:t>", p)
+        p = re.sub(r"<w:tab(?: [^>]*)?/>", "<w:t>\t</w:t>", p)
         text = html.unescape("".join(re.findall(r"<w:t(?: [^>]*)?>([^<]*)</w:t>", p)))
         paras.append(text.replace(" ", " "))
     return paras

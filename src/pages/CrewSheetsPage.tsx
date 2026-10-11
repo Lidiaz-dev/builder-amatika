@@ -65,6 +65,9 @@ export default function CrewSheetsPage() {
           {pdfBusy ? 'Création du PDF…' : '⬇ Télécharger le PDF'}
         </button>
       </div>
+      <p className="muted small no-print sheets-hint">
+        Le PDF contient toute la bande (campagne, trésor, historique) : gardez-le comme sauvegarde, ou réimportez-le sur un autre appareil depuis « Mes bandes » → « Importer une bande ».
+      </p>
 
       <header className="sheet-crew">
         <h1>{crew.name || 'Bande sans nom'}</h1>

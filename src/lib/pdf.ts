@@ -17,6 +17,7 @@ import {
   type Crew,
   type Member,
 } from './crew'
+import { crewToKeywords } from './crewFile'
 
 // Mise en page A4 portrait, en millimètres.
 const PAGE_W = 210
@@ -141,7 +142,7 @@ function pageFooter(doc: jsPDF, crew: Crew) {
   for (let i = 1; i <= pages; i++) {
     doc.setPage(i)
     doc.setFont('helvetica', 'normal').setFontSize(7).setTextColor(110)
-    doc.text(safe(`${crew.name || 'Bande sans nom'} - Builder Amatika`), MARGIN, PAGE_H - 6)
+    doc.text(safe(`${crew.name || 'Bande sans nom'} - Builder Amatika - ce PDF peut être réimporté dans « Mes bandes »`), MARGIN, PAGE_H - 6)
     doc.text(`${i} / ${pages}`, PAGE_W - MARGIN, PAGE_H - 6, { align: 'right' })
     doc.setTextColor(0)
   }
@@ -151,6 +152,13 @@ function pageFooter(doc: jsPDF, crew: Crew) {
 export async function downloadSheetsPdf(crew: Crew, faction: Faction, withRules: boolean) {
   const { jsPDF } = await import('jspdf')
   const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' })
+  // La bande entière est glissée dans le PDF pour pouvoir la réimporter dans le builder.
+  doc.setProperties({
+    title: safe(`${crew.name || 'Bande sans nom'} - fiches`),
+    subject: 'Fiches de bande Amatika (fichier importable dans Builder Amatika)',
+    creator: 'Builder Amatika',
+    keywords: crewToKeywords(crew),
+  })
   const members = crew.members.filter(isActive)
   const bottom = PAGE_H - MARGIN - FOOTER_H
 

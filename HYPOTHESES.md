@@ -129,10 +129,20 @@ Les monstres sont environ 10 % plus chers dans Bandes.docx. Est-ce voulu ?
 
 ## Pas encore utilisé
 - Cartes.xlsx : tout est utilisé (lieux, blessures, créatures, sorts, objets).
-- Objets raciaux (Fluff.docx) et règle Ondin « pas de chaussures » : affichés dans le Compendium, pas encore contrôlés par le builder,
-  qui ne gère que l'équipement commun.
+- Objets raciaux : gérés par le builder (voir « Objets raciaux » plus bas). Règle Ondin « pas de chaussures » : affichée dans le Compendium, pas encore contrôlée.
 
 ## Noms proposés
 - À l'ajout (création de bande, recrutement, duplication), chaque modèle reçoit un nom tiré d'une liste propre à sa race (`src/lib/names.ts`), affiché en gris dans le champ. Le 🎲 en propose un autre.
 - S'il n'est pas modifié, il devient le vrai nom à l'enregistrement. 5 % des tirages donnent un nom farfelu (« Gros Zizi »…).
 - Les listes de noms sont des propositions de ma part, à remplacer librement.
+
+## Sauvegarde dans le PDF / import
+- Le PDF des fiches embarque la bande complète (JSON en base64 dans les mots-clés du document, préfixe `AMATIKA-CREW:v1:`).
+- « Mes bandes » → « Importer une bande » relit ce PDF (ou un .json de bande). Bande inconnue : importée avec un nouvel identifiant. Bande déjà présente : au choix, remplacée ou importée en copie.
+- Si le PDF est réenregistré par un logiciel qui supprime les métadonnées, l'import ne sera plus possible : garder le fichier téléchargé tel quel.
+
+## Objets raciaux
+- Table `RACIAL_ITEMS` dans `src/data/index.ts` (faction → objet de trésor). Humains = Cités-États ; Hache des forges naines = « Hache lourde des forges naines ».
+- Achetables à la création (phase préparation) via « Objet racial » dans la liste d’équipement, au prix de l’objet, compté dans le budget. Réservés aux profils ayant accès à l’équipement de base (arbalète pour l’Arbalète naine, etc.) ; sans équivalent (gants, chausses, poison, talisman, potion), tout le monde y a accès.
+- Renégats (variable) et Démons (aucun) : pas d'objet. Chaos (Cocktail Molotov) est saisi mais la faction n'existe pas encore.
+- Les nombres donnés après certains objets dans la liste (8, 6, 10, 5) sont des quantités de cartes à imprimer : ignorés.

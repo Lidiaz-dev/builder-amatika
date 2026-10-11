@@ -24,6 +24,7 @@ import EquipmentTag from './EquipmentTag'
 import Modal from './Modal'
 import InjuryPicker from './InjuryPicker'
 import LootPicker, { type LootPick } from './LootPicker'
+import RuleText from './RuleText'
 
 /** Modification de la bande calculée à partir de sa dernière version (évite d'écraser des clics rapprochés). */
 export type CrewUpdater = (c: Crew) => Crew
@@ -80,7 +81,7 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish }: Pro
         </div>
         <div className="row wrap">
           <button className="btn primary" onClick={onFinish}>Terminer la partie</button>
-          <button className="btn ghost small" onClick={cancelGame}>Annuler la partie</button>
+          <button className="btn" onClick={cancelGame}>Annuler la partie</button>
         </div>
       </header>
 
@@ -136,7 +137,7 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish }: Pro
                     {loot.map(({ ref, item }) => (
                       <li key={ref.id} className={ref.used ? 'used' : undefined}>
                         <RarityDot rarity={item?.rarity ?? 'blanc'} />{' '}
-                        <InfoTag label={item?.name ?? ref.key} kicker={item?.category} className="loot-tag"><p>{item?.description}</p></InfoTag>
+                        <InfoTag label={item?.name ?? ref.key} kicker={item?.category} className="loot-tag"><p><RuleText text={item?.description ?? ''} /></p></InfoTag>
                         {ref.slot === 'sac' && <span className="muted small"> (sac)</span>}
                         {item?.consumable && !dead && (
                           <button
@@ -156,7 +157,7 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish }: Pro
 
                 {!dead && (
                   <div className="live-tallies">
-                    <Counter label="XP de PV retirés" value={t.damageXp} onDelta={(d) => bump(m.id, 'damageXp', d)} steps={[2, 5]} />
+                    <Counter label="XP de PV retirés" value={t.damageXp} onDelta={(d) => bump(m.id, 'damageXp', d)} steps={[1, 5]} editable />
                     <Counter label="Ennemis tués" value={t.kills} onDelta={(d) => bump(m.id, 'kills', d)} />
                     <Counter label="Lieux fouillés" value={t.places} onDelta={(d) => bump(m.id, 'places', d)} />
                   </div>
@@ -241,15 +242,39 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish }: Pro
   )
 }
 
-function Counter({ label, value, onDelta, steps = [1], big }: { label: string; value: number; onDelta: (d: number) => void; steps?: number[]; big?: boolean }) {
+function Counter({ label, value, onDelta, steps = [1], big, editable }: {
+  label: string
+  value: number
+  onDelta: (d: number) => void
+  steps?: number[]
+  big?: boolean
+  /** La valeur peut aussi être tapée directement. */
+  editable?: boolean
+}) {
   return (
     <div className={`counter ${big ? 'big' : ''}`}>
       <span className="counter-label">{label}</span>
       <div className="counter-controls">
         <button type="button" className="btn small" onClick={() => onDelta(-Math.min(value, steps[0]))} aria-label={`${label} : moins`} disabled={value <= 0}>−</button>
-        <strong>{value}</strong>
+        {editable ? (
+          <input
+            type="number"
+            inputMode="numeric"
+            min={0}
+            className="counter-input"
+            value={value}
+            onFocus={(e) => e.target.select()}
+            onChange={(e) => {
+              const next = Math.max(0, Math.floor(Number(e.target.value) || 0))
+              if (next !== value) onDelta(next - value)
+            }}
+            aria-label={label}
+          />
+        ) : (
+          <strong>{value}</strong>
+        )}
         {steps.map((s) => (
-          <button key={s} type="button" className="btn small" onClick={() => onDelta(s)} aria-label={`${label} : plus ${s}`}>+{s === 1 ? '' : s}</button>
+          <button key={s} type="button" className="btn small" onClick={() => onDelta(s)} aria-label={`${label} : plus ${s}`}>+{steps.length > 1 || s !== 1 ? s : ''}</button>
         ))}
       </div>
     </div>

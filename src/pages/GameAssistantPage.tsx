@@ -7,6 +7,7 @@ import SkillTag from '../components/SkillTag'
 import RarityDot from '../components/RarityDot'
 import { SpellDetails } from '../components/SpellTag'
 import ActivationBag, { type BagColor } from '../components/ActivationBag'
+import RuleText from '../components/RuleText'
 
 type Entry =
   | { id: string; at: string; type: 'card'; deckId: string; uid: string; returned?: boolean; /** Cartes tirées ensemble. */ batch?: string }
@@ -186,8 +187,8 @@ export default function GameAssistantPage() {
   }
 
   function newGame() {
-    if (!confirm('Commencer une nouvelle partie ? Tous les paquets sont remélangés, l’historique est effacé et le sac reprend ses jetons de départ.')) return
-    setSession((s) => newSession(s.bag.map((c) => ({ ...c, total: c.start, drawn: 0 }))))
+    if (!confirm("Commencer une nouvelle partie ? Tous les paquets sont remélangés, l’historique est effacé et le sac d’activation est vidé.")) return
+    setSession(newSession())
     setShown(null)
   }
 
@@ -385,7 +386,7 @@ function CardContent({ deck, card }: { deck: Deck; card: DeckCard }) {
           <h3>{card.title}</h3>
           <span className="injury-value" title="Valeur de la carte">{inj?.value}</span>
         </div>
-        <p>{inj?.description}</p>
+        <p><RuleText text={inj?.description ?? ''} /></p>
       </>
     )
   }
@@ -395,7 +396,7 @@ function CardContent({ deck, card }: { deck: Deck; card: DeckCard }) {
       <>
         <h3><RarityDot rarity={it?.rarity ?? 'blanc'} /> {it?.name}</h3>
         <p className="muted small">{it?.category}{it?.price !== null && it?.price !== undefined ? ` · ${it.price} PO` : ''}</p>
-        <p>{it?.description}</p>
+        <p><RuleText text={it?.description ?? ''} /></p>
       </>
     )
   }

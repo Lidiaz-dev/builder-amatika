@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { CATEGORY_LABELS, equipment, itemByKey, itemCategories, itemKey, type EquipmentCategory } from '../data'
 import RarityDot from './RarityDot'
+import RuleText from './RuleText'
 
 export type LootPick =
   | { kind: 'loot'; key: string; paid: boolean; price: number }
@@ -61,7 +62,7 @@ export default function LootPicker({ allowedEquipment, onPick, foundOnly }: Prop
       {(selectedLoot || selectedEq) && (
         <div className="injury-card">
           <strong><RarityDot rarity={selectedLoot?.rarity ?? 'blanc'} /> {selectedLoot?.name ?? selectedEq?.name}</strong>
-          <p>{selectedLoot?.description ?? selectedEq?.rules}</p>
+          <p><RuleText text={selectedLoot?.description ?? selectedEq?.rules ?? ''} /></p>
         </div>
       )}
 

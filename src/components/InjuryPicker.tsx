@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { injuries, type Injury } from '../data'
 import { drawInjury } from '../lib/campaign'
+import RuleText from './RuleText'
 
 interface Props {
   /** Applique la carte choisie. */
@@ -49,7 +50,7 @@ export default function InjuryPicker({ onApply, onNegotiate }: Props) {
       {card && (
         <div className={`injury-card ${card.lasting ? 'lasting' : ''} ${card.dead ? 'dead' : ''}`}>
           <strong>{drawn ? 'Carte tirée : ' : ''}{card.name}</strong>
-          <p>{card.description}</p>
+          <p><RuleText text={card.description} /></p>
           {!card.lasting && !card.special && <p className="muted small">Aucun effet après la bataille.</p>}
           {card.special === 'multiple' && (
             <p className="notice small">Piochez 2 autres cartes et appliquez les deux : ajoutez-les une par une.</p>

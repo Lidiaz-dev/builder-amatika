@@ -1,4 +1,4 @@
-import { equipmentById, factionById, spellById, type Profile } from '../data'
+import { equipmentById, factionById, itemByKey, racialRequirement, spellById, type Profile } from '../data'
 import {
   activeMembers,
   crewCost,
@@ -31,6 +31,12 @@ export function validateMember(profile: Profile, member: Member, inCampaign = fa
     const item = equipmentById(ref.itemId)
     if (!item) err(`${who} : équipement inconnu (${ref.itemId}).`)
     else if (!profile.equipment.includes(item.id)) err(`${who} n'a pas accès à : ${item.name}.`)
+  }
+  for (const ref of member.loot ?? []) {
+    const base = ref.racial ? racialRequirement(ref.key) : undefined
+    if (base && !profile.equipment.includes(base)) {
+      err(`${who} ne peut pas porter : ${itemByKey(ref.key)?.name ?? ref.key} (pas d'accès à : ${equipmentById(base)?.name ?? base}).`)
+    }
   }
 
   const worn = wornItems(member)

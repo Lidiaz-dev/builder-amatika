@@ -6,6 +6,9 @@ import {
   factionById,
   factions,
   itemCategories,
+  itemKey,
+  racialFactionsOf,
+  racialItemsOf,
   lore,
   rules,
   skills,
@@ -22,6 +25,7 @@ import FactionSeal from '../components/FactionSeal'
 import SpellTag, { SpellDetails } from '../components/SpellTag'
 import RarityDot from '../components/RarityDot'
 import { formatMods } from '../lib/format'
+import RuleText from '../components/RuleText'
 
 const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 const CATEGORIES = Object.keys(CATEGORY_LABELS) as EquipmentCategory[]
@@ -162,7 +166,7 @@ function RulesBook({ query }: { query: string }) {
         return (
           <section key={s.id + s.title} id={`r-${s.id}`}>
             <Tag><Highlight text={s.title} query={query} /></Tag>
-            {s.paragraphs.map((p, i) => <p key={i}><Highlight text={p} query={query} /></p>)}
+            {s.paragraphs.map((p, i) => <p key={i}><RuleText text={p} query={query} /></p>)}
           </section>
         )
       })}
@@ -186,7 +190,7 @@ function SkillsRef({ query }: { query: string }) {
                 {list.map((s) => (
                   <div key={s.id}>
                     <dt><Highlight text={s.name} query={query} /></dt>
-                    <dd><Highlight text={s.description} query={query} /></dd>
+                    <dd><RuleText text={s.description} query={query} self={s.name} /></dd>
                   </div>
                 ))}
               </dl>
@@ -229,7 +233,7 @@ function EquipmentRef({ query }: { query: string }) {
                         <td>{e.hands || '—'}</td>
                         <td>{e.strength ?? (e.save ? `+${e.save}` : '—')}</td>
                         {cat === 'ranged' && <td>{e.range} ps</td>}
-                        <td><Highlight text={e.rules} query={query} /></td>
+                        <td><RuleText text={e.rules} query={query} /></td>
                       </tr>
                     ))}
                   </tbody>
@@ -285,6 +289,12 @@ function FactionPage({ query }: { query: string }) {
         <h1>{faction.name}</h1>
       </header>
       {faction.notes.map((n, i) => <p key={i} className="notice">{n}</p>)}
+      {racialItemsOf(faction.id).map((it) => (
+        <p key={it.key} className="notice">
+          <strong>Objet racial :</strong> {it.name} ({it.price ?? '—'} PO), achetable dès la création de la bande
+          {it.requires ? ` par les modèles ayant accès à : ${equipment.find((e) => e.id === it.requires)?.name ?? it.requires}` : ''}. <span className="muted">{it.description}</span>
+        </p>
+      ))}
       {ROLE_GROUPS.map(({ role, title }) => {
         const list = faction.profiles.filter((p) => p.role === role && (!q || norm(p.name + ' ' + p.skills.join(' ')).includes(q)))
         if (!list.length) return null
@@ -385,10 +395,13 @@ function ItemsRef({ query }: { query: string }) {
                       <tr key={it.id}>
                         <td className="nowrap"><RarityDot rarity={it.rarity} /> <strong><Highlight text={it.name} query={query} /></strong></td>
                         <td>
-                          <Highlight text={it.description} query={query} />
+                          <RuleText text={it.description} query={query} />
                           {(it.mods || it.skills) && (
                             <span className="fx"> Fiche : {[formatMods(it.mods), ...(it.skills ?? [])].filter(Boolean).join(', ')}</span>
                           )}
+                          {racialFactionsOf(itemKey(cat.id, it.id)).map((f) => (
+                            <span key={f} className="badge racial-badge" title="Achetable par cette faction dès la création de la bande">Objet racial : {f}</span>
+                          ))}
                         </td>
                         <td className="nowrap">{it.price !== null ? `${it.price} PO` : '—'}</td>
                       </tr>
