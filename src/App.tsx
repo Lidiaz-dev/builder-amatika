@@ -10,6 +10,7 @@ import CrewSheetsPage from './pages/CrewSheetsPage'
 import AfterBattlePage from './pages/AfterBattlePage'
 import ReferencePage from './pages/ReferencePage'
 import GameAssistantPage from './pages/GameAssistantPage'
+import TooltipLayer from './components/TooltipLayer'
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { localMode, session, loading } = useAuth()
@@ -64,6 +65,7 @@ export default function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
+        <TooltipLayer />
       </HashRouter>
     </AuthProvider>
   )

@@ -22,7 +22,7 @@ export default function LootPicker({ allowedEquipment, onPick, foundOnly }: Prop
   const [paid, setPaid] = useState(false)
 
   const common = equipment.filter((e) => !allowedEquipment || allowedEquipment.includes(e.id))
-  const cats = [...new Set(common.map((e) => e.category))] as EquipmentCategory[]
+  const cats = ([...new Set(common.map((e) => e.category))] as EquipmentCategory[]).sort((a, b) => CATEGORY_LABELS[a].localeCompare(CATEGORY_LABELS[b], 'fr'))
   const selectedLoot = source === 'loot' && value ? itemByKey(value) : undefined
   const selectedEq = source === 'equipment' && value ? equipment.find((e) => e.id === value) : undefined
   const price = selectedLoot?.price ?? selectedEq?.price ?? 0

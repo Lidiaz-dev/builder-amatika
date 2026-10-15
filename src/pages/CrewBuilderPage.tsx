@@ -14,6 +14,8 @@ import {
   type Profile,
   type Spell,
   racialItemsOf,
+  baseSpellCount,
+  choosesSecondSpell,
 } from '../data'
 import {
   actionsOf,
@@ -235,7 +237,7 @@ export default function CrewBuilderPage() {
               <input type="number" min={0} step={10} value={crew.budget} onChange={(e) => update({ budget: Number(e.target.value) })} />
             </label>
           )}
-          <label className="switch field-switch">
+          <label className="switch field-switch" data-tip="Désactive les contrôles du builder : effectifs, budget, mains et équipement autorisé. Pratique pour les bandes maison ou les tests.">
             <input type="checkbox" checked={!!crew.unrestricted} onChange={(e) => update({ unrestricted: e.target.checked })} />
             <span className="switch-track" aria-hidden="true" />
             <span>Sans restrictions</span>
@@ -248,18 +250,18 @@ export default function CrewBuilderPage() {
           <div className="row wrap">
             {phase === 'partie' ? null : campaign ? (
               <>
-                <button className="btn primary" onClick={() => setLaunchOpen(true)} disabled={active.length === 0}>⚔ Lancer la partie</button>
-                <button className="btn" onClick={() => saveThenGo(`/bandes/${crew.id}/apres-partie`)} title="Saisir après coup une partie jouée sans le mode Partie en cours">
+                <button className="btn primary" onClick={() => setLaunchOpen(true)} disabled={active.length === 0} data-tip="Passe la bande en mode partie : on choisit les participants, puis on note XP, objets utilisés, blessures et butin pendant le jeu.">⚔ Lancer la partie</button>
+                <button className="btn" onClick={() => saveThenGo(`/bandes/${crew.id}/apres-partie`)} data-tip="Pour une partie jouée sans le mode « Partie en cours » : ouvre directement le bilan d'après-bataille à remplir de mémoire.">
                   Saisir une partie déjà jouée
                 </button>
               </>
             ) : (
-              <button className="btn primary" onClick={startCampaign} disabled={!legal && !crew.unrestricted} title={legal ? '' : 'Corrigez la bande avant de démarrer la campagne'}>
+              <button className="btn primary" onClick={startCampaign} disabled={!legal && !crew.unrestricted} data-tip={legal ? 'Fige la bande : le budget restant devient le trésor, et les achats suivants sont payés avec le trésor.' : 'Corrigez la bande avant de démarrer la campagne.'}>
                 Démarrer la campagne
               </button>
             )}
-            <button className="btn" onClick={() => saveThenGo(`/bandes/${crew.id}/fiches`)}>Fiches à imprimer</button>
-            <button className="btn danger" onClick={remove}>Supprimer</button>
+            <button className="btn" onClick={() => saveThenGo(`/bandes/${crew.id}/fiches`)} data-tip="Affiche les fiches de la bande et permet de télécharger le PDF, qui sert aussi de sauvegarde à réimporter.">Fiches à imprimer</button>
+            <button className="btn danger" onClick={remove} data-tip="Supprime définitivement la bande. Téléchargez son PDF avant si vous voulez la garder.">Supprimer</button>
           </div>
         </div>
       </div>
@@ -277,20 +279,20 @@ export default function CrewBuilderPage() {
         <div className="totals">
           {campaign ? (
             <>
-              <Total label="Trésor" value={`${campaign.po} PO`} alert={campaign.po < 0} />
-              <Total label="Cristaux" value={`${campaign.cristaux}`} />
-              <Total label="Prestige" value={`${campaign.prestige}`} />
-              <Total label="Entretien" value={`${upkeep.po} PO${upkeep.cristaux ? ` + ${upkeep.cristaux} cristal` : ''}`} />
-              <Total label="Membres" value={`${active.length}`} alert={active.length > MAX_ON_TABLE} />
+              <Total label="Trésor" value={`${campaign.po} PO`} alert={campaign.po < 0} tip="Pièces d'or disponibles pour recruter, acheter et payer l'entretien." />
+              <Total label="Cristaux" value={`${campaign.cristaux}`} tip="Cristaux transformés : ils se vendent 25 PO pièce dans « Trésor… »." />
+              <Total label="Prestige" value={`${campaign.prestige}`} tip="Prestige gagné au fil des parties." />
+              <Total label="Entretien" value={`${upkeep.po} PO${upkeep.cristaux ? ` + ${upkeep.cristaux} cristal` : ''}`} tip="À payer après chaque partie pour garder la bande (le chef ne coûte rien)." />
+              <Total label="Membres" value={`${active.length}`} alert={active.length > MAX_ON_TABLE} tip={`Membres actifs. ${MAX_ON_TABLE} figurines maximum sur la table par partie.`} />
               <Total label="Parties" value={`${campaign.games.length}`} />
-              <button className="btn totals-btn" onClick={() => setTreasuryOpen(true)}>Trésor…</button>
+              <button className="btn totals-btn" onClick={() => setTreasuryOpen(true)} data-tip="Caisse de la bande : vendre des cristaux, ajuster PO, cristaux ou prestige à la main, et consulter le journal des dépenses et gains.">Trésor…</button>
             </>
           ) : (
             <>
               <Total label="Faction" value={faction.name} />
-              <Total label="Dépensé" value={`${cost} / ${crew.budget} PO`} alert={cost > crew.budget} />
-              <Total label="Reste" value={`${crew.budget - cost} PO`} alert={cost > crew.budget} />
-              <Total label="Entretien" value={`${upkeep.po} PO${upkeep.cristaux ? ` + ${upkeep.cristaux} cristal` : ''}`} />
+              <Total label="Dépensé" value={`${cost} / ${crew.budget} PO`} alert={cost > crew.budget} tip="Coût des recrues et de leur équipement, sur le budget de départ." />
+              <Total label="Reste" value={`${crew.budget - cost} PO`} alert={cost > crew.budget} tip="Ce qui reste deviendra le trésor au démarrage de la campagne." />
+              <Total label="Entretien" value={`${upkeep.po} PO${upkeep.cristaux ? ` + ${upkeep.cristaux} cristal` : ''}`} tip="À payer après chaque partie pour garder la bande (le chef ne coûte rien)." />
               <Total label="Membres" value={`${crew.members.length}`} alert={crew.members.length > MAX_ON_TABLE} />
             </>
           )}
@@ -319,7 +321,7 @@ export default function CrewBuilderPage() {
                       {ROLE_LABELS[p.role]} · {p.cost} PO · {count}/{p.max}
                     </div>
                   </div>
-                  <button className="btn recruit-add" disabled={full || locked} onClick={() => addMember(p)} aria-label={`Recruter ${p.name}`}>
+                  <button className="btn recruit-add" disabled={full || locked} onClick={() => addMember(p)} aria-label={`Recruter ${p.name}`} data-tip={locked ? 'Le chef ne se recrute qu’à la création de la bande.' : full ? `Effectif maximum atteint (${p.max}).` : `Recruter : ${p.name} (${p.cost} PO)`}>
                     +
                   </button>
                 </li>
@@ -398,9 +400,9 @@ export default function CrewBuilderPage() {
   )
 }
 
-function Total({ label, value, alert }: { label: string; value: string; alert?: boolean }) {
+function Total({ label, value, alert, tip }: { label: string; value: string; alert?: boolean; tip?: string }) {
   return (
-    <div className={`total ${alert ? 'alert' : ''}`}>
+    <div className={`total ${alert ? 'alert' : ''}`} data-tip={tip}>
       <span className="muted small">{label}</span>
       <strong>{value}</strong>
     </div>
@@ -562,12 +564,20 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
 
   const who = memberName(member) || profile.name
   const allowed = unrestricted ? equipment : equipment.filter((e) => profile.equipment.includes(e.id))
-  const categories = [...new Set(allowed.map((e) => e.category))]
+  const categories = [...new Set(allowed.map((e) => e.category))].sort((a, b) => CATEGORY_LABELS[a].localeCompare(CATEGORY_LABELS[b], 'fr'))
   const mage = isMage(profile)
   const spellIds = member.spellIds ?? []
   const knownSpells = spellIds.map((id) => spellById(id)).filter((sp): sp is Spell => !!sp)
   const availableSpells = spellsFor(faction.id, profile.id)
   const setSpells = (ids: string[]) => onChange({ ...member, spellIds: ids })
+  const baseSpells = baseSpellCount(profile)
+  // Cités-États : tant que le 2e sort de départ n'est pas choisi, on le propose avant tout ajout.
+  const pickSecond = mage && choosesSecondSpell(faction.id, profile) && spellIds.length < baseSpells
+  const drawSecondSpell = () => {
+    const pool = availableSpells.filter((sp) => !sp.universal && !spellIds.includes(sp.id))
+    const draft = [...pool].sort(() => Math.random() - 0.5).slice(0, 5).map((sp) => sp.id)
+    onChange({ ...member, spellDraft: draft })
+  }
   const skillsShown = memberSkills(profile, member)
   const choiceSkills = new Set(member.skillChoices)
   const loot = lootItems(member)
@@ -738,11 +748,11 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
 
             <div className="row wrap">
               {pending > 0 && (
-                <button className="btn small primary" onClick={() => setDialog('advance')}>▲ Monter de niveau ({pending})</button>
+                <button className="btn small primary" onClick={() => setDialog('advance')} data-tip="Jet de progression pour chaque niveau gagné : caractéristique, compétence ou sort.">▲ Monter de niveau ({pending})</button>
               )}
-              <button className="btn small" onClick={() => setDialog('injury')}>✚ Blessure</button>
-              <button className="btn small" onClick={() => setDialog('loot')}>⚱ Donner un objet</button>
-              <button className="btn small ghost danger" onClick={() => confirm(`${who} est mort ? Son équipement sera perdu.`) && onChange({ ...member, status: 'mort' })}>✝ Mort</button>
+              <button className="btn small" onClick={() => setDialog('injury')} data-tip="Appliquer une carte Blessure, choisie ou piochée : la fiche est mise à jour.">✚ Blessure</button>
+              <button className="btn small" onClick={() => setDialog('loot')} data-tip="Ajouter un objet trouvé, ou acheté avec le trésor.">⚱ Donner un objet</button>
+              <button className="btn small ghost danger" onClick={() => confirm(`${who} est mort ? Son équipement sera perdu.`) && onChange({ ...member, status: 'mort' })} data-tip="Le membre meurt : il quitte la bande et son équipement est perdu.">✝ Mort</button>
             </div>
             <p className="muted small">
               Arbres : {profile.trees.length ? profile.trees.map((t) => TREE_LABELS[t] ?? t).join(', ') : 'aucun'} · entretien{' '}
@@ -835,15 +845,42 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
                   key={sp.id}
                   spell={sp}
                   after={
-                    <button className="tag-remove" onClick={() => setSpells(spellIds.filter((x) => x !== sp.id))} aria-label={`Oublier ${sp.name}`}>
-                      ×
-                    </button>
+                    // Les sorts de départ sont verrouillés pour éviter les erreurs ; les suivants peuvent être retirés.
+                    spellIds.indexOf(sp.id) < baseSpells ? (
+                      <span className="tag-lock" title="Sort de départ : il ne peut pas être retiré" aria-label="Sort de départ">🔒</span>
+                    ) : (
+                      <button className="tag-remove" onClick={() => setSpells(spellIds.filter((x) => x !== sp.id))} aria-label={`Oublier ${sp.name}`}>
+                        ×
+                      </button>
+                    )
                   }
                 />
               ))}
               {knownSpells.length === 0 && <span className="muted small">Aucun sort.</span>}
             </div>
-            <select value="" onChange={(e) => e.target.value && setSpells([...spellIds, e.target.value])} aria-label="Ajouter un sort">
+            {pickSecond && (
+              <div className="spell-draft notice">
+                <strong>2e sort de départ</strong> : à choisir parmi 5 sorts tirés au hasard. Une fois choisi, il ne peut plus être changé.
+                {!member.spellDraft?.length ? (
+                  <div><button className="btn small primary" onClick={drawSecondSpell}>🎲 Tirer 5 sorts</button></div>
+                ) : (
+                  <ul className="spell-draft-list">
+                    {member.spellDraft.map((id) => spellById(id)).filter((sp): sp is Spell => !!sp).map((sp) => (
+                      <li key={sp.id}>
+                        <SpellTag spell={sp} />
+                        <button
+                          className="btn small"
+                          onClick={() => onChange({ ...member, spellIds: [...spellIds.slice(0, 1), sp.id, ...spellIds.slice(1)], spellDraft: undefined })}
+                        >
+                          Choisir
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+            {!pickSecond && <select value="" onChange={(e) => e.target.value && setSpells([...spellIds, e.target.value])} aria-label="Ajouter un sort">
               <option value="">+ Ajouter un sort…</option>
               {SPELL_GROUPS.map((g) => {
                 const list = availableSpells.filter((sp) => g.match(sp) && !spellIds.includes(sp.id))
@@ -854,7 +891,7 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
                   </optgroup>
                 )
               })}
-            </select>
+            </select>}
             {member.spells && <p className="muted small">Ancienne note : {member.spells}</p>}
           </div>
         </details>
@@ -872,7 +909,7 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
       )}
 
       <footer className="unit-actions">
-        {!campaign && <button className="btn ghost small" onClick={onDuplicate} disabled={!canDuplicate}>Dupliquer</button>}
+        {!campaign && <button className="btn ghost small" onClick={onDuplicate} disabled={!canDuplicate} data-tip="Recruter une copie de ce membre, avec le même équipement.">Dupliquer</button>}
         <button className="btn ghost small danger" onClick={() => (!campaign || confirm(`${who} quitte la bande ?`)) && onRemove()}>
           {campaign ? 'Quitte la bande' : 'Renvoyer'}
         </button>
@@ -916,8 +953,8 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
 function SlotToggle({ slot, onChange }: { slot: Slot; onChange: (s: Slot) => void }) {
   return (
     <div className="segmented" role="group" aria-label="Emplacement">
-      <button className={slot === 'porte' ? 'on' : ''} onClick={() => onChange('porte')}>Porté</button>
-      <button className={slot === 'sac' ? 'on' : ''} onClick={() => onChange('sac')}>Sac</button>
+      <button className={slot === 'porte' ? 'on' : ''} onClick={() => onChange('porte')} data-tip="Porté : l’objet est équipé et compte sur la fiche.">Porté</button>
+      <button className={slot === 'sac' ? 'on' : ''} onClick={() => onChange('sac')} data-tip="Sac à dos : l’objet est transporté, il faut une action pour l’utiliser.">Sac</button>
     </div>
   )
 }
@@ -926,8 +963,8 @@ function SlotToggle({ slot, onChange }: { slot: Slot; onChange: (s: Slot) => voi
 function ItemActions({ campaign, onSell, onDrop }: { campaign: boolean; onSell: () => void; onDrop: () => void }) {
   return (
     <span className="row item-actions">
-      {campaign && <button className="btn small ghost" onClick={onSell} title="Vendre pour la moitié du prix">Vendre</button>}
-      <button className="icon-btn drop-btn" onClick={onDrop} aria-label={campaign ? 'Jeter' : 'Retirer'} title={campaign ? 'Jeter (sans revente)' : 'Retirer'}>
+      {campaign && <button className="btn small ghost" onClick={onSell} data-tip="Vendre pour la moitié du prix (ajouté au trésor).">Vendre</button>}
+      <button className="icon-btn drop-btn" onClick={onDrop} aria-label={campaign ? 'Jeter' : 'Retirer'} data-tip={campaign ? 'Jeter, sans revente' : 'Retirer'}>
         <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
       </button>
     </span>

@@ -131,8 +131,8 @@ export default function ActivationBag({ colors, onChange, onDraw, onRefill }: Pr
       )}
 
       <div className="row wrap bag-footer">
-        <button className="btn primary" onClick={onDraw} disabled={!inBag}>✋ Piocher un jeton</button>
-        <button className="btn" onClick={onRefill} disabled={!drawn}>Tout remettre dans le sac</button>
+        <button className="btn primary" onClick={onDraw} disabled={!inBag} data-tip="Tire un jeton au hasard : sa couleur indique le joueur qui active une figurine.">✋ Piocher un jeton</button>
+        <button className="btn" onClick={onRefill} disabled={!drawn} data-tip="Remet tous les jetons tirés dans le sac (fait aussi à la fin du round).">Tout remettre dans le sac</button>
       </div>
 
       {colors.length < PALETTE.length && (

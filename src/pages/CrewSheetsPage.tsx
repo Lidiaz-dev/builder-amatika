@@ -5,6 +5,7 @@ import {
   actionsOf,
   bagItems,
   crewCost,
+  crewItemsReminder,
   crewUpkeep,
   effectiveStats,
   isActive,
@@ -40,7 +41,8 @@ export default function CrewSheetsPage() {
   const usedSkills = [...new Set(members.flatMap((m) => {
     const p = profileOf(faction, m)
     return p ? memberSkills(p, m) : []
-  }))]
+  }))].sort((a, b) => a.localeCompare(b, 'fr'))
+  const carried = crewItemsReminder(crew)
 
   return (
     <section className="sheets">
@@ -48,7 +50,7 @@ export default function CrewSheetsPage() {
         <Link to={`/bandes/${crew.id}`} className="btn ghost">← Retour au builder</Link>
         <label className="row small">
           <input type="checkbox" checked={withRules} onChange={(e) => setWithRules(e.target.checked)} />
-          Inclure le rappel des compétences
+          Inclure le rappel des compétences et des objets
         </label>
         <button
           className="btn primary"
@@ -144,6 +146,19 @@ export default function CrewSheetsPage() {
               <div key={name}>
                 <dt>{name}</dt>
                 <dd>{skillByName(name)?.description ?? 'Pas encore de description dans les règles.'}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
+      {withRules && carried.length > 0 && (
+        <section className="sheet-rules">
+          <h2>Rappel des objets</h2>
+          <dl>
+            {carried.map((it) => (
+              <div key={it.name}>
+                <dt>{it.name}</dt>
+                <dd>{it.text}</dd>
               </div>
             ))}
           </dl>

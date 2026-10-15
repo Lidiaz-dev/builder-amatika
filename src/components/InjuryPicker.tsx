@@ -37,7 +37,7 @@ export default function InjuryPicker({ onApply, onNegotiate }: Props) {
           <option value="">Carte piochée à la table…</option>
           {GROUPS.map((g) => (
             <optgroup key={g.label} label={g.label}>
-              {injuries.filter(g.match).map((c) => (
+              {injuries.filter(g.match).sort((a, b) => a.name.localeCompare(b.name, 'fr') || a.value - b.value).map((c) => (
                 <option key={c.id} value={c.id}>{c.name}{c.kind === 'au-sol' || c.kind === 'assome' ? ` (${c.value})` : ''}</option>
               ))}
             </optgroup>

@@ -146,3 +146,12 @@ Les monstres sont environ 10 % plus chers dans Bandes.docx. Est-ce voulu ?
 - Achetables à la création (phase préparation) via « Objet racial » dans la liste d’équipement, au prix de l’objet, compté dans le budget. Réservés aux profils ayant accès à l’équipement de base (arbalète pour l’Arbalète naine, etc.) ; sans équivalent (gants, chausses, poison, talisman, potion), tout le monde y a accès.
 - Renégats (variable) et Démons (aucun) : pas d'objet. Chaos (Cocktail Molotov) est saisi mais la faction n'existe pas encore.
 - Les nombres donnés après certains objets dans la liste (8, 6, 10, 5) sont des quantités de cartes à imprimer : ignorés.
+
+## Déploiement
+- Points placés sur le bord de la table (demandé) : la zone de déploiement (rayon 6ps) est un demi-cercle, un quart de cercle dans un angle.
+- Chaque point est à égale distance (vol d'oiseau) de ses deux voisins ; parmi ces dispositions, on garde celle qui maximise cette distance (calcul dans `src/lib/deployment.ts`).
+
+## Sorts de départ
+- Chaque mage commence avec 2 sorts verrouillés (non retirables) : Orbe mineur + son sort racial. Les sorts ajoutés ensuite peuvent être retirés.
+- Sort racial réservé à un profil prioritaire : le Chaman Capuchard reçoit « Viens la le squig !!!! », le Chaman « Attaque sournoiz' ».
+- Faction sans sort racial (Cités-États) : le 2e sort se choisit parmi 5 tirés au hasard dans les sorts accessibles au mage (hors Orbe mineur).

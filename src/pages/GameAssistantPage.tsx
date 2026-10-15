@@ -8,6 +8,7 @@ import RarityDot from '../components/RarityDot'
 import { SpellDetails } from '../components/SpellTag'
 import ActivationBag, { type BagColor } from '../components/ActivationBag'
 import RuleText from '../components/RuleText'
+import DeploymentMap from '../components/DeploymentMap'
 
 type Entry =
   | { id: string; at: string; type: 'card'; deckId: string; uid: string; returned?: boolean; /** Cartes tirées ensemble. */ batch?: string }
@@ -207,7 +208,7 @@ export default function GameAssistantPage() {
           <h1>Assistant de partie</h1>
           <p className="muted">Piochez comme à la table : une carte piochée quitte son paquet jusqu'à ce que vous la remettiez.</p>
         </div>
-        <button className="btn" onClick={newGame}>↺ Nouvelle partie</button>
+        <button className="btn" onClick={newGame} data-tip="Remélange tous les paquets, efface l'historique et vide le sac d'activation.">↺ Nouvelle partie</button>
       </div>
 
       <div className="assistant-layout">
@@ -223,18 +224,24 @@ export default function GameAssistantPage() {
             })}
           </nav>
 
+          {tab === 'lieux' && (
+            <details className="card deploy-card">
+              <summary>⌖ Schéma de déploiement</summary>
+              <DeploymentMap />
+            </details>
+          )}
           {tab === 'partie' && (
             <>
               <section className="card dice-tray">
                 <div className="round-box">
                   <span className="counter-label">Round</span>
                   <strong>{session.round}</strong>
-                  <button className="btn small primary" onClick={endRound}>Fin du round</button>
+                  <button className="btn small primary" onClick={endRound} data-tip="Remet les jetons dans le sac et fait le test du coucher de soleil (à partir du round 4).">Fin du round</button>
                 </div>
                 <div className="row wrap">
-                  <button className="btn" onClick={() => roll('1D10', `${d10()}`)}>🎲 1D10</button>
+                  <button className="btn" onClick={() => roll('1D10', `${d10()}`)} data-tip="Lance un dé à 10 faces.">🎲 1D10</button>
                   <button className="btn" onClick={() => { const a = d10(); const b = d10(); roll('2D10', `${a} + ${b} = ${a + b}${a === b ? ' (double !)' : ''}`) }}>🎲 2D10</button>
-                  <button className="btn" onClick={() => roll('Dispersion', `${DIRECTIONS[Math.floor(Math.random() * 8)]} sur ${d10()} cm`)}>🧭 Dispersion</button>
+                  <button className="btn" onClick={() => roll('Dispersion', `${DIRECTIONS[Math.floor(Math.random() * 8)]} sur ${d10()} cm`)} data-tip="Direction au hasard et distance (1D10 cm), pour disperser les cristaux bruts.">🧭 Dispersion</button>
                 </div>
               </section>
 
@@ -270,7 +277,7 @@ export default function GameAssistantPage() {
                       <span className="deck-count">{left} / {d.cards.length}</span>
                       <span className="deck-action">{left ? (perDraw > 1 ? `Piocher ${Math.min(perDraw, left)}` : 'Piocher') : 'Vide'}</span>
                     </button>
-                    <button className="link-btn small" onClick={() => reshuffle(d)} disabled={left === d.cards.length}>↺ Remélanger</button>
+                    <button className="link-btn small" onClick={() => reshuffle(d)} disabled={left === d.cards.length} data-tip="Remet toutes les cartes de ce paquet.">↺ Remélanger</button>
                   </div>
                 )
               })}

@@ -73,7 +73,7 @@ export function validateMember(profile: Profile, member: Member, inCampaign = fa
     if (known.length !== expected) {
       issues.push({
         severity: 'warning',
-        message: `${who} : un mage commence avec ${expected} sort${expected > 1 ? 's' : ''} (actuellement ${known.length}).`,
+        message: `${who} : un mage commence avec ${expected} sort${expected > 1 ? 's' : ''} (actuellement ${known.length})${known.length < expected ? ' : choisissez son 2e sort dans sa carte' : ''}.`,
         memberId: member.id,
       })
     }

@@ -80,8 +80,8 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish }: Pro
           <p>{standing} / {playing.length} figurines debout · commencée le {new Date(game.startedAt).toLocaleDateString('fr-FR')}</p>
         </div>
         <div className="row wrap">
-          <button className="btn primary" onClick={onFinish}>Terminer la partie</button>
-          <button className="btn" onClick={cancelGame}>Annuler la partie</button>
+          <button className="btn primary" onClick={onFinish} data-tip="Lance le bilan d'après-bataille : blessures, butin, cristaux, entretien, XP et niveaux. Tout est ensuite appliqué à la bande.">Terminer la partie</button>
+          <button className="btn" onClick={cancelGame} data-tip="Abandonne la partie sans bilan : compteurs et objets utilisés sont remis à zéro.">Annuler la partie</button>
         </div>
       </header>
 
@@ -117,8 +117,8 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish }: Pro
                     <span className="badge ko">✝ Mort</span>
                   ) : (
                     <div className="segmented status-toggle" role="group" aria-label="État">
-                      <button className={!out ? 'on' : ''} onClick={() => out && toggleOut(m.id)}>Debout</button>
-                      <button className={out ? 'on ko' : ''} onClick={() => !out && toggleOut(m.id)}>Hors de combat</button>
+                      <button className={!out ? 'on' : ''} onClick={() => out && toggleOut(m.id)} data-tip="La figurine est encore en jeu.">Debout</button>
+                      <button className={out ? 'on ko' : ''} onClick={() => !out && toggleOut(m.id)} data-tip="Mise hors de combat : elle tirera une carte Blessure au bilan.">Hors de combat</button>
                     </div>
                   )}
                   {(m.injuries ?? []).map((r) => (
@@ -165,8 +165,8 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish }: Pro
               </div>
               {!dead && (
                 <footer className="unit-actions">
-                  <button className="btn small" onClick={() => setInjuryFor(m.id)}>✚ Blessure</button>
-                  <button className="btn small" onClick={() => setLootFor(m.id)}>⚱ Objet ramassé</button>
+                  <button className="btn small" onClick={() => setInjuryFor(m.id)} data-tip="Noter une carte Blessure reçue pendant la partie.">✚ Blessure</button>
+                  <button className="btn small" onClick={() => setLootFor(m.id)} data-tip="Noter un objet trouvé en fouillant un lieu.">⚱ Objet ramassé</button>
                 </footer>
               )}
             </article>

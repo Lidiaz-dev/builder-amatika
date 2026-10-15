@@ -61,8 +61,10 @@ export interface Member {
   equipment: ItemRef[]
   /** Compétences choisies pour chaque « A OU B » du profil, dans l'ordre. */
   skillChoices: string[]
-  /** Sorts connus (mages). */
+  /** Sorts connus (mages). Les premiers (voir baseSpellCount) sont les sorts de départ. */
   spellIds?: string[]
+  /** Les 5 sorts tirés au hasard pour choisir le 2e sort de départ (Cités-États). */
+  spellDraft?: string[]
   /** Ancien champ libre des sorts, conservé pour les bandes existantes. */
   spells: string
   notes: string
@@ -308,4 +310,24 @@ export function withTreasury(crew: Crew, delta: { po?: number; cristaux?: number
       log: [...c.log, { date: new Date().toISOString(), label, ...delta }],
     },
   }
+}
+
+/** Rappel des objets portés ou au sac par les membres actifs : nom et règle, sans doublon. */
+export function crewItemsReminder(crew: Crew): { name: string; text: string }[] {
+  const seen = new Map<string, string>()
+  for (const m of crew.members.filter(isActive)) {
+    for (const e of items(m)) {
+      if (seen.has(e.name)) continue
+      const facts = [
+        e.strength && (e.category === 'melee' || e.category === 'ranged') ? `Force ${e.strength.toLowerCase()}` : '',
+        e.range !== undefined ? `portée ${e.range}ps` : '',
+        e.hands ? `${e.hands === 1 ? 'une main' : 'deux mains'}` : '',
+      ].filter(Boolean)
+      seen.set(e.name, [facts.join(' ; '), e.rules].filter(Boolean).join('. ') || 'Pas de règle spéciale.')
+    }
+    for (const { item } of lootItems(m)) {
+      if (item && !seen.has(item.name)) seen.set(item.name, item.description || 'Pas de description.')
+    }
+  }
+  return [...seen].map(([name, text]) => ({ name, text })).sort((a, b) => a.name.localeCompare(b.name))
 }

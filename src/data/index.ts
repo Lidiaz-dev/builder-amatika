@@ -156,12 +156,18 @@ export interface RuleSection {
   paragraphs: string[]
 }
 
-export const factions = factionsJson as Faction[]
-export const equipment = equipmentJson as Equipment[]
-export const skills = skillsJson as Skill[]
+/** Toutes les listes s'affichent par ordre alphabétique (les profils d'une faction gardent leur ordre). */
+export const byName = <T extends { name: string }>(a: T, b: T) => a.name.localeCompare(b.name, 'fr')
+export const factions = [...(factionsJson as Faction[])].sort(byName)
+export const equipment = [...(equipmentJson as Equipment[])].sort(byName)
+export const skills = [...(skillsJson as Skill[])].sort(byName)
 export const rules = rulesJson as RuleSection[]
-export const spells = spellsJson as Spell[]
-export const itemCategories = itemsJson as ItemCategory[]
+/** Ordre du fichier Cartes : sert à trouver le sort racial de départ. */
+const spellsInFileOrder = spellsJson as Spell[]
+export const spells = [...spellsInFileOrder].sort(byName)
+export const itemCategories = (itemsJson as ItemCategory[])
+  .map((c) => ({ ...c, items: [...c.items].sort(byName) }))
+  .sort(byName)
 export const lore = loreJson as { title: string; paragraphs: string[] }
 export const injuries = injuriesJson as Injury[]
 
@@ -247,15 +253,29 @@ export function spellsFor(factionId: string, profileId: string) {
   })
 }
 
+/** Nombre de sorts de départ d'un mage (Orbe mineur + sort racial) : ils ne peuvent pas être retirés. */
+export const baseSpellCount = (profile: Profile) => profile.startingSpells ?? 2
+
+/**
+ * Sort racial de départ : celui réservé au profil s'il existe (le Squig du Chaman Capuchard),
+ * sinon le sort racial de la faction.
+ */
+function racialStartingSpell(factionId: string, profile: Profile) {
+  const racial = spellsInFileOrder.filter((s) => s.factions.includes(factionId) && !s.bonus)
+  return racial.find((s) => s.profiles?.includes(profile.id)) ?? racial.find((s) => !s.profiles)
+}
+
 /** Sorts connus au recrutement : Orbe mineur + le sort racial de la faction. */
 export function startingSpellIds(factionId: string, profile: Profile) {
-  const universal = spells.filter((s) => s.universal).map((s) => s.id)
-  if ((profile.startingSpells ?? 2) <= 1) return universal
-  const racial = spells.find(
-    (s) => s.factions.includes(factionId) && !s.bonus && (!s.profiles || s.profiles.includes(profile.id)),
-  )
+  const universal = spellsInFileOrder.filter((s) => s.universal).map((s) => s.id)
+  if (baseSpellCount(profile) <= 1) return universal
+  const racial = racialStartingSpell(factionId, profile)
   return racial ? [...universal, racial.id] : universal
 }
+
+/** Faction sans sort racial (Cités-États) : le 2e sort de départ se choisit parmi 5 tirés au hasard. */
+export const choosesSecondSpell = (factionId: string, profile: Profile) =>
+  baseSpellCount(profile) >= 2 && !racialStartingSpell(factionId, profile)
 
 export const equipmentById = (id: string) => equipment.find((e) => e.id === id)
 

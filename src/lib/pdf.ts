@@ -4,6 +4,7 @@ import {
   actionsOf,
   bagItems,
   crewCost,
+  crewItemsReminder,
   crewUpkeep,
   effectiveStats,
   isActive,
@@ -137,6 +138,36 @@ function drawSheet(doc: jsPDF, faction: Faction, m: Member, x: number, y: number
   return h
 }
 
+/**
+ * Une liste « nom : règle » sur deux colonnes. Elle continue sous la précédente (`from`) s'il reste
+ * de la place, sinon elle commence une nouvelle page. Renvoie la hauteur atteinte.
+ */
+function reminderPages(doc: jsPDF, title: string, entries: { name: string; text: string }[], bottom: number, from?: number): number | undefined {
+  if (!entries.length) return from
+  let top = MARGIN
+  if (from !== undefined && from + 40 < bottom) top = from + 6
+  else doc.addPage()
+  doc.setFont('helvetica', 'bold').setFontSize(14).text(title, MARGIN, top + 5)
+  const ry = [top + 11, top + 11]
+  let c = 0
+  for (const { name, text } of entries) {
+    doc.setFont('helvetica', 'normal').setFontSize(8)
+    const lines = doc.splitTextToSize(safe(text), COL_W) as string[]
+    const h = 4 + lines.length * LINE + 2
+    if (ry[c] + h > bottom) c = 1 - c
+    if (ry[c] + h > bottom) {
+      doc.addPage()
+      ry[0] = ry[1] = MARGIN
+      c = 0
+    }
+    const x = MARGIN + c * (COL_W + GAP)
+    doc.setFont('helvetica', 'bold').setFontSize(9).text(safe(name), x, ry[c] + 3)
+    doc.setFont('helvetica', 'normal').setFontSize(8).text(lines, x, ry[c] + 7)
+    ry[c] += h
+  }
+  return Math.max(ry[0], ry[1])
+}
+
 function pageFooter(doc: jsPDF, crew: Crew) {
   const pages = doc.getNumberOfPages()
   for (let i = 1; i <= pages; i++) {
@@ -188,34 +219,15 @@ export async function downloadSheetsPdf(crew: Crew, faction: Faction, withRules:
     cols[c] += h + GAP
   }
 
-  // Rappel des compétences utilisées.
+  // Rappels : compétences utilisées, puis objets portés ou au sac.
   if (withRules) {
     const used = [...new Set(members.flatMap((m) => {
       const p = profileOf(faction, m)
       return p ? memberSkills(p, m) : []
-    }))]
-    if (used.length) {
-      doc.addPage()
-      doc.setFont('helvetica', 'bold').setFontSize(14).text('Rappel des compétences', MARGIN, MARGIN + 5)
-      const ry = [MARGIN + 11, MARGIN + 11]
-      let c = 0
-      for (const name of used) {
-        doc.setFont('helvetica', 'normal').setFontSize(8)
-        const desc = skillByName(name)?.description ?? 'Pas encore de description dans les règles.'
-        const lines = doc.splitTextToSize(safe(desc), COL_W) as string[]
-        const h = 4 + lines.length * LINE + 2
-        if (ry[c] + h > bottom) c = 1 - c
-        if (ry[c] + h > bottom) {
-          doc.addPage()
-          ry[0] = ry[1] = MARGIN
-          c = 0
-        }
-        const x = MARGIN + c * (COL_W + GAP)
-        doc.setFont('helvetica', 'bold').setFontSize(9).text(safe(name), x, ry[c] + 3)
-        doc.setFont('helvetica', 'normal').setFontSize(8).text(lines, x, ry[c] + 7)
-        ry[c] += h
-      }
-    }
+    }))].sort((a, b) => a.localeCompare(b, 'fr'))
+    const skillEntries = used.map((name) => ({ name, text: skillByName(name)?.description ?? 'Pas encore de description dans les règles.' }))
+    const end = reminderPages(doc, 'Rappel des compétences', skillEntries, bottom)
+    reminderPages(doc, 'Rappel des objets', crewItemsReminder(crew), bottom, end)
   }
 
   pageFooter(doc, crew)

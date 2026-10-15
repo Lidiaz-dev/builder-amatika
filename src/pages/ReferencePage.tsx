@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactNode } from 'react'
-import { Link, NavLink, Route, Routes, useLocation, useParams } from 'react-router-dom'
+import { Link, Navigate, NavLink, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import {
   CATEGORY_LABELS,
   equipment,
@@ -20,6 +20,7 @@ import {
   type Rarity,
   type Role,
 } from '../data'
+import DeploymentMap from '../components/DeploymentMap'
 import ProfileCard from '../components/ProfileCard'
 import FactionSeal from '../components/FactionSeal'
 import SpellTag, { SpellDetails } from '../components/SpellTag'
@@ -28,9 +29,9 @@ import { formatMods } from '../lib/format'
 import RuleText from '../components/RuleText'
 
 const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-const CATEGORIES = Object.keys(CATEGORY_LABELS) as EquipmentCategory[]
-const TREES = [...new Set(skills.map((s) => s.tree))]
-const SPELL_TYPES = [...new Set(spells.map((s) => s.type))]
+const CATEGORIES = (Object.keys(CATEGORY_LABELS) as EquipmentCategory[]).sort((a, b) => CATEGORY_LABELS[a].localeCompare(CATEGORY_LABELS[b], 'fr'))
+const TREES = [...new Set(skills.map((s) => s.tree))].sort((a, b) => (TREE_LABELS[a] ?? a).localeCompare(TREE_LABELS[b] ?? b, 'fr'))
+const SPELL_TYPES = [...new Set(spells.map((s) => s.type))].sort((a, b) => a.localeCompare(b, 'fr'))
 
 function Highlight({ text, query }: { text: string; query: string }) {
   if (!query) return <>{text}</>
@@ -55,8 +56,8 @@ const SECTIONS = [
   { path: 'bandes', title: 'Bandes', text: 'Toutes les factions et leurs profils.', glyph: '⚔' },
   { path: 'competences', title: 'Compétences', text: 'Les compétences, par arbre.', glyph: '✦' },
   { path: 'sorts', title: 'Sorts', text: 'Les sorts communs et raciaux.', glyph: '✧' },
-  { path: 'equipement', title: 'Équipement', text: 'Armes et armures communes et leurs prix.', glyph: '⚒' },
-  { path: 'objets', title: 'Objets', text: 'Trésors et marché noir.', glyph: '⚱' },
+  { path: 'objets', title: 'Équipement et objets', text: 'Équipement commun, trésors et marché noir.', glyph: '⚒' },
+  { path: 'deploiement', title: 'Déploiement', text: 'Schémas des points de déploiement, de 3 à 8 joueurs.', glyph: '⌖' },
 ]
 
 export default function ReferencePage() {
@@ -94,18 +95,18 @@ export default function ReferencePage() {
             <Link key={t} to="/regles/sorts" onClick={() => setTimeout(() => scrollTo(`s-${slugify(t)}`), 50)}>{t}</Link>
           ))}
         </details>
-        <details open={section?.path === 'equipement'}>
-          <summary><NavLink to="/regles/equipement">Équipement</NavLink></summary>
-          {CATEGORIES.map((c) => (
-            <Link key={c} to="/regles/equipement" onClick={() => setTimeout(() => scrollTo(`e-${c}`), 50)}>{CATEGORY_LABELS[c]}</Link>
-          ))}
-        </details>
         <details open={section?.path === 'objets'}>
-          <summary><NavLink to="/regles/objets">Objets</NavLink></summary>
+          <summary><NavLink to="/regles/objets">Équipement et objets</NavLink></summary>
+          <span className="nav-group">Équipement commun</span>
+          {CATEGORIES.map((c) => (
+            <Link key={c} to="/regles/objets" onClick={() => setTimeout(() => scrollTo(`e-${c}`), 50)}>{CATEGORY_LABELS[c]}</Link>
+          ))}
+          <span className="nav-group">Trésors et marché noir</span>
           {itemCategories.filter((c) => c.items.length).map((c) => (
             <Link key={c.id} to="/regles/objets" onClick={() => setTimeout(() => scrollTo(`o-${c.id}`), 50)}>{c.name}</Link>
           ))}
         </details>
+        <NavLink to="/regles/deploiement" className="nav-single">Déploiement</NavLink>
       </aside>
 
       <div className="compendium-main">
@@ -121,7 +122,8 @@ export default function ReferencePage() {
           <Route path="sorts" element={<SpellsRef query={query} />} />
           <Route path="objets" element={<ItemsRef query={query} />} />
           <Route path="competences" element={<SkillsRef query={query} />} />
-          <Route path="equipement" element={<EquipmentRef query={query} />} />
+          <Route path="equipement" element={<Navigate to="/regles/objets" replace />} />
+          <Route path="deploiement" element={<section><h1>Déploiement</h1><DeploymentMap /></section>} />
           <Route path="bandes" element={<FactionsIndex query={query} />} />
           <Route path="bandes/:factionId" element={<FactionPage query={query} />} />
         </Routes>
@@ -202,11 +204,11 @@ function SkillsRef({ query }: { query: string }) {
   )
 }
 
-function EquipmentRef({ query }: { query: string }) {
+/** Équipement commun (armes, armures…), achetable à la création comme en campagne. */
+function EquipmentTables({ query }: { query: string }) {
   const q = norm(query)
   return (
-    <section>
-      <h1>Équipement</h1>
+    <>
       <div className="stack">
         {CATEGORIES.map((cat) => {
           const list = equipment.filter((e) => e.category === cat && (!q || norm(e.name + ' ' + e.rules).includes(q)))
@@ -229,7 +231,7 @@ function EquipmentRef({ query }: { query: string }) {
                     {list.map((e) => (
                       <tr key={e.id}>
                         <td><RarityDot rarity="blanc" /> <strong><Highlight text={e.name} query={query} /></strong></td>
-                        <td>{e.price} PO</td>
+                        <td className="nowrap">{e.price} PO</td>
                         <td>{e.hands || '—'}</td>
                         <td>{e.strength ?? (e.save ? `+${e.save}` : '—')}</td>
                         {cat === 'ranged' && <td>{e.range} ps</td>}
@@ -243,7 +245,7 @@ function EquipmentRef({ query }: { query: string }) {
           )
         })}
       </div>
-    </section>
+    </>
   )
 }
 
@@ -369,8 +371,8 @@ function ItemsRef({ query }: { query: string }) {
   const [rarity, setRarity] = useState<Rarity | ''>('')
   return (
     <section>
-      <h1>Objets</h1>
-      <p className="lead">Objets que l'on trouve dans les trésors ou que l'on achète au marché noir. Ils se revendent à moitié prix.</p>
+      <h1>Équipement et objets</h1>
+      <p className="lead">L'équipement commun s'achète à la création de la bande et entre les parties. Les autres objets se trouvent dans les trésors ou s'achètent au marché noir. Tout se revend à moitié prix.</p>
       <div className="filter-bar rarity-filter" role="group" aria-label="Filtrer par rareté">
         <button className={`chip ${rarity === '' ? 'on' : ''}`} onClick={() => setRarity('')}>Toutes</button>
         {RARITIES.map((r) => (
@@ -379,11 +381,17 @@ function ItemsRef({ query }: { query: string }) {
           </button>
         ))}
       </div>
+      {(!rarity || rarity === 'blanc') && (
+        <>
+          <h2 className="ref-part">Équipement commun</h2>
+          <EquipmentTables query={query} />
+        </>
+      )}
+      <h2 className="ref-part">Trésors et marché noir</h2>
       <div className="stack">
         {itemCategories.map((cat) => {
-          const list = cat.items.filter(
-            (it) => (!rarity || it.rarity === rarity) && (!q || norm(`${it.name} ${it.description}`).includes(q)),
-          )
+          const list = cat.items
+            .filter((it) => (!rarity || it.rarity === rarity) && (!q || norm(`${it.name} ${it.description}`).includes(q)))
           if (!list.length) return null
           return (
             <section key={cat.id} id={`o-${cat.id}`} className="unit-card">
