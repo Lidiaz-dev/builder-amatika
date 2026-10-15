@@ -13,14 +13,14 @@ import GameAssistantPage from './pages/GameAssistantPage'
 import TooltipLayer from './components/TooltipLayer'
 
 function RequireAuth({ children }: { children: ReactNode }) {
-  const { localMode, session, loading } = useAuth()
+  const { localMode, user, loading } = useAuth()
   if (localMode) return children
   if (loading) return <p className="muted center">Chargement…</p>
-  return session ? children : <LoginPage />
+  return user ? children : <LoginPage />
 }
 
 function Header() {
-  const { localMode, session, signOut } = useAuth()
+  const { localMode, user, signOut } = useAuth()
   return (
     <header className="site-header no-print">
       <NavLink to="/" className="brand">
@@ -33,12 +33,12 @@ function Header() {
       </nav>
       <div className="header-user">
         {localMode ? (
-          <span className="pill" title="Supabase n'est pas configuré : les bandes sont stockées dans ce navigateur.">
+          <span className="pill" data-tip="Les comptes ne sont pas encore branchés : les bandes sont enregistrées dans ce navigateur uniquement.">
             Mode local
           </span>
-        ) : session ? (
+        ) : user ? (
           <>
-            <span className="muted small hide-mobile">{session.user.email}</span>
+            <span className="muted small hide-mobile">{user.displayName || user.email}</span>
             <button className="btn ghost small" onClick={signOut}>Déconnexion</button>
           </>
         ) : null}

@@ -155,3 +155,9 @@ Les monstres sont environ 10 % plus chers dans Bandes.docx. Est-ce voulu ?
 - Chaque mage commence avec 2 sorts verrouillés (non retirables) : Orbe mineur + son sort racial. Les sorts ajoutés ensuite peuvent être retirés.
 - Sort racial réservé à un profil prioritaire : le Chaman Capuchard reçoit « Viens la le squig !!!! », le Chaman « Attaque sournoiz' ».
 - Faction sans sort racial (Cités-États) : le 2e sort se choisit parmi 5 tirés au hasard dans les sorts accessibles au mage (hors Orbe mineur).
+
+## Comptes (Firebase)
+- Supabase remplacé par Firebase (offre gratuite Spark, pas de mise en pause) : Authentication + Firestore.
+- Connexion par email + mot de passe, ou Google. Pas de lien magique : l'offre gratuite limite fortement ces emails.
+- Une bande = un document `crews/{id}` avec `uid` (propriétaire) et la bande en JSON dans `data`. Règles dans `firestore.rules`.
+- Les bandes du mode local peuvent être rattachées au compte depuis « Mes bandes » (bandeau « Ajouter à mon compte »).

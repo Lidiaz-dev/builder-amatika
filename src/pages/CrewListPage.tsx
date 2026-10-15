@@ -4,7 +4,7 @@ import { factionById, factions } from '../data'
 import { useAuth } from '../lib/auth'
 import { crewCost, newId, phaseOf, PHASE_LABELS, type Crew } from '../lib/crew'
 import { readCrewFile } from '../lib/crewFile'
-import { listCrews, saveCrew } from '../lib/storage'
+import { listCrews, localCrews, moveLocalCrewsToAccount, saveCrew } from '../lib/storage'
 import { isLegal, validateCrew } from '../lib/validate'
 import FactionSeal from '../components/FactionSeal'
 
@@ -19,6 +19,23 @@ export default function CrewListPage() {
   const fileInput = useRef<HTMLInputElement>(null)
   const [importing, setImporting] = useState(false)
   const navigate = useNavigate()
+  // Bandes créées dans ce navigateur avant la connexion : on propose de les rattacher au compte.
+  const [pendingLocal, setPendingLocal] = useState(() => localCrews().length)
+  const [moving, setMoving] = useState(false)
+
+  async function moveLocal() {
+    setMoving(true)
+    setError('')
+    try {
+      await moveLocalCrewsToAccount()
+      setPendingLocal(0)
+      setCrews(await listCrews())
+    } catch (err) {
+      setError((err as Error).message)
+    } finally {
+      setMoving(false)
+    }
+  }
 
   async function importFile(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -85,6 +102,17 @@ Annuler : l'importer comme une nouvelle bande.`)) crew = read
         </select>
       </div>
 
+      {pendingLocal > 0 && (
+        <div className="notice local-move">
+          <span>
+            {pendingLocal} bande{pendingLocal > 1 ? 's' : ''} enregistrée{pendingLocal > 1 ? 's' : ''} dans ce navigateur avant la connexion.
+            Rattachez-les à votre compte pour les retrouver partout.
+          </span>
+          <button className="btn small primary" onClick={moveLocal} disabled={moving}>
+            {moving ? 'Transfert…' : 'Ajouter à mon compte'}
+          </button>
+        </div>
+      )}
       {error && <p className="error">{error}</p>}
       {crews === null && !error && <p className="muted">Chargement…</p>}
 

@@ -933,3 +933,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 
 /* Infobulles simples (data-tip) */
 .tip-bubble { position: fixed; z-index: 2000; max-width: min(18rem, calc(100vw - 16px)); padding: 0.45rem 0.65rem; background: #2b1d10; color: #fbf1dc; border-radius: 4px; box-shadow: 0 4px 14px rgb(20 10 0 / 0.35); font-size: 0.95rem; font-weight: 400; line-height: 1.35; letter-spacing: normal; text-transform: none; pointer-events: none; }
+
+/* Connexion */
+.login-tabs { align-self: flex-start; margin-bottom: 0.4rem; }
+.login-tabs button { padding: 0.35rem 0.9rem; }
+.local-move { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem; }
