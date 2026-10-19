@@ -14,6 +14,7 @@ import {
   type LiveTally,
   type Member,
   memberName,
+  abandonGame,
 } from '../lib/crew'
 import { applyInjury } from '../lib/campaign'
 import StatLine from './StatLine'
@@ -35,10 +36,12 @@ interface Props {
   onChange: (update: CrewUpdater) => void
   /** Termine la partie : ouvre l'assistant d'après-partie. */
   onFinish: () => void
+  /** Raison pour laquelle la partie ne peut pas encore être terminée (journée de campagne en cours). */
+  finishBlocked?: string
 }
 
 /** Vue « table de jeu » pendant une partie : seuls les participants, actions rapides et compteurs. */
-export default function LiveGamePanel({ crew, faction, onChange, onFinish }: Props) {
+export default function LiveGamePanel({ crew, faction, onChange, onFinish, finishBlocked }: Props) {
   const game = crew.campaign!.currentGame!
   const [injuryFor, setInjuryFor] = useState<string | null>(null)
   const [lootFor, setLootFor] = useState<string | null>(null)
@@ -65,11 +68,7 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish }: Pro
 
   function cancelGame() {
     if (!confirm("Annuler la partie ? Les compteurs et les objets utilisés sont remis à zéro. Les blessures et objets ramassés restent sur les figurines.")) return
-    onChange((c) => ({
-      ...c,
-      members: c.members.map((m) => (m.loot?.some((l) => l.used) ? { ...m, loot: m.loot.map((l) => ({ ...l, used: false })) } : m)),
-      campaign: { ...c.campaign!, currentGame: undefined },
-    }))
+    onChange(abandonGame)
   }
 
   return (
@@ -80,7 +79,7 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish }: Pro
           <p>{standing} / {playing.length} figurines debout · commencée le {new Date(game.startedAt).toLocaleDateString('fr-FR')}</p>
         </div>
         <div className="row wrap">
-          <button className="btn primary" onClick={onFinish} data-tip="Lance le bilan d'après-bataille : blessures, butin, cristaux, entretien, XP et niveaux. Tout est ensuite appliqué à la bande.">Terminer la partie</button>
+          <button className="btn primary" onClick={onFinish} disabled={!!finishBlocked} data-tip={finishBlocked ?? "Lance le bilan d'après-bataille : blessures, butin, cristaux, entretien, XP et niveaux. Tout est ensuite appliqué à la bande."}>Terminer la partie</button>
           <button className="btn" onClick={cancelGame} data-tip="Abandonne la partie sans bilan : compteurs et objets utilisés sont remis à zéro.">Annuler la partie</button>
         </div>
       </header>
@@ -158,8 +157,8 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish }: Pro
                 {!dead && (
                   <div className="live-tallies">
                     <Counter label="XP de PV retirés" value={t.damageXp} onDelta={(d) => bump(m.id, 'damageXp', d)} steps={[1, 5]} editable />
-                    <Counter label="Ennemis tués" value={t.kills} onDelta={(d) => bump(m.id, 'kills', d)} />
-                    <Counter label="Lieux fouillés" value={t.places} onDelta={(d) => bump(m.id, 'places', d)} />
+                    <Counter label="Ennemis tués (+5 XP)" value={t.kills} onDelta={(d) => bump(m.id, 'kills', d)} />
+                    <Counter label="Lieux fouillés (+5 XP)" value={t.places} onDelta={(d) => bump(m.id, 'places', d)} />
                   </div>
                 )}
               </div>

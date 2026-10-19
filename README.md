@@ -59,6 +59,8 @@ Les choix faits sur les données floues sont listés dans [HYPOTHESES.md](HYPOTH
 
 Ces valeurs ne sont pas secrètes (elles finissent dans le site publié) : la protection des bandes vient des règles Firestore.
 
+À chaque modification de `firestore.rules` (par exemple l'ajout des campagnes de groupe), recoller son contenu dans **Firestore Database > Règles** et publier.
+
 ## Déployer sur GitHub Pages
 
 1. Créer le dépôt sur GitHub et y pousser la branche `main`.

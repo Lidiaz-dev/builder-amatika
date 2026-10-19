@@ -11,16 +11,21 @@ import AfterBattlePage from './pages/AfterBattlePage'
 import ReferencePage from './pages/ReferencePage'
 import GameAssistantPage from './pages/GameAssistantPage'
 import TooltipLayer from './components/TooltipLayer'
+import CampaignsPage from './pages/CampaignsPage'
+import PseudoPage from './pages/PseudoPage'
+import CampaignPage from './pages/CampaignPage'
 
 function RequireAuth({ children }: { children: ReactNode }) {
-  const { localMode, user, loading } = useAuth()
+  const { localMode, user, loading, pseudo } = useAuth()
   if (localMode) return children
   if (loading) return <p className="muted center">Chargement…</p>
-  return user ? children : <LoginPage />
+  if (!user) return <LoginPage />
+  // Première connexion (ou compte Google) : le pseudo est demandé une fois.
+  return pseudo ? children : <PseudoPage />
 }
 
 function Header() {
-  const { localMode, user, signOut } = useAuth()
+  const { localMode, user, pseudo, signOut } = useAuth()
   return (
     <header className="site-header no-print">
       <NavLink to="/" className="brand">
@@ -28,6 +33,7 @@ function Header() {
       </NavLink>
       <nav>
         <NavLink to="/bandes">Mes bandes</NavLink>
+        {!localMode && <NavLink to="/campagnes">Campagnes</NavLink>}
         <NavLink to="/partie">Partie</NavLink>
         <NavLink to="/regles">Compendium</NavLink>
       </nav>
@@ -38,7 +44,7 @@ function Header() {
           </span>
         ) : user ? (
           <>
-            <span className="muted small hide-mobile">{user.displayName || user.email}</span>
+            <NavLink to="/profil" className="header-pseudo hide-mobile" data-tip="Changer de pseudo">{pseudo || user.email}</NavLink>
             <button className="btn ghost small" onClick={signOut}>Déconnexion</button>
           </>
         ) : null}
@@ -62,6 +68,9 @@ export default function App() {
             <Route path="/bandes/:id/apres-partie" element={<RequireAuth><AfterBattlePage /></RequireAuth>} />
             <Route path="/regles/*" element={<ReferencePage />} />
             <Route path="/partie" element={<GameAssistantPage />} />
+            <Route path="/profil" element={<RequireAuth><PseudoPage edit /></RequireAuth>} />
+            <Route path="/campagnes" element={<RequireAuth><CampaignsPage /></RequireAuth>} />
+            <Route path="/campagnes/:id" element={<RequireAuth><CampaignPage /></RequireAuth>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

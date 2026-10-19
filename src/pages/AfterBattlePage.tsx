@@ -22,6 +22,7 @@ import Modal from '../components/Modal'
 import InjuryPicker from '../components/InjuryPicker'
 import AdvancePicker from '../components/AdvancePicker'
 import LootPicker, { type LootPick } from '../components/LootPicker'
+import { submitSheetIfNeeded } from '../lib/groupCampaign'
 
 const STEPS = ['Participants', 'Objets utilisés', 'Morts et blessures', 'Butin', 'Entretien', 'Expérience', 'Niveaux', 'Résumé']
 // Index des étapes.
@@ -100,9 +101,10 @@ export default function AfterBattlePage() {
   /** Démarre l'assistant depuis la bande, pré-rempli avec la partie en cours si elle existe. */
   function startFrom(c: Crew) {
     const live = c.campaign?.currentGame
-    setStep(0)
+    // Partie notée en direct : les participants sont déjà connus (choisis en préparation), on passe directement aux objets.
+    setStep(live ? S.items : 0)
     setDraft(c)
-    setExits([])
+    setExits(live ? [c] : [])
     setLeaving([])
     setPoisonRolls({})
     setLiqueurDice({})
@@ -306,12 +308,14 @@ export default function AfterBattlePage() {
       campaign: { ...draft!.campaign!, games: [...draft!.campaign!.games, game], currentGame: undefined },
     }
     await saveCrew(final)
+    // Phase de nuit : ce bilan devient le rapport de fin de nuit de la bande.
+    await submitSheetIfNeeded(final, allLines).catch(() => false)
     try {
       localStorage.removeItem(wizardKey(final.id))
     } catch {
       // ignoré
     }
-    navigate(`/bandes/${final.id}`)
+    navigate(final.groupCampaign ? `/campagnes/${final.groupCampaign.id}` : `/bandes/${final.id}`)
   }
 
   const giveItem = (m: Member, pick: LootPick) => {
@@ -327,6 +331,8 @@ export default function AfterBattlePage() {
     setLootFor(null)
   }
 
+  /** Participants déjà choisis (partie notée en direct) : l'étape « Qui a participé ? » est sautée. */
+  const preset = !!original?.campaign?.currentGame
   const levelers = draft.members.filter((m) => isActive(m) && pendingLevels(m) > 0)
   const usedEntries = draft.members.filter(isActive).flatMap((m) => lootItems(m).filter(({ ref }) => ref.used).map((e) => ({ m, ...e })))
   const missingCrystalRoll = step === S.loot && diceCount > 0 && Array.from({ length: diceCount }, (_, i) => rolls[i] ?? null).some((r) => r === null)
@@ -352,13 +358,16 @@ export default function AfterBattlePage() {
           <button className="btn small" onClick={() => { setResumed(false); startFrom(original) }}>Recommencer depuis le début</button>
         </p>
       )}
-      {original.campaign.currentGame && step === S.participants && !resumed && (
-        <p className="notice small">Les informations notées pendant « {original.campaign.currentGame.title} » sont déjà reprises : participants, cristaux, PO, objets et compteurs d'XP.</p>
+      {preset && step === S.items && !resumed && (
+        <p className="notice small">
+          Les informations notées pendant « {original.campaign.currentGame!.title} » sont déjà reprises : cristaux, PO, objets et compteurs d'XP.
+          <br />Participants : {participants.map((mid) => nameOf(faction, memberById(mid))).join(', ')}.
+        </p>
       )}
 
       <ol className="stepper">
         {STEPS.map((s, i) => (
-          <li key={s} className={i === step ? 'on' : i < step ? 'done' : ''}><span>{i + 1}</span> {s}</li>
+          <li key={s} className={i === step ? 'on' : i < step ? 'done' : ''} data-tip={preset && i === S.participants ? 'Choisis pendant la préparation de la journée.' : undefined}><span>{i + 1}</span> {s}</li>
         ))}
       </ol>
 
@@ -511,10 +520,11 @@ export default function AfterBattlePage() {
                     Vendre des cristaux
                   </button>
                 )}{' '}
-                Sinon, cochez les soldats qui quittent la bande faute de paiement (-10 prestige chacun).
+                Sinon, décochez les soldats qui ne sont pas payés : ils quittent la bande (-10 prestige chacun).
               </div>
             )}
             {crDeficit < 0 && <p className="notice">Il manque {-crDeficit} cristal pour l'entretien en cristaux.</p>}
+            <p className="muted small">Cochés : entretien payé, le soldat reste. Le chef ne coûte rien.</p>
             <ul className="check-list">
               {draft.members.filter(isActive).map((m) => {
                 const p = profileOf(faction, m)
@@ -523,9 +533,9 @@ export default function AfterBattlePage() {
                 return (
                   <li key={m.id}>
                     <label>
-                      <input type="checkbox" checked={on} disabled={isChef(p, m)} onChange={() => setLeaving((l) => (on ? l.filter((x) => x !== m.id) : [...l, m.id]))} />
+                      <input type="checkbox" checked={!on} disabled={isChef(p, m)} onChange={() => setLeaving((l) => (on ? l.filter((x) => x !== m.id) : [...l, m.id]))} aria-label={`Entretien payé : ${nameOf(faction, m)}`} />
                       <strong>{nameOf(faction, m)}</strong>{' '}
-                      <span className="muted small">{u.cristaux ? `${u.cristaux} cristal` : `${u.po} PO`}{on ? ' · non payé, part' : ''}</span>
+                      <span className="muted small">{u.cristaux ? `${u.cristaux} cristal` : `${u.po} PO`}{on ? ' · non payé, quitte la bande' : ' · payé'}</span>
                       {m.leavesAfterGame && <span className="badge ko">Part après la partie</span>}
                     </label>
                   </li>
@@ -634,7 +644,11 @@ export default function AfterBattlePage() {
       </div>
 
       <div className="row between step-nav">
-        {step > 0 ? <button className="btn" onClick={goBack}>← Précédent</button> : <Link className="btn ghost" to={`/bandes/${original.id}`}>Annuler</Link>}
+        {step > (preset ? S.items : 0) ? (
+          <button className="btn" onClick={goBack}>← Précédent</button>
+        ) : (
+          <Link className="btn ghost" to={original.groupCampaign ? `/campagnes/${original.groupCampaign.id}` : `/bandes/${original.id}`}>Annuler</Link>
+        )}
         {step < STEPS.length - 1 ? (
           <button className="btn primary" onClick={goNext} disabled={(step === S.participants && participants.length === 0) || (step === S.upkeep && deficit < 0) || missingPoisonRoll || missingCrystalRoll}>
             Suivant →

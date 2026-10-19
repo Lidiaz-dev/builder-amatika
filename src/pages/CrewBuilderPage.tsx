@@ -35,12 +35,12 @@ import {
   memberName,
   newMember,
   phaseOf,
-  PHASE_LABELS,
   profileOf,
   withTreasury,
   type Crew,
   type Member,
   type Slot,
+  abandonGame,
 } from '../lib/crew'
 import {
   addXp,
@@ -68,9 +68,9 @@ import Modal from '../components/Modal'
 import InjuryPicker from '../components/InjuryPicker'
 import AdvancePicker from '../components/AdvancePicker'
 import LootPicker, { type LootPick } from '../components/LootPicker'
-import PhaseBar from '../components/PhaseBar'
-import LiveGamePanel from '../components/LiveGamePanel'
 import RuleText from '../components/RuleText'
+import { crewDayState, lockReason, type CrewDayState } from '../lib/groupCampaign'
+import CampaignDayBanner from '../components/CampaignDayBanner'
 
 const SPELL_GROUPS: { label: string; match: (s: Spell) => boolean }[] = [
   { label: 'Sorts de la faction', match: (s) => s.factions.length > 0 && !s.bonus },
@@ -94,12 +94,29 @@ export default function CrewBuilderPage() {
   const [saveState, setSaveState] = useState<SaveState>('saved')
   const [saveError, setSaveError] = useState('')
   const [treasuryOpen, setTreasuryOpen] = useState(false)
-  const [launchOpen, setLaunchOpen] = useState(false)
+  /** Situation de la bande dans sa campagne de groupe (journée en cours, feuille à remplir…). */
+  const [dayState, setDayState] = useState<CrewDayState | null | undefined>(undefined)
   const firstLoad = useRef(true)
 
   useEffect(() => {
     getCrew(id!).then(setCrew).catch(() => setCrew(null))
   }, [id])
+
+  const groupId = crew?.groupCampaign?.id
+  const crewId = crew?.id
+  useEffect(() => {
+    if (!groupId || !crewId) {
+      setDayState(null)
+      return
+    }
+    crewDayState({ id: crewId, groupCampaign: { id: groupId, name: '' } }).then(setDayState).catch(() => setDayState(null))
+  }, [groupId, crewId])
+
+  // Journée annulée (campagne supprimée, bande retirée…) : la partie en cours est abandonnée d'office.
+  useEffect(() => {
+    if (dayState === undefined || !crew?.groupCampaign || !crew.campaign?.currentGame) return
+    if (!dayState?.participant) setCrew((c) => (c ? abandonGame(c) : c))
+  }, [dayState, crew])
 
   // Dernière version de la bande et présence de modifications pas encore enregistrées.
   const latest = useRef<Crew | null>(null)
@@ -180,19 +197,12 @@ export default function CrewBuilderPage() {
   }
 
   async function remove() {
-    if (!confirm(`Supprimer définitivement la bande « ${crew!.name || 'sans nom'} » ?`)) return
+    const inCampaign = crew!.groupCampaign ? ` Elle est inscrite à la campagne « ${crew!.groupCampaign.name} » : vous devrez en recréer une depuis la campagne.` : ''
+    if (!confirm(`Supprimer définitivement la bande « ${crew!.name || 'sans nom'} » ?${inCampaign}`)) return
     await deleteCrew(crew!.id)
     navigate('/bandes')
   }
 
-  function startCampaign() {
-    const gold = crew!.budget - crewCost(crew!)
-    if (!confirm(`Démarrer la campagne ? Le trésor de départ sera de ${gold} PO. Les recrutements et achats seront ensuite payés avec ce trésor.`)) return
-    const now = new Date().toISOString()
-    update({
-      campaign: { startedAt: now, po: gold, cristaux: 0, prestige: 0, games: [], log: [{ date: now, label: 'Début de la campagne', po: gold }] },
-    })
-  }
 
   const cost = crewCost(crew)
   const upkeep = crewUpkeep(crew)
@@ -202,28 +212,16 @@ export default function CrewBuilderPage() {
   const former = crew.members.filter((m) => !isActive(m))
   const hasChef = active.some((m) => isChef(profileOf(faction, m), m))
   const phase = phaseOf(crew)
+  // Bande de campagne : modifiable seulement pendant la préparation d'une journée rejointe.
+  const lock = lockReason(crew, dayState ?? null)
 
-  function launchGame(title: string, participants: string[]) {
-    setCrew({
-      ...crew!,
-      campaign: {
-        ...crew!.campaign!,
-        currentGame: {
-          id: newId(), title, startedAt: new Date().toISOString(), participants, outOfAction: [],
-          rawCrystals: 0, poFound: 0, prestige: 0, tallies: {}, events: [],
-        },
-      },
-    })
-    setLaunchOpen(false)
-    window.scrollTo(0, 0)
-  }
 
   return (
     <section className={`builder phase-${phase}`}>
       <nav className="crumbs no-print">
         <Link to="/bandes">Mes bandes</Link> <span>›</span> {crew.name || 'Bande sans nom'}
       </nav>
-      <PhaseBar phase={phase} />
+      {dayState && <CampaignDayBanner state={dayState} lock={lock} />}
       <div className="builder-head card">
         <div className="row wrap">
           <FactionSeal id={faction.id} name={faction.name} size={56} />
@@ -237,29 +235,17 @@ export default function CrewBuilderPage() {
               <input type="number" min={0} step={10} value={crew.budget} onChange={(e) => update({ budget: Number(e.target.value) })} />
             </label>
           )}
-          <label className="switch field-switch" data-tip="Désactive les contrôles du builder : effectifs, budget, mains et équipement autorisé. Pratique pour les bandes maison ou les tests.">
+          {!crew.groupCampaign && <label className="switch field-switch" data-tip="Désactive les contrôles du builder : effectifs, budget, mains et équipement autorisé. Pratique pour les bandes maison ou les tests.">
             <input type="checkbox" checked={!!crew.unrestricted} onChange={(e) => update({ unrestricted: e.target.checked })} />
             <span className="switch-track" aria-hidden="true" />
             <span>Sans restrictions</span>
-          </label>
+          </label>}
         </div>
         <div className="row wrap between">
           <span className={`save-state ${saveState}`} role="status">
             {{ saved: '✓ Enregistré', pending: '● Modifications non enregistrées…', saving: '● Enregistrement…', error: `⚠ Erreur : ${saveError}` }[saveState]}
           </span>
           <div className="row wrap">
-            {phase === 'partie' ? null : campaign ? (
-              <>
-                <button className="btn primary" onClick={() => setLaunchOpen(true)} disabled={active.length === 0} data-tip="Passe la bande en mode partie : on choisit les participants, puis on note XP, objets utilisés, blessures et butin pendant le jeu.">⚔ Lancer la partie</button>
-                <button className="btn" onClick={() => saveThenGo(`/bandes/${crew.id}/apres-partie`)} data-tip="Pour une partie jouée sans le mode « Partie en cours » : ouvre directement le bilan d'après-bataille à remplir de mémoire.">
-                  Saisir une partie déjà jouée
-                </button>
-              </>
-            ) : (
-              <button className="btn primary" onClick={startCampaign} disabled={!legal && !crew.unrestricted} data-tip={legal ? 'Fige la bande : le budget restant devient le trésor, et les achats suivants sont payés avec le trésor.' : 'Corrigez la bande avant de démarrer la campagne.'}>
-                Démarrer la campagne
-              </button>
-            )}
             <button className="btn" onClick={() => saveThenGo(`/bandes/${crew.id}/fiches`)} data-tip="Affiche les fiches de la bande et permet de télécharger le PDF, qui sert aussi de sauvegarde à réimporter.">Fiches à imprimer</button>
             <button className="btn danger" onClick={remove} data-tip="Supprime définitivement la bande. Téléchargez son PDF avant si vous voulez la garder.">Supprimer</button>
           </div>
@@ -267,14 +253,14 @@ export default function CrewBuilderPage() {
       </div>
 
       {phase === 'partie' ? (
-        <LiveGamePanel
-          crew={crew}
-          faction={faction}
-          onChange={(update) => setCrew((c) => (c ? update(c) : c))}
-          onFinish={() => saveThenGo(`/bandes/${crew.id}/apres-partie`)}
-        />
+        <div className="card notice live-elsewhere">
+          <p>
+            <strong>⚔ Partie en cours</strong> : elle se suit depuis la campagne. La bande est verrouillée jusqu'à la fin de la partie.
+          </p>
+          {crew.groupCampaign && <Link className="btn primary" to={`/campagnes/${crew.groupCampaign.id}`}>Aller à la campagne</Link>}
+        </div>
       ) : (
-      <>
+      <fieldset className="builder-lock" disabled={!!lock}>
       <div className="totals-bar card">
         <div className="totals">
           {campaign ? (
@@ -291,12 +277,11 @@ export default function CrewBuilderPage() {
             <>
               <Total label="Faction" value={faction.name} />
               <Total label="Dépensé" value={`${cost} / ${crew.budget} PO`} alert={cost > crew.budget} tip="Coût des recrues et de leur équipement, sur le budget de départ." />
-              <Total label="Reste" value={`${crew.budget - cost} PO`} alert={cost > crew.budget} tip="Ce qui reste deviendra le trésor au démarrage de la campagne." />
+              <Total label="Reste" value={`${crew.budget - cost} PO`} alert={cost > crew.budget} tip="Pour une bande de campagne, ce qui reste devient son trésor quand elle est validée pour la campagne." />
               <Total label="Entretien" value={`${upkeep.po} PO${upkeep.cristaux ? ` + ${upkeep.cristaux} cristal` : ''}`} tip="À payer après chaque partie pour garder la bande (le chef ne coûte rien)." />
               <Total label="Membres" value={`${crew.members.length}`} alert={crew.members.length > MAX_ON_TABLE} />
             </>
           )}
-          <span className={`badge big phase-badge phase-${phase}`}>{PHASE_LABELS[phase]}</span>
           <span className={`badge big ${crew.unrestricted ? '' : legal ? 'ok' : 'ko'}`}>
             {crew.unrestricted ? 'Sans restrictions' : legal ? 'Bande valide' : 'Bande à corriger'}
           </span>
@@ -387,12 +372,9 @@ export default function CrewBuilderPage() {
         </div>
       </div>
 
-      </>
+      </fieldset>
       )}
 
-      {campaign && phase === 'gestion' && (
-        <LaunchModal key={launchOpen ? "open" : "closed"} open={launchOpen} faction={faction} members={active} gameNumber={campaign.games.length + 1} onClose={() => setLaunchOpen(false)} onLaunch={launchGame} />
-      )}
       {campaign && (
         <TreasuryModal open={treasuryOpen} crew={crew} onClose={() => setTreasuryOpen(false)} onApply={(delta, label) => setCrew(withTreasury(crew, delta, label))} />
       )}
@@ -443,55 +425,6 @@ function ChefSuccession({ faction, members, onPick }: { faction: Faction; member
         <button className="btn primary small" onClick={() => { const m = members.find((x) => x.id === pick); if (m) onPick(m) }}>Nommer chef</button>
       </div>
     </div>
-  )
-}
-
-/** Lancer une partie : choix des participants (10 au maximum, blessés graves exclus). */
-function LaunchModal({ open, faction, members, gameNumber, onClose, onLaunch }: {
-  open: boolean
-  faction: Faction
-  members: Member[]
-  gameNumber: number
-  onClose: () => void
-  onLaunch: (title: string, participants: string[]) => void
-}) {
-  const eligible = members.filter((m) => !m.missNextGame)
-  const [title, setTitle] = useState(`Partie ${gameNumber}`)
-  const [picked, setPicked] = useState<string[]>(eligible.slice(0, MAX_ON_TABLE).map((m) => m.id))
-  return (
-    <Modal
-      open={open}
-      title="Lancer la partie"
-      kicker={`${picked.length} / ${MAX_ON_TABLE} figurines`}
-      onClose={onClose}
-      actions={<button className="btn primary small" disabled={!picked.length} onClick={() => onLaunch(title, picked)}>⚔ Commencer</button>}
-    >
-      <label className="field">
-        <span>Nom de la partie</span>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} />
-      </label>
-      <p className="muted small">Pendant la partie, les achats et le recrutement sont verrouillés. Tout ce que vous notez sera repris dans l'après-partie.</p>
-      <ul className="check-list">
-        {members.map((m) => {
-          const on = picked.includes(m.id)
-          const p = profileOf(faction, m)
-          return (
-            <li key={m.id}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={on}
-                  disabled={m.missNextGame || (!on && picked.length >= MAX_ON_TABLE)}
-                  onChange={() => setPicked((ps) => (on ? ps.filter((x) => x !== m.id) : [...ps, m.id]))}
-                />
-                <strong>{memberName(m) || p?.name}</strong> <span className="muted small">{p?.name} · niv. {m.level}</span>
-                {m.missNextGame && <span className="badge ko">Blessure grave : repos</span>}
-              </label>
-            </li>
-          )
-        })}
-      </ul>
-    </Modal>
   )
 }
 

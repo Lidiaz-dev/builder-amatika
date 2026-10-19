@@ -2,8 +2,9 @@ import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { factionById, factions } from '../data'
 import { useAuth } from '../lib/auth'
-import { crewCost, newId, phaseOf, PHASE_LABELS, type Crew } from '../lib/crew'
+import { crewCost, newId, type Crew } from '../lib/crew'
 import { readCrewFile } from '../lib/crewFile'
+import { crewDayState } from '../lib/groupCampaign'
 import { listCrews, localCrews, moveLocalCrewsToAccount, saveCrew } from '../lib/storage'
 import { isLegal, validateCrew } from '../lib/validate'
 import FactionSeal from '../components/FactionSeal'
@@ -65,6 +66,25 @@ Annuler : l'importer comme une nouvelle bande.`)) crew = read
   useEffect(() => {
     listCrews().then(setCrews).catch((e) => setError(e.message))
   }, [])
+
+  // Statut des bandes inscrites à une campagne de groupe (journée en cours, feuille à remplir…).
+  const [campaignBadges, setCampaignBadges] = useState<Record<string, { campaign: string; day?: string }>>({})
+  useEffect(() => {
+    const linked = (crews ?? []).filter((c) => c.groupCampaign)
+    if (!linked.length) return
+    Promise.all(
+      linked.map(async (c) => {
+        const st = await crewDayState(c).catch(() => null)
+        // Bande remplacée (reroll) ou joueur retiré : plus d'indicateur.
+        if (!st) return null
+        const day = !st.participant || !st.day ? undefined
+          : st.day.status === 'preparation' ? `Journée ${st.day.number} : préparation`
+          : st.day.status === 'en-cours' ? `⚔ Journée ${st.day.number}`
+          : st.sheet ? `Journée ${st.day.number} : rapport validé` : `☾ Journée ${st.day.number} : rapport à faire`
+        return [c.id, { campaign: st.campaign.name, day }] as const
+      }),
+    ).then((rows) => setCampaignBadges(Object.fromEntries(rows.filter((r) => !!r) as [string, { campaign: string; day?: string }][])))
+  }, [crews])
 
   const shown = useMemo(() => {
     const list = (crews ?? []).filter((c) => !faction || c.factionId === faction)
@@ -139,7 +159,8 @@ Annuler : l'importer comme une nouvelle bande.`)) crew = read
                 </span>
               </div>
               <span className="crew-tile-badges">
-                <span className={`badge phase-badge phase-${phaseOf(c)}`}>{phaseOf(c) === 'partie' ? '⚔ ' : ''}{PHASE_LABELS[phaseOf(c)]}</span>
+                {campaignBadges[c.id] && <span className="badge campaign-badge" data-tip={`Bande inscrite à la campagne « ${campaignBadges[c.id].campaign} »`}>⚑ {campaignBadges[c.id].campaign}</span>}
+                {campaignBadges[c.id]?.day && <span className="badge phase-badge phase-partie">{campaignBadges[c.id].day}</span>}
                 <span className={`badge ${legal ? 'ok' : 'ko'}`}>{c.unrestricted ? 'Libre' : legal ? 'Valide' : 'À corriger'}</span>
               </span>
             </Link>

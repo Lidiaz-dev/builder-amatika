@@ -11,14 +11,18 @@ import {
   type User,
 } from 'firebase/auth'
 import { auth } from './firebase'
+import { checkPseudo, loadPseudo, savePseudo } from './profile'
 
 interface AuthState {
   /** true quand Firebase n'est pas configuré : pas de compte, stockage navigateur. */
   localMode: boolean
   user: User | null
   loading: boolean
+  /** Pseudo choisi par le joueur (null tant qu'il n'en a pas défini). */
+  pseudo: string | null
+  setPseudo: (pseudo: string) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
-  signUp: (email: string, password: string) => Promise<void>
+  signUp: (email: string, password: string, pseudo: string) => Promise<void>
   resetPassword: (email: string) => Promise<void>
   signInWithGoogle: () => Promise<void>
   signOut: () => Promise<void>
@@ -48,12 +52,15 @@ function friendly(err: unknown): Error {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+  const [pseudo, setPseudoState] = useState<string | null>(null)
   const [loading, setLoading] = useState(!!auth)
 
   useEffect(() => {
     if (!auth) return
-    return onAuthStateChanged(auth, (u) => {
+    return onAuthStateChanged(auth, async (u) => {
       setUser(u)
+      // Le pseudo est chargé avant d'afficher le site, pour savoir s'il faut le demander.
+      setPseudoState(u ? await loadPseudo(u).catch(() => null) : null)
       setLoading(false)
     })
   }, [])
@@ -62,6 +69,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localMode: !auth,
     user,
     loading,
+    pseudo,
+    async setPseudo(p) {
+      setPseudoState(await savePseudo(auth!.currentUser!, p))
+    },
     async signIn(email, password) {
       try {
         await signInWithEmailAndPassword(auth!, email, password)
@@ -69,9 +80,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw friendly(err)
       }
     },
-    async signUp(email, password) {
+    async signUp(email, password, chosen) {
+      const p = checkPseudo(chosen)
       try {
-        await createUserWithEmailAndPassword(auth!, email, password)
+        const cred = await createUserWithEmailAndPassword(auth!, email, password)
+        setPseudoState(await savePseudo(cred.user, p))
       } catch (err) {
         throw friendly(err)
       }

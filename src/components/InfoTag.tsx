@@ -1,4 +1,5 @@
 import { useRef, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 
 interface Props {
   label: string
@@ -18,11 +19,24 @@ export default function InfoTag({ label, kicker, className = '', after, children
   return (
     <>
       <span className={`tag-wrap ${after ? 'with-after' : ''}`}>
-        <button type="button" className={`tag info-tag ${className}`} onClick={() => dialog.current?.showModal()}>
+        {/* Pas un vrai bouton : il reste utilisable dans une bande verrouillée (fieldset désactivé). */}
+        <span
+          role="button"
+          tabIndex={0}
+          className={`tag info-tag ${className}`}
+          onClick={() => dialog.current?.showModal()}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              dialog.current?.showModal()
+            }
+          }}
+        >
           {label}
-        </button>
+        </span>
         {after}
       </span>
+      {createPortal(
       <dialog
         ref={dialog}
         className="info-dialog"
@@ -40,7 +54,9 @@ export default function InfoTag({ label, kicker, className = '', after, children
             <button type="button" className="btn small" onClick={close} autoFocus>Fermer</button>
           </footer>
         </div>
-      </dialog>
+      </dialog>,
+      document.body,
+      )}
     </>
   )
 }

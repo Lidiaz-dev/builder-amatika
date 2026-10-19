@@ -26,6 +26,8 @@ function writeLocal(crews: Crew[]) {
  */
 interface CrewDoc {
   uid: string
+  /** Campagne de groupe : permet à l'organisateur de consulter la bande. */
+  campaignId: string | null
   name: string
   factionId: string
   updatedAt: string
@@ -66,7 +68,7 @@ export async function saveCrew(crew: Crew): Promise<Crew> {
     writeLocal([saved, ...readLocal().filter((c) => c.id !== crew.id)])
     return saved
   }
-  const data: CrewDoc = { uid: uid(), name: saved.name, factionId: saved.factionId, updatedAt: saved.updatedAt, data: JSON.stringify(saved) }
+  const data: CrewDoc = { uid: uid(), campaignId: saved.groupCampaign?.id ?? null, name: saved.name, factionId: saved.factionId, updatedAt: saved.updatedAt, data: JSON.stringify(saved) }
   await setDoc(doc(db, 'crews', saved.id), data)
   return saved
 }

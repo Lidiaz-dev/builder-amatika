@@ -701,7 +701,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .live-items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.95rem; }
 .live-items li { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
 .live-items li.used { opacity: 0.75; }
-.live-tallies { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; border-top: 1px dashed var(--border); padding-top: 0.5rem; }
+.live-tallies { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; border-top: 1px dashed var(--border); padding-top: 0.5rem; }
+.live-tallies .counter { flex: 1 1 auto; }
 .counter { display: flex; flex-direction: column; gap: 0.2rem; }
 .counter-label { font-family: var(--display); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.03em; }
 .counter-controls { display: flex; align-items: center; gap: 0.3rem; }
@@ -938,3 +939,42 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .login-tabs { align-self: flex-start; margin-bottom: 0.4rem; }
 .login-tabs button { padding: 0.35rem 0.9rem; }
 .local-move { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem; }
+
+/* Campagnes de groupe */
+.campaign-page { display: flex; flex-direction: column; gap: 1rem; }
+.campaign-page .card h2 { margin-top: 0; }
+.campaign-create { align-items: flex-end; margin-bottom: 1rem; }
+.plain-list { list-style: none; margin: 0 0 0.8rem; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; }
+.plain-list li { padding-bottom: 0.4rem; border-bottom: 1px dashed var(--border); }
+.plain-list .badge { margin-left: 0.4rem; }
+.day-sheets details ul { margin: 0.3rem 0 0; }
+.danger-zone { display: flex; justify-content: flex-end; }
+.campaign-banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem; margin: 0 0 0.8rem; }
+.campaign-banner.live { border-color: var(--accent); }
+.verify-email { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+.verify-email p { margin: 0; }
+.campaign-badge { background: #2b1d10; color: #f3d6b7; border-color: #2b1d10; }
+.campaign-step { display: flex; flex-direction: column; gap: 0.6rem; margin: 0.4rem 0 0.8rem; }
+.campaign-step p { margin: 0; }
+.campaign-step > .btn { align-self: flex-start; }
+.reroll-btn { align-self: flex-start; }
+.live-elsewhere { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem; }
+.live-elsewhere p { margin: 0; }
+.header-pseudo { color: #e9d3a6; font-family: var(--display); font-size: 0.85rem; text-decoration: none; border-bottom: 1px dotted rgb(233 211 166 / 0.5); }
+.header-pseudo:hover, .header-pseudo.active { color: #fff; }
+.day-cancel { margin-left: 0.5rem; }
+.builder-lock { display: contents; border: 0; margin: 0; padding: 0; min-width: 0; }
+.info-tag { cursor: pointer; }
+
+/* Fiche d'un membre au survol (préparation de journée) */
+.member-peek { border-bottom: 1px dotted currentColor; cursor: help; }
+.peek-card { position: fixed; z-index: 1500; width: min(22rem, calc(100vw - 16px)); background: var(--surface) var(--grain); border: 1px solid var(--border-strong); border-radius: var(--radius); box-shadow: 0 8px 22px rgb(40 20 5 / 0.35); overflow: hidden; pointer-events: none; font-size: 0.9rem; }
+.peek-card .unit-band h3 { margin: 0; font-size: 1rem; }
+.peek-body { padding: 0.5rem 0.7rem 0.6rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.peek-body p { margin: 0; line-height: 1.35; }
+.peek-stats { width: 100%; border-collapse: collapse; table-layout: fixed; text-align: center; }
+.peek-stats th { font-family: var(--display); font-size: 0.6rem; color: var(--muted); font-weight: 700; }
+.peek-stats td { border: 1px solid var(--border); font-weight: 700; padding: 0.1rem 0; }
+.advance-preview { border: 1px dashed var(--border-strong); border-radius: var(--radius); padding: 0.5rem 0.7rem; background: rgb(255 248 228 / 0.5); }
+.advance-preview p { margin: 0.25rem 0 0; }
+.known-players { margin-top: 0.6rem; max-height: 18rem; overflow: auto; }

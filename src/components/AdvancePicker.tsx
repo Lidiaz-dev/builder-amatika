@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { spellById, spellsFor, TREE_LABELS, type Profile } from '../data'
+import { skillByName, spellById, spellsFor, TREE_LABELS, type Profile } from '../data'
+import RuleText from './RuleText'
+import { SpellDetails } from './SpellTag'
 import { ADVANCE_TABLE, describeAdvance, learnableSkills, type AdvanceInput } from '../lib/campaign'
 import { isMage, memberSkills, type Member } from '../lib/crew'
 import DiceInput from './DiceInput'
@@ -82,6 +84,12 @@ export default function AdvancePicker({ factionId, profile, member, onApply }: P
           </select>
         </label>
       )}
+      {row?.choice === 'skill' && skill && (
+        <div className="advance-preview">
+          <strong>{skill}</strong>
+          <p><RuleText text={skillByName(skill)?.description ?? 'Pas encore de description dans les règles.'} self={skill} /></p>
+        </div>
+      )}
       {mage && (
         <label className="field">
           <span>Nouveau sort (le mage pioche 5 sorts et en garde un)</span>
@@ -94,6 +102,12 @@ export default function AdvancePicker({ factionId, profile, member, onApply }: P
             {drawn && <button type="button" className="btn small ghost" onClick={() => setDrawn(null)}>Tous</button>}
           </div>
         </label>
+      )}
+      {mage && spellId && spellById(spellId) && (
+        <div className="advance-preview">
+          <strong>{spellById(spellId)!.name}</strong>
+          <SpellDetails spell={spellById(spellId)!} />
+        </div>
       )}
 
       {roll !== null && label && <p className="notice small">Résultat : {label}{spellId ? ` · sort : ${spellById(spellId)?.name}` : ''}</p>}

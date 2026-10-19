@@ -9,6 +9,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
+  const [pseudo, setPseudo] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [info, setInfo] = useState('')
@@ -26,7 +27,7 @@ export default function LoginPage() {
     setBusy(true)
     try {
       if (mode === 'login') await signIn(email, password)
-      else if (mode === 'signup') await signUp(email, password)
+      else if (mode === 'signup') await signUp(email, password, pseudo)
       else {
         await resetPassword(email)
         setInfo(`Un email pour choisir un nouveau mot de passe vient d'être envoyé à ${email} (pensez aux spams).`)
@@ -51,6 +52,12 @@ export default function LoginPage() {
       )}
 
       <form onSubmit={submit} className="stack">
+        {mode === 'signup' && (
+          <label className="field">
+            <span>Pseudo</span>
+            <input required minLength={2} maxLength={24} autoComplete="nickname" value={pseudo} onChange={(e) => setPseudo(e.target.value)} placeholder="Affiché à la place de votre email" />
+          </label>
+        )}
         <label className="field">
           <span>Adresse email</span>
           <input type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="vous@exemple.fr" />

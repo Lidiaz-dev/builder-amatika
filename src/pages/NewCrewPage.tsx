@@ -1,9 +1,10 @@
-import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState, type FormEvent } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { factions } from '../data'
 import { DEFAULT_BUDGET, memberName, newId, newMember, type Member } from '../lib/crew'
 import { limitLabel } from '../lib/format'
-import { saveCrew } from '../lib/storage'
+import { getCrew, saveCrew } from '../lib/storage'
+import { getCampaign, getMyEntry, registerCrew, type Entry, type GroupCampaign } from '../lib/groupCampaign'
 import FactionSeal from '../components/FactionSeal'
 
 export default function NewCrewPage() {
@@ -15,6 +16,17 @@ export default function NewCrewPage() {
   const [error, setError] = useState('')
   const faction = factions.find((f) => f.id === factionId)
 
+  // Bande créée pour une campagne de groupe (?campagne=…) : elle y est inscrite dès sa création.
+  const [params] = useSearchParams()
+  const campaignId = params.get('campagne')
+  const [campaign, setCampaign] = useState<GroupCampaign | null>(null)
+  const [entry, setEntry] = useState<Entry | null>(null)
+  useEffect(() => {
+    if (!campaignId) return
+    getCampaign(campaignId).then(setCampaign).catch(() => setCampaign(null))
+    getMyEntry(campaignId).then(setEntry).catch(() => setEntry(null))
+  }, [campaignId])
+
   async function submit(e: FormEvent) {
     e.preventDefault()
     if (!faction) return
@@ -24,7 +36,25 @@ export default function NewCrewPage() {
     for (const p of faction.profiles)
       for (let i = 0; i < p.min; i++) members.push(newMember(faction.id, p, members.map(memberName)))
     try {
-      const crew = await saveCrew({ id: newId(), name, factionId, budget, unrestricted, members, createdAt: now, updatedAt: now })
+      const crew = await saveCrew({
+        id: newId(),
+        name,
+        factionId,
+        budget,
+        unrestricted: campaign ? false : unrestricted,
+        members,
+        createdAt: now,
+        updatedAt: now,
+        ...(campaign ? { groupCampaign: { id: campaign.id, name: campaign.name } } : {}),
+      })
+      if (campaign) {
+        await registerCrew(campaign.id, crew)
+        // Reroll : l'ancienne bande quitte la campagne mais reste dans « Mes bandes ».
+        if (entry?.crewId && entry.crewId !== crew.id) {
+          const previous = await getCrew(entry.crewId).catch(() => null)
+          if (previous) await saveCrew({ ...previous, groupCampaign: undefined })
+        }
+      }
       navigate(`/bandes/${crew.id}`)
     } catch (err) {
       setError((err as Error).message)
@@ -41,6 +71,7 @@ export default function NewCrewPage() {
             <p className="step-sub">Choisir la faction</p>
           </div>
         </div>
+        {campaign && <CampaignNotice campaign={campaign} reroll={!!entry?.crewId} />}
         <div className="faction-list">
           {factions.map((f) => (
             <button key={f.id} className="faction-row" onClick={() => setFactionId(f.id)}>
@@ -68,6 +99,7 @@ export default function NewCrewPage() {
           <p className="step-sub">Nom et budget</p>
         </div>
       </div>
+      {campaign && <CampaignNotice campaign={campaign} reroll={!!entry?.crewId} />}
 
       <div className="new-crew-panel card">
         <form onSubmit={submit} className="stack">
@@ -84,6 +116,8 @@ export default function NewCrewPage() {
             <span>Budget de départ (PO)</span>
             <input type="number" min={0} step={10} value={budget} onChange={(e) => setBudget(Number(e.target.value))} />
           </label>
+          {!campaign && (
+            <>
           <label className="switch">
             <input type="checkbox" checked={unrestricted} onChange={(e) => setUnrestricted(e.target.checked)} />
             <span className="switch-track" aria-hidden="true" />
@@ -93,6 +127,8 @@ export default function NewCrewPage() {
             Sans restrictions, le builder ne bloque plus les effectifs, le budget, les mains ni l'équipement autorisé. Pratique pour les
             bandes maison ou les tests.
           </p>
+            </>
+          )}
           {error && <p className="error">{error}</p>}
           <div>
             <button className="btn primary" type="submit">Créer la bande</button>
@@ -112,5 +148,14 @@ export default function NewCrewPage() {
         </aside>
       </div>
     </section>
+  )
+}
+
+function CampaignNotice({ campaign, reroll }: { campaign: GroupCampaign; reroll: boolean }) {
+  return (
+    <p className="notice">
+      Bande pour la campagne <strong>{campaign.name}</strong> : elle y sera inscrite dès sa création.
+      {reroll && ' Votre bande actuelle quittera la campagne (elle reste dans « Mes bandes »).'}
+    </p>
   )
 }

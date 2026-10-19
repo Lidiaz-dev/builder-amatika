@@ -161,6 +161,10 @@ export interface Crew {
   members: Member[]
   /** Présent une fois la campagne démarrée : trésor, historique des parties. */
   campaign?: Campaign
+  /** Campagne de groupe (organisée par l'organisateur) à laquelle la bande est inscrite. */
+  groupCampaign?: { id: string; name: string }
+  /** Préparation de la journée de campagne : membres qui y participeront. */
+  dayPrep?: { campaignId: string; day: number; members: string[] }
   createdAt: string
   updatedAt: string
 }
@@ -330,4 +334,18 @@ export function crewItemsReminder(crew: Crew): { name: string; text: string }[] 
     }
   }
   return [...seen].map(([name, text]) => ({ name, text })).sort((a, b) => a.name.localeCompare(b.name))
+}
+
+/**
+ * Abandonne la partie en cours : compteurs et objets utilisés remis à zéro.
+ * Les blessures et objets ramassés restent sur les figurines.
+ */
+export function abandonGame(c: Crew): Crew {
+  if (!c.campaign?.currentGame) return c
+  return {
+    ...c,
+    dayPrep: undefined,
+    members: c.members.map((m) => (m.loot?.some((l) => l.used) ? { ...m, loot: m.loot.map((l) => ({ ...l, used: false })) } : m)),
+    campaign: { ...c.campaign, currentGame: undefined },
+  }
 }

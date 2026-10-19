@@ -161,3 +161,21 @@ Les monstres sont environ 10 % plus chers dans Bandes.docx. Est-ce voulu ?
 - Connexion par email + mot de passe, ou Google. Pas de lien magique : l'offre gratuite limite fortement ces emails.
 - Une bande = un document `crews/{id}` avec `uid` (propriétaire) et la bande en JSON dans `data`. Règles dans `firestore.rules`.
 - Les bandes du mode local peuvent être rattachées au compte depuis « Mes bandes » (bandeau « Ajouter à mon compte »).
+
+## Campagnes de groupe
+- Seul le compte lidiaz.video@gmail.com (adresse vérifiée) crée les campagnes, ajoute/retire les joueurs par email et gère les journées (constante `ADMIN_EMAIL` et `firestore.rules`).
+- Une bande par joueur et par campagne ; le joueur peut la remplacer (reroll) hors journée en cours ; l'organisateur peut retirer un joueur.
+- Inscrire une bande démarre sa campagne (budget restant → trésor) si ce n'était pas fait.
+- Journée : lancée avec une partie des bandes (« en cours ») → l'organisateur la termine (« feuilles ») → chaque participant remplit le bilan d'après-bataille, qui devient sa feuille validée → quand toutes sont validées, l'organisateur valide la journée et peut lancer la suivante.
+- Pendant une journée en cours, « Terminer la partie » et « Saisir une partie déjà jouée » sont bloqués pour les bandes participantes.
+- Chaque joueur ne voit que sa bande ; l'organisateur voit les bandes inscrites (fiches) et le détail des feuilles.
+- Les comptes par mot de passe doivent vérifier leur adresse pour accéder aux campagnes (les comptes Google le sont d'office).
+- (Mise à jour) Le builder ne simule plus de campagne : plus de « Démarrer la campagne », « Lancer la partie » ni « Saisir une partie ». Tout se fait dans l'onglet Campagnes :
+  le joueur crée sa bande depuis la campagne, la construit dans le builder, la valide (budget restant → trésor), lance et suit la partie de la journée en direct, puis remplit sa feuille.
+- Seules les bandes validées peuvent être cochées pour une journée. Le builder reste l'endroit où l'on consulte et gère la bande (achats avec le trésor, XP, blessures…).
+
+## Déroulé d'une journée (mise à jour)
+- Statuts : préparation → en cours → nuit → clôturée (les anciennes journées « feuilles / validée » sont lues comme « nuit / clôturée »).
+- Organisateur : crée la journée, la lance (verrouille la préparation), ouvre la phase de nuit, la clôture quand tous les rapports sont validés ; il peut l'annuler à tout moment avant clôture.
+- Joueurs : rejoignent la journée en préparation (ou la quittent), choisissent les membres qui participent (10 max) et ajustent l'équipement dans le builder ; au lancement, la partie démarre d'elle-même avec ces membres et se note dans l'onglet Campagne ; à la nuit, le bilan d'après-bataille (récupération puis XP / niveaux) devient le rapport de fin de nuit.
+- Une bande de campagne validée n'est modifiable dans le builder que pendant la préparation d'une journée qu'elle a rejointe (sinon le builder est en lecture seule).
