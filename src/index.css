@@ -365,7 +365,20 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .unit-role { font-family: var(--display); font-size: 0.78rem; color: #f3d6b7; white-space: nowrap; }
 .unit-body { display: flex; flex-direction: column; gap: 0.6rem; padding: 0.8rem 0.9rem; }
 .unit-facts { display: flex; flex-wrap: wrap; gap: 0.2rem 1rem; margin: 0; font-size: 0.95rem; }
-.unit-section { border-top: 1px solid var(--border); }
+.unit-section { border-top: 0; }
+/* Séparateur ornemental entre les sections : deux filets et un fleuron. */
+.unit-section::before {
+  content: '❦';
+  display: block;
+  text-align: center;
+  font-size: 0.72rem;
+  line-height: 0.9rem;
+  color: rgb(122 88 46 / 0.75);
+  background:
+    linear-gradient(90deg, transparent, rgb(138 106 63 / 0.55)) left center / calc(50% - 0.9rem) 1px no-repeat,
+    linear-gradient(90deg, rgb(138 106 63 / 0.55), transparent) right center / calc(50% - 0.9rem) 1px no-repeat;
+  margin: 0 0.9rem;
+}
 .unit-section > summary {
   padding: 0.45rem 0.9rem;
   cursor: pointer;
@@ -992,4 +1005,64 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   .total .muted { font-size: 0.62rem; }
   .total strong { font-size: 0.95rem; white-space: nowrap; }
   .totals .badge.big, .totals .totals-btn { height: 1.7rem; padding: 0 0.55rem; font-size: 0.72rem; white-space: nowrap; }
+}
+
+/* ---------- Fiches de membres : rôles, papier vieilli, animations ---------- */
+/* Bords de papier vieilli : léger brunissement sur le pourtour des cartes. */
+.unit-card.member {
+  box-shadow:
+    var(--shadow),
+    inset 0 0 22px rgb(120 78 28 / 0.16),
+    inset 0 0 3px rgb(90 55 20 / 0.28);
+}
+/* Chef : liseré doré et couronne. */
+.unit-card.member.role-chef {
+  border: 2px solid #c9a24a;
+  outline: 1px solid rgb(201 162 74 / 0.45);
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 1px #8a6a2a,
+    0 4px 14px rgb(120 80 20 / 0.28),
+    inset 0 0 22px rgb(120 78 28 / 0.16);
+}
+.role-chef > .unit-band { background: linear-gradient(#a42a18, #7a170c); border-bottom: 2px solid #c9a24a; }
+.crown { color: #f1c75b; font-size: 1.15rem; line-height: 1; text-shadow: 0 1px 2px rgb(0 0 0 / 0.6); flex: none; cursor: default; }
+/* Spécialistes : liseré de couleur discret. */
+.unit-card.member.role-specialiste { border-color: #6f7d55; box-shadow: var(--shadow), inset 0 0 0 1px rgb(111 125 85 / 0.35), inset 0 0 22px rgb(120 78 28 / 0.16); }
+.role-specialiste > .unit-band { border-bottom-color: #4b5636; }
+/* Recrues : carte plus compacte. */
+.role-recrue > .unit-band { padding: 0.3rem 0.75rem; }
+.role-recrue .member-name { font-size: 0.95rem; }
+.role-recrue > .unit-body { padding: 0.5rem 0.75rem; gap: 0.4rem; }
+.role-recrue .stat-chips dd { font-size: 0.88rem; }
+.role-recrue .stat-chips dt { font-size: 0.62rem; }
+.role-recrue .unit-section > summary { padding-top: 0.3rem; padding-bottom: 0.3rem; font-size: 0.92rem; }
+.role-recrue .unit-section > :not(summary) { padding-bottom: 0.5rem; }
+.role-recrue .unit-section::before { line-height: 0.6rem; font-size: 0.6rem; }
+
+/* XP gagnée depuis la dernière visite */
+.xp-bar span { transition: width 1.4s cubic-bezier(.2,.7,.2,1); }
+.xp-gain { font-family: var(--display); font-size: 0.78rem; font-weight: 700; color: #8a5a10; background: #f6e2a6; border: 1px solid #c9a24a; border-radius: 999px; padding: 0 0.45rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Carte qui « se pose » au recrutement. */
+  @keyframes settle {
+    0% { opacity: 0; transform: translateY(-18px) rotate(-1.6deg) scale(1.03); }
+    70% { opacity: 1; transform: translateY(2px) rotate(0.3deg) scale(1); }
+    100% { opacity: 1; transform: none; }
+  }
+  .unit-card.member.settle { animation: settle 0.5s ease-out 1; }
+  /* Coup de tampon de cire quand la bande devient valide. */
+  @keyframes stamp {
+    0% { opacity: 0; transform: scale(2.4) rotate(-16deg); }
+    55% { opacity: 1; transform: scale(0.9) rotate(-5deg); }
+    75% { transform: scale(1.06) rotate(-2deg); }
+    100% { transform: scale(1) rotate(0); }
+  }
+  .badge.stamp { animation: stamp 0.7s cubic-bezier(.3,1.4,.5,1) 1; box-shadow: 0 0 0 3px rgb(155 27 16 / 0.18), 0 3px 10px rgb(80 20 5 / 0.35); }
+  @keyframes xp-pop { 0% { opacity: 0; transform: translateY(6px) scale(0.8); } 100% { opacity: 1; transform: none; } }
+  .xp-gain { animation: xp-pop 0.6s ease-out 0.9s both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .xp-bar span { transition: none; }
 }

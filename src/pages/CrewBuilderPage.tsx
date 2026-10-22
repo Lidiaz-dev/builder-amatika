@@ -94,6 +94,11 @@ export default function CrewBuilderPage() {
   const [saveState, setSaveState] = useState<SaveState>('saved')
   const [saveError, setSaveError] = useState('')
   const [treasuryOpen, setTreasuryOpen] = useState(false)
+  /** Membres recrutés pendant cette visite : leur carte « se pose » à l'apparition. */
+  const fresh = useRef(new Set<string>())
+  /** Tampon de cire affiché quand la bande devient valide. */
+  const [stamp, setStamp] = useState(false)
+  const wasLegal = useRef<boolean | null>(null)
   /** Situation de la bande dans sa campagne de groupe (journée en cours, feuille à remplir…). */
   const [dayState, setDayState] = useState<CrewDayState | null | undefined>(undefined)
   const firstLoad = useRef(true)
@@ -183,6 +188,18 @@ export default function CrewBuilderPage() {
 
   const faction = crew ? factionById(crew.factionId) : undefined
   const issues = useMemo(() => (crew ? validateCrew(crew) : []), [crew])
+  // La bande vient de devenir valide : coup de tampon de cire sur le badge.
+  const validNow = crew ? isLegal(issues) && !crew.unrestricted : null
+  useEffect(() => {
+    if (validNow === null) return
+    const before = wasLegal.current
+    wasLegal.current = validNow
+    if (before === false && validNow) {
+      setStamp(true)
+      const t = setTimeout(() => setStamp(false), 1700)
+      return () => clearTimeout(t)
+    }
+  }, [validNow])
 
   if (crew === undefined) return <p className="muted">Chargement…</p>
   if (crew === null || !faction) return <p className="error">Bande introuvable. <Link to="/bandes">Retour</Link></p>
@@ -196,12 +213,15 @@ export default function CrewBuilderPage() {
   }
   const removeMember = (memberId: string) => update({ members: crew.members.filter((x) => x.id !== memberId) })
   const addMember = (p: Profile) => {
-    const next = { ...crew, members: [...crew.members, newMember(crew.factionId, p, crew.members.map(memberName))] }
+    const recruit = newMember(crew.factionId, p, crew.members.map(memberName))
+    fresh.current.add(recruit.id)
+    const next = { ...crew, members: [...crew.members, recruit] }
     setCrew(campaign ? withTreasury(next, { po: -p.cost }, `Recrutement : ${p.name}`) : next)
   }
   const duplicateMember = (m: Member) => {
-    const fresh = randomName(crew.factionId, crew.members.map(memberName))
-    const copy = { ...m, id: newId(), name: fresh, suggestedName: fresh, equipment: m.equipment.map((e) => ({ ...e })) }
+    const freshName = randomName(crew.factionId, crew.members.map(memberName))
+    const copy = { ...m, id: newId(), name: freshName, suggestedName: freshName, equipment: m.equipment.map((e) => ({ ...e })) }
+    fresh.current.add(copy.id)
     const idx = crew.members.findIndex((x) => x.id === m.id)
     update({ members: [...crew.members.slice(0, idx + 1), copy, ...crew.members.slice(idx + 1)] })
   }
@@ -292,7 +312,7 @@ export default function CrewBuilderPage() {
               <Total label="Membres" value={`${crew.members.length}`} alert={crew.members.length > MAX_ON_TABLE} />
             </>
           )}
-          <span className={`badge big ${crew.unrestricted ? '' : legal ? 'ok' : 'ko'}`}>
+          <span className={`badge big ${crew.unrestricted ? '' : legal ? 'ok' : 'ko'} ${stamp ? 'stamp' : ''}`}>
             {crew.unrestricted ? 'Sans restrictions' : legal ? 'Bande valide' : 'Bande à corriger'}
           </span>
         </div>
@@ -333,6 +353,7 @@ export default function CrewBuilderPage() {
           {active.length === 0 && <p className="muted card">Recrutez vos premiers membres dans la liste.</p>}
           {active.map((m) => (
             <MemberCard
+              fresh={fresh.current.has(m.id)}
               key={m.id}
               faction={faction}
               member={m}
@@ -484,6 +505,8 @@ function TreasuryModal({ open, crew, onClose, onApply }: { open: boolean; crew: 
 }
 
 interface MemberCardProps {
+  /** Membre tout juste recruté : la carte « se pose ». */
+  fresh?: boolean
   faction: Faction
   member: Member
   campaign: boolean
@@ -497,12 +520,41 @@ interface MemberCardProps {
 
 type Dialog = 'injury' | 'advance' | 'loot' | null
 
-function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onDuplicate, canDuplicate, unrestricted }: MemberCardProps) {
+function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemove, onDuplicate, canDuplicate, unrestricted }: MemberCardProps) {
   const profile = profileOf(faction, member)
   const [adding, setAdding] = useState('')
   const [dialog, setDialog] = useState<Dialog>(null)
   const [xpGain, setXpGain] = useState(0)
   const [lastMessages, setLastMessages] = useState<string[]>([])
+  // XP gagnée depuis la dernière visite (par exemple après le bilan) : la barre se remplit sous vos yeux.
+  const xpNext = nextThreshold(member.xp)
+  const xpPct = xpNext ? Math.min(100, (member.xp / xpNext) * 100) : 100
+  const seenKey = `amatika.xpSeen.${member.id}`
+  const [xpShown, setXpShown] = useState(() => {
+    try {
+      const seen = Number(localStorage.getItem(seenKey))
+      return seen && seen < member.xp && xpNext ? Math.min(100, (seen / xpNext) * 100) : xpPct
+    } catch {
+      return xpPct
+    }
+  })
+  const [xpGained] = useState(() => {
+    try {
+      const seen = Number(localStorage.getItem(seenKey))
+      return seen && seen < member.xp ? member.xp - seen : 0
+    } catch {
+      return 0
+    }
+  })
+  useEffect(() => {
+    const t = setTimeout(() => setXpShown(xpPct), 250)
+    try {
+      localStorage.setItem(seenKey, String(member.xp))
+    } catch {
+      // stockage indisponible : pas d'animation, sans conséquence
+    }
+    return () => clearTimeout(t)
+  }, [xpPct, seenKey, member.xp])
   if (!profile) return <div className="card error">Profil inconnu : {member.profileId}</div>
 
   const who = memberName(member) || profile.name
@@ -579,11 +631,15 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
   const pending = pendingLevels(member)
   const next = nextThreshold(member.xp)
   const upkeep = memberUpkeep(profile, member)
+  // Chef (ou promu chef), spécialiste, recrue ou monstre : chaque rôle a son style de carte.
+  const roleClass = member.promotedChef || isChef(profile, member) ? 'chef' : profile.role
+
 
   return (
-    <article className={`unit-card member ${hasError ? 'has-error' : ''}`}>
+    <article className={`unit-card member role-${roleClass} ${hasError ? 'has-error' : ''} ${fresh ? 'settle' : ''}`}>
       <header className="unit-band">
         <span className="member-name-wrap">
+          {roleClass === 'chef' && <span className="crown" aria-label="Chef" data-tip="Chef de la bande">♛</span>}
           <input
             className="member-name"
             value={member.name}
@@ -650,8 +706,9 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
           <div className="campaign-box">
             <div className="xp-row">
               <div className="xp-bar" title={next ? `${member.xp} / ${next} XP` : 'Niveau maximum'}>
-                <span style={{ width: `${next ? Math.min(100, (member.xp / next) * 100) : 100}%` }} />
+                <span style={{ width: `${xpShown}%` }} />
               </div>
+              {xpGained > 0 && <span className="xp-gain" aria-label={`${xpGained} XP gagnés`}>+{xpGained} XP</span>}
               <span className="small">{member.xp}{next ? ` / ${next}` : ''} XP · niveau {levelForXp(member.xp)}</span>
               {learnsNothing(profile, member) ? (
                 <span className="muted small">N'apprend rien</span>
