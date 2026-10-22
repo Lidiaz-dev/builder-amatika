@@ -182,10 +182,12 @@ export const isMage = (profile: Profile) => profile.skills.includes('Mage')
 export const memberName = (m: Member) => m.name.trim() || m.suggestedName || ''
 
 export function newMember(factionId: string, profile: Profile, taken: string[] = []): Member {
+  // Le nom proposé est directement le nom du membre (modifiable) ; on le garde à part pour le 🎲.
+  const name = randomName(factionId, taken)
   return {
     id: newId(),
-    name: '',
-    suggestedName: randomName(factionId, taken),
+    name,
+    suggestedName: name,
     profileId: profile.id,
     equipment: [],
     skillChoices: profile.skillChoices.map(() => ''),
@@ -289,8 +291,8 @@ export function handsAvailable(profile: Profile, member: Member) {
   return Math.max(0, (profile.hands ?? 2) - lost)
 }
 
-/** 3 actions par activation, 4 à partir du niveau 6. */
-export const actionsOf = (member: Member) => (member.level >= 6 ? 4 : 3)
+/** 3 actions par activation, +1 aux niveaux 4, 7 et 10 (4, 5 puis 6 actions). */
+export const actionsOf = (member: Member) => 3 + [4, 7, 10].filter((l) => member.level >= l).length
 
 export function wornItems(member: Member) {
   return items(member, 'porte')

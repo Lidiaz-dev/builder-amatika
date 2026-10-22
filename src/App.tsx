@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react'
 import { HashRouter, NavLink, Navigate, Route, Routes } from 'react-router-dom'
 import type { ReactNode } from 'react'
 import { AuthProvider, useAuth } from './lib/auth'
@@ -26,8 +27,19 @@ function RequireAuth({ children }: { children: ReactNode }) {
 
 function Header() {
   const { localMode, user, pseudo, signOut } = useAuth()
+  // Hauteur réelle de l'en-tête (il passe sur deux lignes sur petit écran) : les barres collantes se placent dessous.
+  const ref = useRef<HTMLElement>(null)
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const apply = () => document.documentElement.style.setProperty('--header-h', `${el.offsetHeight}px`)
+    apply()
+    const obs = new ResizeObserver(apply)
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
   return (
-    <header className="site-header no-print">
+    <header ref={ref} className="site-header no-print">
       <NavLink to="/" className="brand">
         <span className="brand-mark">◆</span> Builder Amatika
       </NavLink>

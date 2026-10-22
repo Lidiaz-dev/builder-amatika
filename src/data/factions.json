@@ -3541,7 +3541,7 @@
         "name": "Décapiteur",
         "cost": 125,
         "min": 0,
-        "max": 10,
+        "max": 1,
         "stats": {
           "mou": 6,
           "com": 5,
@@ -7096,6 +7096,236 @@
         "xpValue": 9,
         "notes": [],
         "role": "monstre"
+      }
+    ]
+  },
+  {
+    "id": "esprit",
+    "name": "Esprit",
+    "notes": [
+      "Les figurines de cette faction ne peuvent pas porter d'équipement du type « Chaussure »"
+    ],
+    "profiles": [
+      {
+        "id": "recrue",
+        "name": "Recrue",
+        "cost": 120,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 5,
+          "com": 8,
+          "tir": 8,
+          "for": 3,
+          "end": 3,
+          "agi": 2,
+          "att": 1,
+          "pv": 1,
+          "cmd": 10,
+          "svg": 8
+        },
+        "skills": [
+          "Ethéré"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet"
+        ],
+        "trees": [
+          "general",
+          "erudition",
+          "agilite",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 2,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "recrue"
+      },
+      {
+        "id": "chef",
+        "name": "Chef",
+        "cost": 236,
+        "min": 1,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 6,
+          "tir": 6,
+          "for": 4,
+          "end": 4,
+          "agi": 2,
+          "att": 1,
+          "pv": 1,
+          "cmd": 8,
+          "svg": 6
+        },
+        "skills": [
+          "Ethéré",
+          "Chef",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "tir",
+          "erudition",
+          "agilite",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 0,
+          "perLevel": false,
+          "cristaux": 0
+        },
+        "xpValue": 7,
+        "notes": [],
+        "role": "chef"
+      },
+      {
+        "id": "hanteur",
+        "name": "Hanteur",
+        "cost": 197,
+        "min": 0,
+        "max": 2,
+        "stats": {
+          "mou": 5,
+          "com": 7,
+          "tir": 7,
+          "for": 4,
+          "end": 4,
+          "agi": 2,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 7
+        },
+        "skills": [
+          "Ethéré",
+          "Dissipation"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance",
+          "arc",
+          "arbalete",
+          "fronde",
+          "arme-de-jet"
+        ],
+        "trees": [
+          "general",
+          "force",
+          "tir",
+          "erudition",
+          "agilite",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 6,
+        "notes": [],
+        "role": "specialiste"
+      },
+      {
+        "id": "mage",
+        "name": "Mage",
+        "cost": 153,
+        "min": 0,
+        "max": 1,
+        "stats": {
+          "mou": 5,
+          "com": 8,
+          "tir": 8,
+          "for": 3,
+          "end": 3,
+          "agi": 2,
+          "att": 1,
+          "pv": 1,
+          "cmd": 9,
+          "svg": 8
+        },
+        "skills": [
+          "Ethéré",
+          "Mage"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "baton",
+          "marteau",
+          "marteau-lourd",
+          "hache",
+          "hache-lourde",
+          "epee",
+          "epee-lourde",
+          "morgenstern",
+          "fleau",
+          "hallebarde",
+          "lance"
+        ],
+        "trees": [
+          "general",
+          "erudition",
+          "agilite",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 5,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 5,
+        "notes": [],
+        "role": "specialiste"
       }
     ]
   }

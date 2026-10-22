@@ -1,379 +1,147 @@
 [
   {
-    "id": "horreur-bleu",
-    "name": "Horreur Bleu",
+    "id": "fourmie-geante",
+    "name": "Fourmie Géante",
+    "habitat": "Naturel",
+    "cost": 104,
+    "xpValue": 4,
     "stats": {
       "mou": 5,
-      "com": 8,
-      "tir": 7,
-      "for": 3,
+      "com": 7,
+      "tir": null,
+      "for": 4,
       "end": 3,
-      "agi": 4,
-      "att": 1,
-      "pv": 1,
-      "cmd": 10,
-      "svg": 9
-    },
-    "skills": [],
-    "gifts": "50 pièces d'or"
-  },
-  {
-    "id": "sorcier-rose",
-    "name": "Sorcier Rose",
-    "stats": {
-      "mou": 5,
-      "com": 6,
-      "tir": 5,
-      "for": 4,
-      "end": 4,
-      "agi": 4,
-      "att": 1,
-      "pv": 1,
-      "cmd": 10,
-      "svg": 11
-    },
-    "skills": [],
-    "gifts": "1 Cristal Brut"
-  },
-  {
-    "id": "statut-animee",
-    "name": "Statut Animée",
-    "stats": {
-      "mou": 4,
-      "com": 5,
-      "tir": null,
-      "for": 5,
-      "end": 5,
-      "agi": 10,
-      "att": 1,
-      "pv": 1,
-      "cmd": 7,
-      "svg": 6
-    },
-    "skills": [],
-    "gifts": "100 pièces d'or et 1 carte objet"
-  },
-  {
-    "id": "loup-geant",
-    "name": "Loup Géant",
-    "stats": {
-      "mou": 8,
-      "com": 5,
-      "tir": null,
-      "for": 5,
-      "end": 4,
-      "agi": 5,
-      "att": 2,
-      "pv": 1,
-      "cmd": 8,
-      "svg": 11
-    },
-    "skills": [],
-    "gifts": ""
-  },
-  {
-    "id": "varghulf",
-    "name": "Varghulf",
-    "stats": {
-      "mou": 5,
-      "com": 6,
-      "tir": null,
-      "for": 6,
-      "end": 6,
-      "agi": 6,
-      "att": 3,
-      "pv": 3,
-      "cmd": 9,
-      "svg": 11
-    },
-    "skills": [
-      "Adepte du Mal",
-      "Grande Cible",
-      "Peur"
-    ],
-    "gifts": "2 cartes objets"
-  },
-  {
-    "id": "geant",
-    "name": "Géant",
-    "stats": {
-      "mou": 5,
-      "com": 7,
-      "tir": null,
-      "for": 8,
-      "end": 8,
-      "agi": 10,
-      "att": 3,
-      "pv": 4,
-      "cmd": 8,
-      "svg": 11
-    },
-    "skills": [
-      "Très Grande Cible",
-      "Peur"
-    ],
-    "gifts": "1 Cristal Brut, 100 pièces d'or et 3 cartes objets"
-  },
-  {
-    "id": "chauve-souris-geante",
-    "name": "Chauve-souris géante",
-    "stats": {
-      "mou": 5,
-      "com": 7,
-      "tir": null,
-      "for": 4,
-      "end": 4,
-      "agi": 8,
-      "att": 1,
-      "pv": 1,
-      "cmd": 10,
-      "svg": 11
-    },
-    "skills": [
-      "Vol"
-    ],
-    "gifts": ""
-  },
-  {
-    "id": "tzaangor",
-    "name": "Tzaangor",
-    "stats": {
-      "mou": 5,
-      "com": 6,
-      "tir": null,
-      "for": 4,
-      "end": 4,
-      "agi": 6,
-      "att": 1,
-      "pv": 1,
-      "cmd": 9,
-      "svg": 7
-    },
-    "skills": [
-      "Saut de coté"
-    ],
-    "gifts": "1 carte objet"
-  },
-  {
-    "id": "mutant",
-    "name": "Mutant",
-    "stats": {
-      "mou": 5,
-      "com": 7,
-      "tir": null,
-      "for": 5,
-      "end": 5,
-      "agi": 10,
-      "att": 2,
-      "pv": 2,
-      "cmd": 11,
-      "svg": 11
-    },
-    "skills": [
-      "Peur"
-    ],
-    "gifts": "1 carte objet"
-  },
-  {
-    "id": "geonosian",
-    "name": "Géonosian",
-    "stats": {
-      "mou": 6,
-      "com": 7,
-      "tir": null,
-      "for": 4,
-      "end": 4,
-      "agi": 5,
-      "att": 1,
-      "pv": 1,
-      "cmd": 11,
-      "svg": 9
-    },
-    "skills": [
-      "Vol"
-    ],
-    "gifts": "1 carte objet"
-  },
-  {
-    "id": "pyke",
-    "name": "Pyke",
-    "stats": {
-      "mou": 5,
-      "com": 5,
-      "tir": null,
-      "for": 4,
-      "end": 4,
-      "agi": 5,
+      "agi": 2,
       "att": 1,
       "pv": 1,
       "cmd": 10,
       "svg": 8
     },
-    "skills": [],
-    "gifts": "1 carte objet"
-  },
-  {
-    "id": "animatrix",
-    "name": "Animatrix",
-    "stats": {
-      "mou": 4,
-      "com": 5,
-      "tir": null,
-      "for": 5,
-      "end": 5,
-      "agi": 8,
-      "att": 1,
-      "pv": 1,
-      "cmd": 8,
-      "svg": 6
-    },
     "skills": [
-      "Coup Précis"
+      "Petite cible",
+      "Grimpeur né"
     ],
-    "gifts": "1 carte objet"
+    "gifts": "60PO"
   },
   {
-    "id": "pyro",
-    "name": "Pyro",
-    "stats": {
-      "mou": 5,
-      "com": 8,
-      "tir": 5,
-      "for": 6,
-      "end": 4,
-      "agi": 6,
-      "att": 1,
-      "pv": 1,
-      "cmd": 9,
-      "svg": 9
-    },
-    "skills": [
-      "Tir Rapide"
-    ],
-    "gifts": "1 Crital Brut et 1 carte objet"
-  },
-  {
-    "id": "decapiteur",
-    "name": "Décapiteur",
-    "stats": {
-      "mou": 5,
-      "com": 6,
-      "tir": null,
-      "for": 5,
-      "end": 4,
-      "agi": 9,
-      "att": 1,
-      "pv": 1,
-      "cmd": 8,
-      "svg": 5
-    },
-    "skills": [
-      "Coup Précis",
-      "Maître Escrimeur"
-    ],
-    "gifts": "100 pièces d'or et 1 carte objet"
-  },
-  {
-    "id": "struglu",
-    "name": "Struglu",
-    "stats": {
-      "mou": 5,
-      "com": 7,
-      "tir": null,
-      "for": 5,
-      "end": 5,
-      "agi": 10,
-      "att": 1,
-      "pv": 2,
-      "cmd": 12,
-      "svg": 10
-    },
-    "skills": [],
-    "gifts": "1 carte objet"
-  },
-  {
-    "id": "kixor",
-    "name": "Kixor",
+    "id": "serpents",
+    "name": "Serpents",
+    "habitat": "Naturel",
+    "cost": 152,
+    "xpValue": 5,
     "stats": {
       "mou": 6,
       "com": 7,
       "tir": null,
       "for": 3,
       "end": 3,
-      "agi": 3,
-      "att": 1,
-      "pv": 1,
-      "cmd": 10,
-      "svg": 9
-    },
-    "skills": [
-      "Petite Cible"
-    ],
-    "gifts": "50 pièces d'or"
-  },
-  {
-    "id": "salis",
-    "name": "Salis",
-    "stats": {
-      "mou": 5,
-      "com": 6,
-      "tir": null,
-      "for": 6,
-      "end": 5,
-      "agi": 10,
+      "agi": 2,
       "att": 2,
       "pv": 2,
       "cmd": 10,
-      "svg": 7
+      "svg": 10
     },
     "skills": [
-      "Grande cible"
+      "Petite cible"
     ],
-    "gifts": "1 Cristal Brut et 1 carte objet"
+    "gifts": "1 cristal brut"
+  },
+  {
+    "id": "loup",
+    "name": "Loup",
+    "habitat": "Naturel",
+    "cost": 149,
+    "xpValue": 5,
+    "stats": {
+      "mou": 5,
+      "com": 5,
+      "tir": null,
+      "for": 5,
+      "end": 4,
+      "agi": 4,
+      "att": 1,
+      "pv": 2,
+      "cmd": 10,
+      "svg": 11
+    },
+    "skills": [],
+    "gifts": "100PO"
+  },
+  {
+    "id": "horreur-bleue",
+    "name": "Horreur bleue",
+    "habitat": "Magique",
+    "cost": 105,
+    "xpValue": 4,
+    "stats": {
+      "mou": 5,
+      "com": 8,
+      "tir": 6,
+      "for": 3,
+      "end": 3,
+      "agi": 4,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 8
+    },
+    "skills": [
+      "Petite cible"
+    ],
+    "gifts": "60PO"
   },
   {
     "id": "mantae",
     "name": "Mantae",
+    "habitat": "Magique",
+    "cost": 275,
+    "xpValue": 7,
     "stats": {
       "mou": 6,
-      "com": 7,
+      "com": 6,
       "tir": null,
       "for": 4,
       "end": 4,
-      "agi": 2,
-      "att": 1,
-      "pv": 1,
-      "cmd": 9,
-      "svg": 8
+      "agi": 4,
+      "att": 2,
+      "pv": 2,
+      "cmd": 10,
+      "svg": 7
     },
     "skills": [
       "Vol"
     ],
-    "gifts": "50 pièces d'or et 1 carte objet"
+    "gifts": "1 cristal brut et 2 cartes objets"
   },
   {
-    "id": "bruliis",
-    "name": "Bruliis",
+    "id": "harpie",
+    "name": "Harpie",
+    "habitat": "Magique",
+    "cost": 85,
+    "xpValue": 4,
     "stats": {
       "mou": 5,
-      "com": 9,
-      "tir": 8,
-      "for": 3,
-      "end": 3,
-      "agi": 2,
+      "com": 7,
+      "tir": null,
+      "for": 4,
+      "end": 4,
+      "agi": 4,
       "att": 1,
       "pv": 1,
-      "cmd": 13,
-      "svg": 11
+      "cmd": 10,
+      "svg": 10
     },
     "skills": [
-      "Petite Cible"
+      "Vol"
     ],
-    "gifts": ""
+    "gifts": "1 carte objet"
   },
   {
-    "id": "gardien-noir",
-    "name": "Gardien Noir",
+    "id": "xexcavore",
+    "name": "Xexcavore",
+    "habitat": "Magique",
+    "cost": 251,
+    "xpValue": 7,
     "stats": {
       "mou": 5,
       "com": 5,
@@ -383,15 +151,342 @@
       "agi": 5,
       "att": 2,
       "pv": 2,
-      "cmd": 9,
-      "svg": 7
+      "cmd": 10,
+      "svg": 9
+    },
+    "skills": [],
+    "gifts": "1 cristal brut, 1 carte objet et 100PO"
+  },
+  {
+    "id": "yeti",
+    "name": "Yeti",
+    "habitat": "Magique",
+    "cost": 97,
+    "xpValue": 4,
+    "stats": {
+      "mou": 5,
+      "com": 6,
+      "tir": null,
+      "for": 5,
+      "end": 4,
+      "agi": 7,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 9
+    },
+    "skills": [],
+    "gifts": "50PO"
+  },
+  {
+    "id": "pendule-animee",
+    "name": "Pendule animée",
+    "habitat": "Magique",
+    "cost": 116,
+    "xpValue": 5,
+    "stats": {
+      "mou": 4,
+      "com": 9,
+      "tir": 6,
+      "for": 4,
+      "end": 5,
+      "agi": 5,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 8
+    },
+    "skills": [],
+    "gifts": "1 carte objet"
+  },
+  {
+    "id": "kobold-fouineur",
+    "name": "Kobold fouineur",
+    "habitat": "Ville",
+    "cost": 58,
+    "xpValue": 3,
+    "stats": {
+      "mou": 5,
+      "com": 7,
+      "tir": null,
+      "for": 3,
+      "end": 3,
+      "agi": 5,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 9
     },
     "skills": [
-      "Maître Escrimeur",
-      "Camouflage",
-      "Grande Cible",
-      "Peur"
+      "Petite cible"
     ],
-    "gifts": "2 cartes objets"
+    "gifts": ""
+  },
+  {
+    "id": "guepe-geante",
+    "name": "Guèpe géante",
+    "habitat": "Ville",
+    "cost": 90,
+    "xpValue": 4,
+    "stats": {
+      "mou": 5,
+      "com": 5,
+      "tir": null,
+      "for": 3,
+      "end": 3,
+      "agi": 4,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 9
+    },
+    "skills": [
+      "Vol"
+    ],
+    "gifts": "50PO"
+  },
+  {
+    "id": "solphophage",
+    "name": "Solphophage",
+    "habitat": "Cimetierre",
+    "cost": 162,
+    "xpValue": 6,
+    "stats": {
+      "mou": 5,
+      "com": 8,
+      "tir": null,
+      "for": 3,
+      "end": 3,
+      "agi": 3,
+      "att": 2,
+      "pv": 2,
+      "cmd": 10,
+      "svg": 9
+    },
+    "skills": [
+      "Vol",
+      "Petite cible"
+    ],
+    "gifts": ""
+  },
+  {
+    "id": "araignee",
+    "name": "Araignée",
+    "habitat": "Cimetierre",
+    "cost": 141,
+    "xpValue": 5,
+    "stats": {
+      "mou": 5,
+      "com": 6,
+      "tir": 8,
+      "for": 4,
+      "end": 4,
+      "agi": 1,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 9
+    },
+    "skills": [
+      "Grimeur né",
+      "Petite cible"
+    ],
+    "gifts": "1 crital brut et 50PO"
+  },
+  {
+    "id": "rodeur-des-tombes",
+    "name": "Rodeur des tombes",
+    "habitat": "Cimetierre",
+    "cost": 120,
+    "xpValue": 5,
+    "stats": {
+      "mou": 5,
+      "com": 6,
+      "tir": null,
+      "for": 4,
+      "end": 4,
+      "agi": 7,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 6
+    },
+    "skills": [],
+    "gifts": "1 crital brut et 1 carte objet"
+  },
+  {
+    "id": "zombie",
+    "name": "Zombie",
+    "habitat": "Cimetierre",
+    "cost": 53,
+    "xpValue": 3,
+    "stats": {
+      "mou": 4,
+      "com": 8,
+      "tir": null,
+      "for": 4,
+      "end": 5,
+      "agi": 10,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 9
+    },
+    "skills": [],
+    "gifts": ""
+  },
+  {
+    "id": "garmr",
+    "name": "Garmr",
+    "habitat": "Ruine",
+    "cost": 160,
+    "xpValue": 5,
+    "stats": {
+      "mou": 6,
+      "com": 6,
+      "tir": null,
+      "for": 5,
+      "end": 4,
+      "agi": 4,
+      "att": 2,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 8
+    },
+    "skills": [],
+    "gifts": "150 pièces d'or"
+  },
+  {
+    "id": "horreur-mutatique",
+    "name": "Horreur mutatique",
+    "habitat": "Ruine",
+    "cost": 365,
+    "xpValue": 8,
+    "stats": {
+      "mou": 5,
+      "com": 7,
+      "tir": null,
+      "for": 6,
+      "end": 6,
+      "agi": 8,
+      "att": 3,
+      "pv": 3,
+      "cmd": 10,
+      "svg": 9
+    },
+    "skills": [
+      "Grande cible"
+    ],
+    "gifts": "1 cristal brut et 3 cartes objets"
+  },
+  {
+    "id": "balancier-des-cendres",
+    "name": "Balancier des cendres",
+    "habitat": "Ruine",
+    "cost": 52,
+    "xpValue": 3,
+    "stats": {
+      "mou": 5,
+      "com": 8,
+      "tir": null,
+      "for": 4,
+      "end": 4,
+      "agi": 6,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 10
+    },
+    "skills": [],
+    "gifts": ""
+  },
+  {
+    "id": "kobolds-ferailleurs",
+    "name": "Kobolds férailleurs",
+    "habitat": "Ruine",
+    "cost": 75,
+    "xpValue": 4,
+    "stats": {
+      "mou": 5,
+      "com": 7,
+      "tir": null,
+      "for": 3,
+      "end": 3,
+      "agi": 6,
+      "att": 1,
+      "pv": 2,
+      "cmd": 10,
+      "svg": 9
+    },
+    "skills": [],
+    "gifts": "1 carte objet"
+  },
+  {
+    "id": "crabe",
+    "name": "Crabe",
+    "habitat": "Rivage",
+    "cost": 118,
+    "xpValue": 5,
+    "stats": {
+      "mou": 5,
+      "com": 7,
+      "tir": null,
+      "for": 3,
+      "end": 4,
+      "agi": 5,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 6
+    },
+    "skills": [
+      "Petite cible",
+      "Amphibien"
+    ],
+    "gifts": "1 cristal brut"
+  },
+  {
+    "id": "sirene",
+    "name": "Sirène",
+    "habitat": "Rivage",
+    "cost": 133,
+    "xpValue": 5,
+    "stats": {
+      "mou": 5,
+      "com": 7,
+      "tir": 7,
+      "for": 4,
+      "end": 4,
+      "agi": 5,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 8
+    },
+    "skills": [
+      "Amphibien"
+    ],
+    "gifts": "90PO"
+  },
+  {
+    "id": "gardienne-des-flots",
+    "name": "Gardienne des flots",
+    "habitat": "Rivage",
+    "cost": 138,
+    "xpValue": 5,
+    "stats": {
+      "mou": 5,
+      "com": 5,
+      "tir": null,
+      "for": 4,
+      "end": 4,
+      "agi": 5,
+      "att": 1,
+      "pv": 1,
+      "cmd": 10,
+      "svg": 6
+    },
+    "skills": [],
+    "gifts": ""
   }
 ]

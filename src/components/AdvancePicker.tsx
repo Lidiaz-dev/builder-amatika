@@ -41,7 +41,7 @@ export default function AdvancePicker({ factionId, profile, member, onApply }: P
     <div className="advance-picker stack">
       <p className="small">
         Passage au <strong>niveau {level}</strong>
-        {level === 6 && ' : la figurine gagne une 4e action à chacune de ses activations.'}
+        {[4, 7, 10].includes(level) && ` : la figurine gagne une ${level === 4 ? '4e' : level === 7 ? '5e' : '6e'} action à chacune de ses activations.`}
       </p>
       <div className="row wrap">
         <span>Jet sur la table d'évolution :</span>

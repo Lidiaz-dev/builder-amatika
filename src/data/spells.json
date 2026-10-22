@@ -1613,5 +1613,20 @@
     "factions": [],
     "universal": true,
     "bonus": false
+  },
+  {
+    "id": "vision-d-outremonde",
+    "name": "Vision d'outremonde",
+    "type": "Projectile",
+    "value": 13,
+    "range": 12,
+    "target": "Ennemie",
+    "description": "La cible effectue un test de peur avec un malus de -1 à son commandement.",
+    "racial": "Esprit",
+    "factions": [
+      "esprit"
+    ],
+    "universal": false,
+    "bonus": false
   }
 ]

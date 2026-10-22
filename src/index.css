@@ -413,7 +413,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .builder { display: flex; flex-direction: column; gap: 1rem; }
 .builder .crumbs { margin-bottom: -0.25rem; }
 .builder-head { display: flex; flex-direction: column; gap: 0.75rem; }
-.totals-bar { position: sticky; top: 56px; z-index: 10; padding: 0.55rem 1rem; }
+.totals-bar { position: sticky; top: var(--header-h, 56px); z-index: 10; padding: 0.55rem 1rem; }
 .totals { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; align-items: center; }
 .total { display: flex; flex-direction: column; }
 .total .muted { font-family: var(--display); font-size: 0.7rem; letter-spacing: 0.04em; }
@@ -531,7 +531,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 @media (max-width: 900px) {
   .builder-body, .compendium, .new-crew-panel { grid-template-columns: 1fr; }
   .recruit, .compendium-nav { position: static; max-height: none; }
-  .totals-bar { position: static; }
   .panel-side { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 1rem; }
   .faction-list { grid-template-columns: 1fr; }
 }
@@ -978,3 +977,19 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .advance-preview { border: 1px dashed var(--border-strong); border-radius: var(--radius); padding: 0.5rem 0.7rem; background: rgb(255 248 228 / 0.5); }
 .advance-preview p { margin: 0.25rem 0 0; }
 .known-players { margin-top: 0.6rem; max-height: 18rem; overflow: auto; }
+.deploy-demon rect { fill: #4a1d5c; stroke: #ecdfbd; stroke-width: 0.6; }
+.deploy-demon-num { font-size: 3.2px; font-weight: 700; fill: #f3e6ff; font-family: var(--display); }
+.deploy-chip.demon { background: #4a1d5c; color: #f3e6ff; border-radius: 3px; transform: rotate(0); }
+.deploy-controls .segmented { align-self: flex-start; }
+
+/* Barre des totaux (PO, trésor…) sur mobile : toujours visible, sur une seule ligne compacte. */
+@media (max-width: 600px) {
+  .site-header { position: static; }
+  .totals-bar { top: 0; padding: 0.35rem 0.6rem; border-radius: 0; margin-left: -16px; margin-right: -16px; }
+  .totals { flex-wrap: nowrap; gap: 0.9rem; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .totals::-webkit-scrollbar { display: none; }
+  .totals > * { flex: none; }
+  .total .muted { font-size: 0.62rem; }
+  .total strong { font-size: 0.95rem; white-space: nowrap; }
+  .totals .badge.big, .totals .totals-btn { height: 1.7rem; padding: 0 0.55rem; font-size: 0.72rem; white-space: nowrap; }
+}

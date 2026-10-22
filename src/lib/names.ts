@@ -95,6 +95,11 @@ const NAMES: Record<string, string[]> = {
     'Do\'Rassa', 'Khayla', 'Ra\'Zhinda', 'Ma\'dran', 'Ri\'Bassa', 'Dro\'Marash', 'Ahkari', 'Atahbah', 'Kharrdin', 'Shavari',
     'Ja\'Rashi', 'Sa\'Vashi', 'Raz\'Khara', 'Zhassim', 'Ma\'jhad', 'Ri\'Vakh', 'Kesh', 'Ahzirr', 'Na\'ruzhi', 'Qa\'Dojo',
   ],
+  esprit: [
+    'Murmure', 'Brume', 'Écho', 'Lamentation', 'Spectre Gris', 'Âme Errante', 'Voile', 'Pâleur', 'Soupir', 'Frisson',
+    'Dame Blanche', 'Le Hurleur', 'Ombre Froide', 'Chaîne-Sourde', 'Glas', 'Feu Follet', 'Linceul', 'Silence', 'Hantise', 'Givre',
+    'Sire Oublié', 'La Veuve', 'Fantôme du Puits', 'Morne', 'Requiem', 'Nocturne', 'Vaporeux', 'Le Sans-Nom', 'Cendre Pâle', 'Larme',
+  ],
   ondin: [
     'Marin', 'Thalassa', 'Coralie', 'Nérée', 'Ondine', 'Triton', 'Écume', 'Abysse', 'Perle', 'Galatée',
     'Morvan des Flots', 'Ressac', 'Amphitrite', 'Glaucos', 'Doris', 'Protée', 'Nacre', 'Varech', 'Lagune', 'Marée',

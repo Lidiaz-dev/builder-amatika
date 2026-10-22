@@ -273,7 +273,7 @@ COMPENDIUM_FACTIONS = {
     "haut-elfe": "haut-elfe", "elfe-des-bois": "elfe-des-bois", "drow": "drow", "ogre": "ogre",
     "skaven": "skaven", "drakeide": "drakeide", "mangechair": "mangechair", "la-harde": "la-harde",
     "halfling": "halfling", "tieffelin": "tieffelin", "nain-d-ashut": "nain-d-ashut", "necromant": "necromant",
-    "bretonnien": "bretonniens", "cathay": "cathay", "khajiit": "khajiit", "ondin": "ondin",
+    "bretonnien": "bretonniens", "cathay": "cathay", "khajiit": "khajiit", "ondin": "ondin", "esprit": "esprit",
 }
 STOP = {"du", "des", "de", "d", "la", "le", "les"}
 
@@ -408,7 +408,7 @@ SPELL_FACTIONS = {
     "tieffelin": ["tieffelin"], "mangechair": ["mangechair"], "halfling": ["halfling"], "orque": ["orques"],
     "gobelin": ["gobelins"], "gobelin-capuchard": ["gobelins"], "drakeide": ["drakeide"], "la-harde": ["la-harde"],
     "necromant": ["necromant"], "necromant-bonus": ["necromant"], "khajiit": ["khajiit"], "ondin": ["ondin"],
-    "bretonniens": ["bretonniens"], "cathay": ["cathay"],
+    "bretonniens": ["bretonniens"], "cathay": ["cathay"], "esprit": ["esprit"],
 }
 
 
@@ -662,7 +662,7 @@ def parse_injuries(rows, hyp):
         key = slug(name)
         effect = INJURY_EFFECTS.get(key, {})
         cards.append({
-            "id": f"{key}-{r.get('A', '')}", "kind": key, "name": name, "value": int(num(r.get("A")) or 0),
+            "id": f"{key}-{int(num(r.get('A')) or 0)}", "kind": key, "name": name, "value": int(num(r.get("A")) or 0),
             "description": r.get("C", ""), "quantity": int(qty), **effect,
             "lasting": bool(effect.get("mods") or effect.get("gainSkill") or effect.get("missNextGame")
                             or effect.get("dead") or effect.get("mark")),
@@ -694,27 +694,64 @@ def parse_location_decks(sheets, hyp):
         if rows is None:
             hyp.append(f"Cartes.xlsx : feuille « {sheet} » introuvable.")
             continue
-        cards = [{"id": f"{deck_id}-{r['A']}", "text": r["B"]} for r in rows if r.get("A") and r.get("B")]
+        cards = [{"id": f"{deck_id}-{int(num(r['A'])) if num(r['A']) is not None else r['A']}", "text": r["B"]} for r in rows if r.get("A") and r.get("B")]
         decks.append({"id": deck_id, "name": name, "color": color, "cards": cards})
         if len(cards) != 42:
             hyp.append(f"Paquet {name} : {len(cards)} cartes au lieu de 42.")
     return decks
 
 
-def parse_creatures(rows):
-    """Créatures de la faune d'Amatika (une carte chacune), jusqu'à la première ligne vide."""
+def creature_gifts(card_rows):
+    """Butin de chaque créature, lu sur ses cartes (blocs de 3 cartes par ligne : colonnes A, F, K).
+    Dans un bloc : nom, caractéristiques, compétences, « Nxp », puis la ligne de butin."""
+    gifts = {}
+    i = 0
+    while i < len(card_rows):
+        row = card_rows[i]
+        nxt = card_rows[i + 1] if i + 1 < len(card_rows) else {}
+        if nxt.get("A") == "Mou" or nxt.get("F") == "Mou" or nxt.get("K") == "Mou":
+            for col in "AFK":
+                name = row.get(col)
+                if not name:
+                    continue
+                j = i + 2
+                while j < len(card_rows) and j < i + 14:
+                    cell = str(card_rows[j].get(col) or "")
+                    if re.fullmatch(r"\d+\s*xp", cell.strip(), re.I):
+                        loot = card_rows[j + 1].get(col) if j + 1 < len(card_rows) else None
+                        if loot:
+                            gifts[slug(name)] = str(loot).strip()
+                        break
+                    j += 1
+        i += 1
+    return gifts
+
+
+def parse_creatures(rows, card_rows):
+    """Créatures de la faune d'Amatika : feuille « Demons » du Compendium (une ligne par créature),
+    butin lu sur les cartes de Cartes.xlsx."""
+    gifts = creature_gifts(card_rows)
     out = []
     for r in rows[1:]:
-        if not r.get("A") or r.get("B") != "Créature":
-            if out:
-                break
+        name = r.get("C")
+        if not name:
             continue
-        stats = [num(r.get(c)) for c in "CDEFGHIJKL"]
+        raw = [num(r.get(c)) for c in "DEFGHIJKLM"]
+        stats = {}
+        for k, v in zip(STAT_KEYS, raw):
+            if v is None or (k in ("tir", "com") and v >= 11):
+                stats[k] = None
+            else:
+                stats[k] = int(round(v))
+        skills = [str(r[c]).strip() for c in "PQRST" if r.get(c) and str(r[c]).strip() not in ("Démon", "Demon")]
         out.append({
-            "id": slug(r["A"]), "name": r["A"],
-            "stats": {k: (None if v is None or (k in ("tir", "com") and v >= 11) else int(v)) for k, v in zip(STAT_KEYS, stats)},
-            "skills": [r[c] for c in "NOPQRS" if r.get(c) and r[c] != "Demon d'Amatika"],
-            "gifts": r.get("V", ""),
+            "id": slug(name), "name": name.strip(),
+            "habitat": str(r.get("A") or "").strip(),
+            "cost": int(round(num(r.get("N")) or 0)),
+            "xpValue": int(num(r.get("O")) or 0),
+            "stats": stats,
+            "skills": skills,
+            "gifts": gifts.get(slug(name), ""),
         })
     return out
 
@@ -766,7 +803,7 @@ def main():
     spells = parse_spells(cartes["Sorts"], hyp)
     injuries = parse_injuries(cartes["Blessures"], hyp)
     location_decks = parse_location_decks(cartes, hyp)
-    creatures = parse_creatures(cartes["Créatures et invocations"])
+    creatures = parse_creatures(xlsx_sheets(src / "Compendium.xlsx")["Demons"], cartes["Cartes créatures"])
     common_prices, item_categories = parse_items(docx_paragraphs_rarity(src / "Liste des objets de trésors et marché noir.docx"), hyp)
 
     eq_path = OUT / "equipment.json"

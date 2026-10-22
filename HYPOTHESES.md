@@ -179,3 +179,10 @@ Les monstres sont environ 10 % plus chers dans Bandes.docx. Est-ce voulu ?
 - Organisateur : crée la journée, la lance (verrouille la préparation), ouvre la phase de nuit, la clôture quand tous les rapports sont validés ; il peut l'annuler à tout moment avant clôture.
 - Joueurs : rejoignent la journée en préparation (ou la quittent), choisissent les membres qui participent (10 max) et ajustent l'équipement dans le builder ; au lancement, la partie démarre d'elle-même avec ces membres et se note dans l'onglet Campagne ; à la nuit, le bilan d'après-bataille (récupération puis XP / niveaux) devient le rapport de fin de nuit.
 - Une bande de campagne validée n'est modifiable dans le builder que pendant la préparation d'une journée qu'elle a rejointe (sinon le builder est en lecture seule).
+
+## Import du 23/10/2026
+- Créatures : lues dans la feuille « Demons » du Compendium (habitat, coût, XP, compétences) ; butin lu sur les « Cartes créatures » de Cartes.xlsx.
+- Identifiants des cartes Blessure et Lieux normalisés (le fichier Excel stocke désormais « 13.0 ») pour ne pas casser les blessures déjà notées.
+- Faction « Esprit » et sort racial « Vision d'outremonde » reconnus. Le Mage Esprit n'a pas Dissipation (Compendium retenu).
+- « Gnoblar » (Ogre) présent dans le Compendium mais absent de Bandes.docx : non importé.
+- Action supplémentaire aux niveaux 4, 7 et 10 (règle mise à jour).

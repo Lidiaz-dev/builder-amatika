@@ -237,19 +237,25 @@
     "id": "petite-cible",
     "name": "Petite cible",
     "tree": "divers",
-    "description": "Les tirs ennemies subissent un malus de -1 pour toucher."
+    "description": "Les tirs ennemis subissent un malus de -1 pour toucher."
+  },
+  {
+    "id": "tres-petite-cible",
+    "name": "Très petite cible",
+    "tree": "divers",
+    "description": "Les tirs ennemis subissent un malus de -2 pour toucher."
   },
   {
     "id": "grande-cible",
     "name": "Grande cible",
     "tree": "divers",
-    "description": "Les tirs ennemies subissent un bonus de +1 pour toucher."
+    "description": "Les tirs ennemis subissent un bonus de +1 pour toucher."
   },
   {
     "id": "tres-grande-cible",
     "name": "Très grande cible",
     "tree": "divers",
-    "description": "Les tirs ennemies subissent un bonus de +1 pour toucher."
+    "description": "Les tirs ennemis subissent un bonus de +1 pour toucher."
   },
   {
     "id": "mort-vivant",
@@ -298,5 +304,23 @@
     "name": "Amphibien",
     "tree": "divers",
     "description": "Cette figurine peut se déplacer librement dans les terrains aquatiques (normalement infranchissable). Lorsqu'elle se trouve dans ce genre de terrain ses adversaires ont -1 pour la toucher au tir. Néanmoins, tant qu'elle se trouve dans ce genre de terrain, il lui est impossible d'utiliser une arme de tir ou de lancer un sort. Une figurine avec cette règle dispose automatiquement de la règle « Marin »."
+  },
+  {
+    "id": "immortel",
+    "name": "Immortel",
+    "tree": "divers",
+    "description": "Cette figurine a les règles N'apprend rien, Mort-vivant et Peur. De plus, si cette figurine est morte au cours d'une partie, à la fin de celle-ci la figurine est considérée comme n'étant pas morte et retourne automatiquement dans votre bande."
+  },
+  {
+    "id": "servir-son-maitre",
+    "name": "Servir son Maître",
+    "tree": "divers",
+    "description": "Lorsque cette figurine est sélectionnée, vous devez lui attribuer un maître. Chaque serviteur ne peut avoir qu'un seul maître, et chaque maître ne peut avoir qu'un seul serviteur. Lorsque le serviteur se trouve à 2ps ou moins de son maître, celui-ci utilise son commandement, de plus il est possible de transférer des objets du sac du serviteur vers celui de son maître. Les figurines avec cette règle ne comptent pas dans le nombre de figurines maximum par bande ni pour les tests de déroutes."
+  },
+  {
+    "id": "ethere",
+    "name": "Ethéré",
+    "tree": "divers",
+    "description": "Cette figurine possède les compétences Mort-Vivant, Peur et vol. Les sauvegardes d'armure de cette figurine ne peuvent jamais être modifiées et cette figurine peut passer à travers les décors infranchissables, mais ne peut pas terminer son mouvement dessus."
   }
 ]

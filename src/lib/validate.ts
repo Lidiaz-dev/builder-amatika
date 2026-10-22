@@ -83,7 +83,7 @@ export function validateMember(profile: Profile, member: Member, inCampaign = fa
     issues.push({ severity: 'warning', message: `${who} : montée de niveau à appliquer.`, memberId: member.id })
   }
 
-  if (!member.name.trim()) {
+  if (!memberName(member)) {
     issues.push({ severity: 'warning', message: `${profile.name} sans nom.`, memberId: member.id })
   }
   return issues

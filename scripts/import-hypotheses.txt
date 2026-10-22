@@ -1,7 +1,6 @@
 Bandes.docx : le premier bloc « 0-10 Recrue : 45PO » n'a pas de faction, il est ignoré.
 Drakéide / Gardien du temple saurus : spécialiste en 0-10, conservé tel quel (à confirmer).
 Drakéide / Kroxigor : pas d'effectif indiqué, fixé à 0-1.
-Mangechair / Décapiteur : spécialiste en 0-10, conservé tel quel (à confirmer).
 La Harde / Chef Bestigor : « Adepte du mal OU Chasseur de damnés » se choisit à la création.
 La Harde / Gardien Bestigor : « Adepte du mal OU Chasseur de damnés » se choisit à la création.
 Nain d'Ashut / Garde noir : pas d'effectif indiqué, fixé à 0-1.
@@ -15,6 +14,7 @@ Cathay / Samouraï : spécialiste en 0-3, conservé tel quel (à confirmer).
 Écart Bandes / Compendium pour Elfe des bois / Druide : Com 7 → 6, Comm 9 → 8 (Compendium retenu).
 Écart Bandes / Compendium pour Elfe des bois / Guide : Comm 8 → 9 (Compendium retenu).
 Écart Bandes / Compendium pour Ogre / Tyran : Comm 9 → 10 (Compendium retenu).
+Compendium : « Gnoblar / Gnoblar » (Ogre) sans profil dans Bandes.docx.
 Écart Bandes / Compendium pour Skaven / Assassin : For 3 → 4 (Compendium retenu).
 Écart Bandes / Compendium pour Skaven / Coureur nocturne : Comm 12 → 13 (Compendium retenu).
 Écart Bandes / Compendium pour Drakéide / Skink caméléon : Tir 7 → 6 (Compendium retenu).
@@ -28,5 +28,5 @@ Compétences de Drakéide / Gardien du temple saurus alignées sur le Compendium
 Compétences de Drakéide / Kroxigor alignées sur le Compendium (ajoutées : grande-cible, n-apprend-rien, peur).
 Compétences de Mangechair / Maître dépeceur alignées sur le Compendium (ajoutées : eclaireur-4, peur).
 Compétences de La Harde / Minotaure alignées sur le Compendium (ajoutées : grande-cible, n-apprend-rien, peur).
-Compétence « Immortel » sans description dans Règles.docx.
+Compétences de Esprit / Mage alignées sur le Compendium (retirées : dissipation).
 Objet « Potion de rapidité » : pas de description, son effet n'est pas appliqué.

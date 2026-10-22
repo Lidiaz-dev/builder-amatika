@@ -99,7 +99,10 @@ export default function CrewBuilderPage() {
   const firstLoad = useRef(true)
 
   useEffect(() => {
-    getCrew(id!).then(setCrew).catch(() => setCrew(null))
+    getCrew(id!)
+      // Noms proposés jamais modifiés : ils sont affichés comme de vrais noms (ils le deviennent à l'enregistrement).
+      .then((c) => setCrew(c && { ...c, members: c.members.map((m) => (!m.name.trim() && m.suggestedName ? { ...m, name: m.suggestedName } : m)) }))
+      .catch(() => setCrew(null))
   }, [id])
 
   const groupId = crew?.groupCampaign?.id
@@ -136,7 +139,13 @@ export default function CrewBuilderPage() {
       setSaveState('saving')
       dirty.current = false
       saveCrew(crew)
-        .then(() => setSaveState('saved'))
+        .then(() => {
+          setSaveState('saved')
+          // Les noms proposés non modifiés sont devenus de vrais noms : on les affiche comme tels.
+          if (crew.members.some((m) => !m.name.trim() && m.suggestedName)) {
+            setCrew((c) => c && { ...c, members: c.members.map((m) => (!m.name.trim() && m.suggestedName ? { ...m, name: m.suggestedName } : m)) })
+          }
+        })
         .catch((e) => {
           dirty.current = true
           setSaveError(e.message)
@@ -191,7 +200,8 @@ export default function CrewBuilderPage() {
     setCrew(campaign ? withTreasury(next, { po: -p.cost }, `Recrutement : ${p.name}`) : next)
   }
   const duplicateMember = (m: Member) => {
-    const copy = { ...m, id: newId(), name: '', suggestedName: randomName(crew.factionId, crew.members.map(memberName)), equipment: m.equipment.map((e) => ({ ...e })) }
+    const fresh = randomName(crew.factionId, crew.members.map(memberName))
+    const copy = { ...m, id: newId(), name: fresh, suggestedName: fresh, equipment: m.equipment.map((e) => ({ ...e })) }
     const idx = crew.members.findIndex((x) => x.id === m.id)
     update({ members: [...crew.members.slice(0, idx + 1), copy, ...crew.members.slice(idx + 1)] })
   }
@@ -578,14 +588,17 @@ function MemberCard({ faction, member, campaign, issues, onChange, onRemove, onD
             className="member-name"
             value={member.name}
             onChange={(e) => onChange({ ...member, name: e.target.value })}
-            placeholder={member.suggestedName || `Nom (${profile.name})`}
-            title={member.suggestedName && !member.name ? 'Nom proposé : il sera gardé si vous ne le changez pas' : undefined}
+            placeholder={`Nom (${profile.name})`}
             aria-label="Nom du personnage"
           />
-          {!member.name && (
+          {/* Tant que le nom proposé n'a pas été modifié (ou s'il est vide), le dé en propose un autre. */}
+          {(!member.name.trim() || member.name === member.suggestedName) && (
             <button
               className="icon-btn name-dice"
-              onClick={() => onChange({ ...member, suggestedName: randomName(faction.id, [memberName(member)]) })}
+              onClick={() => {
+                const next = randomName(faction.id, [memberName(member)])
+                onChange({ ...member, name: next, suggestedName: next })
+              }}
               title="Proposer un autre nom"
               aria-label="Proposer un autre nom"
             >

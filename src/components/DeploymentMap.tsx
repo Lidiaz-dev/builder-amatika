@@ -86,6 +86,9 @@ export default function DeploymentMap() {
   const result = useMemo(() => computeDeployment(W, L, players, 0), [W, L, players])
   const pad = 22
   const [unit, setUnit] = useState<Unit>('cm')
+  /** Points d'arrivée des Démons sur la ligne centrale : 1 (au 1/2), 2 (aux 1/3) ou 3 (aux 1/4). */
+  const [demons, setDemons] = useState(1)
+  const demonPoints = Array.from({ length: demons }, (_, i) => ({ x: (L * (i + 1)) / (demons + 1), y: W / 2 }))
   const toCm = (v: number) => (unit === 'cm' ? v : v * INCH)
   const grid = unit === 'cm' ? 10 : 6 * INCH
 
@@ -117,6 +120,14 @@ export default function DeploymentMap() {
               ×
               <input type="number" min={0} step={unit === 'cm' ? 10 : 1} value={inputValue(length, unit)} onChange={(e) => setLength(toCm(Number(e.target.value) || 0))} aria-label="Longueur de la table" />
             </span>
+          </div>
+        </div>
+        <div className="field">
+          <span>Arrivée des Démons</span>
+          <div className="segmented" data-tip="Points sur la ligne centrale : 1 au milieu, 2 aux tiers, 3 aux quarts de la longueur.">
+            {[1, 2, 3].map((n) => (
+              <button key={n} className={demons === n ? 'on' : ''} onClick={() => setDemons(n)}>{n}</button>
+            ))}
           </div>
         </div>
         <div className="field" role="radiogroup" aria-label="Unité des distances">
@@ -154,10 +165,14 @@ export default function DeploymentMap() {
             {/* Lignes centrales et centre de la table. */}
             <line x1={L / 2} y1={0} x2={L / 2} y2={W} className="deploy-center-line" />
             <line x1={0} y1={W / 2} x2={L} y2={W / 2} className="deploy-center-line" />
-            <g className="deploy-center">
-              <circle cx={L / 2} cy={W / 2} r={2.2} />
-              <text x={L / 2 + 3.5} y={W / 2 - 3} className="deploy-center-text">Centre ({num(L / 2, unit)} / {fmt(W / 2, unit)})</text>
-            </g>
+            {/* Points d'arrivée des Démons, répartis sur la ligne centrale. */}
+            {demonPoints.map((d, i) => (
+              <g key={`d${i}`} className="deploy-demon">
+                <rect x={d.x - 3.2} y={d.y - 3.2} width={6.4} height={6.4} transform={`rotate(45 ${d.x} ${d.y})`} />
+                <text x={d.x} y={d.y} className="deploy-demon-num" textAnchor="middle" dominantBaseline="central">D{demons > 1 ? i + 1 : ''}</text>
+                <text x={d.x} y={d.y + 8} className="deploy-center-text" textAnchor="middle">{num(d.x, unit)}</text>
+              </g>
+            ))}
             {result.points.map((p, i) => {
               const q = result.points[(i + 1) % players]
               const mx = (p.x + q.x) / 2
@@ -211,12 +226,19 @@ export default function DeploymentMap() {
                   <td>{fmt(p.y, unit)}</td>
                 </tr>
               ))}
+              {demonPoints.map((d, i) => (
+                <tr key={`d${i}`}>
+                  <td><span className="deploy-chip demon">D{demons > 1 ? i + 1 : ''}</span></td>
+                  <td>{fmt(d.x, unit)}</td>
+                  <td>{fmt(d.y, unit)}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
           <p className="muted small">
             Les points sont sur le bord de la table : la zone de déploiement forme un demi-cercle (un quart de cercle dans un angle). Parmi toutes les dispositions
             où chaque point est à égale distance de ses deux voisins, c'est celle qui les éloigne le plus. Le numéro ne donne pas d'ordre de
-            choix : c'est l'initiative qui décide.
+            choix : c'est l'initiative qui décide, parmi les points du bord. Le point central sert d'arrivée aux Démons d'Amatika.
           </p>
         </>
       )}
