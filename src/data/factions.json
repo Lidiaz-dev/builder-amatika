@@ -130,15 +130,15 @@
       {
         "id": "mage",
         "name": "Mage",
-        "cost": 133,
+        "cost": 105,
         "min": 0,
         "max": 1,
         "stats": {
           "mou": 5,
           "com": 7,
           "tir": 7,
-          "for": 5,
-          "end": 5,
+          "for": 4,
+          "end": 4,
           "agi": 5,
           "att": 1,
           "pv": 1,
@@ -166,7 +166,7 @@
           "perLevel": true,
           "cristaux": 0
         },
-        "xpValue": 5,
+        "xpValue": 4,
         "notes": [],
         "role": "specialiste"
       },
@@ -2541,6 +2541,56 @@
         "xpValue": 9,
         "notes": [],
         "role": "chef"
+      },
+      {
+        "id": "gnoblard",
+        "name": "Gnoblard",
+        "cost": 9,
+        "min": 0,
+        "max": 10,
+        "stats": {
+          "mou": 6,
+          "com": 8,
+          "tir": 8,
+          "for": 2,
+          "end": 2,
+          "agi": 2,
+          "att": 1,
+          "pv": 1,
+          "cmd": 14,
+          "svg": 11
+        },
+        "skills": [
+          "Très petite cible",
+          "Servir son Maître"
+        ],
+        "skillChoices": [],
+        "equipment": [
+          "dague",
+          "marteau",
+          "hache",
+          "epee",
+          "arc-court",
+          "fronde",
+          "arme-de-jet",
+          "sarbacane",
+          "javelot",
+          "armure-de-cuir",
+          "bouclier",
+          "casque"
+        ],
+        "trees": [
+          "general",
+          "reconnaissance"
+        ],
+        "upkeep": {
+          "po": 1,
+          "perLevel": true,
+          "cristaux": 0
+        },
+        "xpValue": 2,
+        "notes": [],
+        "role": "specialiste"
       }
     ]
   },
@@ -3709,7 +3759,7 @@
           "perLevel": true,
           "cristaux": 0
         },
-        "xpValue": 5,
+        "xpValue": 4,
         "notes": [],
         "role": "specialiste"
       },
@@ -7278,7 +7328,7 @@
       {
         "id": "mage",
         "name": "Mage",
-        "cost": 153,
+        "cost": 163,
         "min": 0,
         "max": 1,
         "stats": {
@@ -7295,7 +7345,8 @@
         },
         "skills": [
           "Ethéré",
-          "Mage"
+          "Mage",
+          "Dissipation"
         ],
         "skillChoices": [],
         "equipment": [
@@ -7323,7 +7374,7 @@
           "perLevel": true,
           "cristaux": 0
         },
-        "xpValue": 5,
+        "xpValue": 6,
         "notes": [],
         "role": "specialiste"
       }

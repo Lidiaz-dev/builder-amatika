@@ -1,7 +1,7 @@
 [
   {
-    "id": "fourmie-geante",
-    "name": "Fourmie Géante",
+    "id": "fourmis-geante",
+    "name": "Fourmis Géante",
     "habitat": "Naturel",
     "cost": 104,
     "xpValue": 4,
@@ -224,7 +224,7 @@
   },
   {
     "id": "guepe-geante",
-    "name": "Guèpe géante",
+    "name": "Guêpe géante",
     "habitat": "Ville",
     "cost": 90,
     "xpValue": 4,
@@ -288,10 +288,10 @@
       "svg": 9
     },
     "skills": [
-      "Grimeur né",
+      "Grimpeur né",
       "Petite cible"
     ],
-    "gifts": "1 crital brut et 50PO"
+    "gifts": "1 cristal brut et 50PO"
   },
   {
     "id": "rodeur-des-tombes",
@@ -312,7 +312,7 @@
       "svg": 6
     },
     "skills": [],
-    "gifts": "1 crital brut et 1 carte objet"
+    "gifts": "1 cristal brut et 1 carte objet"
   },
   {
     "id": "zombie",
@@ -487,6 +487,6 @@
       "svg": 6
     },
     "skills": [],
-    "gifts": ""
+    "gifts": "1 cristal brut"
   }
 ]

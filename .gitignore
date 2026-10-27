@@ -25,3 +25,6 @@ dist-ssr
 
 # Secrets locaux
 .env
+
+# Cache Python du script d'import
+__pycache__/

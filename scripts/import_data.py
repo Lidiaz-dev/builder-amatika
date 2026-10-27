@@ -336,8 +336,12 @@ def apply_compendium(factions, rows, hyp):
             if diffs:
                 hyp.append(f"Écart Bandes / Compendium pour {f['name']} / {p['name']} : " + ", ".join(diffs) + " (Compendium retenu).")
             p["cost"], p["stats"] = cost, stats
-            if p["xpValue"] is None and num(r.get(cols["XP"])) is not None:
-                p["xpValue"] = int(num(r[cols["XP"]]))
+            # XP gagnée par l'adversaire pour chaque PV retiré : le Compendium fait référence.
+            if num(r.get(cols["XP"])) is not None:
+                comp_xp = int(num(r[cols["XP"]]))
+                if p["xpValue"] is not None and p["xpValue"] != comp_xp:
+                    hyp.append(f"XP par PV retiré de {f['name']} / {p['name']} : {p['xpValue']} (Bandes) → {comp_xp} (Compendium retenu).")
+                p["xpValue"] = comp_xp
             comp_skills = [r[c] for c in "PQRST" if r.get(c) and not r[c].startswith("-")]
             p["_compSkills"] = comp_skills
         for n, r in enumerate(crow):

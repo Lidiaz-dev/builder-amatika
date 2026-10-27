@@ -16,7 +16,7 @@ export default function ProfileCard({ profile: p }: { profile: Profile }) {
           <span><strong>Coût :</strong> {p.cost} PO</span>
           <span><strong>Effectif :</strong> {limitLabel(p)}</span>
           <span><strong>Entretien :</strong> {upkeepLabel(p)}</span>
-          {p.xpValue !== null && <span><strong>XP apporté :</strong> {p.xpValue} par PV</span>}
+          {p.xpValue !== null && <span data-tip="XP gagnée par la figurine adverse pour chaque point de vie retiré à ce profil."><strong>XP par PV retiré :</strong> {p.xpValue}</span>}
         </p>
         <StatLine stats={p.stats} />
         <div className="tags">

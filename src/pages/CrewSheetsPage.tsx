@@ -38,6 +38,10 @@ export default function CrewSheetsPage() {
 
   const upkeep = crewUpkeep(crew)
   const members = crew.members.filter(isActive)
+  // Lignes communes à toutes les fiches (sac à dos, sorts) : affichées partout dès qu'un membre en a.
+  const anyBag = members.some((m) => bagItems(m).length > 0 || lootItems(m).some((l) => l.ref.slot === 'sac'))
+  const anySpells = members.some((m) => (m.spellIds?.length ?? 0) > 0 || !!m.spells)
+  const sheetRows = 3 + (anyBag ? 1 : 0) + (anySpells ? 1 : 0)
   const usedSkills = [...new Set(members.flatMap((m) => {
     const p = profileOf(faction, m)
     return p ? memberSkills(p, m) : []
@@ -83,8 +87,9 @@ export default function CrewSheetsPage() {
         </p>
       </header>
 
-      <div className="sheet-grid">
+      <div className="sheet-grid" style={{ ['--sheet-rows' as string]: 4 + sheetRows }}>
         {members.map((m) => {
+          // Toutes les fiches ont les mêmes lignes, pour qu'elles s'alignent d'une fiche à l'autre.
           const p = profileOf(faction, m)
           if (!p) return null
           const loot = lootItems(m)
@@ -93,24 +98,24 @@ export default function CrewSheetsPage() {
           const scars = (m.injuries ?? []).map((r) => injuryById(r.cardId)?.name ?? r.cardId)
           const u = memberUpkeep(p, m)
           return (
-            <article key={m.id} className="sheet">
+            <article key={m.id} className="sheet" style={{ gridRow: `span ${4 + sheetRows}` }}>
               <header>
                 <h2>{memberName(m) || '—'}</h2>
                 <span>{p.name}</span>
               </header>
               <StatLine stats={effectiveStats(p, m)} variant="table" />
-              <dl>
+              <dl style={{ gridRow: `span ${sheetRows}` }}>
                 <dt>Compétences</dt>
                 <dd>{memberSkills(p, m).join(', ') || '—'}</dd>
                 <dt>Équipement porté</dt>
                 <dd>{worn.join(', ') || 'Mains nues'}</dd>
-                {bag.length > 0 && (
+                {anyBag && (
                   <>
                     <dt>Sac à dos</dt>
-                    <dd>{bag.join(', ')}</dd>
+                    <dd>{bag.join(', ') || '—'}</dd>
                   </>
                 )}
-                {((m.spellIds?.length ?? 0) > 0 || m.spells) && (
+                {anySpells && (
                   <>
                     <dt>Sorts</dt>
                     <dd>
@@ -118,17 +123,20 @@ export default function CrewSheetsPage() {
                         .map((id) => spellById(id))
                         .filter((sp) => !!sp)
                         .map((sp) => `${sp!.name} (${sp!.value}+)`)
-                        .join(', ') || m.spells}
+                        .join(', ') || m.spells || '—'}
                     </dd>
                   </>
                 )}
                 <dt>Arbres</dt>
                 <dd>{p.trees.map((t) => TREE_LABELS[t] ?? t).join(', ') || '—'}</dd>
               </dl>
-              <footer>
-                <span>Niv. {m.level} · XP {m.xp} · {actionsOf(m)} actions</span>
-                <span>Entretien {u.po} PO{u.cristaux ? ` + ${u.cristaux} cristal` : ''}</span>
-                <span>Valeur {memberCost(faction, m)} PO</span>
+              <footer className="sheet-facts">
+                <div><small>Niveau</small><b>{m.level}</b></div>
+                <div><small>XP</small><b>{m.xp}</b></div>
+                <div><small>Actions</small><b>{actionsOf(m)}</b></div>
+                <div><small>Entretien</small><b>{u.cristaux ? `${u.cristaux} cr.` : `${u.po} PO`}</b></div>
+                <div><small>Valeur</small><b>{memberCost(faction, m)} PO</b></div>
+                {p.xpValue !== null && <div title="XP gagnée par l'adversaire pour chaque point de vie retiré"><small>XP / PV retiré</small><b>{p.xpValue}</b></div>}
               </footer>
               <div className="sheet-blank">
                 <span>Blessures : {scars.join(', ')}</span>

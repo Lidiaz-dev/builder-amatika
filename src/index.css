@@ -528,6 +528,12 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .sheet dt { font-weight: 700; }
 .sheet dd { margin: 0; }
 .sheet footer { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.85rem; border-top: 1px dashed var(--border); padding-top: 0.3rem; }
+/* Pied de fiche : petites cases étiquetées, alignées comme les caractéristiques. */
+.sheet footer.sheet-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; border-top: 0; padding-top: 0.2rem; }
+.sheet-facts > div { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 4px; border: 1px solid var(--border); border-radius: 3px; background: rgb(255 250 235 / 0.6); text-align: center; line-height: 1.15; }
+.sheet-facts small { font-family: var(--display); font-size: 0.58rem; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; white-space: nowrap; }
+.sheet-facts b { font-size: 0.95rem; font-variant-numeric: lining-nums; white-space: nowrap; }
+@media print { .sheet-facts > div { background: none; } }
 .sheet-blank { min-height: 2.2rem; font-size: 0.85rem; color: var(--muted); }
 .sheet-rules { margin-top: 1.5rem; }
 .sheet-rules dl { columns: 2 320px; margin: 0; }
@@ -1066,3 +1072,9 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 @media (prefers-reduced-motion: reduce) {
   .xp-bar span { transition: none; }
 }
+
+/* Fiches alignées : chaque ligne (en-tête, caractéristiques, compétences…, cases, blessures) a la même hauteur
+   sur toute une rangée de fiches, grâce à une grille partagée (subgrid). */
+.sheet-grid { grid-auto-rows: auto; row-gap: 0; column-gap: 1rem; }
+.sheet-grid > .sheet { display: grid; grid-template-rows: subgrid; row-gap: 0.5rem; margin-bottom: 1rem; align-content: start; }
+.sheet-grid > .sheet > dl { grid-template-rows: subgrid; row-gap: 0.2rem; align-items: start; }

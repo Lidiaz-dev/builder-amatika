@@ -53,6 +53,7 @@ function memberRows(faction: Faction, m: Member): Row[] {
   if (bag.length) rows.push({ label: 'Sac à dos', value: bag.join(', ') })
   if (spells.length || m.spells) rows.push({ label: 'Sorts', value: spells.join(', ') || m.spells })
   rows.push({ label: 'Arbres', value: p.trees.map((t) => TREE_LABELS[t] ?? t).join(', ') || '-' })
+  if (p.xpValue !== null) rows.push({ label: 'XP par PV retiré', value: `${p.xpValue} XP pour l'adversaire, par point de vie retiré` })
   return rows
 }
 
