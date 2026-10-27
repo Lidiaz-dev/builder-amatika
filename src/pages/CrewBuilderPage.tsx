@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import CrewWelcome from '../components/CrewWelcome'
 import {
   CATEGORY_LABELS,
   equipment,
@@ -90,6 +91,7 @@ type Delta = { po?: number; cristaux?: number; prestige?: number }
 export default function CrewBuilderPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
   const [crew, setCrew] = useState<Crew | null | undefined>(undefined)
   const [saveState, setSaveState] = useState<SaveState>('saved')
   const [saveError, setSaveError] = useState('')
@@ -98,6 +100,7 @@ export default function CrewBuilderPage() {
   const fresh = useRef(new Set<string>())
   /** Tampon de cire affiché quand la bande devient valide. */
   const [stamp, setStamp] = useState(false)
+  const [welcome, setWelcome] = useState(() => !!(location.state as { welcome?: boolean } | null)?.welcome)
   const wasLegal = useRef<boolean | null>(null)
   /** Situation de la bande dans sa campagne de groupe (journée en cours, feuille à remplir…). */
   const [dayState, setDayState] = useState<CrewDayState | null | undefined>(undefined)
@@ -252,6 +255,16 @@ export default function CrewBuilderPage() {
         <Link to="/bandes">Mes bandes</Link> <span>›</span> {crew.name || 'Bande sans nom'}
       </nav>
       {dayState && <CampaignDayBanner state={dayState} lock={lock} />}
+      {welcome && (
+        <CrewWelcome
+          name={crew.name.trim()}
+          onClose={() => {
+            setWelcome(false)
+            // Une seule fois : pas de nouvel accueil en rechargeant la page.
+            navigate(location.pathname, { replace: true, state: null })
+          }}
+        />
+      )}
       <div className="builder-head card">
         <div className="row wrap">
           <FactionSeal id={faction.id} name={faction.name} size={56} />

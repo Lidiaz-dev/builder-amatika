@@ -57,7 +57,7 @@ const SECTIONS = [
   { path: 'competences', title: 'Compétences', text: 'Les compétences, par arbre.', glyph: '✦' },
   { path: 'sorts', title: 'Sorts', text: 'Les sorts communs et raciaux.', glyph: '✧' },
   { path: 'objets', title: 'Équipement et objets', text: 'Équipement commun, trésors et marché noir.', glyph: '⚒' },
-  { path: 'deploiement', title: 'Déploiement', text: 'Schémas des points de déploiement, de 3 à 8 joueurs.', glyph: '⌖' },
+  { path: 'deploiement', title: 'Déploiement', text: "Points de déploiement de 3 à 8 joueurs selon la table, et arrivée des démons.", glyph: '⌖' },
 ]
 
 export default function ReferencePage() {

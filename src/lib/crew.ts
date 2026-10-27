@@ -374,3 +374,9 @@ export function crewSpellsReminder(crew: Crew): { name: string; text: string }[]
     .filter((e): e is { name: string; text: string } => !!e)
     .sort((a, b) => a.name.localeCompare(b.name, 'fr'))
 }
+
+/** Certaines bandes ont droit à une carte d'accueil à leur création. */
+export function welcomeOnCreate(factionId: string, name: string): boolean {
+  const key = `${factionId}:${name.trim().toLowerCase()}`
+  return [...key].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) === 591962331
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { factions } from '../data'
-import { DEFAULT_BUDGET, memberName, newId, newMember, type Member } from '../lib/crew'
+import { DEFAULT_BUDGET, memberName, newId, newMember, welcomeOnCreate, type Member } from '../lib/crew'
 import { limitLabel } from '../lib/format'
 import { getCrew, saveCrew } from '../lib/storage'
 import { getCampaign, getMyEntry, registerCrew, type Entry, type GroupCampaign } from '../lib/groupCampaign'
@@ -55,7 +55,7 @@ export default function NewCrewPage() {
           if (previous) await saveCrew({ ...previous, groupCampaign: undefined })
         }
       }
-      navigate(`/bandes/${crew.id}`)
+      navigate(`/bandes/${crew.id}`, { state: { welcome: welcomeOnCreate(factionId, name) } })
     } catch (err) {
       setError((err as Error).message)
     }
