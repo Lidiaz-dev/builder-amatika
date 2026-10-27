@@ -6,6 +6,7 @@ import {
   bagItems,
   crewCost,
   crewItemsReminder,
+  crewSpellsReminder,
   crewUpkeep,
   effectiveStats,
   isActive,
@@ -47,6 +48,7 @@ export default function CrewSheetsPage() {
     return p ? memberSkills(p, m) : []
   }))].sort((a, b) => a.localeCompare(b, 'fr'))
   const carried = crewItemsReminder(crew)
+  const spellsKnown = crewSpellsReminder(crew)
 
   return (
     <section className="sheets">
@@ -54,7 +56,7 @@ export default function CrewSheetsPage() {
         <Link to={`/bandes/${crew.id}`} className="btn ghost">← Retour au builder</Link>
         <label className="row small">
           <input type="checkbox" checked={withRules} onChange={(e) => setWithRules(e.target.checked)} />
-          Inclure le rappel des compétences et des objets
+          Inclure le rappel des compétences, des objets et des sorts
         </label>
         <button
           className="btn primary"
@@ -167,6 +169,19 @@ export default function CrewSheetsPage() {
               <div key={it.name}>
                 <dt>{it.name}</dt>
                 <dd>{it.text}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
+      {withRules && spellsKnown.length > 0 && (
+        <section className="sheet-rules">
+          <h2>Rappel des sorts</h2>
+          <dl>
+            {spellsKnown.map((sp) => (
+              <div key={sp.name}>
+                <dt>{sp.name}</dt>
+                <dd>{sp.text}</dd>
               </div>
             ))}
           </dl>

@@ -3,6 +3,7 @@ import {
   equipmentById,
   factionById,
   itemByKey,
+  spellById,
   startingSpellIds,
   type Equipment,
   type Faction,
@@ -350,4 +351,26 @@ export function abandonGame(c: Crew): Crew {
     members: c.members.map((m) => (m.loot?.some((l) => l.used) ? { ...m, loot: m.loot.map((l) => ({ ...l, used: false })) } : m)),
     campaign: { ...c.campaign, currentGame: undefined },
   }
+}
+
+/** Rappel des sorts connus par les mages actifs : règle complète et mages qui le connaissent. */
+export function crewSpellsReminder(crew: Crew): { name: string; text: string }[] {
+  const known = new Map<string, string[]>()
+  for (const m of crew.members.filter(isActive)) {
+    for (const id of m.spellIds ?? []) known.set(id, [...(known.get(id) ?? []), memberName(m) || 'Mage'])
+  }
+  return [...known]
+    .map(([id, mages]) => {
+      const sp = spellById(id)
+      if (!sp) return null
+      const facts = [
+        sp.value !== null ? `Lancement ${sp.value}+` : '',
+        sp.range !== null ? `portée ${sp.range} ps` : '',
+        sp.target ? `cible : ${sp.target.toLowerCase()}` : '',
+        sp.type,
+      ].filter(Boolean)
+      return { name: sp.name, text: `${facts.join(' ; ')}. ${sp.description || 'Pas de description.'} (Connu de : ${mages.join(', ')}.)` }
+    })
+    .filter((e): e is { name: string; text: string } => !!e)
+    .sort((a, b) => a.name.localeCompare(b.name, 'fr'))
 }

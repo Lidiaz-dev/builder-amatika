@@ -5,6 +5,7 @@ import {
   bagItems,
   crewCost,
   crewItemsReminder,
+  crewSpellsReminder,
   crewUpkeep,
   effectiveStats,
   isActive,
@@ -220,7 +221,7 @@ export async function downloadSheetsPdf(crew: Crew, faction: Faction, withRules:
     cols[c] += h + GAP
   }
 
-  // Rappels : compétences utilisées, puis objets portés ou au sac.
+  // Rappels : compétences utilisées, objets portés ou au sac, puis sorts des mages.
   if (withRules) {
     const used = [...new Set(members.flatMap((m) => {
       const p = profileOf(faction, m)
@@ -228,7 +229,8 @@ export async function downloadSheetsPdf(crew: Crew, faction: Faction, withRules:
     }))].sort((a, b) => a.localeCompare(b, 'fr'))
     const skillEntries = used.map((name) => ({ name, text: skillByName(name)?.description ?? 'Pas encore de description dans les règles.' }))
     const end = reminderPages(doc, 'Rappel des compétences', skillEntries, bottom)
-    reminderPages(doc, 'Rappel des objets', crewItemsReminder(crew), bottom, end)
+    const afterItems = reminderPages(doc, 'Rappel des objets', crewItemsReminder(crew), bottom, end)
+    reminderPages(doc, 'Rappel des sorts', crewSpellsReminder(crew), bottom, afterItems)
   }
 
   pageFooter(doc, crew)
