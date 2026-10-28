@@ -9,6 +9,7 @@ import { SpellDetails } from '../components/SpellTag'
 import ActivationBag, { type BagColor } from '../components/ActivationBag'
 import RuleText from '../components/RuleText'
 import DeploymentMap from '../components/DeploymentMap'
+import WoundTable from '../components/WoundTable'
 
 type Entry =
   | { id: string; at: string; type: 'card'; deckId: string; uid: string; returned?: boolean; /** Cartes tirées ensemble. */ batch?: string }
@@ -232,6 +233,10 @@ export default function GameAssistantPage() {
           )}
           {tab === 'partie' && (
             <>
+              <details className="card deploy-card">
+                <summary>⚔ Tableau des blessures</summary>
+                <WoundTable />
+              </details>
               <section className="card dice-tray">
                 <div className="round-box">
                   <span className="counter-label">Round</span>

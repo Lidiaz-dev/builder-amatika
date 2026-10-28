@@ -1099,3 +1099,20 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   @keyframes welcome-in { 0% { opacity: 0; transform: scale(0.6) rotate(-8deg); } 100% { opacity: 1; transform: none; } }
   .crew-welcome img, .crew-welcome-fallback { animation: welcome-in 0.5s cubic-bezier(.3,1.4,.5,1) both; }
 }
+
+/* ---------- Tableau des blessures ---------- */
+.wound-table-wrap { overflow-x: auto; margin: 0.6rem 0 1rem; }
+.wound-table { border-collapse: collapse; font-variant-numeric: tabular-nums; margin: 0 auto; }
+.wound-table caption { font-family: var(--display); font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+.wound-table th, .wound-table td { border: 1px solid var(--border); padding: 0.3rem 0.45rem; text-align: center; min-width: 2.4rem; }
+.wound-table thead th, .wound-table tbody th { background: rgb(122 88 46 / 0.12); font-family: var(--display); }
+.wound-table th.wound-corner { display: grid; font-size: 0.68rem; line-height: 1.15; text-align: left; white-space: nowrap; min-width: 0; }
+.wound-table td { cursor: default; }
+.wound-table td.even { font-weight: 700; background: rgb(201 162 74 / 0.18); }
+.wound-table td.cross, .wound-table th.on { background: rgb(155 27 16 / 0.12); }
+.wound-table td.on { background: var(--accent); color: #fff; font-weight: 700; }
+@media (max-width: 600px) {
+  .wound-table th, .wound-table td { padding: 0.25rem 0.1rem; min-width: 0; font-size: 0.74rem; }
+  .wound-table th.wound-corner { font-size: 0.55rem; }
+  .wound-table caption { font-size: 0.85rem; }
+}

@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { Fragment, useMemo, useState, type ReactNode } from 'react'
 import { Link, Navigate, NavLink, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import {
   CATEGORY_LABELS,
@@ -21,6 +21,7 @@ import {
   type Role,
 } from '../data'
 import DeploymentMap from '../components/DeploymentMap'
+import WoundTable from '../components/WoundTable'
 import ProfileCard from '../components/ProfileCard'
 import FactionSeal from '../components/FactionSeal'
 import SpellTag, { SpellDetails } from '../components/SpellTag'
@@ -168,7 +169,13 @@ function RulesBook({ query }: { query: string }) {
         return (
           <section key={s.id + s.title} id={`r-${s.id}`}>
             <Tag><Highlight text={s.title} query={query} /></Tag>
-            {s.paragraphs.map((p, i) => <p key={i}><RuleText text={p} query={query} /></p>)}
+            {s.paragraphs.map((p, i) => (
+              <Fragment key={i}>
+                <p><RuleText text={p} query={query} /></p>
+                {/* Le livre annonce le tableau des blessures sans le donner : on l'affiche juste après. */}
+                {p.startsWith('Le tableau ci-dessous indique le résultat requis sur un D10 pour infliger une blessure') && <WoundTable />}
+              </Fragment>
+            ))}
           </section>
         )
       })}
