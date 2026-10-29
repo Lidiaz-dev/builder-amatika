@@ -1120,3 +1120,48 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   .wound-table th.wound-corner { font-size: 0.55rem; }
   .wound-table caption { font-size: 0.85rem; }
 }
+
+/* ---------- Aide-mémoire ---------- */
+.quickref-head { align-items: center; }
+.quickref-head h1 { margin: 0; }
+.quickref-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; align-items: stretch; }
+.qr-section { margin-top: 1.4rem; }
+.qr-section-title { display: flex; align-items: center; gap: 0.55rem; font-size: 1.25rem; margin: 0 0 0.6rem; }
+.qr-section-title span { display: inline-grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.95rem; flex: none; }
+.qr-block { padding: 0.8rem 1rem; }
+.qr-block.wide { grid-column: 1 / -1; }
+.qr-block h3 { font-size: 1.05rem; margin: 0 0 0.5rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; }
+.qr-block ul, .qr-block ol { margin: 0.3rem 0; padding-left: 1.2rem; }
+.qr-block li { margin: 0.2rem 0; line-height: 1.35; }
+.qr-block li ul { margin: 0.15rem 0; }
+.qr-note { font-size: 0.9rem; color: var(--muted); margin: 0.2rem 0 0.4rem; }
+.qr-table { border-collapse: collapse; margin: 0.5rem 0; font-variant-numeric: tabular-nums; font-size: 0.92rem; }
+.qr-table caption { text-align: left; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.2rem; }
+.qr-table th, .qr-table td { border: 1px solid var(--border); padding: 0.2rem 0.45rem; text-align: center; }
+.qr-table th { background: rgb(122 88 46 / 0.12); font-family: var(--display); font-size: 0.8rem; white-space: nowrap; }
+.qr-mods td:first-child { font-weight: 700; white-space: nowrap; }
+.qr-mods td:last-child { text-align: left; }
+.qr-two { display: flex; flex-wrap: wrap; gap: 0 1rem; align-items: start; }
+.qr-actions { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 0.9rem; margin: 0; }
+.qr-actions dt { font-weight: 700; font-family: var(--display); font-size: 0.88rem; }
+.qr-actions dd { margin: 0; line-height: 1.35; }
+.qr-chain li::marker { font-weight: 700; color: var(--accent); }
+.qr-block .wound-table-wrap { margin: 0; }
+/* Tableau des blessures dans une demi-colonne : cellules resserrées. */
+.qr-block .wound-table th, .qr-block .wound-table td { min-width: 0; padding: 0.2rem 0.15rem; font-size: 0.8rem; }
+.qr-block .wound-table th.wound-corner { font-size: 0.58rem; }
+.qr-block .wound-table caption { font-size: 0.85rem; }
+.quickref-link { margin: 0 0 0.6rem; }
+@media (max-width: 760px) {
+  .quickref-grid { grid-template-columns: 1fr; }
+  .qr-actions { grid-template-columns: 1fr; }
+  .qr-actions dd { margin-bottom: 0.35rem; }
+}
+@media print {
+  .quickref-grid { grid-template-columns: 1fr 1fr; gap: 3mm; font-size: 8.5pt; }
+  .qr-block { box-shadow: none; background: #fff; padding: 2mm 3mm; break-inside: avoid; }
+  .qr-block h3 { font-size: 10pt; }
+  .qr-table { font-size: 8pt; }
+  .compendium-main > .crumbs { display: none; }
+  .compendium { display: block; }
+}

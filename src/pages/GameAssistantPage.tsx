@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { creatures, injuries, itemByKey, spellById } from '../data'
 import { DECKS, deckById, objectsToDraw, type Deck, type DeckCard } from '../lib/decks'
 import { d10 } from '../lib/campaign'
@@ -233,6 +234,9 @@ export default function GameAssistantPage() {
           )}
           {tab === 'partie' && (
             <>
+              <p className="quickref-link">
+                <Link to="/regles/aide-memoire" className="btn ghost small">☰ Aide-mémoire des règles</Link>
+              </p>
               <details className="card deploy-card">
                 <summary>⚔ Tableau des blessures</summary>
                 <WoundTable />

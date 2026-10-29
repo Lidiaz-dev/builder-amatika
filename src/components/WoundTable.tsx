@@ -1,9 +1,7 @@
 import { useState } from 'react'
+import { woundRoll } from '../lib/quickref'
 
 const VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-/** Résultat à obtenir sur 1D10 pour blesser : 6+ à force égale à l'endurance, ±1 par point d'écart, entre 2+ et 10+. */
-const woundRoll = (strength: number, toughness: number) => Math.min(10, Math.max(2, 6 - strength + toughness))
 
 /** Tableau des blessures : la ligne et la colonne survolées sont mises en évidence. */
 export default function WoundTable() {

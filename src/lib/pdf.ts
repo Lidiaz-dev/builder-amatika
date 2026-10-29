@@ -32,7 +32,7 @@ const LINE = 3.6
 const FOOTER_H = 8
 
 /** Le PDF n'embarque que les polices standard (encodage WinAnsi) : on remplace les caractères absents. */
-const safe = (s: string) => s.replace(/[’‘]/g, "'").replace(/[“”«»]/g, '"').replace(/[–—]/g, '-').replace(/…/g, '...').replace(/✝/g, '+')
+export const safe = (s: string) => s.replace(/[’‘]/g, "'").replace(/[“”«»]/g, '"').replace(/[–—]/g, '-').replace(/…/g, '...').replace(/✝/g, '+')
 
 const fmt = (v: number | null, dice: boolean) => (v === null ? '/' : dice ? `${v}+` : String(v))
 

@@ -22,6 +22,7 @@ import {
 } from '../data'
 import DeploymentMap from '../components/DeploymentMap'
 import WoundTable from '../components/WoundTable'
+import QuickRef from '../components/QuickRef'
 import ProfileCard from '../components/ProfileCard'
 import FactionSeal from '../components/FactionSeal'
 import SpellTag, { SpellDetails } from '../components/SpellTag'
@@ -52,6 +53,7 @@ const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ b
 const slugify = (s: string) => norm(s).replace(/[^a-z0-9]+/g, '-')
 
 const SECTIONS = [
+  { path: 'aide-memoire', title: 'Aide-mémoire', text: 'Les règles à garder sous les yeux en partie : round, actions, combat, créatures.', glyph: '☰' },
   { path: 'histoire', title: 'Histoire', text: "L'île d'Amatika et la ruée vers les cristaux.", glyph: '☙' },
   { path: 'livre', title: 'Livre de règles', text: 'Les règles du jeu, de la mise en place à la campagne.', glyph: '❦' },
   { path: 'bandes', title: 'Bandes', text: 'Toutes les factions et leurs profils.', glyph: '⚔' },
@@ -73,6 +75,7 @@ export default function ReferencePage() {
       <aside className="compendium-nav no-print">
         <NavLink to="/regles" end className="nav-head">Compendium</NavLink>
         <input className="search" type="search" placeholder="Rechercher…" value={query} onChange={(e) => setQuery(e.target.value)} />
+        <NavLink to="/regles/aide-memoire" className="nav-single">Aide-mémoire</NavLink>
         <NavLink to="/regles/histoire" className="nav-single">Histoire</NavLink>
         <details open={section?.path === 'livre'}>
           <summary><NavLink to="/regles/livre">Livre de règles</NavLink></summary>
@@ -118,6 +121,7 @@ export default function ReferencePage() {
         </nav>
         <Routes>
           <Route index element={<Landing />} />
+          <Route path="aide-memoire" element={<QuickRef />} />
           <Route path="histoire" element={<Lore query={query} />} />
           <Route path="livre" element={<RulesBook query={query} />} />
           <Route path="sorts" element={<SpellsRef query={query} />} />
