@@ -980,6 +980,10 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .live-elsewhere p { margin: 0; }
 .header-pseudo { color: #e9d3a6; font-family: var(--display); font-size: 0.85rem; text-decoration: none; border-bottom: 1px dotted rgb(233 211 166 / 0.5); }
 .header-pseudo:hover, .header-pseudo.active { color: #fff; }
+@media (max-width: 600px) {
+  /* Pseudo raccourci s'il est long, pour tenir à côté du bouton de déconnexion. */
+  .header-pseudo { max-width: 10rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
 .day-cancel { margin-left: 0.5rem; }
 .builder-lock { display: contents; border: 0; margin: 0; padding: 0; min-width: 0; }
 .info-tag { cursor: pointer; }

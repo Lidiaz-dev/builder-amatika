@@ -56,7 +56,7 @@ function Header() {
           </span>
         ) : user ? (
           <>
-            <NavLink to="/profil" className="header-pseudo hide-mobile" data-tip="Changer de pseudo">{pseudo || user.email}</NavLink>
+            <NavLink to="/profil" className="header-pseudo" data-tip="Changer de pseudo">{pseudo || user.email}</NavLink>
             <button className="btn ghost small" onClick={signOut}>Déconnexion</button>
           </>
         ) : null}
