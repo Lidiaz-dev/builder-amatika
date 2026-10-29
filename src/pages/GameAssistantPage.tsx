@@ -37,6 +37,10 @@ function loadSession(): Session {
     const s = JSON.parse(raw) as Session
     // Paquet ajouté depuis : on le complète.
     for (const d of DECKS) if (!s.remaining[d.id]) s.remaining[d.id] = d.cards.map((c) => c.uid)
+    // Cartes disparues ou renommées depuis (réimport des fichiers) : on les oublie, sinon leur affichage plante.
+    const known = new Set(DECKS.flatMap((d) => d.cards.map((c) => c.uid)))
+    for (const id of Object.keys(s.remaining)) s.remaining[id] = s.remaining[id].filter((u) => known.has(u))
+    s.history = s.history.filter((e) => e.type !== 'card' || known.has(e.uid))
     s.bag ??= []
     return s
   } catch {
