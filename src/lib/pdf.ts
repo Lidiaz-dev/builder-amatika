@@ -1,5 +1,5 @@
 import type { jsPDF } from 'jspdf'
-import { injuryById, skillByName, spellById, STAT_COLUMNS, TREE_LABELS, type Faction } from '../data'
+import { injuryById, skillByName, spellById, withGrantedSkills, STAT_COLUMNS, TREE_LABELS, type Faction } from '../data'
 import {
   actionsOf,
   bagItems,
@@ -223,10 +223,10 @@ export async function downloadSheetsPdf(crew: Crew, faction: Faction, withRules:
 
   // Rappels : compétences utilisées, objets portés ou au sac, puis sorts des mages.
   if (withRules) {
-    const used = [...new Set(members.flatMap((m) => {
+    const used = withGrantedSkills([...new Set(members.flatMap((m) => {
       const p = profileOf(faction, m)
       return p ? memberSkills(p, m) : []
-    }))].sort((a, b) => a.localeCompare(b, 'fr'))
+    }))])
     const skillEntries = used.map((name) => ({ name, text: skillByName(name)?.description ?? 'Pas encore de description dans les règles.' }))
     const end = reminderPages(doc, 'Rappel des compétences', skillEntries, bottom)
     const afterItems = reminderPages(doc, 'Rappel des objets', crewItemsReminder(crew), bottom, end)

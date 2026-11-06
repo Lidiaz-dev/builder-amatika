@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { factionById, injuryById, skillByName, spellById, TREE_LABELS } from '../data'
+import { factionById, injuryById, skillByName, spellById, TREE_LABELS, withGrantedSkills } from '../data'
 import {
   actionsOf,
   bagItems,
@@ -43,10 +43,10 @@ export default function CrewSheetsPage() {
   const anyBag = members.some((m) => bagItems(m).length > 0 || lootItems(m).some((l) => l.ref.slot === 'sac'))
   const anySpells = members.some((m) => (m.spellIds?.length ?? 0) > 0 || !!m.spells)
   const sheetRows = 3 + (anyBag ? 1 : 0) + (anySpells ? 1 : 0)
-  const usedSkills = [...new Set(members.flatMap((m) => {
+  const usedSkills = withGrantedSkills([...new Set(members.flatMap((m) => {
     const p = profileOf(faction, m)
     return p ? memberSkills(p, m) : []
-  }))].sort((a, b) => a.localeCompare(b, 'fr'))
+  }))])
   const carried = crewItemsReminder(crew)
   const spellsKnown = crewSpellsReminder(crew)
 

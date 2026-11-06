@@ -287,6 +287,45 @@ export function skillByName(name: string): Skill | undefined {
 }
 
 /**
+ * Compétences accordées par une autre (« elle possède la compétence régénération »,
+ * « a les règles N'apprend rien, Mort-vivant et Peur »…). Les simples mentions
+ * (prérequis, tests de peur) ne comptent pas.
+ */
+function grantedSkills(skill: Skill): Skill[] {
+  const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+  const byLength = [...skills].sort((a, b) => b.name.length - a.name.length)
+  const found: Skill[] = []
+  for (const sentence of (skill.description ?? '').split(/(?<=\.)\s+/)) {
+    if (!/poss[eè]de (la|les) (comp[eé]tence|r[eè]gle)|dispose (automatiquement )?de la r[eè]gle|\ba (la|les) r[eè]gles?\b/i.test(sentence)) continue
+    let rest = norm(sentence)
+    for (const other of byLength) {
+      if (other === skill || other.id === 'eclaireur-x') continue
+      const re = new RegExp(`(?<![a-z])${norm(other.name).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z])`)
+      if (re.test(rest)) {
+        found.push(other)
+        rest = rest.replace(re, ' ')
+      }
+    }
+  }
+  return found
+}
+
+/** Ajoute aux compétences données celles qu'elles accordent, de proche en proche, triées par nom. */
+export function withGrantedSkills(names: string[]): string[] {
+  const out = new Set(names)
+  const queue = [...names]
+  while (queue.length) {
+    const s = skillByName(queue.pop()!)
+    for (const g of s ? grantedSkills(s) : []) {
+      if ([...out].some((n) => skillByName(n) === g)) continue
+      out.add(g.name)
+      queue.push(g.name)
+    }
+  }
+  return [...out].sort((a, b) => a.localeCompare(b, 'fr'))
+}
+
+/**
  * Objets raciaux : chaque faction peut acheter le sien dès la création de la bande.
  * `key` : clé « catégorie/objet » de items.json. `requires` : équipement de base que le profil
  * doit pouvoir porter (une arbalète naine reste une arbalète). Sans `requires`, tout le monde y a accès.

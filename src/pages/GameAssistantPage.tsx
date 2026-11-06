@@ -10,6 +10,7 @@ import { SpellDetails } from '../components/SpellTag'
 import ActivationBag, { type BagColor } from '../components/ActivationBag'
 import RuleText from '../components/RuleText'
 import DeploymentMap from '../components/DeploymentMap'
+import LocationNotes from '../components/LocationNotes'
 import WoundTable from '../components/WoundTable'
 
 type Entry =
@@ -230,17 +231,15 @@ export default function GameAssistantPage() {
             })}
           </nav>
 
-          {tab === 'lieux' && (
-            <details className="card deploy-card">
-              <summary>⌖ Schéma de déploiement</summary>
-              <DeploymentMap />
-            </details>
-          )}
           {tab === 'partie' && (
             <>
               <p className="quickref-link">
                 <Link to="/regles/aide-memoire" className="btn ghost small">☰ Aide-mémoire des règles</Link>
               </p>
+              <details className="card deploy-card">
+                <summary>⌖ Schéma de déploiement</summary>
+                <DeploymentMap />
+              </details>
               <details className="card deploy-card">
                 <summary>⚔ Tableau des blessures</summary>
                 <WoundTable />
@@ -296,6 +295,8 @@ export default function GameAssistantPage() {
               })}
             </div>
           </section>
+
+          {tab === 'lieux' && <LocationNotes />}
         </div>
 
         <aside className="card history-panel">
