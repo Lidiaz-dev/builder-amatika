@@ -64,6 +64,7 @@ import SpellTag from '../components/SpellTag'
 import RarityDot from '../components/RarityDot'
 import InfoTag from '../components/InfoTag'
 import EquipmentTag from '../components/EquipmentTag'
+import AllowedGear from '../components/AllowedGear'
 import { formatMods } from '../lib/format'
 import Modal from '../components/Modal'
 import InjuryPicker from '../components/InjuryPicker'
@@ -531,7 +532,7 @@ interface MemberCardProps {
   unrestricted: boolean
 }
 
-type Dialog = 'injury' | 'advance' | 'loot' | null
+type Dialog = 'injury' | 'advance' | 'loot' | 'gear' | null
 
 function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemove, onDuplicate, canDuplicate, unrestricted }: MemberCardProps) {
   const profile = profileOf(faction, member)
@@ -846,6 +847,9 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
               </optgroup>
             )}
           </select>
+          <button className="link-btn small gear-list-btn" onClick={() => setDialog('gear')} data-tip="Tout l'équipement commun que ce profil peut porter, avec ses caractéristiques.">
+            ☰ Voir l'équipement autorisé ({profile.equipment.length})
+          </button>
         </div>
       </details>
 
@@ -958,6 +962,9 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
             if (pendingLevels(updated) === 0) setDialog(null)
           }}
         />
+      </Modal>
+      <Modal open={dialog === 'gear'} title={`Équipement autorisé : ${profile.name}`} kicker={faction.name} onClose={() => setDialog(null)}>
+        <AllowedGear profile={profile} factionId={faction.id} unrestricted={!!unrestricted} />
       </Modal>
       <Modal open={dialog === 'loot'} title={`Donner un objet : ${who}`} onClose={() => setDialog(null)}>
         <LootPicker allowedEquipment={unrestricted ? null : profile.equipment} onPick={giveItem} />

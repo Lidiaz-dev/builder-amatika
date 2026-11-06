@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react'
+import { openDialog } from '../lib/dialog'
 
 interface Props {
   open: boolean
@@ -18,7 +19,7 @@ export default function Modal({ open, title, kicker, onClose, children, actions,
   useEffect(() => {
     const d = ref.current
     if (!d) return
-    if (open && !d.open) d.showModal()
+    if (open && !d.open) openDialog(d)
     if (!open && d.open) d.close()
   }, [open])
 

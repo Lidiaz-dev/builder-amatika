@@ -201,6 +201,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .compendium-nav .nav-single.active { color: var(--accent); }
 .lore p:first-of-type::first-letter { float: left; font-family: var(--display); font-size: 3.2rem; line-height: 0.9; padding: 0.1rem 0.4rem 0 0; color: var(--accent); }
 .info-dialog { padding: 0; border: none; background: transparent; max-width: min(460px, calc(100vw - 32px)); width: 100%; }
+.info-dialog:focus { outline: none; }
 .info-dialog::backdrop { background: rgb(40 22 8 / 0.45); }
 .info-dialog-body {
   background: var(--surface) var(--grain);
@@ -1186,3 +1187,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   .compendium-main > .crumbs { display: none; }
   .compendium { display: block; }
 }
+
+/* Équipement autorisé d'un profil (fenêtre du builder) */
+.gear-list-btn { margin-top: 0.4rem; }
+.allowed-gear p { margin: 0 0 0.4rem; }

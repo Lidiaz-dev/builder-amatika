@@ -1,5 +1,6 @@
 import { useRef, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
+import { openDialog } from '../lib/dialog'
 
 interface Props {
   label: string
@@ -24,11 +25,11 @@ export default function InfoTag({ label, kicker, className = '', after, children
           role="button"
           tabIndex={0}
           className={`tag info-tag ${className}`}
-          onClick={() => dialog.current?.showModal()}
+          onClick={() => openDialog(dialog.current)}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault()
-              dialog.current?.showModal()
+              openDialog(dialog.current)
             }
           }}
         >
@@ -51,7 +52,7 @@ export default function InfoTag({ label, kicker, className = '', after, children
           </header>
           <div className="unit-body">{children}</div>
           <footer className="unit-actions">
-            <button type="button" className="btn small" onClick={close} autoFocus>Fermer</button>
+            <button type="button" className="btn small" onClick={close}>Fermer</button>
           </footer>
         </div>
       </dialog>,
