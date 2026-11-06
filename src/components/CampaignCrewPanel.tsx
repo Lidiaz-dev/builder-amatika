@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { factionById } from '../data'
 import { abandonGame, activeMembers, crewCost, MAX_ON_TABLE, memberName, newId, profileOf, type Crew } from '../lib/crew'
-import { getMySheet, isOpen, joinDay, registerCrew, type Day, type GroupCampaign, type Sheet } from '../lib/groupCampaign'
+import { useAuth } from '../lib/auth'
+import { getMySheet, isAdmin, isDayReady, isOpen, joinDay, registerCrew, setDayReady, type Day, type GroupCampaign, type Sheet } from '../lib/groupCampaign'
 import { getCrew, saveCrew } from '../lib/storage'
 import { isLegal, validateCrew } from '../lib/validate'
 import LiveGamePanel from './LiveGamePanel'
@@ -21,6 +22,8 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
   onChanged: () => void
 }) {
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const admin = isAdmin(user)
   const [crew, setCrew] = useState<Crew | null | undefined>(undefined)
   const [sheet, setSheet] = useState<Sheet | null>(null)
   const [busy, setBusy] = useState(false)
@@ -154,6 +157,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
       onChange={(fn) => setCrew((x) => (x ? fn(x) : x))}
       onFinish={() => saveThenGo(`/bandes/${crew.id}/apres-partie`)}
       finishBlocked={blocked}
+      hideGameControls={!admin}
     />
   )
 
@@ -179,13 +183,18 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
         </div>
       )
     }
+    const validated = isDayReady(day, email)
     const eligible = activeMembers(crew).filter((m) => !m.missNextGame)
     const prep = crew.dayPrep?.campaignId === campaign.id && crew.dayPrep.day === day.number ? crew.dayPrep.members : eligible.slice(0, MAX_ON_TABLE).map((m) => m.id)
     const setPrep = (members: string[]) => setCrew({ ...crew, dayPrep: { campaignId: campaign.id, day: day.number, members } })
     return (
       <div className="campaign-step">
         {summary}
-        <p><strong>Préparer la journée {day.number}</strong> : cochez les membres qui y participent ({prep.length} / {MAX_ON_TABLE}).</p>
+        {validated ? (
+          <p className="notice ok-notice">✓ <strong>Bande validée pour la journée {day.number}</strong> ({prep.length} membre{prep.length > 1 ? 's' : ''}). En attente du lancement par l'organisateur.</p>
+        ) : (
+          <p><strong>Préparer la journée {day.number}</strong> : cochez les membres qui y participent ({prep.length} / {MAX_ON_TABLE}).</p>
+        )}
         <ul className="check-list">
           {activeMembers(crew).map((m) => {
             const on = prep.includes(m.id)
@@ -196,7 +205,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
                   <input
                     type="checkbox"
                     checked={on}
-                    disabled={m.missNextGame || (!on && prep.length >= MAX_ON_TABLE)}
+                    disabled={validated || m.missNextGame || (!on && prep.length >= MAX_ON_TABLE)}
                     onChange={() => setPrep(on ? prep.filter((x) => x !== m.id) : [...prep, m.id])}
                   />
                   <MemberPeek faction={faction} member={m}><strong>{memberName(m) || p?.name}</strong></MemberPeek> <span className="muted small">{p?.name} · niv. {m.level}</span>
@@ -207,7 +216,29 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
           })}
         </ul>
         <div className="row wrap">
-          <Link className="btn" to={`/bandes/${crew.id}`} data-tip="La bande est modifiable pendant la préparation : équipement, achats, recrutement.">⚒ Préparer l'équipement</Link>
+          {validated ? (
+            <button className="btn" disabled={busy} onClick={() => act(() => setDayReady(campaign, false))} data-tip="Rouvre la préparation pour modifier les membres ou l'équipement.">
+              ✎ Modifier ma préparation
+            </button>
+          ) : (
+            <>
+              <Link className="btn" to={`/bandes/${crew.id}`} data-tip="La bande est modifiable pendant la préparation : équipement, achats, recrutement.">⚒ Préparer l'équipement</Link>
+              <button
+                className="btn primary"
+                disabled={busy || prep.length === 0}
+                onClick={() => act(async () => {
+                  if (dirty.current && latest.current) {
+                    dirty.current = false
+                    await saveCrew(latest.current)
+                  }
+                  await setDayReady(campaign, true)
+                })}
+                data-tip="Indique à l'organisateur que votre bande est prête. Vous pourrez encore rouvrir la préparation avant le lancement."
+              >
+                ✓ Valider ma bande pour la journée
+              </button>
+            </>
+          )}
           <button className="btn ghost small" disabled={busy} onClick={() => confirm(`Quitter la journée ${day.number} ?`) && act(async () => {
             setCrew({ ...crew, dayPrep: undefined })
             await joinDay(campaign, false)

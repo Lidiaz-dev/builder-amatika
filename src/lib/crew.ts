@@ -17,6 +17,8 @@ export type Slot = 'porte' | 'sac'
 export interface ItemRef {
   itemId: string
   slot: Slot
+  /** Ramassé pendant cette partie (id de la partie en direct) : mis en avant dans le bilan. */
+  found?: string
 }
 
 /** Objet de trésor ou du marché noir porté par une figurine. */
@@ -29,6 +31,8 @@ export interface LootRef {
   used?: boolean
   /** Objet racial acheté à la création : son prix compte dans le coût de la bande. */
   racial?: boolean
+  /** Ramassé pendant cette partie (id de la partie en direct) : mis en avant dans le bilan. */
+  found?: string
 }
 
 export type StatMods = Partial<Record<StatKey, number>>

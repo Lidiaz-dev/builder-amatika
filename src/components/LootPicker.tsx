@@ -13,13 +13,18 @@ interface Props {
   onPick: (pick: LootPick) => void
   /** Pendant une partie : l'objet est forcément trouvé (pas d'achat). */
   foundOnly?: boolean
+  /** Entre deux parties : l'objet est forcément acheté avec le trésor. */
+  buyOnly?: boolean
+  /** Bouton Fermer en bas à gauche (la fenêtre n'a alors pas de pied à elle). */
+  onClose?: () => void
 }
 
 /** Donner un objet : trouvé (gratuit) ou acheté (déduit du trésor). */
-export default function LootPicker({ allowedEquipment, onPick, foundOnly }: Props) {
+export default function LootPicker({ allowedEquipment, onPick, foundOnly, buyOnly, onClose }: Props) {
   const [source, setSource] = useState<'loot' | 'equipment'>('loot')
   const [value, setValue] = useState('')
-  const [paid, setPaid] = useState(false)
+  const [chosenPaid, setPaid] = useState(false)
+  const paid = buyOnly || chosenPaid
 
   const common = equipment.filter((e) => !allowedEquipment || allowedEquipment.includes(e.id))
   const cats = ([...new Set(common.map((e) => e.category))] as EquipmentCategory[]).sort((a, b) => CATEGORY_LABELS[a].localeCompare(CATEGORY_LABELS[b], 'fr'))
@@ -66,14 +71,15 @@ export default function LootPicker({ allowedEquipment, onPick, foundOnly }: Prop
         </div>
       )}
 
-      {!foundOnly && (
+      {!foundOnly && !buyOnly && (
         <div className="segmented" role="group" aria-label="Provenance">
           <button type="button" className={!paid ? 'on' : ''} onClick={() => setPaid(false)}>Trouvé (gratuit)</button>
           <button type="button" className={paid ? 'on' : ''} onClick={() => setPaid(true)}>Acheté ({price} PO)</button>
         </div>
       )}
-      <div>
-        <button type="button" className="btn primary" disabled={!value} onClick={submit}>Donner l'objet</button>
+      <div className="picker-footer">
+        {onClose && <button type="button" className="btn small ghost" onClick={onClose}>Fermer</button>}
+        <button type="button" className="btn primary" disabled={!value} onClick={submit}>{buyOnly ? `Acheter (${price} PO)` : "Donner l'objet"}</button>
       </div>
     </div>
   )

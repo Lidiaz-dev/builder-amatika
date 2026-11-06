@@ -44,7 +44,7 @@ function Header() {
         <span className="brand-mark">◆</span> Builder Amatika
       </NavLink>
       <nav>
-        <NavLink to="/bandes">Mes bandes</NavLink>
+        <NavLink to="/bandes">Bandes</NavLink>
         {!localMode && <NavLink to="/campagnes">Campagnes</NavLink>}
         <NavLink to="/partie">Partie</NavLink>
         <NavLink to="/regles">Compendium</NavLink>

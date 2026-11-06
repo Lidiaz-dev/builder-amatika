@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../lib/auth'
 import { createCampaign, DAY_STATUS_LABELS, isAdmin, listCampaigns, type GroupCampaign } from '../lib/groupCampaign'
 import VerifyEmailNotice from '../components/VerifyEmailNotice'
+import { DEFAULT_BUDGET } from '../lib/crew'
 
 /** Liste des campagnes de groupe : toutes pour l'organisateur, celles où l'on est inscrit sinon. */
 export default function CampaignsPage() {
@@ -10,6 +11,7 @@ export default function CampaignsPage() {
   const [campaigns, setCampaigns] = useState<GroupCampaign[] | null>(null)
   const [error, setError] = useState('')
   const [name, setName] = useState('')
+  const [budget, setBudget] = useState(DEFAULT_BUDGET)
   const navigate = useNavigate()
   const admin = isAdmin(user)
 
@@ -20,9 +22,9 @@ export default function CampaignsPage() {
 
   async function create(e: FormEvent) {
     e.preventDefault()
-    if (!name.trim()) return
+    if (!name.trim() || budget <= 0) return
     try {
-      const id = await createCampaign(name)
+      const id = await createCampaign(name, budget)
       navigate(`/campagnes/${id}`)
     } catch (err) {
       setError((err as Error).message)
@@ -50,7 +52,11 @@ export default function CampaignsPage() {
             <span>Nouvelle campagne</span>
             <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex. : La ruée vers Amatika" />
           </label>
-          <button className="btn primary" type="submit" disabled={!name.trim()}>Créer la campagne</button>
+          <label className="field narrow">
+            <span>Budget des bandes (PO)</span>
+            <input type="number" min={10} step={10} value={budget} onChange={(e) => setBudget(Number(e.target.value))} />
+          </label>
+          <button className="btn primary" type="submit" disabled={!name.trim() || budget <= 0}>Créer la campagne</button>
         </form>
       )}
       {error && <p className="error">{error}</p>}
@@ -63,7 +69,7 @@ export default function CampaignsPage() {
           <Link key={c.id} to={`/campagnes/${c.id}`} className="crew-tile card">
             <div className="crew-tile-text">
               <strong>{c.name}</strong>
-              <span className="muted small">{c.emails.length} joueur{c.emails.length > 1 ? 's' : ''}</span>
+              <span className="muted small">{c.emails.length} joueur{c.emails.length > 1 ? 's' : ''} · {c.budget ?? DEFAULT_BUDGET} PO</span>
               <span className="small">{c.dayNumber ? `Journée ${c.dayNumber} : ${DAY_STATUS_LABELS[c.dayStatus ?? 'cloturee']}` : 'Aucune journée jouée'}</span>
             </div>
             {c.dayStatus && c.dayStatus !== 'cloturee' && <span className="badge phase-badge phase-partie">Journée {c.dayNumber}</span>}

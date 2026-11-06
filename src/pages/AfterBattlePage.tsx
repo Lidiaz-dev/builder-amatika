@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { equipmentById, factionById, itemByKey, type Faction } from '../data'
+import { equipmentById, factionById, injuryById, itemByKey, type Faction } from '../data'
 import {
   CRYSTAL_PRICE,
   isActive,
@@ -15,7 +15,7 @@ import {
   type Member,
   memberName,
 } from '../lib/crew'
-import { addXp, applyAdvance, applyInjury, d10, learnsNothing, pendingLevels, poisonThreshold } from '../lib/campaign'
+import { addXp, applyAdvance, applyInjury, d10, revertInjury, learnsNothing, pendingLevels, poisonThreshold } from '../lib/campaign'
 import { getCrew, saveCrew } from '../lib/storage'
 import DiceInput from '../components/DiceInput'
 import Modal from '../components/Modal'
@@ -23,6 +23,9 @@ import InjuryPicker from '../components/InjuryPicker'
 import AdvancePicker from '../components/AdvancePicker'
 import LootPicker, { type LootPick } from '../components/LootPicker'
 import { submitSheetIfNeeded } from '../lib/groupCampaign'
+import { DECKS } from '../lib/decks'
+import RarityDot from '../components/RarityDot'
+import RuleText from '../components/RuleText'
 
 const STEPS = ['Participants', 'Objets utilisés', 'Morts et blessures', 'Butin', 'Entretien', 'Expérience', 'Niveaux', 'Résumé']
 // Index des étapes.
@@ -58,6 +61,19 @@ interface WizardSnapshot {
   poisonRolls: Record<string, number | null>
   xp: Record<string, XpInput>
   liqueurDice: Record<string, number>
+  /** Cartes Marché noir distribuées (clés d'objets) et indices de celles achetées. */
+  market?: string[]
+  marketBought?: number[]
+  /** Cristaux magiques du butin vendus tout de suite (25 PO pièce). */
+  crystalsSold?: number
+}
+
+/** Cartes Marché noir distribuées : 4, plus 1 par figurine avec Soldat de la Pègre. */
+function drawMarket(count: number): string[] {
+  const deck = [...(DECKS.find((d) => d.id === 'marche-noir')?.cards ?? [])]
+  const out: string[] = []
+  while (out.length < count && deck.length) out.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0].ref)
+  return out
 }
 
 function readSnapshot(crewId: string): WizardSnapshot | null {
@@ -84,6 +100,7 @@ export default function AfterBattlePage() {
   const [rolls, setRolls] = useState<(number | null)[]>([])
   const [poFound, setPoFound] = useState(0)
   const [prestigeGained, setPrestigeGained] = useState(0)
+  const [crystalsSold, setCrystalsSold] = useState(0)
   // Entretien
   const [leaving, setLeaving] = useState<string[]>([])
   // Objets utilisés : jet de réserve de chaque poison (par id d'objet)
@@ -92,6 +109,10 @@ export default function AfterBattlePage() {
   const [xp, setXp] = useState<Record<string, XpInput>>({})
   /** D10 d'XP des liqueurs bues, par figurine (calculés en quittant l'étape des objets). */
   const [liqueurDice, setLiqueurDice] = useState<Record<string, number>>({})
+  // Marché noir
+  const [market, setMarket] = useState<string[] | null>(null)
+  const [marketBought, setMarketBought] = useState<number[]>([])
+  const [buyer, setBuyer] = useState<Record<number, string>>({})
   // Fenêtres
   const [injuryFor, setInjuryFor] = useState<string | null>(null)
   const [lootFor, setLootFor] = useState<string | null>(null)
@@ -108,6 +129,9 @@ export default function AfterBattlePage() {
     setLeaving([])
     setPoisonRolls({})
     setLiqueurDice({})
+    setMarket(null)
+    setMarketBought([])
+    setCrystalsSold(0)
     setRolls([])
     if (live) {
       setTitle(live.title)
@@ -154,6 +178,9 @@ export default function AfterBattlePage() {
         setPoisonRolls(snap.poisonRolls)
         setXp(snap.xp)
         setLiqueurDice(snap.liqueurDice)
+        setMarket(snap.market ?? null)
+        setMarketBought(snap.marketBought ?? [])
+        setCrystalsSold(snap.crystalsSold ?? 0)
         setResumed(snap.step > 0)
       } else {
         startFrom(c)
@@ -166,14 +193,14 @@ export default function AfterBattlePage() {
     if (!original || !draft || saving) return
     const snap: WizardSnapshot = {
       base: original.updatedAt, step, draft, exits, logs, title, participants, rawCrystals, rolls,
-      poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice,
+      poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market: market ?? undefined, marketBought, crystalsSold,
     }
     try {
       localStorage.setItem(wizardKey(original.id), JSON.stringify(snap))
     } catch {
       // Stockage indisponible (navigation privée…) : l'assistant marche quand même, sans reprise.
     }
-  }, [original, draft, step, exits, logs, title, participants, rawCrystals, rolls, poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, saving])
+  }, [original, draft, step, exits, logs, title, participants, rawCrystals, rolls, poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market, marketBought, crystalsSold, saving])
 
   if (original === undefined) return <p className="muted">Chargement…</p>
   const faction = original ? factionById(original.factionId) : undefined
@@ -189,6 +216,53 @@ export default function AfterBattlePage() {
   const log = (line: string) => setLogs((all) => all.map((l, i) => (i === step ? [...l, line] : l)))
   const setMember = (m: Member) => setDraft((d) => d && { ...d, members: d.members.map((x) => (x.id === m.id ? m : x)) })
   const memberById = (mid: string) => draft.members.find((m) => m.id === mid)!
+  /** Retire la dernière ligne du journal de l'étape qui commence par `prefix` ; sinon ajoute `fallback`. */
+  const unlog = (prefix: string, fallback?: string) =>
+    setLogs((all) =>
+      all.map((l, i) => {
+        if (i !== step) return l
+        const k = l.map((x) => x.startsWith(prefix)).lastIndexOf(true)
+        return k >= 0 ? l.filter((_, j) => j !== k) : fallback ? [...l, fallback] : l
+      }),
+    )
+  const removeInjury = (m: Member, recordId: string) => {
+    const card = injuryById((m.injuries ?? []).find((r) => r.id === recordId)?.cardId ?? '')
+    if (!confirm(`Retirer la blessure « ${card?.name ?? '?'} » de ${nameOf(faction, m)} ? Ses effets sur la fiche sont annulés.`)) return
+    setMember(revertInjury(m, recordId))
+    unlog(`${nameOf(faction, m)} : ${card?.name ?? ''}`)
+  }
+  const sellItem = (m: Member, kind: 'equipment' | 'loot', ref: string | number, name: string, price: number) => {
+    const gain = Math.floor(price / 2)
+    if (!confirm(`Vendre « ${name} » de ${nameOf(faction, m)} pour ${gain} PO ?`)) return
+    setDraft((d) => {
+      if (!d) return d
+      const members = d.members.map((x) =>
+        x.id !== m.id ? x : kind === 'loot' ? { ...x, loot: (x.loot ?? []).filter((l) => l.id !== ref) } : { ...x, equipment: x.equipment.filter((_, i) => i !== ref) },
+      )
+      return withTreasury({ ...d, members }, { po: gain }, `${title} : vente de ${name}`)
+    })
+    log(`${nameOf(faction, m)} vend : ${name} (+${gain} PO)`)
+  }
+  const buyMarket = (index: number) => {
+    const key = market?.[index]
+    const item = key ? itemByKey(key) : undefined
+    const m = draft.members.find((x) => x.id === (buyer[index] ?? alivePlaying[0]?.id))
+    if (!key || !item || item.price === null || !m) return
+    const price = item.price
+    setDraft((d) => {
+      if (!d) return d
+      const members = d.members.map((x) => (x.id === m.id ? { ...x, loot: [...(x.loot ?? []), { id: newId(), key, slot: 'sac' as const }] } : x))
+      return withTreasury({ ...d, members }, { po: -price }, `${title} : marché noir, ${item.name}`)
+    })
+    setMarketBought((b) => [...b, index])
+    log(`Marché noir : ${item.name} acheté pour ${nameOf(faction, m)} (${price} PO)`)
+  }
+  const loseItem = (m: Member, kind: 'equipment' | 'loot', ref: string | number, name: string) => {
+    if (!confirm(`${nameOf(faction, m)} perd « ${name} » ? L'objet quitte la bande.`)) return
+    setMember(kind === 'loot' ? { ...m, loot: (m.loot ?? []).filter((l) => l.id !== ref) } : { ...m, equipment: m.equipment.filter((_, i) => i !== ref) })
+    const who = memberName(m) || profileOf(faction, m)?.name
+    unlog(`${who} récupère : ${name}`, `${nameOf(faction, m)} perd : ${name}`)
+  }
   const playing = participants.map(memberById).filter(Boolean)
   const alivePlaying = playing.filter(isActive)
   const prospectors = alivePlaying.filter((m) => {
@@ -245,10 +319,12 @@ export default function AfterBattlePage() {
       setLiqueurDice(dice)
     }
     if (k === S.loot) {
+      const sold = Math.min(crystalsSold, crystalsGained)
       if (crystalsGained) lines.push(`${crystalsGained} cristaux magiques (cristaux bruts : ${keptCrystals.join(', ')})`)
+      if (sold) lines.push(`${sold} cristaux vendus : +${sold * CRYSTAL_PRICE} PO`)
       if (poFound) lines.push(`${poFound} PO récupérées`)
       if (prestigeGained) lines.push(`${prestigeGained} de prestige`)
-      const delta = { cristaux: crystalsGained, po: poFound, prestige: prestigeGained }
+      const delta = { cristaux: crystalsGained - sold, po: poFound + sold * CRYSTAL_PRICE, prestige: prestigeGained }
       if (crystalsGained || poFound || prestigeGained) c = withTreasury(c, delta, `${title} : butin`)
     }
     if (k === S.upkeep) {
@@ -299,9 +375,14 @@ export default function AfterBattlePage() {
     const allLines = logs.flat().map((l) => l.replace(/^§/, ''))
     const game = { id: newId(), date: new Date().toISOString(), title, participants, lines: allLines }
     // Ceux qui ont manqué cette partie pour blessure grave pourront jouer la suivante.
-    const members = draft!.members.map((m) =>
-      original!.members.find((o) => o.id === m.id)?.missNextGame && !participants.includes(m.id) ? { ...m, missNextGame: false } : m,
-    )
+    const members = draft!.members
+      .map((m) => (original!.members.find((o) => o.id === m.id)?.missNextGame && !participants.includes(m.id) ? { ...m, missNextGame: false } : m))
+      // La partie est finie : les objets ne sont plus « trouvés pendant la partie ».
+      .map((m) => ({
+        ...m,
+        equipment: m.equipment.map((ref) => ({ ...ref, found: undefined })),
+        loot: m.loot?.map((ref) => ({ ...ref, found: undefined })),
+      }))
     const final: Crew = {
       ...draft!,
       members,
@@ -331,6 +412,51 @@ export default function AfterBattlePage() {
     setLootFor(null)
   }
 
+  /** Cartes Marché noir en plus : une par figurine avec Soldat de la Pègre. */
+  const pegre = draft.members.filter((m) => {
+    const p = isActive(m) ? profileOf(faction, m) : undefined
+    return !!p && memberSkills(p, m).some((sk) => sk.toLowerCase() === 'soldat de la pègre')
+  }).length
+  /** Partie notée en direct : ses objets ramassés sont mis en avant dans l'étape Butin. */
+  const liveGame = original.campaign.currentGame
+  const foundInGame = (m: Member, flag: string | undefined, name: string) =>
+    !!liveGame && (flag === liveGame.id || liveGame.events.some((e) => e.step === 'loot' && e.text === `${nameOf(faction, m)} ramasse : ${name}`))
+  const lootLines = (m: Member) => {
+    const all = [
+      ...m.equipment.map((ref, i) => ({ key: `e${i}`, kind: 'equipment' as const, ref: i as string | number, name: equipmentById(ref.itemId)?.name ?? ref.itemId, price: equipmentById(ref.itemId)?.price ?? null, loot: false, found: foundInGame(m, ref.found, equipmentById(ref.itemId)?.name ?? ref.itemId) })),
+      ...(m.loot ?? []).map((l) => ({ key: l.id, kind: 'loot' as const, ref: l.id as string | number, name: itemByKey(l.key)?.name ?? l.key, price: itemByKey(l.key)?.price ?? null, loot: true, found: foundInGame(m, l.found, itemByKey(l.key)?.name ?? l.key) })),
+    ]
+    const tag = (it: (typeof all)[number]) => (
+      <span key={it.key} className="tag-wrap with-after">
+        <span className={`tag ${it.loot ? 'loot-tag' : ''} ${it.found ? 'found-tag' : ''}`}>{it.name}</span>
+        {it.price ? (
+          <button className="tag-remove tag-sell" onClick={() => sellItem(m, it.kind, it.ref, it.name, it.price!)} aria-label={`Vendre ${it.name}`} data-tip={`Vendre pour ${Math.floor(it.price / 2)} PO`}>
+            {Math.floor(it.price / 2)} PO
+          </button>
+        ) : null}
+        <button className="tag-remove" onClick={() => loseItem(m, it.kind, it.ref, it.name)} aria-label={`Perdre ${it.name}`} data-tip="Perdre l'objet (dépouillé, détruit…)">×</button>
+      </span>
+    )
+    const found = all.filter((it) => it.found)
+    const others = all.filter((it) => !it.found)
+    if (!all.length) return null
+    return (
+      <div className="step-tags loot-lines">
+        {liveGame && (
+          <p className="small">
+            <strong>Trouvé pendant la partie :</strong>{' '}
+            {found.length ? <span className="tags">{found.map(tag)}</span> : <span className="muted">rien</span>}
+          </p>
+        )}
+        {others.length > 0 && (
+          <p className="small">
+            <span className="muted">{liveGame ? 'Déjà sur la figurine :' : 'Objets :'}</span> <span className="tags">{others.map(tag)}</span>
+          </p>
+        )}
+      </div>
+    )
+  }
+
   /** Participants déjà choisis (partie notée en direct) : l'étape « Qui a participé ? » est sautée. */
   const preset = !!original?.campaign?.currentGame
   const levelers = draft.members.filter((m) => isActive(m) && pendingLevels(m) > 0)
@@ -339,6 +465,21 @@ export default function AfterBattlePage() {
   const missingPoisonRoll = step === S.items && usedEntries.some(({ ref, item }) => item?.consumable === 'poison' && (poisonRolls[ref.id] ?? null) === null)
   const deficit = treasury.po - upkeepPo
   const crDeficit = treasury.cristaux - upkeepCr
+  const learners = alivePlaying.filter((m) => {
+    const p = profileOf(faction, m)
+    return p && !learnsNothing(p, m)
+  })
+  /** Ce qui empêche de passer à l'étape suivante (null : rien). */
+  const blockReason: string | null =
+    step === S.participants && participants.length === 0 ? 'Choisissez au moins une figurine.'
+      : missingPoisonRoll ? 'Lancez le dé de chaque poison utilisé.'
+        : missingCrystalRoll ? 'Lancez tous les dés des cristaux bruts.'
+          : step === S.upkeep && deficit < 0 ? `Il manque ${-deficit} PO pour payer l'entretien : vendez des objets ou des cristaux, ou laissez partir des soldats.`
+            : step === S.upkeep && crDeficit < 0 ? `Il manque ${-crDeficit} cristal(aux) pour l'entretien.`
+              : step === S.xp && learners.some((m) => (xp[m.id]?.participation ?? null) === null) ? `Lancez le dé de participation de : ${learners.filter((m) => (xp[m.id]?.participation ?? null) === null).map((m) => nameOf(faction, m)).join(', ')}.`
+                : step === S.xp && learners.some((m) => liqueurDice[m.id] && xp[m.id]?.liqueur === undefined) ? 'Lancez les dés de liqueur.'
+                  : step === S.levels && levelers.length > 0 ? `Appliquez les montées de niveau de : ${levelers.map((m) => nameOf(faction, m)).join(', ')}.`
+                    : null
 
   return (
     <section className="after-battle">
@@ -448,6 +589,16 @@ export default function AfterBattlePage() {
                   <span><strong>{nameOf(faction, m)}</strong> {!isActive(m) && <span className="badge ko">Mort</span>}</span>
                   <span className="muted small">{(m.injuries ?? []).filter((r) => !original.members.find((o) => o.id === m.id)?.injuries?.some((x) => x.id === r.id)).length} nouvelle(s) blessure(s)</span>
                   {isActive(m) && <button className="btn small" onClick={() => setInjuryFor(m.id)}>✚ Blessure</button>}
+                  {(m.injuries ?? []).length > 0 && (
+                    <span className="tags step-tags">
+                      {(m.injuries ?? []).map((r) => (
+                        <span key={r.id} className="tag-wrap with-after">
+                          <span className="tag injury-tag">{injuryById(r.cardId)?.name ?? r.cardId}</span>
+                          <button className="tag-remove" onClick={() => removeInjury(m, r.id)} aria-label="Retirer cette blessure" data-tip="Retirer cette blessure (erreur)">×</button>
+                        </span>
+                      ))}
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -477,6 +628,25 @@ export default function AfterBattlePage() {
               </div>
             )}
             {rawCrystals > 0 && <p><strong>{crystalsGained}</strong> cristaux magiques obtenus.</p>}
+            {crystalsGained > 0 && !missingCrystalRoll && (
+              <div className="row wrap crystal-sale">
+                <label className="row">
+                  Vendre
+                  <input
+                    type="number"
+                    min={0}
+                    max={crystalsGained}
+                    className="xp-input"
+                    value={Math.min(crystalsSold, crystalsGained)}
+                    onChange={(e) => setCrystalsSold(Math.max(0, Math.min(crystalsGained, Math.floor(Number(e.target.value) || 0))))}
+                    aria-label="Cristaux à vendre"
+                  />
+                  cristal(aux) sur {crystalsGained}, à {CRYSTAL_PRICE} PO pièce
+                </label>
+                {crystalsSold > 0 && <strong>+{Math.min(crystalsSold, crystalsGained) * CRYSTAL_PRICE} PO</strong>}
+                <span className="muted small">Vous en garderez {crystalsGained - Math.min(crystalsSold, crystalsGained)}.</span>
+              </div>
+            )}
             {missingCrystalRoll && <p className="notice small">Lancez tous les dés des cristaux bruts pour continuer.</p>}
 
             <h3>Or et prestige</h3>
@@ -490,11 +660,48 @@ export default function AfterBattlePage() {
               {alivePlaying.map((m) => (
                 <li key={m.id}>
                   <strong>{nameOf(faction, m)}</strong>
-                  <span className="muted small">{(m.loot ?? []).length} objet(s) de trésor</span>
                   <button className="btn small" onClick={() => setLootFor(m.id)}>⚱ Donner un objet</button>
+                  {lootLines(m)}
                 </li>
               ))}
             </ul>
+            <h3>Marché noir</h3>
+            {!market ? (
+              <div className="row wrap">
+                <button className="btn" onClick={() => setMarket(drawMarket(4 + pegre))}>🂠 Tirer {4 + pegre} cartes Marché noir</button>
+                <span className="muted small">4 cartes{pegre ? `, +${pegre} pour Soldat de la Pègre` : ''}. Les cartes non achetées retournent dans le paquet.</span>
+              </div>
+            ) : (
+              <>
+                <p className="muted small">Trésor actuel : {draft.campaign?.po ?? 0} PO{poFound ? ` (+${poFound} PO trouvées, ajoutées à la fin du bilan)` : ''}.</p>
+                <ul className="market-list">
+                  {market.map((key, i) => {
+                    const item = itemByKey(key)
+                    const bought = marketBought.includes(i)
+                    const price = item?.price ?? null
+                    return (
+                      <li key={i} className={bought ? 'bought' : ''}>
+                        <div>
+                          <strong><RarityDot rarity={item?.rarity ?? 'blanc'} /> {item?.name ?? key}</strong>{' '}
+                          <span className="muted small">{price !== null ? `${price} PO` : 'prix inconnu'}</span>
+                          {item?.description && <p className="small"><RuleText text={item.description} /></p>}
+                        </div>
+                        {bought ? (
+                          <span className="badge ok">✓ Acheté</span>
+                        ) : (
+                          <div className="row">
+                            <select value={buyer[i] ?? alivePlaying[0]?.id ?? ''} onChange={(e) => setBuyer((b) => ({ ...b, [i]: e.target.value }))} aria-label="Figurine qui reçoit l'objet">
+                              {alivePlaying.map((m) => <option key={m.id} value={m.id}>{nameOf(faction, m)}</option>)}
+                            </select>
+                            <button className="btn small primary" disabled={price === null || !alivePlaying.length} onClick={() => buyMarket(i)}>Acheter</button>
+                          </div>
+                        )}
+                      </li>
+                    )
+                  })}
+                </ul>
+              </>
+            )}
             <StepLog lines={logs[S.loot]} />
           </>
         )}
@@ -650,17 +857,22 @@ export default function AfterBattlePage() {
           <Link className="btn ghost" to={original.groupCampaign ? `/campagnes/${original.groupCampaign.id}` : `/bandes/${original.id}`}>Annuler</Link>
         )}
         {step < STEPS.length - 1 ? (
-          <button className="btn primary" onClick={goNext} disabled={(step === S.participants && participants.length === 0) || (step === S.upkeep && deficit < 0) || missingPoisonRoll || missingCrystalRoll}>
-            Suivant →
-          </button>
+          <span className="row step-next">
+            {blockReason && <span className="muted small step-block">{blockReason}</span>}
+            <button className="btn primary" onClick={goNext} disabled={!!blockReason}>
+              Suivant →
+            </button>
+          </span>
         ) : (
           <button className="btn primary" onClick={finish} disabled={saving}>Enregistrer la partie</button>
         )}
       </div>
 
-      <Modal open={!!injuryFor} title={`Blessure : ${injuryFor ? nameOf(faction, memberById(injuryFor)) : ''}`} kicker="Paquet Blessure" onClose={() => setInjuryFor(null)}>
+      <Modal open={!!injuryFor} title={`Blessure : ${injuryFor ? nameOf(faction, memberById(injuryFor)) : ''}`} kicker="Paquet Blessure" onClose={() => setInjuryFor(null)} noFooter>
         {injuryFor && (
           <InjuryPicker
+            onClose={() => setInjuryFor(null)}
+            lastingOnly
             onApply={(card) => {
               const m = memberById(injuryFor)
               const res = applyInjury(m, card)
@@ -677,10 +889,12 @@ export default function AfterBattlePage() {
           />
         )}
       </Modal>
-      <Modal open={!!lootFor} title={`Objet trouvé : ${lootFor ? nameOf(faction, memberById(lootFor)) : ''}`} onClose={() => setLootFor(null)}>
+      <Modal open={!!lootFor} title={`Objet trouvé : ${lootFor ? nameOf(faction, memberById(lootFor)) : ''}`} onClose={() => setLootFor(null)} noFooter>
         {lootFor && (
           <LootPicker
-            allowedEquipment={draft.unrestricted ? null : profileOf(faction, memberById(lootFor))?.equipment ?? null}
+            onClose={() => setLootFor(null)}
+            // Objet trouvé en fouillant : il va dans le sac, même si la figurine ne peut pas s'en servir.
+            allowedEquipment={null}
             onPick={(pick) => giveItem(memberById(lootFor), pick)}
           />
         )}

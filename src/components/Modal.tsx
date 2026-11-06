@@ -10,10 +10,12 @@ interface Props {
   /** Boutons du pied de fenêtre (le bouton Fermer est ajouté si absent). */
   actions?: ReactNode
   wide?: boolean
+  /** Le contenu a ses propres boutons (dont Fermer) : pas de pied de fenêtre. */
+  noFooter?: boolean
 }
 
 /** Fenêtre modale contrôlée, au style des cartes d'unité. */
-export default function Modal({ open, title, kicker, onClose, children, actions, wide }: Props) {
+export default function Modal({ open, title, kicker, onClose, children, actions, wide, noFooter }: Props) {
   const ref = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -38,10 +40,10 @@ export default function Modal({ open, title, kicker, onClose, children, actions,
             {kicker && <span className="unit-role">{kicker}</span>}
           </header>
           <div className="unit-body">{children}</div>
-          <footer className="unit-actions">
+          {!noFooter && <footer className="unit-actions">
             {actions}
             <button type="button" className="btn small ghost" onClick={onClose}>Fermer</button>
-          </footer>
+          </footer>}
         </div>
       )}
     </dialog>

@@ -40,7 +40,7 @@ export default function NewCrewPage() {
         id: newId(),
         name,
         factionId,
-        budget,
+        budget: campaign ? campaign.budget ?? DEFAULT_BUDGET : budget,
         unrestricted: campaign ? false : unrestricted,
         members,
         createdAt: now,
@@ -96,7 +96,7 @@ export default function NewCrewPage() {
         <button className="back" onClick={() => setFactionId('')} aria-label="Changer de faction">‹</button>
         <div>
           <h1>Nouvelle bande</h1>
-          <p className="step-sub">Nom et budget</p>
+          <p className="step-sub">{campaign ? 'Nom' : 'Nom et budget'}</p>
         </div>
       </div>
       {campaign && <CampaignNotice campaign={campaign} reroll={!!entry?.crewId} />}
@@ -112,10 +112,18 @@ export default function NewCrewPage() {
             <input autoFocus value={name} onChange={(e) => setName(e.target.value)} placeholder="Les Ramasseurs de Franckie" />
             <small className="muted">Vous pourrez le changer à tout moment.</small>
           </label>
-          <label className="field">
-            <span>Budget de départ (PO)</span>
-            <input type="number" min={0} step={10} value={budget} onChange={(e) => setBudget(Number(e.target.value))} />
-          </label>
+          {campaign ? (
+            <p className="field">
+              <span>Budget de départ</span>
+              <strong>{campaign.budget ?? DEFAULT_BUDGET} PO</strong>
+              <small className="muted">Fixé par la campagne.</small>
+            </p>
+          ) : (
+            <label className="field">
+              <span>Budget de départ (PO)</span>
+              <input type="number" min={0} step={10} value={budget} onChange={(e) => setBudget(Number(e.target.value))} />
+            </label>
+          )}
           {!campaign && (
             <>
           <label className="switch">

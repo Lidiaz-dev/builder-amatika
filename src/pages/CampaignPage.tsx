@@ -20,7 +20,9 @@ import {
   listSheets,
   listUsers,
   removePlayer,
+  setCampaignBudget,
   startNight,
+  watchCampaign,
   type Day,
   type Entry,
   type GroupCampaign,
@@ -28,6 +30,7 @@ import {
 } from '../lib/groupCampaign'
 import VerifyEmailNotice from '../components/VerifyEmailNotice'
 import CampaignCrewPanel from '../components/CampaignCrewPanel'
+import { DEFAULT_BUDGET } from '../lib/crew'
 
 export default function CampaignPage() {
   const { id } = useParams()
@@ -76,6 +79,11 @@ export default function CampaignPage() {
   useEffect(() => {
     load()
   }, [load])
+  // Mise à jour en direct : journée lancée, bandes prêtes, rapports rendus… sans recharger la page.
+  useEffect(() => {
+    if (!id || !user?.emailVerified) return
+    return watchCampaign(id, admin, () => void load())
+  }, [id, user, admin, load])
 
   /** Exécute une action puis recharge la page, en affichant l'erreur éventuelle. */
   const run = async (action: () => Promise<unknown>) => {
@@ -123,6 +131,7 @@ export default function CampaignPage() {
           {day ? `Journée ${day.number} : ${DAY_STATUS_LABELS[day.status]}` : 'Aucune journée jouée'}
         </span>
       </div>
+      <BudgetLine budget={campaign.budget ?? DEFAULT_BUDGET} admin={admin} busy={busy} onSave={(b) => run(() => setCampaignBudget(campaign.id, b))} />
       {error && <p className="error">{error}</p>}
 
       {player && (
@@ -138,7 +147,14 @@ export default function CampaignPage() {
             sheets={sheets}
             busy={busy}
             onCreate={() => run(() => createDay(campaign))}
-            onLaunch={() => confirm(`Lancer la journée ${campaign.dayNumber} ? La préparation est verrouillée et les joueurs qui ne l'ont pas rejointe ne pourront plus le faire.`) && run(() => launchDay(campaign))}
+            onLaunch={() => {
+              const waiting = (day?.participants ?? []).filter((e) => !day?.ready?.includes(e))
+              const names = waiting.map((e) => entries.find((x) => x.email === e)?.pseudo || e).join(', ')
+              const warn = waiting.length ? `
+
+Préparation pas encore validée : ${names}.` : ''
+              if (confirm(`Lancer la journée ${campaign.dayNumber} ? La préparation est verrouillée et les joueurs qui ne l'ont pas rejointe ne pourront plus le faire.${warn}`)) run(() => launchDay(campaign))
+            }}
             onNight={() => confirm(`Passer à la phase de nuit ? Chaque joueur fera sa récupération puis son rapport de fin de nuit.`) && run(() => startNight(campaign))}
             onClose={() => run(() => closeDay(campaign))}
             onCancel={() =>
@@ -267,9 +283,17 @@ function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, on
 
   const report = (email: string) => sheets.find((s) => s.email === email)
   const allReports = day.participants.length > 0 && day.participants.every((e) => report(e))
+  const readyCount = day.participants.filter((e) => day.ready?.includes(e)).length
   return (
     <section className="card">
       <h2>Journée {day.number} : {DAY_STATUS_LABELS[day.status]}</h2>
+      {day.status === 'preparation' && day.participants.length > 0 && (
+        <p className="small">
+          <strong>{day.participants.length}</strong> participant{day.participants.length > 1 ? 's' : ''} ·{' '}
+          <strong>{readyCount}</strong> préparation{readyCount > 1 ? 's' : ''} validée{readyCount > 1 ? 's' : ''}
+          {readyCount === day.participants.length && ' : tout le monde est prêt.'}
+        </p>
+      )}
       {day.participants.length === 0 ? (
         <p className="muted">Aucune bande n'a encore rejoint la journée.</p>
       ) : (
@@ -282,8 +306,11 @@ function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, on
                 <div className="row wrap">
                   <strong>{e?.crewName ?? '—'}</strong>
                   <span className="muted small" data-tip={email}>{who(email)}</span>
-                  {day.status === 'nuit' && (r ? <span className="badge ok">✓ Rapport validé</span> : <span className="badge">Nuit en cours</span>)}
                   {e?.crewId && <Link className="link-btn small" to={`/bandes/${e.crewId}/fiches`}>Voir les fiches</Link>}
+                  {day.status === 'preparation' && (day.ready?.includes(email)
+                    ? <span className="badge ok day-state" data-tip="Préparation validée">✓ Prête</span>
+                    : <span className="badge day-state" data-tip="Le joueur prépare encore sa bande">⏳ En préparation</span>)}
+                  {day.status === 'nuit' && (r ? <span className="badge ok day-state">✓ Rapport validé</span> : <span className="badge day-state">Nuit en cours</span>)}
                 </div>
                 {r && r.lines.length > 0 && (
                   <details>
@@ -405,5 +432,29 @@ function PlayersPanel({ entries, busy, onAdd, onRemove }: {
         Par pseudo ou depuis la liste : seulement les joueurs qui ont déjà un compte et un pseudo.
       </p>
     </section>
+  )
+}
+
+/** Budget de départ des bandes, fixé par l'organisateur (les joueurs ne peuvent pas le changer). */
+function BudgetLine({ budget, admin, busy, onSave }: { budget: number; admin: boolean; busy: boolean; onSave: (budget: number) => void }) {
+  const [value, setValue] = useState(budget)
+  useEffect(() => setValue(budget), [budget])
+  if (!admin) return <p className="campaign-budget">Budget de départ des bandes : <strong>{budget} PO</strong></p>
+  return (
+    <form
+      className="campaign-budget row wrap"
+      onSubmit={(e) => {
+        e.preventDefault()
+        if (value > 0 && value !== budget) onSave(value)
+      }}
+    >
+      <label className="row">
+        Budget de départ des bandes :
+        <input type="number" min={10} step={10} value={value} onChange={(e) => setValue(Number(e.target.value))} />
+        PO
+      </label>
+      {value !== budget && <button className="btn small primary" type="submit" disabled={busy || value <= 0}>Enregistrer</button>}
+      <span className="muted small">S'applique aux bandes pas encore validées pour la campagne.</span>
+    </form>
   )
 }

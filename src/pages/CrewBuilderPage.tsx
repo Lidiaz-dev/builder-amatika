@@ -42,17 +42,12 @@ import {
   type Member,
   type Slot,
   abandonGame,
+  DEFAULT_BUDGET,
 } from '../lib/crew'
 import {
-  addXp,
-  applyAdvance,
-  applyInjury,
   learnsNothing,
   levelForXp,
   nextThreshold,
-  pendingLevels,
-  revertInjury,
-  revertLastAdvance,
 } from '../lib/campaign'
 import { randomName } from '../lib/names'
 import { deleteCrew, getCrew, saveCrew } from '../lib/storage'
@@ -67,11 +62,9 @@ import EquipmentTag from '../components/EquipmentTag'
 import AllowedGear from '../components/AllowedGear'
 import { formatMods } from '../lib/format'
 import Modal from '../components/Modal'
-import InjuryPicker from '../components/InjuryPicker'
-import AdvancePicker from '../components/AdvancePicker'
 import LootPicker, { type LootPick } from '../components/LootPicker'
 import RuleText from '../components/RuleText'
-import { crewDayState, lockReason, type CrewDayState } from '../lib/groupCampaign'
+import { crewDayState, getCampaign, lockReason, type CrewDayState } from '../lib/groupCampaign'
 import CampaignDayBanner from '../components/CampaignDayBanner'
 
 const SPELL_GROUPS: { label: string; match: (s: Spell) => boolean }[] = [
@@ -123,6 +116,18 @@ export default function CrewBuilderPage() {
     }
     crewDayState({ id: crewId, groupCampaign: { id: groupId, name: '' } }).then(setDayState).catch(() => setDayState(null))
   }, [groupId, crewId])
+
+  // Bande de campagne pas encore validée : son budget de départ est celui fixé par la campagne.
+  const notValidated = !!crew && !crew.campaign
+  useEffect(() => {
+    if (!groupId || !notValidated) return
+    getCampaign(groupId)
+      .then((g) => {
+        const budget = g?.budget ?? DEFAULT_BUDGET
+        setCrew((c) => (c && !c.campaign && c.budget !== budget ? { ...c, budget } : c))
+      })
+      .catch(() => {})
+  }, [groupId, notValidated])
 
   // Journée annulée (campagne supprimée, bande retirée…) : la partie en cours est abandonnée d'office.
   useEffect(() => {
@@ -273,7 +278,13 @@ export default function CrewBuilderPage() {
             <span>Nom de la bande</span>
             <input value={crew.name} onChange={(e) => update({ name: e.target.value })} placeholder="Nom de la bande" />
           </label>
-          {!campaign && (
+          {!campaign && crew.groupCampaign && (
+            <p className="field narrow" data-tip="Budget fixé par l'organisateur pour toutes les bandes de la campagne.">
+              <span>Budget (PO)</span>
+              <strong className="fixed-budget">{crew.budget}</strong>
+            </p>
+          )}
+          {!campaign && !crew.groupCampaign && (
             <label className="field narrow">
               <span>Budget (PO)</span>
               <input type="number" min={0} step={10} value={crew.budget} onChange={(e) => update({ budget: Number(e.target.value) })} />
@@ -532,14 +543,12 @@ interface MemberCardProps {
   unrestricted: boolean
 }
 
-type Dialog = 'injury' | 'advance' | 'loot' | 'gear' | null
+type Dialog = 'loot' | 'gear' | null
 
 function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemove, onDuplicate, canDuplicate, unrestricted }: MemberCardProps) {
   const profile = profileOf(faction, member)
   const [adding, setAdding] = useState('')
   const [dialog, setDialog] = useState<Dialog>(null)
-  const [xpGain, setXpGain] = useState(0)
-  const [lastMessages, setLastMessages] = useState<string[]>([])
   // XP gagnée depuis la dernière visite (par exemple après le bilan) : la barre se remplit sous vos yeux.
   const xpNext = nextThreshold(member.xp)
   const xpPct = xpNext ? Math.min(100, (member.xp / xpNext) * 100) : 100
@@ -642,7 +651,6 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
   const hasError = issues.some((i) => i.severity === 'error')
   const wornCount = member.equipment.filter((r) => r.slot === 'porte').length + loot.filter((l) => l.ref.slot === 'porte').length
   const bagCount = member.equipment.length + loot.length - wornCount
-  const pending = pendingLevels(member)
   const next = nextThreshold(member.xp)
   const upkeep = memberUpkeep(profile, member)
   // Chef (ou promu chef), spécialiste, recrue ou monstre : chaque rôle a son style de carte.
@@ -724,14 +732,7 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
               </div>
               {xpGained > 0 && <span className="xp-gain" aria-label={`${xpGained} XP gagnés`}>+{xpGained} XP</span>}
               <span className="small">{member.xp}{next ? ` / ${next}` : ''} XP · niveau {levelForXp(member.xp)}</span>
-              {learnsNothing(profile, member) ? (
-                <span className="muted small">N'apprend rien</span>
-              ) : (
-                <span className="row">
-                  <input type="number" className="xp-input" value={xpGain || ''} placeholder="+XP" onChange={(e) => setXpGain(Number(e.target.value))} aria-label="XP à ajouter" />
-                  <button className="btn small" disabled={!xpGain} onClick={() => { onChange(addXp(profile, member, xpGain)); setXpGain(0) }}>Ajouter</button>
-                </span>
-              )}
+              {learnsNothing(profile, member) && <span className="muted small">N'apprend rien</span>}
             </div>
 
             {(member.injuries ?? []).length > 0 && (
@@ -745,7 +746,6 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
                       label={card?.name ?? r.cardId}
                       kicker="Blessure"
                       className="injury-tag"
-                      after={<button className="tag-remove" onClick={() => onChange(revertInjury(member, r.id))} aria-label="Annuler cette blessure">×</button>}
                     >
                       <p>{card?.description}</p>
                     </InfoTag>
@@ -758,19 +758,13 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
                 {(member.advances ?? []).map((a) => (
                   <li key={a.id}>Niv. {a.level} ({a.roll}) : {a.label}{a.spellId ? ` · sort : ${spellById(a.spellId)?.name}` : ''}</li>
                 ))}
-                <li><button className="link-btn" onClick={() => onChange(revertLastAdvance(member))}>Annuler la dernière montée de niveau</button></li>
               </ul>
             )}
-            {lastMessages.length > 0 && <p className="notice small">{lastMessages.join(' ')}</p>}
 
             <div className="row wrap">
-              {pending > 0 && (
-                <button className="btn small primary" onClick={() => setDialog('advance')} data-tip="Jet de progression pour chaque niveau gagné : caractéristique, compétence ou sort.">▲ Monter de niveau ({pending})</button>
-              )}
-              <button className="btn small" onClick={() => setDialog('injury')} data-tip="Appliquer une carte Blessure, choisie ou piochée : la fiche est mise à jour.">✚ Blessure</button>
-              <button className="btn small" onClick={() => setDialog('loot')} data-tip="Ajouter un objet trouvé, ou acheté avec le trésor.">⚱ Donner un objet</button>
-              <button className="btn small ghost danger" onClick={() => confirm(`${who} est mort ? Son équipement sera perdu.`) && onChange({ ...member, status: 'mort' })} data-tip="Le membre meurt : il quitte la bande et son équipement est perdu.">✝ Mort</button>
+              <button className="btn small" onClick={() => setDialog('loot')} data-tip="Acheter un objet avec le trésor de la bande.">⚱ Acheter un objet</button>
             </div>
+            <p className="muted small">XP, montées de niveau, blessures, morts et objets trouvés se règlent dans le rapport d'après-bataille.</p>
             <p className="muted small">
               Arbres : {profile.trees.length ? profile.trees.map((t) => TREE_LABELS[t] ?? t).join(', ') : 'aucun'} · entretien{' '}
               {upkeep.cristaux ? `${upkeep.cristaux} cristal` : `${upkeep.po} PO`}
@@ -865,9 +859,9 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
                   key={sp.id}
                   spell={sp}
                   after={
-                    // Les sorts de départ sont verrouillés pour éviter les erreurs ; les suivants peuvent être retirés.
-                    spellIds.indexOf(sp.id) < baseSpells ? (
-                      <span className="tag-lock" title="Sort de départ : il ne peut pas être retiré" aria-label="Sort de départ">🔒</span>
+                    // Sorts verrouillés : ils s'apprennent par la montée de niveau. Retrait possible seulement sans restrictions.
+                    !unrestricted || spellIds.indexOf(sp.id) < baseSpells ? (
+                      <span className="tag-lock" title={spellIds.indexOf(sp.id) < baseSpells ? 'Sort de départ : il ne peut pas être retiré' : 'Sort appris : il ne peut pas être retiré'} aria-label="Sort verrouillé">🔒</span>
                     ) : (
                       <button className="tag-remove" onClick={() => setSpells(spellIds.filter((x) => x !== sp.id))} aria-label={`Oublier ${sp.name}`}>
                         ×
@@ -900,7 +894,10 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
                 )}
               </div>
             )}
-            {!pickSecond && <select value="" onChange={(e) => e.target.value && setSpells([...spellIds, e.target.value])} aria-label="Ajouter un sort">
+            {!pickSecond && !unrestricted && (
+              <p className="muted small">Un mage apprend un nouveau sort à chaque montée de niveau (pioche de 5 sorts, il en garde un).</p>
+            )}
+            {!pickSecond && unrestricted && <select value="" onChange={(e) => e.target.value && setSpells([...spellIds, e.target.value])} aria-label="Ajouter un sort">
               <option value="">+ Ajouter un sort…</option>
               {SPELL_GROUPS.map((g) => {
                 const list = availableSpells.filter((sp) => g.match(sp) && !spellIds.includes(sp.id))
@@ -935,39 +932,11 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
         </button>
       </footer>
 
-      <Modal open={dialog === 'injury'} title={`Blessure : ${who}`} kicker="Paquet Blessure" onClose={() => setDialog(null)}>
-        <InjuryPicker
-          onApply={(card) => {
-            const res = applyInjury(member, card)
-            onChange(res.member)
-            setLastMessages([`${card.name} :`, ...res.messages])
-            if (!card.special) setDialog(null)
-          }}
-          onNegotiate={() => {
-            onChange(member, { po: -20 }, `Négociation avec la mort (${who})`)
-            setLastMessages(['Négociation avec la mort : 20 PO payés, la blessure est annulée.'])
-            setDialog(null)
-          }}
-        />
-      </Modal>
-      <Modal open={dialog === 'advance'} title={`Montée de niveau : ${who}`} kicker={`${pending} en attente`} onClose={() => setDialog(null)} wide>
-        <AdvancePicker
-          key={member.level}
-          factionId={faction.id}
-          profile={profile}
-          member={member}
-          onApply={(input) => {
-            const updated = applyAdvance(member, input)
-            onChange(updated)
-            if (pendingLevels(updated) === 0) setDialog(null)
-          }}
-        />
-      </Modal>
       <Modal open={dialog === 'gear'} title={`Équipement autorisé : ${profile.name}`} kicker={faction.name} onClose={() => setDialog(null)}>
         <AllowedGear profile={profile} factionId={faction.id} unrestricted={!!unrestricted} />
       </Modal>
-      <Modal open={dialog === 'loot'} title={`Donner un objet : ${who}`} onClose={() => setDialog(null)}>
-        <LootPicker allowedEquipment={unrestricted ? null : profile.equipment} onPick={giveItem} />
+      <Modal open={dialog === 'loot'} title={`Acheter un objet : ${who}`} onClose={() => setDialog(null)} noFooter>
+        <LootPicker allowedEquipment={unrestricted ? null : profile.equipment} onPick={giveItem} buyOnly onClose={() => setDialog(null)} />
       </Modal>
     </article>
   )

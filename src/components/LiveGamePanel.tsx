@@ -16,7 +16,7 @@ import {
   memberName,
   abandonGame,
 } from '../lib/crew'
-import { applyInjury } from '../lib/campaign'
+import { applyInjury, revertInjury } from '../lib/campaign'
 import StatLine from './StatLine'
 import SkillTag from './SkillTag'
 import InfoTag from './InfoTag'
@@ -38,10 +38,12 @@ interface Props {
   onFinish: () => void
   /** Raison pour laquelle la partie ne peut pas encore être terminée (journée de campagne en cours). */
   finishBlocked?: string
+  /** Masque « Terminer la partie » et « Annuler la partie » (joueur d'une campagne de groupe). */
+  hideGameControls?: boolean
 }
 
 /** Vue « table de jeu » pendant une partie : seuls les participants, actions rapides et compteurs. */
-export default function LiveGamePanel({ crew, faction, onChange, onFinish, finishBlocked }: Props) {
+export default function LiveGamePanel({ crew, faction, onChange, onFinish, finishBlocked, hideGameControls }: Props) {
   const game = crew.campaign!.currentGame!
   const [injuryFor, setInjuryFor] = useState<string | null>(null)
   const [lootFor, setLootFor] = useState<string | null>(null)
@@ -62,6 +64,40 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
   const toggleOut = (id: string) =>
     mutate((g) => ({ game: { outOfAction: g.outOfAction.includes(id) ? g.outOfAction.filter((x) => x !== id) : [...g.outOfAction, id] } }))
 
+  /** Retire la dernière ligne du journal qui commence par `prefix` ; sinon ajoute `fallback`. */
+  const withoutEvent = (events: LiveGame['events'], step: LiveGame['events'][number]['step'], prefix: string, fallback?: string): LiveGame['events'] => {
+    const i = events.map((e) => e.step === step && e.text.startsWith(prefix)).lastIndexOf(true)
+    if (i >= 0) return events.filter((_, k) => k !== i)
+    return fallback ? [...events, { step, text: fallback }] : events
+  }
+  const removeInjury = (memberId: string, recordId: string) => {
+    const m = crew.members.find((x) => x.id === memberId)!
+    const card = injuryById((m.injuries ?? []).find((r) => r.id === recordId)?.cardId ?? '')
+    if (!confirm(`Retirer la blessure « ${card?.name ?? '?'} » de ${nameOf(m)} ? Ses effets sur la fiche sont annulés.`)) return
+    mutate((g, c) => {
+      const cur = c.members.find((x) => x.id === memberId)!
+      return {
+        members: replaceIn(c.members, revertInjury(cur, recordId)),
+        game: { events: withoutEvent(g.events, 'injuries', `${nameOf(cur)} : ${card?.name ?? ''}`) },
+      }
+    })
+  }
+  const loseItem = (memberId: string, kind: 'equipment' | 'loot', ref: string | number, name: string) => {
+    const m = crew.members.find((x) => x.id === memberId)!
+    if (!confirm(`${nameOf(m)} perd « ${name} » ? L'objet quitte la bande.`)) return
+    mutate((g, c) => {
+      const cur = c.members.find((x) => x.id === memberId)!
+      const next =
+        kind === 'loot'
+          ? { ...cur, loot: (cur.loot ?? []).filter((l) => l.id !== ref) }
+          : { ...cur, equipment: cur.equipment.filter((_, i) => i !== ref) }
+      return {
+        members: replaceIn(c.members, next),
+        game: { events: withoutEvent(g.events, 'loot', `${nameOf(cur)} ramasse : ${name}`, `${nameOf(cur)} perd : ${name}`) },
+      }
+    })
+  }
+
   const playing = game.participants.map((id) => crew.members.find((m) => m.id === id)).filter((m): m is Member => !!m)
   const benched = crew.members.filter((m) => isActive(m) && !game.participants.includes(m.id))
   const standing = playing.filter((m) => isActive(m) && !game.outOfAction.includes(m.id)).length
@@ -78,10 +114,10 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
           <h2>⚔ {game.title}</h2>
           <p>{standing} / {playing.length} figurines debout · commencée le {new Date(game.startedAt).toLocaleDateString('fr-FR')}</p>
         </div>
-        <div className="row wrap">
+        {!hideGameControls && <div className="row wrap">
           <button className="btn primary" onClick={onFinish} disabled={!!finishBlocked} data-tip={finishBlocked ?? "Lance le bilan d'après-bataille : blessures, butin, cristaux, entretien, XP et niveaux. Tout est ensuite appliqué à la bande."}>Terminer la partie</button>
           <button className="btn" onClick={cancelGame} data-tip="Abandonne la partie sans bilan : compteurs et objets utilisés sont remis à zéro.">Annuler la partie</button>
-        </div>
+        </div>}
       </header>
 
       <div className="live-counters card">
@@ -121,7 +157,10 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
                     </div>
                   )}
                   {(m.injuries ?? []).map((r) => (
-                    <span key={r.id} className="badge ko">{injuryById(r.cardId)?.name}</span>
+                    <span key={r.id} className="badge ko injury-badge">
+                      {injuryById(r.cardId)?.name}
+                      <button className="tag-remove" onClick={() => removeInjury(m.id, r.id)} aria-label="Retirer cette blessure" data-tip="Retirer cette blessure (erreur)">×</button>
+                    </span>
                   ))}
                 </div>
                 <StatLine stats={effectiveStats(p, m)} base={p.stats} />
@@ -131,7 +170,12 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
                   <ul className="live-items">
                     {m.equipment.map((ref, i) => {
                       const e = equipmentById(ref.itemId)
-                      return e ? <li key={`e${i}`}><RarityDot rarity="blanc" /> <EquipmentTag item={e} />{ref.slot === 'sac' && <span className="muted small"> (sac)</span>}</li> : null
+                      return e ? (
+                        <li key={`e${i}`}>
+                          <RarityDot rarity="blanc" /> <EquipmentTag item={e} />{ref.slot === 'sac' && <span className="muted small"> (sac)</span>}
+                          <button className="tag-remove lose-btn" onClick={() => loseItem(m.id, 'equipment', i, e.name)} aria-label={`Perdre ${e.name}`} data-tip="Perdre l'objet">×</button>
+                        </li>
+                      ) : null
                     })}
                     {loot.map(({ ref, item }) => (
                       <li key={ref.id} className={ref.used ? 'used' : undefined}>
@@ -149,6 +193,7 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
                             {ref.used ? '✓ Utilisé' : 'Utiliser'}
                           </button>
                         )}
+                        <button className="tag-remove lose-btn" onClick={() => loseItem(m.id, 'loot', ref.id, item?.name ?? ref.key)} aria-label={`Perdre ${item?.name ?? ref.key}`} data-tip="Perdre l'objet">×</button>
                       </li>
                     ))}
                   </ul>
@@ -177,9 +222,10 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
         <p className="muted small">Restés au camp : {benched.map(nameOf).join(', ')}.</p>
       )}
 
-      <Modal open={!!injuryFor} title={`Blessure : ${injuryFor ? nameOf(crew.members.find((m) => m.id === injuryFor)!) : ''}`} kicker="Paquet Blessure" onClose={() => setInjuryFor(null)}>
+      <Modal open={!!injuryFor} title={`Blessure : ${injuryFor ? nameOf(crew.members.find((m) => m.id === injuryFor)!) : ''}`} kicker="Paquet Blessure" onClose={() => setInjuryFor(null)} noFooter>
         {injuryFor && (
           <InjuryPicker
+            onClose={() => setInjuryFor(null)}
             onApply={(card) => {
               const id = injuryFor
               const knocked = card.kind !== 'meme-pas-mal' && !card.special
@@ -216,9 +262,10 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
           />
         )}
       </Modal>
-      <Modal open={!!lootFor} title={`Objet ramassé : ${lootFor ? nameOf(crew.members.find((m) => m.id === lootFor)!) : ''}`} onClose={() => setLootFor(null)}>
+      <Modal open={!!lootFor} title={`Objet ramassé : ${lootFor ? nameOf(crew.members.find((m) => m.id === lootFor)!) : ''}`} onClose={() => setLootFor(null)} noFooter>
         {lootFor && (
           <LootPicker
+            onClose={() => setLootFor(null)}
             allowedEquipment={null}
             foundOnly
             onPick={(pick: LootPick) => {
@@ -228,8 +275,8 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
                 const m = c.members.find((x) => x.id === id)!
                 const next =
                   pick.kind === 'loot'
-                    ? { ...m, loot: [...(m.loot ?? []), { id: newId(), key: pick.key, slot: 'sac' as const }] }
-                    : { ...m, equipment: [...m.equipment, { itemId: pick.itemId, slot: 'sac' as const }] }
+                    ? { ...m, loot: [...(m.loot ?? []), { id: newId(), key: pick.key, slot: 'sac' as const, found: g.id }] }
+                    : { ...m, equipment: [...m.equipment, { itemId: pick.itemId, slot: 'sac' as const, found: g.id }] }
                 return { members: replaceIn(c.members, next), game: { events: [...g.events, { step: 'loot', text: `${nameOf(m)} ramasse : ${name}` }] } }
               })
               setLootFor(null)

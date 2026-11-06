@@ -16,6 +16,12 @@ service cloud.firestore {
     function isAdmin() { return verified() && myEmail() == 'lidiaz.video@gmail.com'; }
     function campaign(cid) { return get(/databases/$(database)/documents/campaigns/$(cid)).data; }
     function isPlayer(cid) { return verified() && myEmail() in campaign(cid).emails; }
+    // La liste n'a changé que par l'ajout ou le retrait de l'email du joueur connecté.
+    function onlyMe(after, before) {
+      return after.toSet() == before.toSet()
+        || after.toSet() == before.toSet().union([myEmail()].toSet())
+        || after.toSet() == before.toSet().difference([myEmail()].toSet());
+    }
 
     // Profil de chaque compte : pseudo (affiché à la place de l'email) et email.
     match /users/{uid} {
@@ -52,13 +58,15 @@ service cloud.firestore {
       match /days/{dayId} {
         allow read: if isAdmin() || isPlayer(cid);
         allow create, delete: if isAdmin();
-        // Pendant la préparation, un joueur peut rejoindre ou quitter la journée (seulement lui-même).
+        // Pendant la préparation, un joueur peut rejoindre ou quitter la journée et valider (ou rouvrir)
+        // sa préparation : seulement pour lui-même, et il ne peut être prêt que s'il participe.
         allow update: if isAdmin()
           || (isPlayer(cid)
             && resource.data.status == 'preparation'
-            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['participants'])
-            && (request.resource.data.participants.toSet() == resource.data.participants.toSet().union([myEmail()].toSet())
-              || request.resource.data.participants.toSet() == resource.data.participants.toSet().difference([myEmail()].toSet())));
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['participants', 'ready'])
+            && onlyMe(request.resource.data.participants, resource.data.participants)
+            && onlyMe(request.resource.data.get('ready', []), resource.data.get('ready', []))
+            && (!(myEmail() in request.resource.data.get('ready', [])) || myEmail() in request.resource.data.participants));
 
         match /sheets/{email} {
           allow read: if isAdmin() || (verified() && email == myEmail());

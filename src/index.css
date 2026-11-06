@@ -558,6 +558,13 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 @media (max-width: 600px) {
   .page { padding: 1rem 16px 3rem; }
   .site-header { gap: 0.75rem; padding: 0.6rem 16px; flex-wrap: wrap; }
+  /* Menu sur sa propre ligne, sous la marque et le compte : liens répartis, jamais coupés. */
+  .site-header nav { order: 3; width: 100%; justify-content: space-between; gap: 0.5rem; padding-top: 0.45rem; border-top: 1px solid rgb(201 164 92 / 0.3); }
+  .site-header nav a { white-space: nowrap; font-size: 0.85rem; padding-bottom: 0.1rem; }
+  .site-header { row-gap: 0.45rem; }
+  .brand { font-size: 0.95rem; }
+  .header-user { gap: 0.5rem; }
+  .header-user .btn.small { padding: 0.2rem 0.5rem; font-size: 0.78rem; }
   .hide-mobile { display: none; }
   .tile-grid { grid-template-columns: 1fr; }
   .tile { min-height: 140px; }
@@ -1004,7 +1011,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .header-pseudo:hover, .header-pseudo.active { color: #fff; }
 @media (max-width: 600px) {
   /* Pseudo raccourci s'il est long, pour tenir à côté du bouton de déconnexion. */
-  .header-pseudo { max-width: 10rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .header-pseudo { max-width: 7rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 }
 .day-cancel { margin-left: 0.5rem; }
 .builder-lock { display: contents; border: 0; margin: 0; padding: 0; min-width: 0; }
@@ -1191,3 +1198,40 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 /* Équipement autorisé d'un profil (fenêtre du builder) */
 .gear-list-btn { margin-top: 0.4rem; }
 .allowed-gear p { margin: 0 0 0.4rem; }
+
+/* Budget de départ imposé par une campagne */
+.campaign-budget { margin: 0 0 1rem; gap: 0.6rem; align-items: center; }
+.campaign-budget input { width: 6rem; }
+.fixed-budget { display: block; padding: 0.35rem 0; font-size: 1.05rem; }
+.notice.ok-notice { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+/* Pied d'un sélecteur dans une fenêtre : Fermer à gauche, l'action à droite. */
+.picker-footer { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; padding-top: 0.6rem; margin-top: 0.2rem; border-top: 1px solid var(--border); }
+.picker-footer > .btn.primary:only-child { margin-left: auto; }
+.picker-footer > .row:only-child { margin-left: auto; }
+/* Croix « retirer / perdre » : blessures et objets pendant la partie et dans le rapport */
+.member-steps li > .step-tags { flex-basis: 100%; }
+.tag-wrap.with-after > .tag { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.injury-badge { display: inline-flex; align-items: center; gap: 0.3rem; padding-right: 0; }
+.injury-badge .tag-remove { border: none; border-left: 1px solid currentColor; border-radius: 0 3px 3px 0; background: transparent; color: inherit; }
+.live-items .lose-btn { margin-left: 0.35rem; border-left: 1px solid var(--border); border-radius: 3px; }
+/* Boutons longs des étapes de campagne : ils passent à la ligne plutôt que de dépasser du cadre. */
+.campaign-step .btn { white-space: normal; text-align: center; max-width: 100%; }
+/* Bilan, étape Butin : objets trouvés pendant la partie, puis ceux déjà portés */
+.loot-lines p { margin: 0.15rem 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
+.tag.found-tag { background: var(--warn-soft); border-color: var(--gold); font-weight: 700; }
+
+/* Bilan : revente et marché noir */
+.tag-remove.tag-sell { font-size: 0.72rem; font-family: var(--display); color: var(--ok); white-space: nowrap; }
+.tag-remove.tag-sell:hover { background: var(--ok-soft); color: var(--ok); }
+.market-list { list-style: none; margin: 0; padding: 0; }
+.market-list li { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.8rem; flex-wrap: wrap; padding: 0.5rem 0; border-bottom: 1px dashed var(--border); }
+.market-list li > div:first-child { flex: 1 1 220px; }
+.market-list li p { margin: 0.2rem 0 0; }
+.market-list li.bought { opacity: 0.7; }
+.day-sheets .day-state { margin-left: auto; }
+
+/* Bilan : raison du blocage à côté de « Suivant », vente de cristaux */
+.step-next { gap: 0.6rem; justify-content: flex-end; flex-wrap: wrap; }
+.step-block { max-width: 28rem; text-align: right; color: var(--warn); }
+.crystal-sale { gap: 0.6rem; align-items: center; margin: 0.3rem 0 0.6rem; }
+.crystal-sale label { gap: 0.4rem; }

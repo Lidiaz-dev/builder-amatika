@@ -6,6 +6,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  onSnapshot,
   query,
   setDoc,
   updateDoc,
@@ -60,6 +61,8 @@ export interface GroupCampaign {
   /** Dernière journée lancée (0 : aucune). */
   dayNumber: number
   dayStatus: DayStatus | null
+  /** Budget de départ (PO) imposé à toutes les bandes de la campagne. Absent : budget par défaut. */
+  budget?: number
 }
 
 export interface Entry {
@@ -80,6 +83,8 @@ export interface Day {
   status: DayStatus
   /** Emails des joueurs qui ont rejoint la journée. */
   participants: string[]
+  /** Emails des joueurs qui ont validé leur préparation (bande prête pour la journée). */
+  ready?: string[]
   createdAt: string
   launchedAt?: string
   nightAt?: string
@@ -140,10 +145,14 @@ export async function getCampaign(id: string): Promise<GroupCampaign | null> {
   }
 }
 
-export async function createCampaign(name: string): Promise<string> {
+export async function createCampaign(name: string, budget: number): Promise<string> {
   const id = newId()
-  await setDoc(campaignRef(id), { name: name.trim(), createdAt: new Date().toISOString(), emails: [], dayNumber: 0, dayStatus: null })
+  await setDoc(campaignRef(id), { name: name.trim(), budget, createdAt: new Date().toISOString(), emails: [], dayNumber: 0, dayStatus: null })
   return id
+}
+
+export async function setCampaignBudget(id: string, budget: number) {
+  await updateDoc(campaignRef(id), { budget })
 }
 
 export async function renameCampaign(id: string, name: string) {
@@ -251,8 +260,15 @@ export async function createDay(c: GroupCampaign) {
 
 /** Joueur : rejoint (ou quitte) la journée en préparation. */
 export async function joinDay(c: GroupCampaign, join: boolean) {
-  await updateDoc(dayRef(c.id, c.dayNumber), { participants: join ? arrayUnion(myEmail()) : arrayRemove(myEmail()) })
+  await updateDoc(dayRef(c.id, c.dayNumber), join ? { participants: arrayUnion(myEmail()) } : { participants: arrayRemove(myEmail()), ready: arrayRemove(myEmail()) })
 }
+
+/** Joueur : valide (ou rouvre) sa préparation pour la journée. */
+export async function setDayReady(c: GroupCampaign, ready: boolean) {
+  await updateDoc(dayRef(c.id, c.dayNumber), { ready: ready ? arrayUnion(myEmail()) : arrayRemove(myEmail()) })
+}
+
+export const isDayReady = (day: Day | null, email: string) => !!day?.ready?.includes(email.trim().toLowerCase())
 
 async function setStatus(c: GroupCampaign, status: DayStatus, stamp: string) {
   const batch = writeBatch(database())
@@ -327,10 +343,57 @@ export async function submitSheetIfNeeded(crew: Crew, lines: string[]): Promise<
 export function lockReason(crew: Pick<Crew, 'campaign' | 'groupCampaign'>, state: CrewDayState | null): string | null {
   if (!crew.groupCampaign || !crew.campaign) return null
   if (!state) return null
-  if (state.participant && state.day?.status === 'preparation') return null
+  if (state.participant && state.day?.status === 'preparation') {
+    return isDayReady(state.day, myEmail()) ? 'Préparation validée : rouvrez-la depuis la campagne pour modifier la bande.' : null
+  }
   if (state.participant && state.day?.status === 'en-cours') return 'Partie en cours : notez-la depuis la campagne.'
   if (state.participant && state.day?.status === 'nuit') return 'Phase de nuit : faites votre récupération et votre rapport depuis la campagne.'
   return "Bande de campagne : elle se modifie seulement pendant la préparation d'une journée qu'elle a rejointe."
+}
+
+/**
+ * Suit la campagne en direct : la campagne, sa journée en cours et, pour l'organisateur, les
+ * inscriptions et les rapports de nuit. `onChange` est appelé (regroupé) à chaque modification.
+ * Renvoie la fonction qui arrête le suivi.
+ */
+export function watchCampaign(id: string, admin: boolean, onChange: () => void): () => void {
+  let timer: number | undefined
+  let first = true
+  const ping = () => {
+    if (first) return
+    window.clearTimeout(timer)
+    timer = window.setTimeout(onChange, 250)
+  }
+  let inner: (() => void)[] = []
+  let watchedDay = -1
+  const stopInner = () => {
+    inner.forEach((u) => u())
+    inner = []
+  }
+  const ignore = () => {}
+  const outer = onSnapshot(
+    campaignRef(id),
+    (snap) => {
+      const n = (snap.data() as { dayNumber?: number } | undefined)?.dayNumber ?? 0
+      if (n !== watchedDay) {
+        stopInner()
+        watchedDay = n
+        if (n > 0) {
+          inner.push(onSnapshot(dayRef(id, n), ping, ignore))
+          if (admin) inner.push(onSnapshot(collection(database(), 'campaigns', id, 'days', String(n), 'sheets'), ping, ignore))
+        }
+        if (admin) inner.push(onSnapshot(collection(database(), 'campaigns', id, 'entries'), ping, ignore))
+      }
+      ping()
+      first = false
+    },
+    ignore,
+  )
+  return () => {
+    window.clearTimeout(timer)
+    outer()
+    stopInner()
+  }
 }
 
 /** Organisateur : comptes inscrits sur l'appli (ceux qui ont choisi un pseudo). */
