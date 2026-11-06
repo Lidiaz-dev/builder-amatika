@@ -146,7 +146,7 @@
       },
       {
         "id": "coffre-36",
-        "text": "Le coffre contient 50 pièces d'or, un objet et un crital brut."
+        "text": "Le coffre contient 50 pièces d'or."
       },
       {
         "id": "coffre-37",
@@ -193,7 +193,7 @@
       },
       {
         "id": "naturel-4",
-        "text": "Le lieu est vide."
+        "text": "Le lieu contient un cristal brut."
       },
       {
         "id": "naturel-5",
@@ -221,11 +221,11 @@
       },
       {
         "id": "naturel-11",
-        "text": "Placez une figurine de Salis à coté de la figurine active."
+        "text": "Placez une figurine de Fourmie Géante à coté de la figurine active."
       },
       {
         "id": "naturel-12",
-        "text": "Placez une figurine de Loup Géant à coté de la figurine active."
+        "text": "Placez une figurine de Serpents à coté de la figurine active."
       },
       {
         "id": "naturel-13",
@@ -233,7 +233,7 @@
       },
       {
         "id": "naturel-14",
-        "text": "Le lieu contient 50 pièces d'or."
+        "text": "Le lieu contient un objet et un cristal brut"
       },
       {
         "id": "naturel-15",
@@ -245,11 +245,11 @@
       },
       {
         "id": "naturel-17",
-        "text": "Le lieu contient 150 pièces d'or."
+        "text": "Le lieu contient un objet et un cristal brut"
       },
       {
         "id": "naturel-18",
-        "text": "Le lieu contient 150 pièces d'or."
+        "text": "Le lieu contient deux objets."
       },
       {
         "id": "naturel-19",
@@ -309,7 +309,7 @@
       },
       {
         "id": "naturel-33",
-        "text": "Placez une figurine de Tzaangor à coté de la figurine active."
+        "text": "Placez une figurine de Loup à coté de la figurine active."
       },
       {
         "id": "naturel-34",
@@ -325,11 +325,11 @@
       },
       {
         "id": "naturel-37",
-        "text": "Le lieu est vide."
+        "text": "Le lieu contient 100 pièces d'or et deux objets."
       },
       {
         "id": "naturel-38",
-        "text": "Le lieu contient 50 pièces d'or."
+        "text": "Le lieu contient 50 pièces d'or, un objet et un cristal brut."
       },
       {
         "id": "naturel-39",
@@ -400,19 +400,19 @@
       },
       {
         "id": "magique-12",
-        "text": "Placez une figurine de Sorcier Rose à coté de la figurine active."
+        "text": "Placez une figurine de Yeti à coté de la figurine active."
       },
       {
         "id": "magique-13",
-        "text": "Placez une figurine de Sorcier Rose à coté de la figurine active."
+        "text": "Placez une figurine de Xexcavore à coté de la figurine active."
       },
       {
         "id": "magique-14",
-        "text": "Placez une figurine d'Horreur Bleu à coté de la figurine active."
+        "text": "Placez une figurine de Harpie à coté de la figurine active."
       },
       {
         "id": "magique-15",
-        "text": "Placez une figurine d'Horreur Bleu à coté de la figurine active."
+        "text": "Placez une figurine de Pendule Animée à coté de la figurine active."
       },
       {
         "id": "magique-16",
@@ -420,7 +420,7 @@
       },
       {
         "id": "magique-17",
-        "text": "Placez une figurine de Statue Animée à coté de la figurine active."
+        "text": "Placez une figurine d'Horreur Bleu à coté de la figurine active."
       },
       {
         "id": "magique-18",
@@ -448,11 +448,11 @@
       },
       {
         "id": "magique-24",
-        "text": "Le lieu contient 200 pièces d'or."
+        "text": "Le lieu contient 50 pièces d'or."
       },
       {
         "id": "magique-25",
-        "text": "Le lieu contient 150 pièces d'or."
+        "text": "Le lieu contient deux objets."
       },
       {
         "id": "magique-26",
@@ -480,7 +480,7 @@
       },
       {
         "id": "magique-32",
-        "text": "Le lieu contient 150 pièces d'or et un objet."
+        "text": "Le lieu contient trois objets."
       },
       {
         "id": "magique-33",
@@ -551,11 +551,11 @@
       },
       {
         "id": "ville-6",
-        "text": "Placez une figurine d'Animatrix à coté de la figurine active."
+        "text": "Placez une figurine de Guèpe Géante à coté de la figurine active."
       },
       {
         "id": "ville-7",
-        "text": "Placez une figurine de Pyke à coté de la figurine active."
+        "text": "Placez une figurine de Kobolt fouineur à coté de la figurine active."
       },
       {
         "id": "ville-8",
@@ -591,15 +591,15 @@
       },
       {
         "id": "ville-16",
-        "text": "Le lieu contient 150 pièces d'or."
+        "text": "Le lieu contient un cristal brut."
       },
       {
         "id": "ville-17",
-        "text": "Le lieu contient 150 pièces d'or."
+        "text": "Le lieu contient trois objets."
       },
       {
         "id": "ville-18",
-        "text": "Le lieu contient 200 pièces d'or."
+        "text": "Le lieu contient trois objets."
       },
       {
         "id": "ville-19",
@@ -627,7 +627,7 @@
       },
       {
         "id": "ville-25",
-        "text": "Le lieu contient un objet."
+        "text": "Le lieu contient trois objets."
       },
       {
         "id": "ville-26",
@@ -639,7 +639,7 @@
       },
       {
         "id": "ville-28",
-        "text": "Le lieu contient 50 pièces d'or."
+        "text": "Le lieu contient un cristal brut et un objet."
       },
       {
         "id": "ville-29",
@@ -647,15 +647,15 @@
       },
       {
         "id": "ville-30",
-        "text": "Le lieu contient 150 pièces d'or."
+        "text": "Le lieu contient quatre objets."
       },
       {
         "id": "ville-31",
-        "text": "Le lieu contient 200 pièces d'or."
+        "text": "Le lieu contient deux objets."
       },
       {
         "id": "ville-32",
-        "text": "Le lieu contient 250 pièces d'or."
+        "text": "Le lieu contient un cristal brut et un objet."
       },
       {
         "id": "ville-33",
@@ -679,7 +679,7 @@
       },
       {
         "id": "ville-38",
-        "text": "Le lieu contient 150 pièces d'or."
+        "text": "Le lieu contient 50 pièces d'or et deux objets."
       },
       {
         "id": "ville-39",
@@ -730,19 +730,19 @@
       },
       {
         "id": "cimetiere-7",
-        "text": "Placez une figurine de Varghulf à coté de la figurine active."
+        "text": "Placez une figurine de Rodeur des tombes à coté de la figurine active."
       },
       {
         "id": "cimetiere-8",
-        "text": "Placez une figurine de Struglu à coté de la figurine active."
+        "text": "Placez une figurine de Solphophages à coté de la figurine active."
       },
       {
         "id": "cimetiere-9",
-        "text": "Placez une figurine de Gardien Noir à coté de la figurine active."
+        "text": "Placez une figurine d'Araignée à coté de la figurine active."
       },
       {
         "id": "cimetiere-10",
-        "text": "Placez une figurine de Bruliis à coté de la figurine active."
+        "text": "Placez une figurine de Zombie à coté de la figurine active."
       },
       {
         "id": "cimetiere-11",
@@ -762,19 +762,19 @@
       },
       {
         "id": "cimetiere-15",
-        "text": "Le lieu contient 150 pièces d'or."
+        "text": "Le lieu contient trois objets."
       },
       {
         "id": "cimetiere-16",
-        "text": "Le lieu contient 200 pièces d'or."
+        "text": "Le lieu contient trois objets."
       },
       {
         "id": "cimetiere-17",
-        "text": "Le lieu contient 250 pièces d'or."
+        "text": "Le lieu contient quatres objets."
       },
       {
         "id": "cimetiere-18",
-        "text": "Le lieu contient 300 pièces d'or."
+        "text": "Le lieu contient deux cristaux bruts."
       },
       {
         "id": "cimetiere-19",
@@ -798,11 +798,11 @@
       },
       {
         "id": "cimetiere-24",
-        "text": "Le lieu contient trois objets."
+        "text": "Le lieu contient un objet."
       },
       {
         "id": "cimetiere-25",
-        "text": "Le lieu contient trois objets."
+        "text": "Le lieu contient un objet."
       },
       {
         "id": "cimetiere-26",
@@ -814,7 +814,7 @@
       },
       {
         "id": "cimetiere-28",
-        "text": "Le lieu contient un cristal brut."
+        "text": "Le lieu est vide."
       },
       {
         "id": "cimetiere-29",
@@ -826,7 +826,7 @@
       },
       {
         "id": "cimetiere-31",
-        "text": "Le lieu contient un cristal brut et un objet."
+        "text": "Le lieu contient 50 pièces d'or."
       },
       {
         "id": "cimetiere-32",
@@ -834,19 +834,19 @@
       },
       {
         "id": "cimetiere-33",
-        "text": "Le lieu contient 200 pièces d'or et un objet."
+        "text": "Le lieu contient 100 pièces d'or et trois objets."
       },
       {
         "id": "cimetiere-34",
-        "text": "Le lieu contient 150 pièces d'or et un objet."
-      },
-      {
-        "id": "cimetiere-35",
         "text": "Le lieu contient 100 pièces d'or et deux objets."
       },
       {
+        "id": "cimetiere-35",
+        "text": "Le lieu est vide."
+      },
+      {
         "id": "cimetiere-36",
-        "text": "Le lieu contient 150 pièces d'or, un cristal brut et un objet."
+        "text": "Le lieu contient 100 pièces d'or, un cristal brut et deux objets."
       },
       {
         "id": "cimetiere-37",
@@ -858,7 +858,7 @@
       },
       {
         "id": "cimetiere-39",
-        "text": "Le lieu contient 200 pièces d'or."
+        "text": "Le lieu contient un cristal brut et deux objets."
       },
       {
         "id": "cimetiere-40",
@@ -897,11 +897,11 @@
       },
       {
         "id": "ruines-5",
-        "text": "Placez une figurine de Chauve-souris Géante à coté de la figurine active."
+        "text": "Placez une figurine de Balancier des cendres à coté de la figurine active."
       },
       {
         "id": "ruines-6",
-        "text": "Placez une figurine de Mutant à coté de la figurine active."
+        "text": "Placez une figurine d'Horreur mutatique à coté de la figurine active."
       },
       {
         "id": "ruines-7",
@@ -909,7 +909,7 @@
       },
       {
         "id": "ruines-8",
-        "text": "Placez une figurine de Décapiteur à coté de la figurine active."
+        "text": "Placez une figurine de Kobolds férailleurs à coté de la figurine active."
       },
       {
         "id": "ruines-9",
@@ -957,7 +957,7 @@
       },
       {
         "id": "ruines-20",
-        "text": "Le lieu contient un objet."
+        "text": "Le lieu contient trois objets."
       },
       {
         "id": "ruines-21",
@@ -973,7 +973,7 @@
       },
       {
         "id": "ruines-24",
-        "text": "Le lieu contient 150 pièces d'or."
+        "text": "Le lieu contient quatre objets."
       },
       {
         "id": "ruines-25",
@@ -997,11 +997,11 @@
       },
       {
         "id": "ruines-30",
-        "text": "Le lieu contient 200 pièces d'or."
+        "text": "Le lieu contient trois objets."
       },
       {
         "id": "ruines-31",
-        "text": "Le lieu contient 100 pièces d'or et un objet."
+        "text": "Le lieu contient deux objets."
       },
       {
         "id": "ruines-32",
@@ -1021,7 +1021,7 @@
       },
       {
         "id": "ruines-36",
-        "text": "Le lieu contient 150 pièces d'or."
+        "text": "Le lieu contient 50 pièces d'or et deux objets."
       },
       {
         "id": "ruines-37",
@@ -1033,7 +1033,7 @@
       },
       {
         "id": "ruines-39",
-        "text": "Le lieu contient 150 pièces d'or."
+        "text": "Le lieu contient 50 pièces d'or, un objet et un cristal brut."
       },
       {
         "id": "ruines-40",
@@ -1104,11 +1104,11 @@
       },
       {
         "id": "rivage-13",
-        "text": "Placez une figurine de Kixor à coté de la figurine active."
+        "text": "Placez une figurine de Crabe à coté de la figurine active."
       },
       {
         "id": "rivage-14",
-        "text": "Placez une figurine de Géonosian à coté de la figurine active."
+        "text": "Placez une figurine de Sirène à coté de la figurine active."
       },
       {
         "id": "rivage-15",
@@ -1144,7 +1144,7 @@
       },
       {
         "id": "rivage-23",
-        "text": "Le lieu contient 150 pièces d'or."
+        "text": "Le lieu contient deux objets."
       },
       {
         "id": "rivage-24",
@@ -1180,11 +1180,11 @@
       },
       {
         "id": "rivage-32",
-        "text": "Placez une figurine de Kixor à coté de la figurine active."
+        "text": "Placez une figurine de Gardienne des flots à coté de la figurine active."
       },
       {
         "id": "rivage-33",
-        "text": "Placez une figurine de Géonosian à coté de la figurine active."
+        "text": "Le lieu contient trois objets."
       },
       {
         "id": "rivage-34",

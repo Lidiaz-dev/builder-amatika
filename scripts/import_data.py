@@ -548,13 +548,15 @@ def consumable_effects(cat_id, item_id, desc):
     if cat_id != "fioles":
         return None, {}, [], 0
     mods = {}
-    if "jusque la fin de la partie" in d:
+    # « jusque la fin » ou « jusqu'à la fin » : les deux tournures se trouvent dans les fichiers.
+    until_end = r"jusqu(?:e|['’]à) la fin de la partie"
+    if re.search(until_end, d):
         for word, stat in USE_STATS:
             m = re.search(r"([+-]\d+) en " + word, d)
             if m:
                 v = int(m.group(1))
                 mods[stat] = -v if stat in DICE_STATS else v
-    skills = [clean(x) for x in re.findall(r"gagne la règle (\w+) jusque la fin de la partie", desc)]
+    skills = [clean(x) for x in re.findall(r"gagne la règle (\w+) " + until_end, desc)]
     xp = re.search(r"obtiendra (\d+)d10 points d'expérience", d)
     return "potion", mods, skills, int(xp.group(1)) if xp else 0
 

@@ -6722,7 +6722,7 @@
       {
         "id": "recrue",
         "name": "Recrue",
-        "cost": 84,
+        "cost": 71,
         "min": 0,
         "max": 10,
         "stats": {
@@ -6735,7 +6735,7 @@
           "att": 1,
           "pv": 1,
           "cmd": 11,
-          "svg": 10
+          "svg": 11
         },
         "skills": [
           "Amphibien"
@@ -6776,7 +6776,7 @@
       {
         "id": "chef",
         "name": "Chef",
-        "cost": 148,
+        "cost": 135,
         "min": 1,
         "max": 1,
         "stats": {
@@ -6789,7 +6789,7 @@
           "att": 1,
           "pv": 1,
           "cmd": 9,
-          "svg": 10
+          "svg": 11
         },
         "skills": [
           "Amphibien",
@@ -6833,7 +6833,7 @@
       {
         "id": "mage",
         "name": "Mage",
-        "cost": 129,
+        "cost": 116,
         "min": 0,
         "max": 1,
         "stats": {
@@ -6846,7 +6846,7 @@
           "att": 1,
           "pv": 1,
           "cmd": 11,
-          "svg": 10
+          "svg": 11
         },
         "skills": [
           "Amphibien",
@@ -6887,7 +6887,7 @@
       {
         "id": "deesse-des-mers",
         "name": "Déesse des Mers",
-        "cost": 121,
+        "cost": 108,
         "min": 0,
         "max": 1,
         "stats": {
@@ -6900,7 +6900,7 @@
           "att": 1,
           "pv": 1,
           "cmd": 10,
-          "svg": 10
+          "svg": 11
         },
         "skills": [
           "Amphibien",
@@ -6937,14 +6937,14 @@
           "perLevel": true,
           "cristaux": 0
         },
-        "xpValue": 5,
+        "xpValue": 4,
         "notes": [],
         "role": "specialiste"
       },
       {
         "id": "garde-bleu",
         "name": "Garde bleu",
-        "cost": 134,
+        "cost": 121,
         "min": 0,
         "max": 1,
         "stats": {
@@ -6957,7 +6957,7 @@
           "att": 1,
           "pv": 1,
           "cmd": 10,
-          "svg": 10
+          "svg": 11
         },
         "skills": [
           "Amphibien",
@@ -7000,7 +7000,7 @@
       {
         "id": "harponiste",
         "name": "Harponiste",
-        "cost": 115,
+        "cost": 102,
         "min": 0,
         "max": 1,
         "stats": {
@@ -7013,7 +7013,7 @@
           "att": 1,
           "pv": 1,
           "cmd": 10,
-          "svg": 10
+          "svg": 11
         },
         "skills": [
           "Amphibien",
@@ -7048,14 +7048,14 @@
           "perLevel": true,
           "cristaux": 0
         },
-        "xpValue": 5,
+        "xpValue": 4,
         "notes": [],
         "role": "specialiste"
       },
       {
         "id": "guide",
         "name": "Guide",
-        "cost": 124,
+        "cost": 111,
         "min": 0,
         "max": 1,
         "stats": {
@@ -7068,7 +7068,7 @@
           "att": 1,
           "pv": 1,
           "cmd": 10,
-          "svg": 10
+          "svg": 11
         },
         "skills": [
           "Amphibien",

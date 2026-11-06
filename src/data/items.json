@@ -13,7 +13,7 @@
       {
         "id": "outils-de-crochetage",
         "name": "Outils de crochetage",
-        "description": "Après qu'une figurine équipée d'outils de crochetage doit effectuer un test de force, d'agilité ou de commandement afin d'ouvrir un coffre, si ce test est échoué, alors vous pouvez utiliser les outils de crochetage, le test est considéré comme réussit, défaussez cette carte.",
+        "description": "Après qu'une figurine équipée d'outils de crochetage doit effectuer un test de force, d'agilité ou de commandement afin d'ouvrir un coffre, si ce test est échoué, alors vous pouvez utiliser les outils de crochetage, le test est considéré comme réussi, défaussez cette carte.",
         "price": 20,
         "rarity": "blanc",
         "consumable": "single"
@@ -21,14 +21,14 @@
       {
         "id": "longue-vue",
         "name": "Longue vue",
-        "description": "Le porteur gagne Eclaireur 3.",
+        "description": "Le porteur gagne Éclaireur 3.",
         "price": 10,
         "rarity": "blanc"
       },
       {
         "id": "trefle-a-4-feuilles",
         "name": "Trèfle à 4 Feuilles",
-        "description": "Le porteur peut relancer un seul de ses dès, ensuite cet objet est défaussé.",
+        "description": "Le porteur peut relancer un seul de ses dés, ensuite cet objet est défaussé.",
         "price": 6,
         "rarity": "blanc",
         "consumable": "single"
@@ -53,7 +53,7 @@
       {
         "id": "potion-de-force",
         "name": "Potion de force",
-        "description": "Une figurine qui boit cette potion obtient +2 en force jusque la fin de la partie, ensuite défausser cette carte.",
+        "description": "Une figurine qui boit cette potion obtient +2 en force jusqu'à la fin de la partie, ensuite défausser cette carte.",
         "price": 40,
         "rarity": "gris",
         "consumable": "potion",
@@ -64,7 +64,7 @@
       {
         "id": "grande-potion-de-force",
         "name": "Grande potion de force",
-        "description": "Une figurine qui boit cette potion obtient +3 en force jusque la fin de la partie, ensuite défausser cette carte.",
+        "description": "Une figurine qui boit cette potion obtient +3 en force jusqu'à la fin de la partie, ensuite défausser cette carte.",
         "price": 100,
         "rarity": "vert",
         "consumable": "potion",
@@ -75,7 +75,7 @@
       {
         "id": "petite-potion-d-agilite",
         "name": "Petite potion d'agilité",
-        "description": "Une figurine qui boit cette potion obtient +1 en agilité jusque la fin de la partie, ensuite défausser cette carte.",
+        "description": "Une figurine qui boit cette potion obtient +1 en agilité jusqu'à la fin de la partie, ensuite défausser cette carte.",
         "price": 6,
         "rarity": "blanc",
         "consumable": "potion",
@@ -86,7 +86,7 @@
       {
         "id": "potion-d-agilite",
         "name": "Potion d'agilité",
-        "description": "Une figurine qui boit cette potion obtient +2 en agilité jusque la fin de la partie, ensuite défausser cette carte.",
+        "description": "Une figurine qui boit cette potion obtient +2 en agilité jusqu'à la fin de la partie, ensuite défausser cette carte.",
         "price": 12,
         "rarity": "gris",
         "consumable": "potion",
@@ -97,7 +97,7 @@
       {
         "id": "grande-potion-d-agilite",
         "name": "Grande potion d'agilité",
-        "description": "Une figurine qui boit cette potion obtient +3 en agilité jusque la fin de la partie, ensuite défausser cette carte.",
+        "description": "Une figurine qui boit cette potion obtient +3 en agilité jusqu'à la fin de la partie, ensuite défausser cette carte.",
         "price": 20,
         "rarity": "vert",
         "consumable": "potion",
@@ -108,7 +108,7 @@
       {
         "id": "potion-de-vol",
         "name": "Potion de vol",
-        "description": "Une figurine qui boit cette potion obtient la règle spéciale vol jusque la fin de son activation.",
+        "description": "Une figurine qui boit cette potion obtient la règle spéciale vol jusqu'à la fin de son activation.",
         "price": 50,
         "rarity": "gris",
         "consumable": "potion"
@@ -1252,7 +1252,7 @@
       {
         "id": "arc-court-en-bois-dignane",
         "name": "Arc court en bois dignane",
-        "description": "Force 4 ; portée 16ps ; deux mains ; +1 pour toucher.",
+        "description": "Force 4 ; portée 10ps ; deux mains ; +1 pour toucher.",
         "price": 20,
         "rarity": "gris",
         "mods": {
@@ -1262,14 +1262,14 @@
       {
         "id": "arc-court-des-steppes-jaunes",
         "name": "Arc court des steppes jaunes",
-        "description": "Force 5 ; portée 18ps ; deux mains.",
+        "description": "Force 5 ; portée 11ps ; deux mains.",
         "price": 40,
         "rarity": "vert"
       },
       {
         "id": "arc-court-de-iksriks-le-premier-gobelin",
         "name": "Arc court de Iksriks le premier gobelin",
-        "description": "Force 4 ; portée 16ps ; deux mains ; +1 pour toucher ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "description": "Force 4 ; portée 10ps ; deux mains ; +1 pour toucher ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
         "price": 50,
         "rarity": "jaune",
         "mods": {
@@ -1279,7 +1279,7 @@
       {
         "id": "dul",
         "name": "Dul",
-        "description": "Force 6 ; portée 18ps ; deux mains ; +2 pour toucher.",
+        "description": "Force 6 ; portée 11ps ; deux mains ; +2 pour toucher.",
         "price": 100,
         "rarity": "jaune",
         "mods": {
@@ -1295,14 +1295,14 @@
       {
         "id": "arc-attrape-reve",
         "name": "Arc attrape rêve",
-        "description": "Force 5 ; portée 24ps ; deux mains.",
+        "description": "Force 5 ; portée 15ps ; deux mains.",
         "price": 30,
         "rarity": "gris"
       },
       {
         "id": "arc-tieffelin",
         "name": "Arc Tieffelin",
-        "description": "Force 4 ; portée 20ps ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie.",
+        "description": "Force 4 ; portée 12ps ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie.",
         "price": 30,
         "rarity": "gris",
         "mods": {
@@ -1312,7 +1312,7 @@
       {
         "id": "arc-krogbe",
         "name": "Arc Krogbé",
-        "description": "Force 4 ; portée 24ps ; deux mains ; +1 pour toucher ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "description": "Force 4 ; portée 15ps ; deux mains ; +1 pour toucher ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
         "price": 40,
         "rarity": "vert",
         "mods": {
@@ -1322,14 +1322,14 @@
       {
         "id": "arc-cabalite",
         "name": "Arc cabalite",
-        "description": "Force 4 ; portée 24ps ; deux mains ; +3 pour toucher et pour blesser les figurines ayant la capacité Mage, le porteur peut cibler des ennemies ayant le mot clef Mage même si cette figurine n'est pas la plus proche.",
+        "description": "Force 4 ; portée 15ps ; deux mains ; +3 pour toucher et pour blesser les figurines ayant la capacité Mage, le porteur peut cibler des ennemies ayant le mot clef Mage même si cette figurine n'est pas la plus proche.",
         "price": 60,
         "rarity": "vert"
       },
       {
         "id": "aile-d-eternite",
         "name": "Aile d'éternité",
-        "description": "Force 6 ; portée 24ps ; +1 pour toucher ; deux mains.",
+        "description": "Force 6 ; portée 15ps ; +1 pour toucher ; deux mains.",
         "price": 80,
         "rarity": "jaune",
         "mods": {
@@ -1339,7 +1339,7 @@
       {
         "id": "arc-du-rubis-flamboyant",
         "name": "Arc du rubis flamboyant",
-        "description": "Force 4 ; portée 24ps ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie ; lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3 ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "description": "Force 4 ; portée 15ps ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie ; lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3 ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
         "price": 100,
         "rarity": "jaune",
         "mods": {
@@ -1349,7 +1349,7 @@
       {
         "id": "arc-de-faef-grisprune",
         "name": "Arc de Faef Grisprune",
-        "description": "Force 5 ; portée 30ps ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie.",
+        "description": "Force 5 ; portée 20ps ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie.",
         "price": 80,
         "rarity": "jaune",
         "mods": {
@@ -1365,7 +1365,7 @@
       {
         "id": "arc-elfique",
         "name": "Arc Elfique",
-        "description": "Force 4 ; portée 30ps ; +1 pour toucher ; -1 à la sauvegarde ennemie ; deux mains.",
+        "description": "Force 4 ; portée 20ps ; +1 pour toucher ; -1 à la sauvegarde ennemie ; deux mains.",
         "price": 50,
         "rarity": "gris",
         "mods": {
@@ -1375,14 +1375,14 @@
       {
         "id": "arc-cigogne-des-mers",
         "name": "Arc Cigogne des mers",
-        "description": "Force 5 ; portée 36ps ; deux mains.",
+        "description": "Force 5 ; portée 23ps ; deux mains.",
         "price": 60,
         "rarity": "vert"
       },
       {
         "id": "arc-long-de-legolas",
         "name": "Arc long de Legolas",
-        "description": "Force 5 ; portée 30ps ; +1 pour toucher ; -1 à la sauvegarde ennemie ; deux mains ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "description": "Force 5 ; portée 20ps ; +1 pour toucher ; -1 à la sauvegarde ennemie ; deux mains ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur la plus haute.",
         "price": 100,
         "rarity": "jaune",
         "mods": {
@@ -1392,7 +1392,7 @@
       {
         "id": "alok-zinharice",
         "name": "Alok Zinharice",
-        "description": "Force 5 ; portée 30ps ; deux mains ; le porteur peut cibler n'importe quel ennemi visible même si cette figurine n'est pas la plus proche ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "description": "Force 5 ; portée 20ps ; deux mains ; le porteur peut cibler n'importe quel ennemi visible même si cette figurine n'est pas la plus proche ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
         "price": 80,
         "rarity": "jaune"
       }
@@ -1405,7 +1405,7 @@
       {
         "id": "arbalete-naine",
         "name": "Arbalète naine",
-        "description": "Force 5 ; portée 30ps ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie ; rechargement.",
+        "description": "Force 5 ; portée 20ps ; deux mains ; +1 pour toucher ; -1 à la sauvegarde ennemie ; rechargement.",
         "price": 60,
         "rarity": "gris",
         "mods": {
@@ -1415,28 +1415,28 @@
       {
         "id": "arbalete-rapide",
         "name": "Arbalète rapide",
-        "description": "Force 5 ; portée 30ps ; deux mains.",
+        "description": "Force 5 ; portée 20ps ; deux mains.",
         "price": 50,
         "rarity": "vert"
       },
       {
         "id": "arbalete-noire",
         "name": "Arbalète noire",
-        "description": "Force 6 ; portée 30ps ; deux mains ; rechargement ; lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
+        "description": "Force 6 ; portée 20ps ; deux mains ; rechargement ; lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
         "price": 80,
         "rarity": "vert"
       },
       {
         "id": "arbalete-de-hendp-barbedacier",
         "name": "Arbalète de Hendp Barbedacier",
-        "description": "Force 6 ; portée 30ps ; deux mains ; rechargement ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "description": "Force 6 ; portée 20ps ; deux mains ; rechargement ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
         "price": 100,
         "rarity": "jaune"
       },
       {
         "id": "chenkovine",
         "name": "Chenkovine",
-        "description": "Force 5 ; portée 30ps ; une main ; +2 pour toucher.",
+        "description": "Force 5 ; portée 20ps ; une main ; +2 pour toucher.",
         "price": 80,
         "rarity": "jaune",
         "mods": {
@@ -1452,21 +1452,21 @@
       {
         "id": "arbalete-de-poing-nordique",
         "name": "Arbalète de poing nordique",
-        "description": "Force 6 ; portée 10ps ; rechargement ; une main ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
+        "description": "Force 6 ; portée 6ps ; rechargement ; une main ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
         "price": 40,
         "rarity": "gris"
       },
       {
         "id": "arbalete-de-poing-vendetta",
         "name": "Arbalète de poing Vendetta",
-        "description": "Force 5 ; portée 10ps ; une main ; -1 à la sauvegarde ennemie ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
+        "description": "Force 5 ; portée 6ps ; une main ; -1 à la sauvegarde ennemie ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
         "price": 50,
         "rarity": "vert"
       },
       {
         "id": "vetid-rose",
         "name": "Vetid rose",
-        "description": "Force 8 ; portée 6ps ; rechargement ; une main ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
+        "description": "Force 8 ; portée 4ps ; rechargement ; une main ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
         "price": 90,
         "rarity": "jaune"
       }
@@ -1484,21 +1484,21 @@
       {
         "id": "etoiles-de-ninja",
         "name": "Étoiles de ninja",
-        "description": "force utilisateur ; portée 6ps ; une main ; -1 à la sauvegarde ennemie ; arme de jet : pas de bonus de tir à bout portant ni de malus longue portée.",
+        "description": "force utilisateur ; portée 4ps ; une main ; -1 à la sauvegarde ennemie ; arme de jet : pas de bonus de tir à bout portant ni de malus longue portée.",
         "price": 10,
         "rarity": "vert"
       },
       {
         "id": "couteaux-circus",
         "name": "Couteaux Circus",
-        "description": "force utilisateur ; portée 10ps ; une main ; arme de jet : pas de bonus de tir à bout portant ni de malus longue portée.",
+        "description": "force utilisateur ; portée 6ps ; une main ; arme de jet : pas de bonus de tir à bout portant ni de malus longue portée.",
         "price": 8,
         "rarity": "gris"
       },
       {
         "id": "tomahawk",
         "name": "Tomahawk",
-        "description": "force utilisateur +1 ; portée 6ps ; une main ; arme de jet : pas de bonus de tir à bout portant ni de malus longue portée.",
+        "description": "force utilisateur +1 ; portée 4ps ; une main ; arme de jet : pas de bonus de tir à bout portant ni de malus longue portée.",
         "price": 16,
         "rarity": "jaune"
       }
@@ -1511,14 +1511,14 @@
       {
         "id": "sarbacane-skink",
         "name": "Sarbacane skink",
-        "description": "Force 3 ; portée 16ps ; une main ; Lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
+        "description": "Force 3 ; portée 10ps ; une main ; Lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
         "price": 10,
         "rarity": "gris"
       },
       {
         "id": "sarbacane-bambou",
         "name": "Sarbacane bambou",
-        "description": "Force 3 ; portée 16ps ; une main ; +2 pour toucher ; faible létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus basse. Lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
+        "description": "Force 3 ; portée 10ps ; une main ; +2 pour toucher ; faible létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus basse. Lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
         "price": 20,
         "rarity": "vert",
         "mods": {
@@ -1528,7 +1528,7 @@
       {
         "id": "sarbacane-de-xejosah",
         "name": "Sarbacane de Xejosah",
-        "description": "Force 4 ; portée 20ps ; une main ; Lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
+        "description": "Force 4 ; portée 12ps ; une main ; Lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
         "price": 40,
         "rarity": "jaune"
       }
@@ -1541,21 +1541,21 @@
       {
         "id": "javelot-paamidien",
         "name": "Javelot Paamidien",
-        "description": "Force utilisateur +1 ; portée 16ps ; une main.",
+        "description": "Force utilisateur +1 ; portée 10ps ; une main.",
         "price": 20,
         "rarity": "gris"
       },
       {
         "id": "javelot-ferpaeg",
         "name": "Javelot Ferpaeg",
-        "description": "Force utilisateur ; portée 16ps ; une main ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "description": "Force utilisateur ; portée 10ps ; une main ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
         "price": 30,
         "rarity": "vert"
       },
       {
         "id": "javelot-de-zelezny",
         "name": "Javelot de Zelezny",
-        "description": "Force utilisateur +1 ; portée 20ps ; +2 pour toucher ; une main.",
+        "description": "Force utilisateur +1 ; portée 12ps ; +2 pour toucher ; une main.",
         "price": 50,
         "rarity": "jaune",
         "mods": {
@@ -1571,14 +1571,14 @@
       {
         "id": "pistolet-a-barillet",
         "name": "Pistolet à barillet",
-        "description": "Force 5 ; portée 10ps ; -1 à la sauvegarde ennemie ; une main ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
+        "description": "Force 5 ; portée 6ps ; -1 à la sauvegarde ennemie ; une main ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
         "price": 40,
         "rarity": "gris"
       },
       {
         "id": "pistolet-tromblon",
         "name": "Pistolet tromblon",
-        "description": "Force 6 ; portée 10ps ; +1 pour toucher ; -1 à la sauvegarde ennemie ; une main ; rechargement ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
+        "description": "Force 6 ; portée 6ps ; +1 pour toucher ; -1 à la sauvegarde ennemie ; une main ; rechargement ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps.",
         "price": 60,
         "rarity": "vert",
         "mods": {
@@ -1588,7 +1588,7 @@
       {
         "id": "paire-de-pistolets-brandilleras",
         "name": "Paire de Pistolets Brandilleras",
-        "description": "Force 6 ; 2 tirs à la fois ; portée 10ps ; -1 à la sauvegarde ennemie ; deux mains ; rechargement ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "description": "Force 6 ; 2 tirs à la fois ; portée 6ps ; -1 à la sauvegarde ennemie ; deux mains ; rechargement ; tir au corps à corps : cette arme peut être utilisée lors d'un corps à corps, dans ce cas le porteur touche sur un 3+ sans aucun modificateur, cette attaque peut être faite en plus des attaques de la figurine avec une arme de corps à corps ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
         "price": 100,
         "rarity": "jaune"
       }
@@ -1601,21 +1601,21 @@
       {
         "id": "arquebuse-renforcee",
         "name": "Arquebuse renforcée",
-        "description": "Force 6 ; portée 20ps ; -1 à la sauvegarde ennemie ; deux mains ; rechargement.",
+        "description": "Force 6 ; portée 12ps ; -1 à la sauvegarde ennemie ; deux mains ; rechargement.",
         "price": 60,
         "rarity": "gris"
       },
       {
         "id": "fusil-sniper",
         "name": "Fusil Sniper",
-        "description": "Force 5 ; portée 36ps ; -1 à la sauvegarde ennemie ; deux mains ; rechargement ; très haute létalité : une figurine blessée par cette arme pioches 3 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "description": "Force 5 ; portée 23ps ; -1 à la sauvegarde ennemie ; deux mains ; rechargement ; très haute létalité : une figurine blessée par cette arme pioche 3 cartes blessures et n'applique que celle ayant la valeur la plus haute.",
         "price": 100,
         "rarity": "jaune"
       },
       {
         "id": "arquebuse-precise",
         "name": "Arquebuse précise",
-        "description": "Force 5 ; portée 24ps ; +1 pour toucher ; -1 à la sauvegarde ennemie ; deux mains ; rechargement ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "description": "Force 5 ; portée 15ps ; +1 pour toucher ; -1 à la sauvegarde ennemie ; deux mains ; rechargement ; Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
         "price": 80,
         "rarity": "vert",
         "mods": {

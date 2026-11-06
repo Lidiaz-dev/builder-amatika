@@ -22,7 +22,6 @@ XP par PV retiré de Mangechair / Prêtre : 5 (Bandes) → 4 (Compendium retenu)
 Écart Bandes / Compendium pour Nécromant / Vampire : coût 286 → 269 PO (Compendium retenu).
 Écart Bandes / Compendium pour Cathay / Ninja : Mou 5 → 6 (Compendium retenu).
 Écart Bandes / Compendium pour Cathay / Oni : Mou 5 → 4 (Compendium retenu).
-Écart Bandes / Compendium pour Ondin / Guide : coût 84 → 124 PO (Compendium retenu).
 Compétences de Gobelins / Chaman Capuchard alignées sur le Compendium (retirées : eclaireur-2).
 Compétences de Skaven / Ingénieur alignées sur le Compendium (ajoutées : marin).
 Compétences de Drakéide / Gardien du temple saurus alignées sur le Compendium (ajoutées : chasseur-de-damnes, dissipation).
