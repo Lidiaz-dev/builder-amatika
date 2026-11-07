@@ -44,6 +44,8 @@ import {
   abandonGame,
   DEFAULT_BUDGET,
   emptyStock,
+  leaveCrew,
+  crewPath,
   type CampStock,
 } from '../lib/crew'
 import {
@@ -86,7 +88,7 @@ type SaveState = 'saved' | 'pending' | 'saving' | 'error'
 type Delta = { po?: number; cristaux?: number; prestige?: number }
 
 export default function CrewBuilderPage() {
-  const { id } = useParams()
+  const { id, campaignId } = useParams()
   const navigate = useNavigate()
   const location = useLocation()
   const [crew, setCrew] = useState<Crew | null | undefined>(undefined)
@@ -262,15 +264,22 @@ export default function CrewBuilderPage() {
   const hasChef = active.some((m) => isChef(profileOf(faction, m), m))
   const phase = phaseOf(crew)
   // Bande de campagne : modifiable seulement pendant la préparation d'une journée rejointe.
-  const lock = lockReason(crew, dayState ?? null)
+  // Bande inscrite à une campagne : elle se modifie seulement depuis la page de la campagne.
+  const routeLock = dayState && !campaignId ? 'Bande de campagne : elle se modifie depuis la page de la campagne.' : null
+  const lock = routeLock ?? lockReason(crew, dayState ?? null)
 
 
   return (
     <section className={`builder phase-${phase}`}>
       <nav className="crumbs no-print">
-        <Link to="/bandes">Mes bandes</Link> <span>›</span> {crew.name || 'Bande sans nom'}
+        {campaignId && crew.groupCampaign ? (
+          <><Link to="/campagnes">Campagnes</Link> <span>›</span> <Link to={`/campagnes/${crew.groupCampaign.id}`}>{dayState?.campaign.name ?? crew.groupCampaign.name}</Link></>
+        ) : (
+          <Link to="/bandes">Mes bandes</Link>
+        )}{' '}
+        <span>›</span> {crew.name || 'Bande sans nom'}
       </nav>
-      {dayState && <CampaignDayBanner state={dayState} lock={lock} />}
+      {dayState && <CampaignDayBanner state={dayState} lock={lock} editPath={routeLock ? crewPath(crew) : undefined} />}
       {welcome && (
         <CrewWelcome
           name={crew.name.trim()}
@@ -286,7 +295,7 @@ export default function CrewBuilderPage() {
           <FactionSeal id={faction.id} name={faction.name} size={56} />
           <label className="field grow">
             <span>Nom de la bande</span>
-            <input value={crew.name} onChange={(e) => update({ name: e.target.value })} placeholder="Nom de la bande" />
+            <input value={crew.name} onChange={(e) => update({ name: e.target.value })} placeholder="Nom de la bande" disabled={!!routeLock} />
           </label>
           {!campaign && crew.groupCampaign && (
             <p className="field narrow" data-tip="Budget fixé par l'organisateur pour toutes les bandes de la campagne.">
@@ -312,7 +321,7 @@ export default function CrewBuilderPage() {
           </span>
           <div className="row wrap">
             <button className="btn" onClick={() => saveThenGo(`/bandes/${crew.id}/fiches`)} data-tip="Affiche les fiches de la bande et permet de télécharger le PDF, qui sert aussi de sauvegarde à réimporter.">Fiches à imprimer</button>
-            <button className="btn danger" onClick={remove} data-tip="Supprime définitivement la bande. Téléchargez son PDF avant si vous voulez la garder.">Supprimer</button>
+            {!dayState && <button className="btn danger" onClick={remove} data-tip="Supprime définitivement la bande. Téléchargez son PDF avant si vous voulez la garder.">Supprimer</button>}
           </div>
         </div>
       </div>
@@ -400,7 +409,7 @@ export default function CrewBuilderPage() {
               onChange={updateMember}
               stock={campaign ? campaign.stock ?? emptyStock() : undefined}
               onStock={(stock, next) => updateStock(stock, next)}
-              onRemove={() => (campaign ? updateMember({ ...m, status: 'parti' }) : removeMember(m.id))}
+              onRemove={() => (campaign ? setCrew(leaveCrew(crew, m.id)) : removeMember(m.id))}
               onDuplicate={() => duplicateMember(m)}
               unrestricted={!!crew.unrestricted}
               canDuplicate={!campaign && (!!crew.unrestricted || active.filter((x) => x.profileId === m.profileId).length < (profileOf(faction, m)?.max ?? 0))}
@@ -1027,7 +1036,7 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
 
       <footer className="unit-actions">
         {!campaign && <button className="btn ghost small" onClick={onDuplicate} disabled={!canDuplicate} data-tip="Recruter une copie de ce membre, avec le même équipement.">Dupliquer</button>}
-        <button className="btn ghost small danger" onClick={() => (!campaign || confirm(`${who} quitte la bande ?`)) && onRemove()}>
+        <button className="btn ghost small danger" onClick={() => (!campaign || confirm(`${who} quitte la bande ? Son équipement est rangé dans le coffre du camp.`)) && onRemove()}>
           {campaign ? 'Quitte la bande' : 'Renvoyer'}
         </button>
       </footer>

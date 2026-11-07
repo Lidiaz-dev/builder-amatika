@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { factionById } from '../data'
-import { abandonGame, activeMembers, withoutUndo, emptyStock, withTreasury, crewCost, MAX_ON_TABLE, memberName, newId, profileOf, type Crew } from '../lib/crew'
+import { abandonGame, activeMembers, crewPath, withoutUndo, emptyStock, withTreasury, crewCost, MAX_ON_TABLE, memberName, newId, profileOf, type Crew } from '../lib/crew'
 import { useAuth } from '../lib/auth'
 import { getMySheet, isAdmin, isDayReady, isOpen, joinDay, registerCrew, setDayReady, type Day, type GroupCampaign, type Sheet } from '../lib/groupCampaign'
 import { getCrew, saveCrew } from '../lib/storage'
@@ -122,7 +122,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
     return (
       <div className="campaign-step">
         <p>
-          Votre bande est <strong>en construction</strong> : recrutez et équipez-la dans le <Link to={`/bandes/${crew.id}`}>builder</Link>,
+          Votre bande est <strong>en construction</strong> : recrutez et équipez-la dans le <Link to={crewPath(crew)}>builder</Link>,
           puis validez-la pour la campagne. Son budget restant ({gold} PO) deviendra son trésor.
         </p>
         <button
@@ -247,7 +247,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
             </button>
           ) : (
             <>
-              <Link className="btn" to={`/bandes/${crew.id}`} data-tip="La bande est modifiable pendant la préparation : équipement, achats, recrutement.">⚒ Préparer l'équipement</Link>
+              <Link className="btn" to={crewPath(crew)} data-tip="La bande est modifiable pendant la préparation : équipement, achats, recrutement.">⚒ Préparer l'équipement</Link>
               <button
                 className="btn primary"
                 disabled={busy || prep.length === 0}

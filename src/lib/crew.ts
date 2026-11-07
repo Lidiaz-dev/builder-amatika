@@ -145,6 +145,30 @@ export interface CampStock {
 
 export const emptyStock = (): CampStock => ({ equipment: [], loot: [] })
 
+/**
+ * Un membre quitte la bande : il passe à « parti » et tout son équipement (commun et objets)
+ * est rangé dans le coffre du camp.
+ */
+export function leaveCrew(crew: Crew, memberId: string): Crew {
+  if (!crew.campaign) return crew
+  const m = crew.members.find((x) => x.id === memberId)
+  if (!m) return crew
+  const stock = crew.campaign.stock ?? emptyStock()
+  const nextStock: CampStock = {
+    equipment: [...stock.equipment, ...m.equipment.map((r) => r.itemId)],
+    loot: [...stock.loot, ...(m.loot ?? []).map((l) => ({ id: l.id, key: l.key, slot: 'sac' as Slot }))],
+  }
+  return {
+    ...crew,
+    members: crew.members.map((x) => (x.id === memberId ? { ...x, status: 'parti' as const, leavesAfterGame: false, equipment: [], loot: [] } : x)),
+    campaign: { ...crew.campaign, stock: nextStock },
+  }
+}
+
+/** Adresse du builder d'une bande : celles d'une campagne de groupe se gèrent depuis la campagne. */
+export const crewPath = (crew: Pick<Crew, 'id' | 'groupCampaign'>) =>
+  crew.groupCampaign ? `/campagnes/${crew.groupCampaign.id}/bandes/${crew.id}` : `/bandes/${crew.id}`
+
 /** La préparation est finie (partie lancée, bilan fait) : les ajouts ne sont plus annulables. */
 export const withoutUndo = (m: Member): Member => ({
   ...m,

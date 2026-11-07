@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { factionById, factions } from '../data'
 import { useAuth } from '../lib/auth'
-import { crewCost, newId, type Crew } from '../lib/crew'
+import { crewPath, crewCost, newId, type Crew } from '../lib/crew'
 import { readCrewFile } from '../lib/crewFile'
 import { crewDayState } from '../lib/groupCampaign'
 import { listCrews, localCrews, moveLocalCrewsToAccount, saveCrew } from '../lib/storage'
@@ -148,7 +148,8 @@ Annuler : l'importer comme une nouvelle bande.`)) crew = read
           const f = factionById(c.factionId)
           const legal = isLegal(validateCrew(c))
           return (
-            <Link key={c.id} to={`/bandes/${c.id}`} className="crew-tile card">
+            // Bande inscrite à une campagne : elle se gère depuis la campagne.
+            <Link key={c.id} to={campaignBadges[c.id] && c.groupCampaign ? crewPath(c) : `/bandes/${c.id}`} className="crew-tile card">
               <FactionSeal id={c.factionId} name={f?.name ?? '?'} />
               <div className="crew-tile-text">
                 <strong>{c.name || 'Bande sans nom'}</strong>

@@ -83,6 +83,7 @@ export default function App() {
             <Route path="/profil" element={<RequireAuth><PseudoPage edit /></RequireAuth>} />
             <Route path="/campagnes" element={<RequireAuth><CampaignsPage /></RequireAuth>} />
             <Route path="/campagnes/:id" element={<RequireAuth><CampaignPage /></RequireAuth>} />
+            <Route path="/campagnes/:campaignId/bandes/:id" element={<RequireAuth><CrewBuilderPage /></RequireAuth>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

@@ -11,6 +11,8 @@ import {
   newId,
   profileOf,
   withTreasury,
+  leaveCrew,
+  crewPath,
   type Crew,
   type Member,
   memberName,
@@ -225,7 +227,7 @@ export default function AfterBattlePage() {
   if (!original.campaign) {
     return (
       <p className="notice">
-        La campagne n'a pas encore commencé pour cette bande. <Link to={`/bandes/${original.id}`}>Retour au builder</Link>
+        La campagne n'a pas encore commencé pour cette bande. <Link to={crewPath(original)}>Retour au builder</Link>
       </p>
     )
   }
@@ -397,7 +399,11 @@ export default function AfterBattlePage() {
       }
       const leavers = c.members.filter((m) => isActive(m) && (leaving.includes(m.id) || m.leavesAfterGame))
       for (const m of leavers.filter((m) => m.leavesAfterGame)) lines.push(`${nameOf(faction!, m)} quitte la bande (blessure)`)
-      c = { ...c, members: c.members.map((m) => (leavers.some((l) => l.id === m.id) ? { ...m, status: 'parti' as const, leavesAfterGame: false } : m)) }
+      // Ceux qui partent laissent leur équipement au coffre du camp.
+      for (const m of leavers) {
+        if (m.equipment.length || m.loot?.length) lines.push(`Équipement de ${nameOf(faction!, m)} rangé au coffre du camp`)
+        c = leaveCrew(c, m.id)
+      }
     }
     if (k === S.xp) {
       c = {
@@ -579,7 +585,7 @@ export default function AfterBattlePage() {
   return (
     <section className="after-battle">
       <nav className="crumbs">
-        <Link to="/bandes">Mes bandes</Link> <span>›</span> <Link to={`/bandes/${original.id}`}>{original.name || 'Bande'}</Link> <span>›</span> Après la bataille
+        <Link to="/bandes">Mes bandes</Link> <span>›</span> <Link to={crewPath(original)}>{original.name || 'Bande'}</Link> <span>›</span> Après la bataille
       </nav>
       <header className="step-head">
         <div>

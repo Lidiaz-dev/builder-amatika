@@ -9,6 +9,7 @@ import {
   crewSpellsReminder,
   crewUpkeep,
   memberStats,
+  crewPath,
   isActive,
   lootItems,
   memberCost,
@@ -53,7 +54,7 @@ export default function CrewSheetsPage() {
   return (
     <section className="sheets">
       <div className="row between no-print sheets-toolbar">
-        <Link to={`/bandes/${crew.id}`} className="btn ghost">← Retour au builder</Link>
+        <Link to={crewPath(crew)} className="btn ghost">← Retour au builder</Link>
         <label className="row small">
           <input type="checkbox" checked={withRules} onChange={(e) => setWithRules(e.target.checked)} />
           Inclure le rappel des compétences, des objets et des sorts

@@ -32,6 +32,7 @@ import {
 import VerifyEmailNotice from '../components/VerifyEmailNotice'
 import CampaignCrewPanel from '../components/CampaignCrewPanel'
 import NumberInput from '../components/NumberInput'
+import CardsToRemovePanel from '../components/CardsToRemovePanel'
 import { DEFAULT_BUDGET } from '../lib/crew'
 
 export default function CampaignPage() {
@@ -178,6 +179,7 @@ Préparation pas encore validée : ${names}.` : ''
               run(() => removePlayer(campaign.id, email))
             }
           />
+          <CardsToRemovePanel entries={entries} />
         </>
       )}
 
@@ -228,7 +230,7 @@ function MyCrewPanel({ campaign, entry, day, locked, onChanged }: {
       {entry?.crewId ? (
         <>
           <p>
-            <Link to={`/bandes/${entry.crewId}`}><strong>{entry.crewName}</strong></Link>{' '}
+            <Link to={`/campagnes/${campaign.id}/bandes/${entry.crewId}`}><strong>{entry.crewName}</strong></Link>{' '}
             <span className="muted">({factionById(entry.factionId ?? '')?.name})</span>
             {playing && day && (
               <span className="badge phase-badge phase-partie">

@@ -1319,3 +1319,9 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .num-btn:hover:not(:disabled) { background: var(--accent-soft); color: var(--accent); }
 .num-btn:disabled { opacity: 0.35; cursor: default; }
 .field .num-input { align-self: flex-start; }
+/* Maître de campagne : cartes à retirer des paquets */
+.cards-to-remove > summary h2 { display: inline; font-size: 1.05rem; }
+.cards-list { list-style: none; margin: 0.5rem 0 0; padding: 0; }
+.cards-list li { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.4rem 0; border-bottom: 1px dashed var(--border); }
+.cards-list-item { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.cards-list li.exhausted .cards-list-item strong { color: var(--ko); }
