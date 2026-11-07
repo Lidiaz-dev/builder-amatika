@@ -21,6 +21,19 @@ const GROUPS = [
   { label: 'Sans effet après la bataille', match: (c: Injury) => !c.lasting && !c.special },
 ]
 
+/** Ce qu'il faut pour se relever : « se relève sur 4+ » (assommé) ou « -2 actions » (au sol). */
+function standUp(c: Injury): string {
+  if (c.kind === 'assome') {
+    const test = c.description.match(/sur un (\d+\+)/)
+    return test ? `se relève sur ${test[1]}` : ''
+  }
+  if (c.kind === 'au-sol') {
+    const cost = c.description.match(/enl[eè]ve (\d+) actions?/)
+    return cost ? `-${cost[1]} action${cost[1] === '1' ? '' : 's'}` : ''
+  }
+  return ''
+}
+
 /** Choix d'une carte Blessure : celle piochée à la table, ou un tirage virtuel. */
 export default function InjuryPicker({ onApply, onNegotiate, onClose, lastingOnly }: Props) {
   const [card, setCard] = useState<Injury | null>(null)
@@ -43,7 +56,7 @@ export default function InjuryPicker({ onApply, onNegotiate, onClose, lastingOnl
           {GROUPS.filter((g) => !lastingOnly || g.label === 'Blessures durables' || g.label === 'Effets particuliers').map((g) => (
             <optgroup key={g.label} label={g.label}>
               {injuries.filter(g.match).sort((a, b) => a.name.localeCompare(b.name, 'fr') || a.value - b.value).map((c) => (
-                <option key={c.id} value={c.id}>{c.name}{c.kind === 'au-sol' || c.kind === 'assome' ? ` (${c.value})` : ''}</option>
+                <option key={c.id} value={c.id}>{c.name}{standUp(c) ? ` (${standUp(c)})` : ''}</option>
               ))}
             </optgroup>
           ))}

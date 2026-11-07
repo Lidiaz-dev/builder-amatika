@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import NumberInput from './NumberInput'
 
 /** Couleur de jetons d'un joueur dans le sac d'activation. */
 export interface BagColor {
@@ -93,16 +94,12 @@ export default function ActivationBag({ colors, onChange, onDraw, onRefill }: Pr
                 </span>
                 <input className="bag-name" value={c.name} onChange={(e) => set(c.id, { name: e.target.value })} aria-label="Nom du joueur" placeholder="Nom du joueur" title="Renommez avec le nom du joueur" />
                 <label className="bag-start" title="Nombre de jetons en début de partie">
-                  <input
-                    type="number"
+                  <NumberInput
+                    label={`Jetons de ${c.name}`}
                     min={0}
                     max={20}
                     value={c.start}
-                    onChange={(e) => {
-                      const n = Math.max(0, Math.min(20, Number(e.target.value)))
-                      set(c.id, { start: n, total: n, drawn: Math.min(c.drawn, n) })
-                    }}
-                    aria-label={`Jetons de ${c.name}`}
+                    onChange={(n) => set(c.id, { start: n, total: n, drawn: Math.min(c.drawn, n) })}
                   />
                   <span className="muted small">jetons</span>
                 </label>

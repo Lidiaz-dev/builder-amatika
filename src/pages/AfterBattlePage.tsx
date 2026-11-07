@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { equipmentById, factionById, injuryById, itemByKey, type Faction } from '../data'
+import { equipmentById, factionById, injuryById, itemByKey, itemCategories, itemKey, type Faction } from '../data'
 import {
   CRYSTAL_PRICE,
   isActive,
@@ -18,6 +18,9 @@ import {
 import { addXp, applyAdvance, applyInjury, d10, revertInjury, learnsNothing, pendingLevels, poisonThreshold } from '../lib/campaign'
 import { getCrew, saveCrew } from '../lib/storage'
 import DiceInput from '../components/DiceInput'
+import Counter from '../components/Counter'
+import NumberInput from '../components/NumberInput'
+import ItemChip from '../components/ItemChip'
 import Modal from '../components/Modal'
 import InjuryPicker from '../components/InjuryPicker'
 import AdvancePicker from '../components/AdvancePicker'
@@ -38,6 +41,12 @@ interface XpInput {
   kills: number
   liqueur?: number
 }
+
+/** Destination « coffre du camp » dans la liste des acheteurs du marché noir. */
+const TO_STOCK = '__coffre'
+
+/** Marque des objets notés comme trouvés dans le bilan lui-même. */
+const FOUND_IN_REPORT = 'bilan'
 
 const nameOf = (faction: Faction, m: Member) => memberName(m) || profileOf(faction, m)?.name || '?'
 
@@ -67,6 +76,14 @@ interface WizardSnapshot {
   /** Cristaux magiques du butin vendus tout de suite (25 PO pièce). */
   crystalsSold?: number
 }
+
+/** Objets du paquet Marché noir, par catégorie : pour noter les cartes piochées à la table. */
+const MARKET_CHOICES = (() => {
+  const refs = new Set((DECKS.find((d) => d.id === 'marche-noir')?.cards ?? []).map((c) => c.ref))
+  return itemCategories
+    .map((c) => ({ name: c.name, items: c.items.filter((it) => refs.has(itemKey(c.id, it.id))).map((it) => ({ key: itemKey(c.id, it.id), name: it.name, price: it.price })) }))
+    .filter((c) => c.items.length)
+})()
 
 /** Cartes Marché noir distribuées : 4, plus 1 par figurine avec Soldat de la Pègre. */
 function drawMarket(count: number): string[] {
@@ -243,19 +260,31 @@ export default function AfterBattlePage() {
     })
     log(`${nameOf(faction, m)} vend : ${name} (+${gain} PO)`)
   }
+  /** Retire une carte non achetée (indices des cartes achetées et acheteurs décalés). */
+  const removeMarketCard = (index: number) => {
+    setMarket((m) => (m ?? []).filter((_, i) => i !== index))
+    setMarketBought((b) => b.filter((i) => i !== index).map((i) => (i > index ? i - 1 : i)))
+    setBuyer((all) => Object.fromEntries(Object.entries(all).filter(([k]) => Number(k) !== index).map(([k, v]) => [Number(k) > index ? Number(k) - 1 : Number(k), v])))
+  }
   const buyMarket = (index: number) => {
     const key = market?.[index]
     const item = key ? itemByKey(key) : undefined
-    const m = draft.members.find((x) => x.id === (buyer[index] ?? alivePlaying[0]?.id))
-    if (!key || !item || item.price === null || !m) return
+    const target = buyer[index] ?? alivePlaying[0]?.id ?? TO_STOCK
+    const m = draft.members.find((x) => x.id === target)
+    if (!key || !item || item.price === null || (target !== TO_STOCK && !m)) return
     const price = item.price
+    const ref = { id: newId(), key, slot: 'sac' as const }
     setDraft((d) => {
-      if (!d) return d
-      const members = d.members.map((x) => (x.id === m.id ? { ...x, loot: [...(x.loot ?? []), { id: newId(), key, slot: 'sac' as const }] } : x))
-      return withTreasury({ ...d, members }, { po: -price }, `${title} : marché noir, ${item.name}`)
+      if (!d?.campaign) return d
+      // Envoyé au coffre du camp, ou dans le sac du personnage choisi.
+      const next =
+        target === TO_STOCK
+          ? { ...d, campaign: { ...d.campaign, stock: { equipment: d.campaign.stock?.equipment ?? [], loot: [...(d.campaign.stock?.loot ?? []), ref] } } }
+          : { ...d, members: d.members.map((x) => (x.id === target ? { ...x, loot: [...(x.loot ?? []), ref] } : x)) }
+      return withTreasury(next, { po: -price }, `${title} : marché noir, ${item.name}`)
     })
     setMarketBought((b) => [...b, index])
-    log(`Marché noir : ${item.name} acheté pour ${nameOf(faction, m)} (${price} PO)`)
+    log(`Marché noir : ${item.name} acheté ${m ? `pour ${nameOf(faction, m)}` : 'pour le coffre du camp'} (${price} PO)`)
   }
   const loseItem = (m: Member, kind: 'equipment' | 'loot', ref: string | number, name: string) => {
     if (!confirm(`${nameOf(faction, m)} perd « ${name} » ? L'objet quitte la bande.`)) return
@@ -272,6 +301,27 @@ export default function AfterBattlePage() {
   const diceCount = rawCrystals > 0 ? rawCrystals + prospectors : 0
   const keptCrystals = [...rolls.slice(0, diceCount)].filter((r): r is number => r !== null).sort((a, b) => b - a).slice(0, rawCrystals)
   const crystalsGained = keptCrystals.reduce((s, r) => s + r, 0)
+  /**
+   * Objets qui rapportent à la bande à chaque partie (« Une bande possédant cet objet gagne +20PO
+   * à la fin de chaque partie ») : portés, au sac ou au coffre du camp.
+   */
+  const recurring = (() => {
+    const keys = [
+      ...draft.members.filter(isActive).flatMap((m) => (m.loot ?? []).map((l) => l.key)),
+      ...(draft.campaign?.stock?.loot ?? []).map((l) => l.key),
+    ]
+    const out: { name: string; po: number; prestige: number }[] = []
+    for (const key of keys) {
+      const item = itemByKey(key)
+      const m = item?.description.match(/gagne \+?(\d+) ?(PO|en prestige|de prestige)[^.]*à la fin de chaque partie/i)
+      if (!item || !m) continue
+      const n = Number(m[1])
+      out.push({ name: item.name, po: /PO/i.test(m[2]) ? n : 0, prestige: /prestige/i.test(m[2]) ? n : 0 })
+    }
+    return out
+  })()
+  const recurringPo = recurring.reduce((t, r) => t + r.po, 0)
+  const recurringPrestige = recurring.reduce((t, r) => t + r.prestige, 0)
 
   // Entretien calculé sur le brouillon (après les morts).
   const stayers = draft.members.filter((m) => isActive(m) && !leaving.includes(m.id))
@@ -280,10 +330,20 @@ export default function AfterBattlePage() {
   const treasury = draft.campaign!
 
   const hasLiqueur = Object.values(liqueurDice).some(Boolean)
+  /** XP en plus donnée par les objets portés (« gagne 5xp de plus à la fin de chaque partie »). */
+  const gearXp = (mid: string) => {
+    const m = draft.members.find((x) => x.id === mid)
+    if (!m) return { xp: 0, names: [] as string[] }
+    const bonus = lootItems(m)
+      .filter(({ ref }) => ref.slot === 'porte')
+      .map(({ item }) => ({ name: item?.name ?? '', n: Number(item?.description.match(/gagne (\d+) ?xp de plus à la fin de chaque partie/i)?.[1] ?? 0) }))
+      .filter((b) => b.n > 0)
+    return { xp: bonus.reduce((t, b) => t + b.n, 0), names: bonus.map((b) => `${b.name} +${b.n}`) }
+  }
   const xpTotal = (mid: string) => {
     const v = xp[mid]
     if (!v) return 0
-    return (v.participation ?? 0) + 5 * v.places + v.damage + 5 * v.kills + (v.liqueur ?? 0)
+    return (v.participation ?? 0) + 5 * v.places + v.damage + 5 * v.kills + (v.liqueur ?? 0) + gearXp(mid).xp
   }
 
   /** Effets d'une étape appliqués quand on passe à la suivante. */
@@ -324,8 +384,9 @@ export default function AfterBattlePage() {
       if (sold) lines.push(`${sold} cristaux vendus : +${sold * CRYSTAL_PRICE} PO`)
       if (poFound) lines.push(`${poFound} PO récupérées`)
       if (prestigeGained) lines.push(`${prestigeGained} de prestige`)
-      const delta = { cristaux: crystalsGained - sold, po: poFound + sold * CRYSTAL_PRICE, prestige: prestigeGained }
-      if (crystalsGained || poFound || prestigeGained) c = withTreasury(c, delta, `${title} : butin`)
+      for (const r of recurring) lines.push(`${r.name} : ${[r.po && `+${r.po} PO`, r.prestige && `+${r.prestige} prestige`].filter(Boolean).join(', ')}`)
+      const delta = { cristaux: crystalsGained - sold, po: poFound + sold * CRYSTAL_PRICE + recurringPo, prestige: prestigeGained + recurringPrestige }
+      if (delta.cristaux || delta.po || delta.prestige) c = withTreasury(c, delta, `${title} : butin`)
     }
     if (k === S.upkeep) {
       c = withTreasury(c, { po: -upkeepPo, cristaux: -upkeepCr }, `${title} : entretien`)
@@ -360,6 +421,15 @@ export default function AfterBattlePage() {
     setLogs((all) => all.map((l, i) => (i === step ? [...l.filter((x) => !x.startsWith('§')), ...lines.map((x) => `§${x}`)] : i > step ? [] : l)))
     setDraft(crew)
     setStep(step + 1)
+    window.scrollTo(0, 0)
+  }
+
+  /** Revient directement à une étape déjà faite (ses effets et ceux des suivantes sont annulés). */
+  function goTo(target: number) {
+    if (target >= step || !exits[target]) return
+    setDraft(exits[target])
+    setLogs((all) => all.map((l, i) => (i === target ? l.filter((x) => !x.startsWith('§')) : i > target ? [] : l)))
+    setStep(target)
     window.scrollTo(0, 0)
   }
 
@@ -420,10 +490,10 @@ export default function AfterBattlePage() {
   const giveItem = (m: Member, pick: LootPick) => {
     const name = memberName(m) || profileOf(faction, m)?.name
     if (pick.kind === 'loot') {
-      setMember({ ...m, loot: [...(m.loot ?? []), { id: newId(), key: pick.key, slot: 'sac' }] })
+      setMember({ ...m, loot: [...(m.loot ?? []), { id: newId(), key: pick.key, slot: 'sac', found: FOUND_IN_REPORT }] })
       log(`${name} récupère : ${itemByKey(pick.key)?.name ?? pick.key}${pick.paid ? ` (acheté ${pick.price} PO)` : ''}`)
     } else {
-      setMember({ ...m, equipment: [...m.equipment, { itemId: pick.itemId, slot: 'sac' }] })
+      setMember({ ...m, equipment: [...m.equipment, { itemId: pick.itemId, slot: 'sac', found: FOUND_IN_REPORT }] })
       log(`${name} récupère : ${equipmentById(pick.itemId)?.name ?? pick.itemId}${pick.paid ? ` (acheté ${pick.price} PO)` : ''}`)
     }
     if (pick.paid) setDraft((d) => d && withTreasury(d, { po: -pick.price }, `${title} : achat`))
@@ -438,40 +508,47 @@ export default function AfterBattlePage() {
   /** Partie notée en direct : ses objets ramassés sont mis en avant dans l'étape Butin. */
   const liveGame = original.campaign.currentGame
   const foundInGame = (m: Member, flag: string | undefined, name: string) =>
-    !!liveGame && (flag === liveGame.id || liveGame.events.some((e) => e.step === 'loot' && e.text === `${nameOf(faction, m)} ramasse : ${name}`))
+    flag === FOUND_IN_REPORT || (!!liveGame && (flag === liveGame.id || liveGame.events.some((e) => e.step === 'loot' && e.text === `${nameOf(faction, m)} ramasse : ${name}`)))
   const lootLines = (m: Member) => {
     const all = [
-      ...m.equipment.map((ref, i) => ({ key: `e${i}`, kind: 'equipment' as const, ref: i as string | number, name: equipmentById(ref.itemId)?.name ?? ref.itemId, price: equipmentById(ref.itemId)?.price ?? null, loot: false, found: foundInGame(m, ref.found, equipmentById(ref.itemId)?.name ?? ref.itemId) })),
-      ...(m.loot ?? []).map((l) => ({ key: l.id, kind: 'loot' as const, ref: l.id as string | number, name: itemByKey(l.key)?.name ?? l.key, price: itemByKey(l.key)?.price ?? null, loot: true, found: foundInGame(m, l.found, itemByKey(l.key)?.name ?? l.key) })),
+      ...m.equipment.map((ref, i) => ({ key: `e${i}`, id: ref.itemId, kind: 'equipment' as const, ref: i as string | number, name: equipmentById(ref.itemId)?.name ?? ref.itemId, price: equipmentById(ref.itemId)?.price ?? null, loot: false, found: foundInGame(m, ref.found, equipmentById(ref.itemId)?.name ?? ref.itemId) })),
+      ...(m.loot ?? []).map((l) => ({ key: l.id, id: l.key, kind: 'loot' as const, ref: l.id as string | number, name: itemByKey(l.key)?.name ?? l.key, price: itemByKey(l.key)?.price ?? null, loot: true, found: foundInGame(m, l.found, itemByKey(l.key)?.name ?? l.key) })),
     ]
     const tag = (it: (typeof all)[number]) => (
-      <span key={it.key} className="tag-wrap with-after">
-        <span className={`tag ${it.loot ? 'loot-tag' : ''} ${it.found ? 'found-tag' : ''}`}>{it.name}</span>
-        {it.price ? (
-          <button className="tag-remove tag-sell" onClick={() => sellItem(m, it.kind, it.ref, it.name, it.price!)} aria-label={`Vendre ${it.name}`} data-tip={`Vendre pour ${Math.floor(it.price / 2)} PO`}>
-            {Math.floor(it.price / 2)} PO
-          </button>
-        ) : null}
-        <button className="tag-remove" onClick={() => loseItem(m, it.kind, it.ref, it.name)} aria-label={`Perdre ${it.name}`} data-tip="Perdre l'objet (dépouillé, détruit…)">×</button>
-      </span>
+      <ItemChip
+        key={it.key}
+        equipmentId={it.loot ? undefined : it.id}
+        lootKey={it.loot ? it.id : undefined}
+        after={
+          <>
+            {it.price ? (
+              <button className="tag-remove tag-sell" onClick={() => sellItem(m, it.kind, it.ref, it.name, it.price!)} aria-label={`Vendre ${it.name}`} data-tip={`Vendre pour ${Math.floor(it.price / 2)} PO`}>
+                {Math.floor(it.price / 2)} PO
+              </button>
+            ) : null}
+            <button className="tag-remove" onClick={() => loseItem(m, it.kind, it.ref, it.name)} aria-label={`Perdre ${it.name}`} data-tip="Perdre l'objet (dépouillé, détruit…)">×</button>
+          </>
+        }
+      />
     )
     const found = all.filter((it) => it.found)
     const others = all.filter((it) => !it.found)
     if (!all.length) return null
     return (
-      <div className="step-tags loot-lines">
-        {liveGame && (
-          <p className="small">
-            <strong>Trouvé pendant la partie :</strong>{' '}
-            {found.length ? <span className="tags">{found.map(tag)}</span> : <span className="muted">rien</span>}
-          </p>
+      <dl className="loot-lines">
+        {(liveGame || found.length > 0) && (
+          <>
+            <dt>Trouvé pendant la partie</dt>
+            <dd>{found.length ? <span className="tags">{found.map(tag)}</span> : <span className="muted small">rien</span>}</dd>
+          </>
         )}
         {others.length > 0 && (
-          <p className="small">
-            <span className="muted">{liveGame ? 'Déjà sur la figurine :' : 'Objets :'}</span> <span className="tags">{others.map(tag)}</span>
-          </p>
+          <>
+            <dt>Déjà sur la figurine</dt>
+            <dd><span className="tags">{others.map(tag)}</span></dd>
+          </>
         )}
-      </div>
+      </dl>
     )
   }
 
@@ -526,7 +603,15 @@ export default function AfterBattlePage() {
 
       <ol className="stepper">
         {STEPS.map((s, i) => (
-          <li key={s} className={i === step ? 'on' : i < step ? 'done' : ''} data-tip={preset && i === S.participants ? 'Choisis pendant la préparation de la journée.' : undefined}><span>{i + 1}</span> {s}</li>
+          <li key={s} className={i === step ? 'on' : i < step ? 'done' : ''} data-tip={preset && i === S.participants ? 'Choisis pendant la préparation de la journée.' : undefined}>
+            {i < step && i >= (preset ? S.items : 0) && exits[i] ? (
+              <button type="button" className="stepper-link" onClick={() => goTo(i)} data-tip="Revenir à cette étape">
+                <span>{i + 1}</span> {s}
+              </button>
+            ) : (
+              <><span>{i + 1}</span> {s}</>
+            )}
+          </li>
         ))}
       </ol>
 
@@ -631,7 +716,7 @@ export default function AfterBattlePage() {
             <div className="row wrap">
               <label className="field narrow">
                 <span>Cristaux bruts</span>
-                <input type="number" min={0} value={rawCrystals} onChange={(e) => { const n = Math.max(0, Number(e.target.value)); setRawCrystals(n); setRolls(Array(n ? n + prospectors : 0).fill(null)) }} />
+                <NumberInput label="Cristaux bruts" min={0} value={rawCrystals} onChange={(n) => { setRawCrystals(n); setRolls(Array(n ? n + prospectors : 0).fill(null)) }} />
               </label>
               {diceCount > 0 && <button className="btn small" onClick={() => setRolls(Array.from({ length: diceCount }, () => d10()))}>🎲 Tout lancer</button>}
             </div>
@@ -650,15 +735,7 @@ export default function AfterBattlePage() {
               <div className="row wrap crystal-sale">
                 <label className="row">
                   Vendre
-                  <input
-                    type="number"
-                    min={0}
-                    max={crystalsGained}
-                    className="xp-input"
-                    value={Math.min(crystalsSold, crystalsGained)}
-                    onChange={(e) => setCrystalsSold(Math.max(0, Math.min(crystalsGained, Math.floor(Number(e.target.value) || 0))))}
-                    aria-label="Cristaux à vendre"
-                  />
+                  <NumberInput label="Cristaux à vendre" min={0} max={crystalsGained} value={Math.min(crystalsSold, crystalsGained)} onChange={(n) => setCrystalsSold(Math.floor(n))} />
                   cristal(aux) sur {crystalsGained}, à {CRYSTAL_PRICE} PO pièce
                 </label>
                 {crystalsSold > 0 && <strong>+{Math.min(crystalsSold, crystalsGained) * CRYSTAL_PRICE} PO</strong>}
@@ -669,26 +746,36 @@ export default function AfterBattlePage() {
 
             <h3>Or et prestige</h3>
             <div className="row wrap">
-              <label className="field narrow"><span>PO trouvées</span><input type="number" value={poFound} onChange={(e) => setPoFound(Number(e.target.value))} /></label>
-              <label className="field narrow"><span>Prestige gagné</span><input type="number" value={prestigeGained} onChange={(e) => setPrestigeGained(Number(e.target.value))} /></label>
+              <div className="field narrow"><span>PO trouvées</span><NumberInput label="PO trouvées" min={0} step={5} value={poFound} onChange={setPoFound} /></div>
+              <div className="field narrow"><span>Prestige gagné</span><NumberInput label="Prestige gagné" min={0} value={prestigeGained} onChange={setPrestigeGained} /></div>
             </div>
+            {recurring.length > 0 && (
+              <p className="notice small">
+                Objets de la bande, ajoutés au butin : {recurring.map((r) => `${r.name} (${[r.po && `+${r.po} PO`, r.prestige && `+${r.prestige} prestige`].filter(Boolean).join(', ')})`).join(' · ')}.
+              </p>
+            )}
 
             <h3>Objets trouvés</h3>
-            <ul className="member-steps">
+            <ul className="loot-members">
               {alivePlaying.map((m) => (
                 <li key={m.id}>
-                  <strong>{nameOf(faction, m)}</strong>
-                  <button className="btn small" onClick={() => setLootFor(m.id)}>⚱ Donner un objet</button>
-                  {lootLines(m)}
+                  <div className="loot-member-head">
+                    <strong>{nameOf(faction, m)}</strong>
+                    <button className="btn small" onClick={() => setLootFor(m.id)} data-tip="Noter un objet trouvé pendant la partie (fouille d'un lieu, d'un ennemi…).">⚱ Trouver un objet</button>
+                  </div>
+                  {lootLines(m) ?? <p className="muted small loot-empty">Aucun objet.</p>}
                 </li>
               ))}
             </ul>
             <h3>Marché noir</h3>
             {!market ? (
-              <div className="row wrap">
-                <button className="btn" onClick={() => setMarket(drawMarket(4 + pegre))}>🂠 Tirer {4 + pegre} cartes Marché noir</button>
-                <span className="muted small">4 cartes{pegre ? `, +${pegre} pour Soldat de la Pègre` : ''}. Les cartes non achetées retournent dans le paquet.</span>
-              </div>
+              <>
+                <div className="row wrap">
+                  <button className="btn" onClick={() => setMarket(drawMarket(4 + pegre))}>🂠 Tirer {4 + pegre} cartes au hasard</button>
+                  <button className="btn" onClick={() => setMarket([])} data-tip="Vous piochez les cartes à la table et vous les notez ici.">✎ Noter les cartes piochées à la table</button>
+                </div>
+                <p className="muted small">4 cartes{pegre ? `, +${pegre} pour Soldat de la Pègre` : ''}. Les cartes non achetées retournent dans le paquet.</p>
+              </>
             ) : (
               <>
                 <p className="muted small">Trésor actuel : {draft.campaign?.po ?? 0} PO{poFound ? ` (+${poFound} PO trouvées, ajoutées à la fin du bilan)` : ''}.</p>
@@ -708,16 +795,29 @@ export default function AfterBattlePage() {
                           <span className="badge ok">✓ Acheté</span>
                         ) : (
                           <div className="row">
-                            <select value={buyer[i] ?? alivePlaying[0]?.id ?? ''} onChange={(e) => setBuyer((b) => ({ ...b, [i]: e.target.value }))} aria-label="Figurine qui reçoit l'objet">
-                              {alivePlaying.map((m) => <option key={m.id} value={m.id}>{nameOf(faction, m)}</option>)}
+                            <button className="icon-btn drop-btn" onClick={() => removeMarketCard(i)} aria-label="Retirer cette carte" data-tip="Retirer cette carte (erreur de saisie)">×</button>
+                            <select value={buyer[i] ?? alivePlaying[0]?.id ?? TO_STOCK} onChange={(e) => setBuyer((b) => ({ ...b, [i]: e.target.value }))} aria-label="Qui reçoit l'objet">
+                              <optgroup label="Personnages">
+                                {alivePlaying.map((m) => <option key={m.id} value={m.id}>{nameOf(faction, m)}</option>)}
+                              </optgroup>
+                              <option value={TO_STOCK}>Coffre du camp</option>
                             </select>
-                            <button className="btn small primary" disabled={price === null || !alivePlaying.length} onClick={() => buyMarket(i)}>Acheter</button>
+                            <button className="btn small primary" disabled={price === null} onClick={() => buyMarket(i)}>Acheter</button>
                           </div>
                         )}
                       </li>
                     )
                   })}
                 </ul>
+                {market.length === 0 && <p className="muted small">Aucune carte notée pour l'instant.</p>}
+                <select value="" onChange={(e) => e.target.value && setMarket((m) => [...(m ?? []), e.target.value])} aria-label="Ajouter une carte Marché noir">
+                  <option value="">+ Ajouter une carte piochée…</option>
+                  {MARKET_CHOICES.map((c) => (
+                    <optgroup key={c.name} label={c.name}>
+                      {c.items.map((it) => <option key={it.key} value={it.key}>{it.name}{it.price !== null ? ` — ${it.price} PO` : ''}</option>)}
+                    </optgroup>
+                  ))}
+                </select>
               </>
             )}
             <StepLog lines={logs[S.loot]} />
@@ -795,20 +895,23 @@ export default function AfterBattlePage() {
                       <tr key={m.id}>
                         <td><strong>{nameOf(faction, m)}</strong><br /><span className="muted small">{m.xp} XP</span></td>
                         <td><DiceInput value={v.participation} onChange={(r) => set({ participation: r })} /></td>
-                        <td><input type="number" min={0} className="xp-input" value={v.places} onChange={(e) => set({ places: Number(e.target.value) })} /></td>
-                        <td><input type="number" min={0} className="xp-input" value={v.damage} onChange={(e) => set({ damage: Number(e.target.value) })} /></td>
-                        <td><input type="number" min={0} className="xp-input" value={v.kills} onChange={(e) => set({ kills: Number(e.target.value) })} /></td>
+                        <td><Counter label="Lieux fouillés" hideLabel value={v.places} onDelta={(d) => set({ places: Math.max(0, v.places + d) })} /></td>
+                        <td><Counter label="XP de PV retirés" hideLabel editable steps={[1, 5]} value={v.damage} onDelta={(d) => set({ damage: Math.max(0, v.damage + d) })} /></td>
+                        <td><Counter label="Ennemis tués" hideLabel value={v.kills} onDelta={(d) => set({ kills: Math.max(0, v.kills + d) })} /></td>
                         {hasLiqueur && (
                           <td>
                             {liqueurDice[m.id] ? (
                               <span className="dice-input">
-                                <input type="number" min={0} className="xp-input" value={v.liqueur ?? ''} placeholder={`${liqueurDice[m.id]}D10`} onChange={(e) => set({ liqueur: Number(e.target.value) })} aria-label="XP de liqueur" />
+                                <NumberInput label="XP de liqueur" min={0} value={v.liqueur ?? null} placeholder={`${liqueurDice[m.id]}D10`} onChange={(n) => set({ liqueur: n })} />
                                 <button type="button" className="btn small" onClick={() => set({ liqueur: Array.from({ length: liqueurDice[m.id] }, d10).reduce((a, b) => a + b, 0) })} title="Lancer les dés">🎲</button>
                               </span>
                             ) : '—'}
                           </td>
                         )}
-                        <td><strong>+{xpTotal(m.id)}</strong></td>
+                        <td>
+                          <strong>+{xpTotal(m.id)}</strong>
+                          {gearXp(m.id).xp > 0 && <><br /><span className="muted small" data-tip="XP donnée par un objet porté">dont {gearXp(m.id).names.join(', ')}</span></>}
+                        </td>
                       </tr>
                     )
                   })}
@@ -819,11 +922,20 @@ export default function AfterBattlePage() {
               className="btn small"
               onClick={() => setXp((all) => {
                 const n = { ...all }
-                for (const m of alivePlaying) n[m.id] = { ...(n[m.id] ?? { places: 0, damage: 0, kills: 0 }), participation: n[m.id]?.participation ?? d10() }
+                for (const m of alivePlaying) {
+                  const cur = n[m.id] ?? { participation: null, places: 0, damage: 0, kills: 0 }
+                  const dice = liqueurDice[m.id] ?? 0
+                  n[m.id] = {
+                    ...cur,
+                    participation: cur.participation ?? d10(),
+                    // Liqueurs bues : leurs D10 d'XP sont lancés avec la participation.
+                    ...(dice && cur.liqueur === undefined ? { liqueur: Array.from({ length: dice }, d10).reduce((a, b) => a + b, 0) } : {}),
+                  }
+                }
                 return n
               })}
             >
-              🎲 Lancer toutes les participations
+              🎲 Lancer toutes les participations{hasLiqueur ? ' et les liqueurs' : ''}
             </button>
           </>
         )}
@@ -913,6 +1025,7 @@ export default function AfterBattlePage() {
             onClose={() => setLootFor(null)}
             // Objet trouvé en fouillant : il va dans le sac, même si la figurine ne peut pas s'en servir.
             allowedEquipment={null}
+            foundOnly
             onPick={(pick) => giveItem(memberById(lootFor), pick)}
           />
         )}

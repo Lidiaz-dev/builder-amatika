@@ -1216,9 +1216,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .live-items .lose-btn { margin-left: 0.35rem; border-left: 1px solid var(--border); border-radius: 3px; }
 /* Boutons longs des étapes de campagne : ils passent à la ligne plutôt que de dépasser du cadre. */
 .campaign-step .btn { white-space: normal; text-align: center; max-width: 100%; }
-/* Bilan, étape Butin : objets trouvés pendant la partie, puis ceux déjà portés */
-.loot-lines p { margin: 0.15rem 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
-.tag.found-tag { background: var(--warn-soft); border-color: var(--gold); font-weight: 700; }
 
 /* Bilan : revente et marché noir */
 .tag-remove.tag-sell { font-size: 0.72rem; font-family: var(--display); color: var(--ok); white-space: nowrap; }
@@ -1284,3 +1281,41 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   .equipment li { grid-template-columns: 1fr auto; row-gap: 0.35rem; }
   .equipment li > .segmented { justify-self: start; }
 }
+
+/* Bilan : étapes déjà faites cliquables */
+.stepper-link { display: inline-flex; align-items: center; gap: 0.35rem; border: none; background: none; padding: 0; font: inherit; color: inherit; cursor: pointer; }
+.stepper li.done:has(.stepper-link):hover { border-color: var(--ok); background: var(--ok-soft); }
+.stepper-link:hover { text-decoration: underline; }
+/* Bilan, étape Butin : un bloc par figurine, en-tête puis lignes d'objets alignées */
+.loot-members { list-style: none; margin: 0; padding: 0; }
+.loot-members > li { padding: 0.55rem 0; border-bottom: 1px dashed var(--border); }
+.loot-member-head { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap; }
+.loot-lines { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 0.8rem; align-items: center; margin: 0.45rem 0 0; font-size: 0.88rem; }
+.loot-lines dt { color: var(--muted); }
+.loot-lines dd { margin: 0; }
+.loot-empty { margin: 0.35rem 0 0; }
+@media (max-width: 600px) {
+  .loot-lines { grid-template-columns: 1fr; gap: 0.15rem; }
+  .loot-lines dd { margin-bottom: 0.35rem; }
+}
+.counter.compact .counter-controls { flex-wrap: nowrap; white-space: nowrap; }
+.xp-table td { vertical-align: middle; }
+/* Boutons segmentés : à la taille de leur texte, même dans une colonne (fenêtre Donner un objet…) */
+.stack > .segmented, .injury-picker > .segmented { align-self: flex-start; }
+.segmented button { white-space: nowrap; }
+/* Étiquette d'objet : même forme partout (rareté, nom cliquable, boutons collés) */
+.tag.item-chip { display: inline-flex; align-items: center; gap: 0.25rem; }
+.tag-wrap.with-after > .item-chip { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+
+/* Champ numérique avec − et + (partout sur le site) */
+.num-input { display: inline-flex; align-items: stretch; border: 1px solid var(--border-strong); border-radius: 3px; background: var(--surface); overflow: hidden; vertical-align: middle; }
+.num-input input {
+  width: 3.6rem; min-width: 0; border: none; border-radius: 0; background: transparent; box-shadow: none; text-align: center;
+  padding: 0.3rem 0.15rem; font-weight: 700; font-variant-numeric: lining-nums tabular-nums; -moz-appearance: textfield;
+}
+.num-input input::-webkit-inner-spin-button, .num-input input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.num-input input:focus { outline: 2px solid var(--gold); outline-offset: -2px; }
+.num-btn { border: none; background: var(--surface-2); color: var(--text); padding: 0 0.55rem; font-size: 1rem; font-weight: 700; cursor: pointer; line-height: 1; }
+.num-btn:hover:not(:disabled) { background: var(--accent-soft); color: var(--accent); }
+.num-btn:disabled { opacity: 0.35; cursor: default; }
+.field .num-input { align-self: flex-start; }

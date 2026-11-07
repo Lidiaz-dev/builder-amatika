@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../lib/auth'
 import { createCampaign, DAY_STATUS_LABELS, isAdmin, listCampaigns, type GroupCampaign } from '../lib/groupCampaign'
 import VerifyEmailNotice from '../components/VerifyEmailNotice'
+import NumberInput from '../components/NumberInput'
 import { DEFAULT_BUDGET } from '../lib/crew'
 
 /** Liste des campagnes de groupe : toutes pour l'organisateur, celles où l'on est inscrit sinon. */
@@ -54,7 +55,7 @@ export default function CampaignsPage() {
           </label>
           <label className="field narrow">
             <span>Budget des bandes (PO)</span>
-            <input type="number" min={10} step={10} value={budget} onChange={(e) => setBudget(Number(e.target.value))} />
+            <NumberInput label="Budget des bandes" min={10} step={10} value={budget} onChange={setBudget} />
           </label>
           <button className="btn primary" type="submit" disabled={!name.trim() || budget <= 0}>Créer la campagne</button>
         </form>

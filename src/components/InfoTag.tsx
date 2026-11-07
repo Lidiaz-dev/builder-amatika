@@ -9,11 +9,13 @@ interface Props {
   className?: string
   /** Bouton facultatif à côté de l'étiquette (ex. retirer un sort). */
   after?: ReactNode
+  /** Petit élément avant le libellé dans l'étiquette (pastille de rareté…). */
+  icon?: ReactNode
   children: ReactNode
 }
 
 /** Étiquette cliquable qui ouvre une fenêtre de détail. */
-export default function InfoTag({ label, kicker, className = '', after, children }: Props) {
+export default function InfoTag({ label, kicker, className = '', after, icon, children }: Props) {
   const dialog = useRef<HTMLDialogElement>(null)
   const close = () => dialog.current?.close()
 
@@ -33,7 +35,7 @@ export default function InfoTag({ label, kicker, className = '', after, children
             }
           }}
         >
-          {label}
+          {icon}{icon ? ' ' : ''}{label}
         </span>
         {after}
       </span>

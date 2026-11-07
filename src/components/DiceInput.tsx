@@ -1,4 +1,5 @@
 import { d10 } from '../lib/campaign'
+import NumberInput from './NumberInput'
 
 interface Props {
   value: number | null
@@ -12,18 +13,7 @@ interface Props {
 export default function DiceInput({ value, onChange, label = 'Jet de D10', max = 10 }: Props) {
   return (
     <span className="dice-input">
-      <input
-        type="number"
-        min={1}
-        max={max}
-        value={value ?? ''}
-        onChange={(e) => {
-          const v = Number(e.target.value)
-          onChange(e.target.value === '' ? null : Math.min(max, Math.max(1, v)))
-        }}
-        aria-label={label}
-        placeholder="–"
-      />
+      <NumberInput label={label} min={1} max={max} value={value} onChange={onChange} placeholder="–" />
       <button type="button" className="btn small" onClick={() => onChange(max === 10 ? d10() : 1 + Math.floor(Math.random() * max))} title="Lancer le dé">
         🎲
       </button>

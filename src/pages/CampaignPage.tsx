@@ -31,6 +31,7 @@ import {
 } from '../lib/groupCampaign'
 import VerifyEmailNotice from '../components/VerifyEmailNotice'
 import CampaignCrewPanel from '../components/CampaignCrewPanel'
+import NumberInput from '../components/NumberInput'
 import { DEFAULT_BUDGET } from '../lib/crew'
 
 export default function CampaignPage() {
@@ -460,7 +461,7 @@ function BudgetLine({ budget, admin, busy, onSave }: { budget: number; admin: bo
     >
       <label className="row">
         Budget de départ des bandes :
-        <input type="number" min={10} step={10} value={value} onChange={(e) => setValue(Number(e.target.value))} />
+        <NumberInput label="Budget de départ des bandes" min={10} step={10} value={value} onChange={setValue} />
         PO
       </label>
       {value !== budget && <button className="btn small primary" type="submit" disabled={busy || value <= 0}>Enregistrer</button>}

@@ -6,6 +6,7 @@ import { limitLabel } from '../lib/format'
 import { getCrew, saveCrew } from '../lib/storage'
 import { getCampaign, getMyEntry, registerCrew, type Entry, type GroupCampaign } from '../lib/groupCampaign'
 import FactionSeal from '../components/FactionSeal'
+import NumberInput from '../components/NumberInput'
 
 export default function NewCrewPage() {
   const navigate = useNavigate()
@@ -121,7 +122,7 @@ export default function NewCrewPage() {
           ) : (
             <label className="field">
               <span>Budget de départ (PO)</span>
-              <input type="number" min={0} step={10} value={budget} onChange={(e) => setBudget(Number(e.target.value))} />
+              <NumberInput label="Budget de départ" min={0} step={10} value={budget} onChange={setBudget} />
             </label>
           )}
           {!campaign && (

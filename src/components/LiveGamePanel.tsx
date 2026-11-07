@@ -19,13 +19,12 @@ import {
 import { applyInjury, revertInjury } from '../lib/campaign'
 import StatLine from './StatLine'
 import SkillTag from './SkillTag'
-import InfoTag from './InfoTag'
-import RarityDot from './RarityDot'
-import EquipmentTag from './EquipmentTag'
 import Modal from './Modal'
 import InjuryPicker from './InjuryPicker'
 import LootPicker, { type LootPick } from './LootPicker'
-import RuleText from './RuleText'
+import ItemChip from './ItemChip'
+import Counter from './Counter'
+import NumberInput from './NumberInput'
 
 /** Modification de la bande calculée à partir de sa dernière version (évite d'écraser des clics rapprochés). */
 export type CrewUpdater = (c: Crew) => Crew
@@ -124,11 +123,11 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
         <Counter label="Cristaux bruts ramassés" value={game.rawCrystals} onDelta={(d) => mutate((g) => ({ game: { rawCrystals: Math.max(0, g.rawCrystals + d) } }))} big />
         <label className="field narrow">
           <span>PO trouvées</span>
-          <input type="number" min={0} value={game.poFound || ''} placeholder="0" onChange={(e) => { const v = Number(e.target.value); mutate(() => ({ game: { poFound: v } })) }} />
+          <NumberInput label="PO trouvées" min={0} step={5} value={game.poFound} onChange={(v) => mutate(() => ({ game: { poFound: v } }))} />
         </label>
         <label className="field narrow">
           <span>Prestige gagné</span>
-          <input type="number" min={0} value={game.prestige || ''} placeholder="0" onChange={(e) => { const v = Number(e.target.value); mutate(() => ({ game: { prestige: v } })) }} />
+          <NumberInput label="Prestige gagné" min={0} value={game.prestige} onChange={(v) => mutate(() => ({ game: { prestige: v } }))} />
         </label>
       </div>
 
@@ -172,15 +171,20 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
                       const e = equipmentById(ref.itemId)
                       return e ? (
                         <li key={`e${i}`}>
-                          <RarityDot rarity="blanc" /> <EquipmentTag item={e} />{ref.slot === 'sac' && <span className="muted small"> (sac)</span>}
-                          <button className="tag-remove lose-btn" onClick={() => loseItem(m.id, 'equipment', i, e.name)} aria-label={`Perdre ${e.name}`} data-tip="Perdre l'objet">×</button>
+                          <ItemChip
+                            equipmentId={e.id}
+                            after={<button className="tag-remove" onClick={() => loseItem(m.id, 'equipment', i, e.name)} aria-label={`Perdre ${e.name}`} data-tip="Perdre l'objet">×</button>}
+                          />
+                          {ref.slot === 'sac' && <span className="muted small"> (sac)</span>}
                         </li>
                       ) : null
                     })}
                     {loot.map(({ ref, item }) => (
                       <li key={ref.id} className={ref.used ? 'used' : undefined}>
-                        <RarityDot rarity={item?.rarity ?? 'blanc'} />{' '}
-                        <InfoTag label={item?.name ?? ref.key} kicker={item?.category} className="loot-tag"><p><RuleText text={item?.description ?? ''} /></p></InfoTag>
+                        <ItemChip
+                          lootKey={ref.key}
+                          after={<button className="tag-remove" onClick={() => loseItem(m.id, 'loot', ref.id, item?.name ?? ref.key)} aria-label={`Perdre ${item?.name ?? ref.key}`} data-tip="Perdre l'objet">×</button>}
+                        />
                         {ref.slot === 'sac' && <span className="muted small"> (sac)</span>}
                         {item?.consumable && !dead && (
                           <button
@@ -193,7 +197,6 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
                             {ref.used ? '✓ Utilisé' : 'Utiliser'}
                           </button>
                         )}
-                        <button className="tag-remove lose-btn" onClick={() => loseItem(m.id, 'loot', ref.id, item?.name ?? ref.key)} aria-label={`Perdre ${item?.name ?? ref.key}`} data-tip="Perdre l'objet">×</button>
                       </li>
                     ))}
                   </ul>
@@ -285,44 +288,5 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
         )}
       </Modal>
     </section>
-  )
-}
-
-function Counter({ label, value, onDelta, steps = [1], big, editable }: {
-  label: string
-  value: number
-  onDelta: (d: number) => void
-  steps?: number[]
-  big?: boolean
-  /** La valeur peut aussi être tapée directement. */
-  editable?: boolean
-}) {
-  return (
-    <div className={`counter ${big ? 'big' : ''}`}>
-      <span className="counter-label">{label}</span>
-      <div className="counter-controls">
-        <button type="button" className="btn small" onClick={() => onDelta(-Math.min(value, steps[0]))} aria-label={`${label} : moins`} disabled={value <= 0}>−</button>
-        {editable ? (
-          <input
-            type="number"
-            inputMode="numeric"
-            min={0}
-            className="counter-input"
-            value={value}
-            onFocus={(e) => e.target.select()}
-            onChange={(e) => {
-              const next = Math.max(0, Math.floor(Number(e.target.value) || 0))
-              if (next !== value) onDelta(next - value)
-            }}
-            aria-label={label}
-          />
-        ) : (
-          <strong>{value}</strong>
-        )}
-        {steps.map((s) => (
-          <button key={s} type="button" className="btn small" onClick={() => onDelta(s)} aria-label={`${label} : plus ${s}`}>+{steps.length > 1 || s !== 1 ? s : ''}</button>
-        ))}
-      </div>
-    </div>
   )
 }

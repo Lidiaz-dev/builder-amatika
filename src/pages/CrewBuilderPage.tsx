@@ -68,6 +68,7 @@ import RuleText from '../components/RuleText'
 import { crewDayState, getCampaign, lockReason, type CrewDayState } from '../lib/groupCampaign'
 import CampaignDayBanner from '../components/CampaignDayBanner'
 import CampStockPanel from '../components/CampStockPanel'
+import NumberInput from '../components/NumberInput'
 
 const SPELL_GROUPS: { label: string; match: (s: Spell) => boolean }[] = [
   { label: 'Sorts de la faction', match: (s) => s.factions.length > 0 && !s.bonus },
@@ -296,7 +297,7 @@ export default function CrewBuilderPage() {
           {!campaign && !crew.groupCampaign && (
             <label className="field narrow">
               <span>Budget (PO)</span>
-              <input type="number" min={0} step={10} value={crew.budget} onChange={(e) => update({ budget: Number(e.target.value) })} />
+              <NumberInput label="Budget" min={0} step={10} value={crew.budget} onChange={(budget) => update({ budget })} />
             </label>
           )}
           {!crew.groupCampaign && <label className="switch field-switch" data-tip="Désactive les contrôles du builder : effectifs, budget, mains et équipement autorisé. Pratique pour les bandes maison ou les tests.">
@@ -515,15 +516,15 @@ function TreasuryModal({ open, crew, onClose, onApply }: { open: boolean; crew: 
     <Modal open={open} title="Trésor de la bande" kicker={`${c.po} PO · ${c.cristaux} cristaux · ${c.prestige} prestige`} onClose={onClose} wide>
       <h4>Vendre des cristaux</h4>
       <div className="row wrap">
-        <input type="number" min={1} max={c.cristaux} value={sell} onChange={(e) => setSell(Number(e.target.value))} aria-label="Cristaux à vendre" className="narrow" />
+        <NumberInput label="Cristaux à vendre" min={1} max={Math.max(1, c.cristaux)} value={sell} onChange={setSell} />
         <span className="small">× {CRYSTAL_PRICE} PO = {sell * CRYSTAL_PRICE} PO</span>
         <button className="btn small" disabled={sell < 1 || sell > c.cristaux} onClick={() => onApply({ cristaux: -sell, po: sell * CRYSTAL_PRICE }, `Vente de ${sell} cristal${sell > 1 ? 'aux' : ''}`)}>Vendre</button>
       </div>
       <h4>Ajustement manuel</h4>
       <div className="row wrap">
-        <label className="field narrow"><span>PO</span><input type="number" value={po} onChange={(e) => setPo(Number(e.target.value))} /></label>
-        <label className="field narrow"><span>Cristaux</span><input type="number" value={cristaux} onChange={(e) => setCristaux(Number(e.target.value))} /></label>
-        <label className="field narrow"><span>Prestige</span><input type="number" value={prestige} onChange={(e) => setPrestige(Number(e.target.value))} /></label>
+        <div className="field narrow"><span>PO</span><NumberInput label="PO" step={5} value={po} onChange={setPo} /></div>
+        <div className="field narrow"><span>Cristaux</span><NumberInput label="Cristaux" value={cristaux} onChange={setCristaux} /></div>
+        <div className="field narrow"><span>Prestige</span><NumberInput label="Prestige" value={prestige} onChange={setPrestige} /></div>
         <label className="field grow"><span>Motif</span><input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Ex. : récompense de scénario" /></label>
       </div>
       <div>

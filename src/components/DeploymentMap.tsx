@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { computeDeployment, DEPLOY_RADIUS } from '../lib/deployment'
+import NumberInput from './NumberInput'
 
 const PRESETS = [
   { label: '180 × 120', width: 120, length: 180 },
@@ -116,9 +117,9 @@ export default function DeploymentMap() {
               </button>
             ))}
             <span className="row deploy-size">
-              <input type="number" min={0} step={unit === 'cm' ? 10 : 1} value={inputValue(width, unit)} onChange={(e) => setWidth(toCm(Number(e.target.value) || 0))} aria-label="Largeur de la table" />
+              <NumberInput label="Largeur de la table" min={0} step={unit === 'cm' ? 10 : 1} value={inputValue(width, unit)} onChange={(n) => setWidth(toCm(n))} />
               ×
-              <input type="number" min={0} step={unit === 'cm' ? 10 : 1} value={inputValue(length, unit)} onChange={(e) => setLength(toCm(Number(e.target.value) || 0))} aria-label="Longueur de la table" />
+              <NumberInput label="Longueur de la table" min={0} step={unit === 'cm' ? 10 : 1} value={inputValue(length, unit)} onChange={(n) => setLength(toCm(n))} />
             </span>
           </div>
         </div>

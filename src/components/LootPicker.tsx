@@ -79,7 +79,7 @@ export default function LootPicker({ allowedEquipment, onPick, foundOnly, buyOnl
       )}
       <div className="picker-footer">
         {onClose && <button type="button" className="btn small ghost" onClick={onClose}>Fermer</button>}
-        <button type="button" className="btn primary" disabled={!value} onClick={submit}>{buyOnly ? `Acheter (${price} PO)` : "Donner l'objet"}</button>
+        <button type="button" className="btn primary" disabled={!value} onClick={submit}>{buyOnly ? `Acheter (${price} PO)` : foundOnly ? "Ajouter l'objet trouvé" : "Donner l'objet"}</button>
       </div>
     </div>
   )

@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { equipmentById, itemByKey, type Faction } from '../data'
 import { isActive, memberName, profileOf, type CampStock, type Member } from '../lib/crew'
-import RarityDot from './RarityDot'
-import EquipmentTag from './EquipmentTag'
-import InfoTag from './InfoTag'
-import RuleText from './RuleText'
+import ItemChip from './ItemChip'
 
 interface Props {
   faction: Faction
@@ -81,7 +78,7 @@ export default function CampStockPanel({ faction, members, stock, onChange, read
             if (!e) return null
             return (
               <li key={id} className={liClass(id)}>
-                <span><RarityDot rarity="blanc" /> <EquipmentTag item={e} />{n > 1 && <strong> ×{n}</strong>}</span>
+                <span><ItemChip equipmentId={id} />{n > 1 && <strong> ×{n}</strong>}</span>
                 {!readOnly && <span className="row">
                   {memberSelect(id, id)}
                   <button className="btn small" disabled={!takers(id).length} onClick={() => {
@@ -102,10 +99,7 @@ export default function CampStockPanel({ faction, members, stock, onChange, read
             const price = item?.price ?? null
             return (
               <li key={l.id} className={liClass(l.id)}>
-                <span>
-                  <RarityDot rarity={item?.rarity ?? 'blanc'} />{' '}
-                  <InfoTag label={item?.name ?? l.key} kicker={item?.category} className="loot-tag"><p><RuleText text={item?.description ?? ''} /></p></InfoTag>
-                </span>
+                <span><ItemChip lootKey={l.key} /></span>
                 {!readOnly && <span className="row">
                   {memberSelect(l.id)}
                   <button className="btn small" disabled={!active.length} onClick={() => {
