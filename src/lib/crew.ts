@@ -14,9 +14,13 @@ import {
 
 export type Slot = 'porte' | 'sac'
 
+/** Ajout fait pendant la préparation, encore annulable : remboursement ou retour au coffre. */
+export type ItemUndo = { po: number } | { stock: true }
+
 export interface ItemRef {
   itemId: string
   slot: Slot
+  undo?: ItemUndo
   /** Ramassé pendant cette partie (id de la partie en direct) : mis en avant dans le bilan. */
   found?: string
 }
@@ -31,6 +35,7 @@ export interface LootRef {
   used?: boolean
   /** Objet racial acheté à la création : son prix compte dans le coût de la bande. */
   racial?: boolean
+  undo?: ItemUndo
   /** Ramassé pendant cette partie (id de la partie en direct) : mis en avant dans le bilan. */
   found?: string
 }
@@ -131,6 +136,22 @@ export interface LiveGame {
   events: { step: 'injuries' | 'loot'; text: string }[]
 }
 
+/** Stock du camp : objets déposés par les personnages entre deux parties. */
+export interface CampStock {
+  /** Équipement commun (id), un par exemplaire. */
+  equipment: string[]
+  loot: LootRef[]
+}
+
+export const emptyStock = (): CampStock => ({ equipment: [], loot: [] })
+
+/** La préparation est finie (partie lancée, bilan fait) : les ajouts ne sont plus annulables. */
+export const withoutUndo = (m: Member): Member => ({
+  ...m,
+  equipment: m.equipment.map((r) => (r.undo ? { ...r, undo: undefined } : r)),
+  loot: m.loot?.map((r) => (r.undo ? { ...r, undo: undefined } : r)),
+})
+
 export interface Campaign {
   startedAt: string
   po: number
@@ -139,6 +160,7 @@ export interface Campaign {
   games: GameRecord[]
   log: LogEntry[]
   currentGame?: LiveGame
+  stock?: CampStock
 }
 
 export type Phase = 'preparation' | 'gestion' | 'partie'
@@ -256,6 +278,19 @@ export function crewUpkeep(crew: Crew) {
  * Caractéristiques finales : profil + blessures et montées de niveau,
  * sauvegarde et mouvement selon l'armure portée, +1 attaque avec 2 armes.
  */
+/**
+ * Caractéristiques du personnage seul : profil, blessures et montées de niveau, sans aucun
+ * effet d'objet (armure, objets de trésor, potions). Pour les fiches imprimées, où l'équipement
+ * est listé à part et peut changer d'une partie à l'autre.
+ */
+export function memberStats(profile: Profile, member: Member): Stats {
+  const stats = { ...profile.stats }
+  for (const [k, v] of Object.entries(member.statMods ?? {}) as [StatKey, number][]) {
+    if (stats[k] !== null) stats[k] = stats[k]! + v
+  }
+  return stats
+}
+
 export function effectiveStats(profile: Profile, member: Member): Stats {
   const worn = items(member, 'porte')
   const stats = { ...profile.stats }

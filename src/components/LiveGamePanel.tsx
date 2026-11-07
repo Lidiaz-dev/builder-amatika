@@ -115,8 +115,8 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
           <p>{standing} / {playing.length} figurines debout · commencée le {new Date(game.startedAt).toLocaleDateString('fr-FR')}</p>
         </div>
         {!hideGameControls && <div className="row wrap">
-          <button className="btn primary" onClick={onFinish} disabled={!!finishBlocked} data-tip={finishBlocked ?? "Lance le bilan d'après-bataille : blessures, butin, cristaux, entretien, XP et niveaux. Tout est ensuite appliqué à la bande."}>Terminer la partie</button>
           <button className="btn" onClick={cancelGame} data-tip="Abandonne la partie sans bilan : compteurs et objets utilisés sont remis à zéro.">Annuler la partie</button>
+          <button className="btn primary" onClick={onFinish} disabled={!!finishBlocked} data-tip={finishBlocked ?? "Lance le bilan d'après-bataille : blessures, butin, cristaux, entretien, XP et niveaux. Tout est ensuite appliqué à la bande."}>Terminer la partie</button>
         </div>}
       </header>
 

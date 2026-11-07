@@ -3,8 +3,8 @@ rules_version = '2';
 // Règles de sécurité Firestore : à coller dans la console Firebase
 // (Firestore Database > Règles), puis « Publier ».
 // - Chaque compte ne voit et ne modifie que ses propres bandes.
-// - Seule l'organisateur (adresse vérifiée) crée les campagnes, y inscrit les joueurs
-//   et gère les journées ; elle peut consulter les bandes inscrites à une campagne.
+// - Seul l'organisateur (adresse vérifiée) crée les campagnes, y inscrit les joueurs
+//   et gère les journées ; il peut consulter les bandes inscrites à une campagne.
 // - Un joueur inscrit voit la campagne et sa propre inscription, rejoint les journées
 //   et rend son rapport de fin de nuit.
 service cloud.firestore {

@@ -41,8 +41,8 @@ export default function Modal({ open, title, kicker, onClose, children, actions,
           </header>
           <div className="unit-body">{children}</div>
           {!noFooter && <footer className="unit-actions">
-            {actions}
             <button type="button" className="btn small ghost" onClick={onClose}>Fermer</button>
+            {actions}
           </footer>}
         </div>
       )}

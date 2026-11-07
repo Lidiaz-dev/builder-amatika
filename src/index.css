@@ -1235,3 +1235,52 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .step-block { max-width: 28rem; text-align: right; color: var(--warn); }
 .crystal-sale { gap: 0.6rem; align-items: center; margin: 0.3rem 0 0.6rem; }
 .crystal-sale label { gap: 0.4rem; }
+
+/* Validation à droite des autres boutons */
+.action-row > .btn.primary { margin-left: auto; }
+.unit-actions > .btn.ghost:first-child:not(:only-child) { margin-right: auto; }
+
+/* Stock du camp */
+.camp-stock > summary h2 { display: inline; font-size: 1.05rem; }
+.camp-list { list-style: none; margin: 0.5rem 0 0; padding: 0; }
+.camp-list li { display: flex; justify-content: space-between; align-items: center; gap: 0.6rem; flex-wrap: wrap; padding: 0.35rem 0; border-bottom: 1px dashed var(--border); }
+.camp-list li > .row { gap: 0.35rem; flex-wrap: wrap; }
+.camp-list select { max-width: 11rem; }
+
+/* Objet vendu ou rangé au coffre : il s'efface, une étiquette indique où il part */
+.equipment li, .camp-list li { position: relative; }
+.item-out { pointer-events: none; }
+.item-out > :not(.item-out-badge) { transition: opacity 0.4s ease, transform 0.4s ease; opacity: 0; }
+.item-out-badge {
+  position: absolute; right: 0.4rem; top: 50%; transform: translateY(-50%);
+  padding: 0.1rem 0.5rem; border-radius: 999px; font-family: var(--display); font-size: 0.8rem; font-weight: 700;
+  pointer-events: none; white-space: nowrap;
+}
+.item-out-badge.sell { background: var(--ok-soft); color: var(--ok); border: 1px solid var(--ok); }
+.item-out-badge.store { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--gold); }
+@media (prefers-reduced-motion: no-preference) {
+  .item-out.sell > :not(.item-out-badge) { transform: translateY(-4px); }
+  .item-out.store > :not(.item-out-badge) { transform: translateX(18px); }
+  .item-out-badge.sell { animation: badge-rise 0.45s ease-out; }
+  .item-out-badge.store { animation: badge-slide 0.45s ease-out; }
+}
+@keyframes badge-rise { from { opacity: 0; transform: translateY(0); } to { opacity: 1; transform: translateY(-80%); } }
+@keyframes badge-slide { from { opacity: 0; transform: translate(-16px, -50%); } to { opacity: 1; transform: translate(0, -50%); } }
+
+.campaign-summary { gap: 0.6rem; align-items: center; justify-content: space-between; }
+
+/* Annuler un ajout de la préparation : petite flèche qui tourne */
+.undo-btn span { display: inline-block; font-size: 1.05rem; line-height: 1; font-weight: 700; }
+@media (prefers-reduced-motion: no-preference) {
+  .undo-btn span { transition: transform 0.35s ease; }
+  .undo-btn:hover span, .undo-btn:focus-visible span { transform: rotate(-360deg); }
+  .undo-btn:active span { animation: undo-spin 0.45s ease-out; }
+}
+@keyframes undo-spin { from { transform: rotate(0); } to { transform: rotate(-720deg); } }
+.item-price { display: inline-flex; align-items: center; gap: 0.25rem; justify-self: end; white-space: nowrap; }
+.item-price .undo-btn { padding: 0 0.15rem; }
+@media (max-width: 600px) {
+  /* Téléphone : nom et prix sur la 1re ligne, Porté/Sac et actions sur la 2e. */
+  .equipment li { grid-template-columns: 1fr auto; row-gap: 0.35rem; }
+  .equipment li > .segmented { justify-self: start; }
+}

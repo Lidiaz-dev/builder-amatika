@@ -263,6 +263,12 @@ export async function joinDay(c: GroupCampaign, join: boolean) {
   await updateDoc(dayRef(c.id, c.dayNumber), join ? { participants: arrayUnion(myEmail()) } : { participants: arrayRemove(myEmail()), ready: arrayRemove(myEmail()) })
 }
 
+/** Organisateur : retire un joueur de la journée en cours (sa partie éventuelle est abandonnée). */
+export async function removeFromDay(c: GroupCampaign, email: string) {
+  const e = norm(email)
+  await updateDoc(dayRef(c.id, c.dayNumber), { participants: arrayRemove(e), ready: arrayRemove(e) })
+}
+
 /** Joueur : valide (ou rouvre) sa préparation pour la journée. */
 export async function setDayReady(c: GroupCampaign, ready: boolean) {
   await updateDoc(dayRef(c.id, c.dayNumber), { ready: ready ? arrayUnion(myEmail()) : arrayRemove(myEmail()) })

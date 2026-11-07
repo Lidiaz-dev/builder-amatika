@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { factionById } from '../data'
-import { abandonGame, activeMembers, crewCost, MAX_ON_TABLE, memberName, newId, profileOf, type Crew } from '../lib/crew'
+import { abandonGame, activeMembers, withoutUndo, emptyStock, withTreasury, crewCost, MAX_ON_TABLE, memberName, newId, profileOf, type Crew } from '../lib/crew'
 import { useAuth } from '../lib/auth'
 import { getMySheet, isAdmin, isDayReady, isOpen, joinDay, registerCrew, setDayReady, type Day, type GroupCampaign, type Sheet } from '../lib/groupCampaign'
 import { getCrew, saveCrew } from '../lib/storage'
 import { isLegal, validateCrew } from '../lib/validate'
 import LiveGamePanel from './LiveGamePanel'
+import CampStockPanel from './CampStockPanel'
+import Modal from './Modal'
 import MemberPeek from './MemberPeek'
 
 /**
@@ -27,6 +29,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
   const [crew, setCrew] = useState<Crew | null | undefined>(undefined)
   const [sheet, setSheet] = useState<Sheet | null>(null)
   const [busy, setBusy] = useState(false)
+  const [stockOpen, setStockOpen] = useState(false)
   const [error, setError] = useState('')
 
   const open = !!day && isOpen(day.status)
@@ -74,6 +77,8 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
     const participants = (prep ?? eligible).filter((id) => eligible.includes(id)).slice(0, MAX_ON_TABLE)
     setCrew({
       ...crew,
+      // Préparation finie : les ajouts d'objets ne sont plus annulables.
+      members: crew.members.map(withoutUndo),
       dayPrep: undefined,
       campaign: {
         ...crew.campaign,
@@ -145,10 +150,30 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
 
   const c = crew.campaign
   const game = c.currentGame
+  const stock = c.stock ?? emptyStock()
+  // Le coffre se modifie pendant la préparation (journée rejointe, pas encore validée) ; sinon on le consulte.
+  const stockEditable = !!day && day.status === 'preparation' && joined && !isDayReady(day, email)
   const summary = (
-    <p className="muted small">
-      Trésor {c.po} PO · {c.cristaux} cristaux · {c.prestige} prestige · {activeMembers(crew).length} membres · {c.games.length} partie{c.games.length > 1 ? 's' : ''}
-    </p>
+    <>
+      <p className="muted small row wrap campaign-summary">
+        <span>Trésor {c.po} PO · {c.cristaux} cristaux · {c.prestige} prestige · {activeMembers(crew).length} membres · {c.games.length} partie{c.games.length > 1 ? 's' : ''}</span>
+        <button className="btn small" onClick={() => setStockOpen(true)} data-tip="Objets rangés au camp.">Coffre ({stock.equipment.length + stock.loot.length})</button>
+      </p>
+      <Modal open={stockOpen} title="Coffre du camp" kicker={crew.name} onClose={() => setStockOpen(false)} wide>
+        <CampStockPanel
+          faction={faction}
+          members={crew.members}
+          stock={stock}
+          readOnly={!stockEditable}
+          unrestricted={!!crew.unrestricted}
+          onChange={(next, m, delta, label) => setCrew((x) => {
+            if (!x?.campaign) return x
+            const updated = { ...x, members: m ? x.members.map((y) => (y.id === m.id ? m : y)) : x.members, campaign: { ...x.campaign, stock: next } }
+            return delta && label ? withTreasury(updated, delta, label) : updated
+          })}
+        />
+      </Modal>
+    </>
   )
   const live = (blocked?: string) => (
     <LiveGamePanel
@@ -239,12 +264,6 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
               </button>
             </>
           )}
-          <button className="btn ghost small" disabled={busy} onClick={() => confirm(`Quitter la journée ${day.number} ?`) && act(async () => {
-            setCrew({ ...crew, dayPrep: undefined })
-            await joinDay(campaign, false)
-          })}>
-            Quitter la journée
-          </button>
         </div>
         <p className="muted small">La préparation est verrouillée quand l'organisateur lance la journée.</p>
         {err}

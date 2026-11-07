@@ -8,7 +8,7 @@ import {
   crewItemsReminder,
   crewSpellsReminder,
   crewUpkeep,
-  effectiveStats,
+  memberStats,
   isActive,
   lootItems,
   memberCost,
@@ -105,7 +105,7 @@ export default function CrewSheetsPage() {
                 <h2>{memberName(m) || '—'}</h2>
                 <span>{p.name}</span>
               </header>
-              <StatLine stats={effectiveStats(p, m)} variant="table" />
+              <StatLine stats={memberStats(p, m)} variant="table" />
               <dl style={{ gridRow: `span ${sheetRows}` }}>
                 <dt>Compétences</dt>
                 <dd>{memberSkills(p, m).join(', ') || '—'}</dd>

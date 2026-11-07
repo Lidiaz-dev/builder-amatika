@@ -43,6 +43,8 @@ import {
   type Slot,
   abandonGame,
   DEFAULT_BUDGET,
+  emptyStock,
+  type CampStock,
 } from '../lib/crew'
 import {
   learnsNothing,
@@ -62,10 +64,10 @@ import EquipmentTag from '../components/EquipmentTag'
 import AllowedGear from '../components/AllowedGear'
 import { formatMods } from '../lib/format'
 import Modal from '../components/Modal'
-import LootPicker, { type LootPick } from '../components/LootPicker'
 import RuleText from '../components/RuleText'
 import { crewDayState, getCampaign, lockReason, type CrewDayState } from '../lib/groupCampaign'
 import CampaignDayBanner from '../components/CampaignDayBanner'
+import CampStockPanel from '../components/CampStockPanel'
 
 const SPELL_GROUPS: { label: string; match: (s: Spell) => boolean }[] = [
   { label: 'Sorts de la faction', match: (s) => s.factions.length > 0 && !s.bonus },
@@ -90,6 +92,7 @@ export default function CrewBuilderPage() {
   const [saveState, setSaveState] = useState<SaveState>('saved')
   const [saveError, setSaveError] = useState('')
   const [treasuryOpen, setTreasuryOpen] = useState(false)
+  const [stockOpen, setStockOpen] = useState(false)
   /** Membres recrutés pendant cette visite : leur carte « se pose » à l'apparition. */
   const fresh = useRef(new Set<string>())
   /** Tampon de cire affiché quand la bande devient valide. */
@@ -220,6 +223,12 @@ export default function CrewBuilderPage() {
     const next = { ...crew, members: crew.members.map((x) => (x.id === m.id ? m : x)) }
     setCrew(delta && label ? withTreasury(next, delta, label) : next)
   }
+  /** Stock du camp et, éventuellement, un membre, dans la même opération. */
+  const updateStock = (stock: CampStock, m?: Member, delta?: Delta, label?: string) => {
+    if (!campaign) return
+    const next = { ...crew, members: m ? crew.members.map((x) => (x.id === m.id ? m : x)) : crew.members, campaign: { ...campaign, stock } }
+    setCrew(delta && label ? withTreasury(next, delta, label) : next)
+  }
   const removeMember = (memberId: string) => update({ members: crew.members.filter((x) => x.id !== memberId) })
   const addMember = (p: Profile) => {
     const recruit = newMember(crew.factionId, p, crew.members.map(memberName))
@@ -326,6 +335,9 @@ export default function CrewBuilderPage() {
               <Total label="Entretien" value={`${upkeep.po} PO${upkeep.cristaux ? ` + ${upkeep.cristaux} cristal` : ''}`} tip="À payer après chaque partie pour garder la bande (le chef ne coûte rien)." />
               <Total label="Membres" value={`${active.length}`} alert={active.length > MAX_ON_TABLE} tip={`Membres actifs. ${MAX_ON_TABLE} figurines maximum sur la table par partie.`} />
               <Total label="Parties" value={`${campaign.games.length}`} />
+              <button className="btn totals-btn" onClick={() => setStockOpen(true)} data-tip="Objets rangés au camp : les redonner, les vendre ou les jeter.">
+                Coffre ({(campaign.stock?.equipment.length ?? 0) + (campaign.stock?.loot.length ?? 0)})
+              </button>
               <button className="btn totals-btn" onClick={() => setTreasuryOpen(true)} data-tip="Caisse de la bande : vendre des cristaux, ajuster PO, cristaux ou prestige à la main, et consulter le journal des dépenses et gains.">Trésor…</button>
             </>
           ) : (
@@ -385,6 +397,8 @@ export default function CrewBuilderPage() {
               campaign={!!campaign}
               issues={issues.filter((i) => i.memberId === m.id)}
               onChange={updateMember}
+              stock={campaign ? campaign.stock ?? emptyStock() : undefined}
+              onStock={(stock, next) => updateStock(stock, next)}
               onRemove={() => (campaign ? updateMember({ ...m, status: 'parti' }) : removeMember(m.id))}
               onDuplicate={() => duplicateMember(m)}
               unrestricted={!!crew.unrestricted}
@@ -431,6 +445,11 @@ export default function CrewBuilderPage() {
       </fieldset>
       )}
 
+      {campaign && (
+        <Modal open={stockOpen} title="Coffre du camp" kicker={crew.name || faction.name} onClose={() => setStockOpen(false)} wide>
+          <CampStockPanel faction={faction} members={crew.members} stock={campaign.stock ?? emptyStock()} onChange={updateStock} readOnly={!!lock} unrestricted={!!crew.unrestricted} />
+        </Modal>
+      )}
       {campaign && (
         <TreasuryModal open={treasuryOpen} crew={crew} onClose={() => setTreasuryOpen(false)} onApply={(delta, label) => setCrew(withTreasury(crew, delta, label))} />
       )}
@@ -541,14 +560,21 @@ interface MemberCardProps {
   onDuplicate: () => void
   canDuplicate: boolean
   unrestricted: boolean
+  /** Campagne : stock du camp (objets déposés), et son changement avec le membre. */
+  stock?: CampStock
+  onStock?: (stock: CampStock, member: Member) => void
 }
 
-type Dialog = 'loot' | 'gear' | null
+type Dialog = 'gear' | null
 
-function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemove, onDuplicate, canDuplicate, unrestricted }: MemberCardProps) {
+/** Durée de l'animation quand un objet est vendu ou rangé au coffre. */
+const ITEM_OUT_MS = 450
+
+function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemove, onDuplicate, canDuplicate, unrestricted, stock, onStock }: MemberCardProps) {
   const profile = profileOf(faction, member)
   const [adding, setAdding] = useState('')
   const [dialog, setDialog] = useState<Dialog>(null)
+  const [leaving, setLeaving] = useState<Record<string, { kind: 'sell' | 'store'; text: string }>>({})
   // XP gagnée depuis la dernière visite (par exemple après le bilan) : la barre se remplit sous vos yeux.
   const xpNext = nextThreshold(member.xp)
   const xpPct = xpNext ? Math.min(100, (member.xp / xpNext) * 100) : 100
@@ -612,6 +638,19 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
   }
   const addItem = (itemId: string) => {
     if (!itemId) return
+    if (itemId.startsWith('coffre:') && stock && onStock) {
+      // Objet repris dans le coffre du camp : gratuit.
+      const [, kind, ref] = itemId.split(':')
+      if (kind === 'eq') {
+        const k = stock.equipment.indexOf(ref)
+        if (k >= 0) onStock({ ...stock, equipment: stock.equipment.filter((_, i) => i !== k) }, { ...member, equipment: [...member.equipment, { itemId: ref, slot: 'porte' as Slot, undo: { stock: true } }] })
+      } else {
+        const l = stock.loot.find((x) => x.id === ref)
+        if (l) onStock({ ...stock, loot: stock.loot.filter((x) => x.id !== ref) }, { ...member, loot: [...(member.loot ?? []), { ...l, slot: 'porte' as Slot, undo: { stock: true } }] })
+      }
+      setAdding('')
+      return
+    }
     if (itemId.startsWith('racial:')) {
       // Objet racial acheté à la création : payé sur le budget de la bande.
       onChange({ ...member, loot: [...(member.loot ?? []), { id: newId(), key: itemId.slice(7), slot: 'porte' as Slot, racial: true }] })
@@ -619,10 +658,58 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
       return
     }
     const item = equipment.find((e) => e.id === itemId)
-    const next = { ...member, equipment: [...member.equipment, { itemId, slot: 'porte' as Slot }] }
+    const next = { ...member, equipment: [...member.equipment, { itemId, slot: 'porte' as Slot, ...(campaign && item ? { undo: { po: item.price } } : {}) }] }
     if (campaign && item) onChange(next, { po: -item.price }, `Achat : ${item.name} (${who})`)
     else onChange(next)
     setAdding('')
+  }
+  // Animation de sortie (vente ou rangement au coffre) avant de retirer l'objet de la fiche.
+  const animateOut = (key: string, kind: 'sell' | 'store', text: string, action: () => void) => {
+    if (leaving[key]) return
+    setLeaving((l) => ({ ...l, [key]: { kind, text } }))
+    window.setTimeout(() => {
+      action()
+      setLeaving((l) => {
+        const n = { ...l }
+        delete n[key]
+        return n
+      })
+    }, ITEM_OUT_MS)
+  }
+  const outClass = (key: string) => (leaving[key] ? ` item-out ${leaving[key].kind}` : '')
+  const outBadge = (key: string) => (leaving[key] ? <span className={`item-out-badge ${leaving[key].kind}`}>{leaving[key].text}</span> : null)
+  const stockCount = (id: string) => stock?.equipment.filter((x) => x === id).length ?? 0
+  /** Objets du coffre que ce personnage peut prendre : équipement commun autorisé, et objets spéciaux. */
+  const stockChoices = stock
+    ? [
+        ...[...new Set(stock.equipment)]
+          .filter((id) => unrestricted || profile.equipment.includes(id))
+          .map((id) => ({ value: `coffre:eq:${id}`, label: `${equipment.find((e) => e.id === id)?.name ?? id}${stockCount(id) > 1 ? ` (×${stockCount(id)})` : ''}` })),
+        ...stock.loot.map((l) => ({ value: `coffre:loot:${l.id}`, label: itemByKey(l.key)?.name ?? l.key })),
+      ]
+    : []
+  const storeItem = (index: number) => {
+    if (!stock || !onStock) return
+    const ref = member.equipment[index]
+    onStock({ ...stock, equipment: [...stock.equipment, ref.itemId] }, { ...member, equipment: member.equipment.filter((_, i) => i !== index) })
+  }
+  /** Annule un ajout de la préparation : remboursé s'il a été acheté, remis au coffre s'il en venait. */
+  const undoItem = (index: number) => {
+    const ref = member.equipment[index]
+    const item = equipment.find((e) => e.id === ref.itemId)
+    const next = { ...member, equipment: member.equipment.filter((_, i) => i !== index) }
+    if (ref.undo && 'po' in ref.undo) onChange(next, { po: ref.undo.po }, `Achat annulé : ${item?.name ?? ref.itemId} (${who})`)
+    else if (stock && onStock) onStock({ ...stock, equipment: [...stock.equipment, ref.itemId] }, next)
+  }
+  const undoLoot = (lootId: string) => {
+    const ref = (member.loot ?? []).find((l) => l.id === lootId)
+    if (!ref || !stock || !onStock) return
+    onStock({ ...stock, loot: [...stock.loot, { ...ref, slot: 'sac', undo: undefined }] }, { ...member, loot: (member.loot ?? []).filter((l) => l.id !== lootId) })
+  }
+  const storeLoot = (lootId: string) => {
+    const ref = (member.loot ?? []).find((l) => l.id === lootId)
+    if (!stock || !onStock || !ref) return
+    onStock({ ...stock, loot: [...stock.loot, { ...ref, slot: 'sac', used: false, found: undefined, undo: undefined }] }, { ...member, loot: (member.loot ?? []).filter((l) => l.id !== lootId) })
   }
   const setLootSlot = (lootId: string, slot: Slot) =>
     onChange({ ...member, loot: (member.loot ?? []).map((l) => (l.id === lootId ? { ...l, slot } : l)) })
@@ -635,19 +722,6 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
     if (sell && price) onChange(next, { po: Math.floor(price / 2) }, `Vente : ${entry?.item?.name} (${who})`)
     else onChange(next)
   }
-  const giveItem = (pick: LootPick) => {
-    const label = `${pick.paid ? 'Achat' : 'Objet trouvé'} : `
-    if (pick.kind === 'loot') {
-      const name = itemByKey(pick.key)?.name ?? pick.key
-      const next = { ...member, loot: [...(member.loot ?? []), { id: newId(), key: pick.key, slot: 'sac' as Slot }] }
-      onChange(next, pick.paid ? { po: -pick.price } : undefined, pick.paid ? `${label}${name} (${who})` : undefined)
-    } else {
-      const next = { ...member, equipment: [...member.equipment, { itemId: pick.itemId, slot: 'sac' as Slot }] }
-      onChange(next, pick.paid ? { po: -pick.price } : undefined, pick.paid ? `${label}${equipment.find((e) => e.id === pick.itemId)?.name} (${who})` : undefined)
-    }
-    setDialog(null)
-  }
-
   const hasError = issues.some((i) => i.severity === 'error')
   const wornCount = member.equipment.filter((r) => r.slot === 'porte').length + loot.filter((l) => l.ref.slot === 'porte').length
   const bagCount = member.equipment.length + loot.length - wornCount
@@ -761,10 +835,7 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
               </ul>
             )}
 
-            <div className="row wrap">
-              <button className="btn small" onClick={() => setDialog('loot')} data-tip="Acheter un objet avec le trésor de la bande.">⚱ Acheter un objet</button>
-            </div>
-            <p className="muted small">XP, montées de niveau, blessures, morts et objets trouvés se règlent dans le rapport d'après-bataille.</p>
+            <p className="muted small">XP, montées de niveau, blessures, morts et objets trouvés se règlent dans le rapport d'après-bataille. Les objets spéciaux s'achètent au marché noir, dans le rapport.</p>
             <p className="muted small">
               Arbres : {profile.trees.length ? profile.trees.map((t) => TREE_LABELS[t] ?? t).join(', ') : 'aucun'} · entretien{' '}
               {upkeep.cristaux ? `${upkeep.cristaux} cristal` : `${upkeep.po} PO`}
@@ -783,16 +854,30 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
             {member.equipment.map((ref, i) => {
               const item = equipment.find((e) => e.id === ref.itemId)
               return (
-                <li key={`e${i}`}>
+                <li key={`e${i}`} className={outClass(`e${i}`).trim() || undefined}>
                   <span><RarityDot rarity="blanc" /> {item ? <EquipmentTag item={item} /> : ref.itemId}</span>
-                  <span className="muted small">{item?.price ?? 0} PO</span>
+                  <span className="item-price">
+                    {campaign && ref.undo && (
+                      <UndoButton
+                        onClick={() => undoItem(i)}
+                        tip={'po' in ref.undo ? `Annuler l'achat : ${ref.undo.po} PO remboursés` : "Annuler : l'objet retourne au coffre"}
+                      />
+                    )}
+                    <span className="muted small">{item?.price ?? 0} PO</span>
+                  </span>
                   <SlotToggle slot={ref.slot} onChange={(s) => setSlot(i, s)} />
-                  <ItemActions campaign={campaign} onSell={() => removeItem(i, true)} onDrop={() => removeItem(i, false)} />
+                  <ItemActions
+                    onStore={onStock ? () => animateOut(`e${i}`, 'store', '→ Coffre', () => storeItem(i)) : undefined}
+                    campaign={campaign}
+                    onSell={() => animateOut(`e${i}`, 'sell', `+${Math.floor((item?.price ?? 0) / 2)} PO`, () => removeItem(i, true))}
+                    onDrop={() => removeItem(i, false)}
+                  />
+                  {outBadge(`e${i}`)}
                 </li>
               )
             })}
             {loot.map(({ ref, item }) => (
-              <li key={ref.id} className={ref.used ? 'used' : undefined}>
+              <li key={ref.id} className={`${ref.used ? 'used' : ''}${outClass(ref.id)}`.trim() || undefined}>
                 <span>
                   <RarityDot rarity={item?.rarity ?? 'blanc'} />{' '}
                   <InfoTag label={item?.name ?? ref.key} kicker={ref.racial ? 'Objet racial' : item?.category} className="loot-tag">
@@ -817,17 +902,31 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
                     </button>
                   )
                 ) : (
-                  <span className="muted small">{item?.price ?? '—'} PO</span>
+                  <span className="item-price">
+                    {campaign && ref.undo && <UndoButton onClick={() => undoLoot(ref.id)} tip="Annuler : l'objet retourne au coffre" />}
+                    <span className="muted small">{item?.price ?? '—'} PO</span>
+                  </span>
                 )}
                 <SlotToggle slot={ref.slot} onChange={(s) => setLootSlot(ref.id, s)} />
-                <ItemActions campaign={campaign} onSell={() => removeLoot(ref.id, true)} onDrop={() => removeLoot(ref.id, false)} />
+                <ItemActions
+                  onStore={onStock ? () => animateOut(ref.id, 'store', '→ Coffre', () => storeLoot(ref.id)) : undefined}
+                  campaign={campaign}
+                  onSell={() => animateOut(ref.id, 'sell', `+${Math.floor((item?.price ?? 0) / 2)} PO`, () => removeLoot(ref.id, true))}
+                  onDrop={() => removeLoot(ref.id, false)}
+                />
+                {outBadge(ref.id)}
               </li>
             ))}
           </ul>
           <select value={adding} onChange={(e) => addItem(e.target.value)} aria-label="Ajouter un équipement">
-            <option value="">{campaign ? '+ Acheter un équipement commun…' : '+ Ajouter un équipement…'}</option>
+            <option value="">{campaign ? '+ Prendre au coffre ou acheter…' : '+ Ajouter un équipement…'}</option>
+            {campaign && stockChoices.length > 0 && (
+              <optgroup label="Coffre du camp (gratuit)">
+                {stockChoices.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+              </optgroup>
+            )}
             {categories.map((cat) => (
-              <optgroup key={cat} label={CATEGORY_LABELS[cat]}>
+              <optgroup key={cat} label={campaign ? `Acheter : ${CATEGORY_LABELS[cat].toLowerCase()}` : CATEGORY_LABELS[cat]}>
                 {allowed.filter((e) => e.category === cat).map((e) => (
                   <option key={e.id} value={e.id}>{e.name} — {e.price} PO</option>
                 ))}
@@ -935,9 +1034,6 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
       <Modal open={dialog === 'gear'} title={`Équipement autorisé : ${profile.name}`} kicker={faction.name} onClose={() => setDialog(null)}>
         <AllowedGear profile={profile} factionId={faction.id} unrestricted={!!unrestricted} />
       </Modal>
-      <Modal open={dialog === 'loot'} title={`Acheter un objet : ${who}`} onClose={() => setDialog(null)} noFooter>
-        <LootPicker allowedEquipment={unrestricted ? null : profile.equipment} onPick={giveItem} buyOnly onClose={() => setDialog(null)} />
-      </Modal>
     </article>
   )
 }
@@ -951,10 +1047,35 @@ function SlotToggle({ slot, onChange }: { slot: Slot; onChange: (s: Slot) => voi
   )
 }
 
+/** Dépose l'objet dans le coffre du camp. */
+function StoreButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button className="btn small ghost" onClick={onClick} data-tip="Ranger dans le coffre du camp : l'objet n'est plus sur le personnage.">
+      Coffre
+    </button>
+  )
+}
+
 /** En campagne : vendre (moitié du prix) ou jeter. Hors campagne : retirer. */
-function ItemActions({ campaign, onSell, onDrop }: { campaign: boolean; onSell: () => void; onDrop: () => void }) {
+
+/** Ajout de la préparation encore annulable : petite flèche à gauche du prix. */
+function UndoButton({ onClick, tip }: { onClick: () => void; tip: string }) {
+  return (
+    <button className="icon-btn undo-btn" onClick={onClick} aria-label="Annuler l'ajout" data-tip={tip}>
+      <span aria-hidden="true">↺</span>
+    </button>
+  )
+}
+
+function ItemActions({ campaign, onSell, onDrop, onStore }: {
+  campaign: boolean
+  onSell: () => void
+  onDrop: () => void
+  onStore?: () => void
+}) {
   return (
     <span className="row item-actions">
+      {onStore && <StoreButton onClick={onStore} />}
       {campaign && <button className="btn small ghost" onClick={onSell} data-tip="Vendre pour la moitié du prix (ajouté au trésor).">Vendre</button>}
       <button className="icon-btn drop-btn" onClick={onDrop} aria-label={campaign ? 'Jeter' : 'Retirer'} data-tip={campaign ? 'Jeter, sans revente' : 'Retirer'}>
         <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>

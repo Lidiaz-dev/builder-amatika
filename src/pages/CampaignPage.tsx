@@ -19,6 +19,7 @@ import {
   listEntries,
   listSheets,
   listUsers,
+  removeFromDay,
   removePlayer,
   setCampaignBudget,
   startNight,
@@ -155,6 +156,10 @@ export default function CampaignPage() {
 Préparation pas encore validée : ${names}.` : ''
               if (confirm(`Lancer la journée ${campaign.dayNumber} ? La préparation est verrouillée et les joueurs qui ne l'ont pas rejointe ne pourront plus le faire.${warn}`)) run(() => launchDay(campaign))
             }}
+            onRemove={(email) => {
+              const name = entries.find((x) => x.email === email)?.pseudo || email
+              if (confirm(`Retirer ${name} de la journée ${campaign.dayNumber} ?${day?.status === 'en-cours' ? ' Sa partie en cours sera abandonnée.' : ''}`)) run(() => removeFromDay(campaign, email))
+            }}
             onNight={() => confirm(`Passer à la phase de nuit ? Chaque joueur fera sa récupération puis son rapport de fin de nuit.`) && run(() => startNight(campaign))}
             onClose={() => run(() => closeDay(campaign))}
             onCancel={() =>
@@ -253,7 +258,7 @@ function MyCrewPanel({ campaign, entry, day, locked, onChanged }: {
 }
 
 /** Organisateur : pilotage de la journée (créer, lancer, nuit, clôturer, annuler). */
-function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, onNight, onClose, onCancel }: {
+function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, onRemove, onNight, onClose, onCancel }: {
   campaign: GroupCampaign
   day: Day | null
   entries: Entry[]
@@ -261,6 +266,8 @@ function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, on
   busy: boolean
   onCreate: () => void
   onLaunch: () => void
+  /** Retire un joueur de la journée (préparation ou partie en cours). */
+  onRemove: (email: string) => void
   onNight: () => void
   onClose: () => void
   onCancel: () => void
@@ -311,6 +318,9 @@ function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, on
                     ? <span className="badge ok day-state" data-tip="Préparation validée">✓ Prête</span>
                     : <span className="badge day-state" data-tip="Le joueur prépare encore sa bande">⏳ En préparation</span>)}
                   {day.status === 'nuit' && (r ? <span className="badge ok day-state">✓ Rapport validé</span> : <span className="badge day-state">Nuit en cours</span>)}
+                  {(day.status === 'preparation' || day.status === 'en-cours') && (
+                    <button className="icon-btn drop-btn" disabled={busy} onClick={() => onRemove(email)} aria-label={`Retirer ${who(email)} de la journée`} data-tip="Retirer ce joueur de la journée">×</button>
+                  )}
                 </div>
                 {r && r.lines.length > 0 && (
                   <details>
@@ -323,7 +333,10 @@ function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, on
           })}
         </ul>
       )}
-      <div className="row wrap">
+      <div className="row wrap action-row">
+        <button className="btn ghost small danger" onClick={onCancel} disabled={busy} data-tip="Supprime cette journée et ses rapports ; la campagne revient à la journée précédente.">
+          Annuler la journée
+        </button>
         {day.status === 'preparation' && (
           <button className="btn primary" onClick={onLaunch} disabled={busy || !day.participants.length} data-tip={day.participants.length ? 'Verrouille la préparation : les parties commencent.' : 'Au moins une bande doit avoir rejoint la journée.'}>
             ⚔ Lancer la journée
@@ -339,9 +352,6 @@ function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, on
             ✓ Clôturer la journée
           </button>
         )}
-        <button className="btn ghost small danger" onClick={onCancel} disabled={busy} data-tip="Supprime cette journée et ses rapports ; la campagne revient à la journée précédente.">
-          Annuler la journée
-        </button>
       </div>
     </section>
   )

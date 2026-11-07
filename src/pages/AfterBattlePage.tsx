@@ -380,13 +380,31 @@ export default function AfterBattlePage() {
       // La partie est finie : les objets ne sont plus « trouvés pendant la partie ».
       .map((m) => ({
         ...m,
-        equipment: m.equipment.map((ref) => ({ ...ref, found: undefined })),
-        loot: m.loot?.map((ref) => ({ ...ref, found: undefined })),
+        equipment: m.equipment.map((ref) => ({ ...ref, found: undefined, undo: undefined })),
+        loot: m.loot?.map((ref) => ({ ...ref, found: undefined, undo: undefined })),
       }))
+    // Équipement commun qu'un personnage ne peut pas porter (trouvé en fouillant) : rangé au coffre du camp.
+    const stock = { equipment: [...(draft!.campaign!.stock?.equipment ?? [])], loot: [...(draft!.campaign!.stock?.loot ?? [])] }
+    const stored: string[] = []
+    const kept = members.map((m) => {
+      const p = profileOf(faction!, m)
+      if (!p || !isActive(m) || draft!.unrestricted) return m
+      const out = m.equipment.filter((r) => !p.equipment.includes(r.itemId))
+      if (!out.length) return m
+      for (const r of out) {
+        stock.equipment.push(r.itemId)
+        stored.push(`${equipmentById(r.itemId)?.name ?? r.itemId} (${nameOf(faction!, m)})`)
+      }
+      return { ...m, equipment: m.equipment.filter((r) => p.equipment.includes(r.itemId)) }
+    })
+    if (stored.length) {
+      const line = `Rangé au coffre du camp (ne peut pas le porter) : ${stored.join(', ')}`
+      allLines.push(line) // game.lines est ce même tableau
+    }
     const final: Crew = {
       ...draft!,
-      members,
-      campaign: { ...draft!.campaign!, games: [...draft!.campaign!.games, game], currentGame: undefined },
+      members: kept,
+      campaign: { ...draft!.campaign!, stock, games: [...draft!.campaign!.games, game], currentGame: undefined },
     }
     await saveCrew(final)
     // Phase de nuit : ce bilan devient le rapport de fin de nuit de la bande.

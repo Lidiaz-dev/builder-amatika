@@ -7,7 +7,7 @@ import {
   crewItemsReminder,
   crewSpellsReminder,
   crewUpkeep,
-  effectiveStats,
+  memberStats,
   isActive,
   lootItems,
   memberCost,
@@ -63,7 +63,7 @@ const LABEL_W = 27
 /** Dessine une fiche (ou mesure sa hauteur si draw = false). Renvoie la hauteur utilisée. */
 function drawSheet(doc: jsPDF, faction: Faction, m: Member, x: number, y: number, draw: boolean): number {
   const p = profileOf(faction, m)!
-  const stats = effectiveStats(p, m)
+  const stats = memberStats(p, m)
   const inner = COL_W - 2 * PAD
   let cy = y + PAD
 
