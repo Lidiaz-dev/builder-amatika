@@ -7,7 +7,8 @@ import {
   crewItemsReminder,
   crewSpellsReminder,
   crewUpkeep,
-  memberStats,
+  sheetStats,
+  starred,
   isActive,
   lootItems,
   memberCost,
@@ -44,7 +45,8 @@ interface Row {
 function memberRows(faction: Faction, m: Member): Row[] {
   const p = profileOf(faction, m)!
   const loot = lootItems(m)
-  const worn = [...wornItems(m).map((e) => e.name), ...loot.filter((l) => l.ref.slot === 'porte').map((l) => l.item?.name ?? '?')]
+  const saveItems = sheetStats(p, m).saveItems
+  const worn = [...wornItems(m).map((e) => e.name), ...loot.filter((l) => l.ref.slot === 'porte').map((l) => l.item?.name ?? '?')].map((n) => starred(n, saveItems))
   const bag = [...bagItems(m).map((e) => e.name), ...loot.filter((l) => l.ref.slot === 'sac').map((l) => l.item?.name ?? '?')]
   const spells = (m.spellIds ?? []).map((id) => spellById(id)).filter((s) => !!s).map((s) => `${s!.name} (${s!.value}+)`)
   const rows: Row[] = [
@@ -63,7 +65,7 @@ const LABEL_W = 27
 /** Dessine une fiche (ou mesure sa hauteur si draw = false). Renvoie la hauteur utilisée. */
 function drawSheet(doc: jsPDF, faction: Faction, m: Member, x: number, y: number, draw: boolean): number {
   const p = profileOf(faction, m)!
-  const stats = memberStats(p, m)
+  const { stats, saveChanged } = sheetStats(p, m)
   const inner = COL_W - 2 * PAD
   let cy = y + PAD
 
@@ -85,7 +87,7 @@ function drawSheet(doc: jsPDF, faction: Faction, m: Member, x: number, y: number
     STAT_COLUMNS.forEach((c, i) => {
       const cx = x + PAD + cell * i
       doc.rect(cx, cy + 3.2, cell, cell)
-      doc.text(fmt(stats[c.key], c.dice), cx + cell / 2, cy + 3.2 + cell / 2 + 1.4, { align: 'center' })
+      doc.text(fmt(stats[c.key], c.dice) + (c.key === 'svg' && saveChanged ? '*' : ''), cx + cell / 2, cy + 3.2 + cell / 2 + 1.4, { align: 'center' })
     })
   }
   cy += 3.2 + cell + 3

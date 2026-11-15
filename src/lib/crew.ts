@@ -220,10 +220,10 @@ export interface Crew {
   updatedAt: string
 }
 
-export const DEFAULT_BUDGET = 500
+export const DEFAULT_BUDGET = 555
 export const MAX_ON_TABLE = 10
 /** Prix de vente d'un cristal magique. */
-export const CRYSTAL_PRICE = 25
+export const CRYSTAL_PRICE = 100
 
 export const newId = () => crypto.randomUUID()
 
@@ -314,6 +314,35 @@ export function memberStats(profile: Profile, member: Member): Stats {
   }
   return stats
 }
+
+/**
+ * Fiches imprimées : caractéristiques du personnage seul, sauf la sauvegarde qui inclut les objets
+ * portés (armure, bouclier, casque, objets de trésor). `saveItems` : noms des objets portés qui la
+ * modifient, marqués d'un astérisque sur la fiche.
+ */
+export function sheetStats(profile: Profile, member: Member): { stats: Stats; saveChanged: boolean; saveItems: string[] } {
+  const stats = memberStats(profile, member)
+  const saveItems: string[] = []
+  let delta = 0
+  for (const e of items(member, 'porte')) {
+    if (e.save) {
+      delta -= e.save
+      saveItems.push(e.name)
+    }
+  }
+  for (const { ref, item } of lootItems(member)) {
+    const v = ref.slot === 'porte' ? item?.mods?.svg : undefined
+    if (item && v) {
+      delta += v
+      saveItems.push(item.name)
+    }
+  }
+  if (stats.svg !== null && delta) stats.svg += delta
+  return { stats, saveChanged: !!delta && stats.svg !== null, saveItems }
+}
+
+/** Nom d'objet suivi d'un astérisque s'il modifie la sauvegarde imprimée. */
+export const starred = (name: string, saveItems: string[]) => (saveItems.includes(name) ? `${name}*` : name)
 
 export function effectiveStats(profile: Profile, member: Member): Stats {
   const worn = items(member, 'porte')

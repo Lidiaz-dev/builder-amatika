@@ -29,3 +29,15 @@ Compétences de Drakéide / Kroxigor alignées sur le Compendium (ajoutées : gr
 Compétences de Mangechair / Maître dépeceur alignées sur le Compendium (ajoutées : eclaireur-4, peur).
 Compétences de La Harde / Minotaure alignées sur le Compendium (ajoutées : grande-cible, n-apprend-rien, peur).
 Objet « Potion de rapidité » : pas de description, son effet n'est pas appliqué.
+Équipement « Arc court » mis à jour d'après la liste des objets : range 16 → 10.
+Équipement « Arc » mis à jour d'après la liste des objets : range 24 → 15.
+Équipement « Arc long » mis à jour d'après la liste des objets : range 30 → 20.
+Équipement « Arbalète » mis à jour d'après la liste des objets : range 30 → 20.
+Équipement « Fronde » mis à jour d'après la liste des objets : range 20 → 12.
+Équipement « Étoiles / Couteaux / Haches de jet » mis à jour d'après la liste des objets : range 6 → 4.
+Équipement « Arbalète de poing » mis à jour d'après la liste des objets : range 10 → 6.
+Équipement « Sarbacane » mis à jour d'après la liste des objets : range 16 → 10.
+Équipement « Javelot » mis à jour d'après la liste des objets : range 16 → 10.
+Équipement « Pistolet » mis à jour d'après la liste des objets : range 10 → 6.
+Équipement « Arquebuse » mis à jour d'après la liste des objets : range 24 → 15.
+Équipement « Bouclier » mis à jour d'après la liste des objets : n'est plus encombré.

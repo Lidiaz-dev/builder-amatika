@@ -7,7 +7,8 @@ Le dossier doit contenir : Bandes.docx, Règles.docx, Compendium.xlsx, Cartes.xl
 Fluff.docx et « Liste des objets de trésors et marché noir.docx ».
 
 Génère dans src/data/ : factions.json, skills.json, rules.json, spells.json, items.json, lore.json,
-et met à jour les prix de equipment.json (le reste de ce fichier est maintenu à la main).
+et met à jour equipment.json d'après la liste des objets communs : prix, force, portée, mains,
+sauvegarde, mouvement et encombrement (les textes de règles courts restent maintenus à la main).
 Attention : relancer le script écrase les corrections faites à la main dans les fichiers générés.
 """
 import html
@@ -352,7 +353,7 @@ def apply_compendium(factions, rows, hyp):
 # -------------------------------------------------------------------- Règles
 H2 = ["Introduction", "Ce dont vous aurez besoin", "Caractéristiques de figurines", "La fiche personnage",
       "Le round", "Tour de joueur", "Moral et commandement", "Mise en place d'une partie", "Équipement commun",
-      "Organiser une campagne", "Phase d'après bataille", "Les Mages et les sorts"]
+      "Organiser une campagne", "Phase d'après bataille", "Les Mages et les sorts", "La couronne sauteuse"]
 
 
 def parse_rules(paras):
@@ -560,6 +561,54 @@ def consumable_effects(cat_id, item_id, desc):
     xp = re.search(r"obtiendra (\d+)d10 points d'expérience", d)
     return "potion", mods, skills, int(xp.group(1)) if xp else 0
 
+def common_stats(t: str, price: int) -> dict:
+    """Caractéristiques d'un objet commun lues dans la liste des objets (référence du builder)."""
+    desc = t.split(":", 1)[1] if ":" in t else ""
+    out = {"price": price}
+    f = re.search(r"force (utilisateur(?:\s*\+\s*\d+)?|\d+)", desc, re.I)
+    if f:
+        v = re.sub(r"\s+", " ", f.group(1)).strip()
+        out["strength"] = "Utilisateur" + v[len("utilisateur"):] if v.lower().startswith("utilisateur") else v
+    r = re.search(r"portée (\d+)\s*ps", desc, re.I)
+    if r:
+        out["range"] = int(r.group(1))
+    if re.search(r"deux mains", desc, re.I):
+        out["hands"] = 2
+    elif re.search(r"une main", desc, re.I):
+        out["hands"] = 1
+    sv = re.search(r"\+(\d+) à la sauvegarde\b(?! (?:ennemie|adverse))", desc, re.I)
+    if sv:
+        out["save"] = int(sv.group(1))
+    mv = re.search(r"-(\d+) au mouvement", desc, re.I)
+    if mv:
+        out["move"] = int(mv.group(1))
+    out["encumbered"] = bool(re.search(r"encombr", desc, re.I))
+    return out
+
+
+ENCUMBERED_RULE = "Encombrée (-1 pour toucher au corps à corps)."
+
+
+def apply_common_stats(e: dict, st: dict, hyp: list):
+    """Met l'équipement du builder à jour d'après la liste des objets (prix, force, portée, mains, armure, encombrement)."""
+    changes = []
+    for key in ("price", "strength", "range", "hands", "save", "move"):
+        if key in st and e.get(key) != st[key]:
+            changes.append(f"{key} {e.get(key)} → {st[key]}")
+            e[key] = st[key]
+    rules = e.get("rules", "")
+    if st["encumbered"] and not e.get("encumbered"):
+        e["encumbered"] = True
+        e["rules"] = (rules + " " + ENCUMBERED_RULE).strip()
+        changes.append("devient encombré")
+    elif not st["encumbered"] and e.get("encumbered"):
+        e.pop("encumbered", None)
+        e["rules"] = re.sub(r"\s*Encombrée \([^)]*\)\.?", "", rules).strip()
+        changes.append("n'est plus encombré")
+    if changes:
+        hyp.append(f"Équipement « {e['name']} » mis à jour d'après la liste des objets : {', '.join(changes)}.")
+
+
 def parse_items(paras, hyp):
     """Prix des objets communs + liste des objets de trésor / marché noir, avec leur rareté."""
     common, categories, mode, cat = {}, [], None, None
@@ -579,7 +628,7 @@ def parse_items(paras, hyp):
             if m and price:
                 eid = COMMON_IDS.get(slug(m.group(1)))
                 if eid:
-                    common[eid] = int(price.group(1))
+                    common[eid] = common_stats(t, int(price.group(1)))
                 else:
                     hyp.append(f"Objet commun « {m.group(1)} » non relié à l'équipement du builder.")
         elif mode == "treasure":
@@ -816,7 +865,7 @@ def main():
     equipment = json.loads(eq_path.read_text(encoding="utf8"))
     for e in equipment:
         if e["id"] in common_prices:
-            e["price"] = common_prices[e["id"]]
+            apply_common_stats(e, common_prices[e["id"]], hyp)
         else:
             hyp.append(f"Équipement « {e['name']} » : pas de prix dans la liste des objets.")
 

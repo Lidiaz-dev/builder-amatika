@@ -32,7 +32,8 @@ export default function NumberInput({ value, onChange, label, min, max, step = 1
         inputMode="numeric"
         min={min}
         max={max}
-        step={step}
+        // Le pas ne sert qu'aux boutons : sur le champ, il bloquerait l'envoi d'un formulaire (555 avec un pas de 10).
+        step="any"
         value={value ?? ''}
         placeholder={placeholder}
         onFocus={(e) => e.target.select()}

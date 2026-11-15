@@ -11,9 +11,11 @@ interface Props {
   base?: Stats
   /** `table` pour les fiches imprimées, `chips` (cases étiquetées) partout ailleurs. */
   variant?: 'chips' | 'table'
+  /** Fiches imprimées : astérisque après certaines valeurs (modifiées par un objet). */
+  marked?: Partial<Record<keyof Stats, boolean>>
 }
 
-export default function StatLine({ stats, base, variant = 'chips' }: Props) {
+export default function StatLine({ stats, base, variant = 'chips', marked }: Props) {
   if (variant === 'table') {
     return (
       <table className="stat-line">
@@ -21,7 +23,7 @@ export default function StatLine({ stats, base, variant = 'chips' }: Props) {
           <tr>{STAT_COLUMNS.map((c) => <th key={c.key}>{c.label}</th>)}</tr>
         </thead>
         <tbody>
-          <tr>{STAT_COLUMNS.map((c) => <td key={c.key}><span className="stat-cell">{formatStat(stats[c.key], c.dice)}</span></td>)}</tr>
+          <tr>{STAT_COLUMNS.map((c) => <td key={c.key}><span className="stat-cell">{formatStat(stats[c.key], c.dice)}{marked?.[c.key] ? '*' : ''}</span></td>)}</tr>
         </tbody>
       </table>
     )

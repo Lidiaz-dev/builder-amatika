@@ -76,6 +76,8 @@ export interface Entry {
   updatedAt?: string
   /** La bande est validée pour la campagne (son trésor de départ est fixé) : elle peut jouer les journées. */
   ready?: boolean
+  /** Le joueur porte la couronne sauteuse (règle optionnelle ; une par table). */
+  crown?: boolean
 }
 
 export interface Day {
@@ -219,6 +221,11 @@ export async function listEntries(id: string): Promise<Entry[]> {
 export async function getMyEntry(id: string): Promise<Entry | null> {
   const snap = await getDoc(entryRef(id, myEmail()))
   return snap.exists() ? (snap.data() as Entry) : null
+}
+
+/** Indique que ce joueur a (ou n'a plus) la couronne sauteuse. Chacun le fait pour lui ; l'organisateur pour tous. */
+export async function setCrown(id: string, email: string, crown: boolean) {
+  await updateDoc(entryRef(id, email), { crown })
 }
 
 /** Inscrit (ou remplace) la bande du joueur connecté dans la campagne. */

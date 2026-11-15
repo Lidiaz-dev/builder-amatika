@@ -132,7 +132,7 @@
       {
         "id": "bouteille-passe-muraille",
         "name": "Bouteille passe-muraille",
-        "description": "Une figurine qui boit cette potion peut se déplacer à travers les éléments de décors jusque la fin de son activation, la figurine ne peut pas termine son mouvement dans un élément de décors infranchissable.",
+        "description": "Une figurine qui boit cette potion peut se déplacer à travers les éléments de décors jusque la fin de son activation, la figurine ne peut pas terminer son mouvement dans un élément de décors infranchissable.",
         "price": 80,
         "rarity": "gris",
         "consumable": "potion"
@@ -218,7 +218,7 @@
       {
         "id": "potion-de-teleportation",
         "name": "Potion de téléportation",
-        "description": "Une figurine qui boit cette potion peut être placée n'importe ou sur le champ de bataille, à plus de 1ps de toutes figurine ennemie.",
+        "description": "Une figurine qui boit cette potion peut être placée n'importe où sur le champ de bataille, à plus de 1ps de toutes figurine ennemie.",
         "price": 200,
         "rarity": "jaune",
         "consumable": "potion"
@@ -1518,7 +1518,7 @@
       {
         "id": "sarbacane-bambou",
         "name": "Sarbacane bambou",
-        "description": "Force 3 ; portée 10ps ; une main ; +2 pour toucher ; faible létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus basse. Lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
+        "description": "Force 3 ; portée 10ps ; une main ; +2 pour toucher ; faible létalité : une figurine blessée par cette arme pioche 2 cartes blessures et n'applique que celle ayant la valeur le plus basse. Lorsque vous utilisez du poison sur cette arme, la fiole n'est perdue que sur un résultat de 1, 2 ou 3.",
         "price": 20,
         "rarity": "vert",
         "mods": {
@@ -1548,7 +1548,7 @@
       {
         "id": "javelot-ferpaeg",
         "name": "Javelot Ferpaeg",
-        "description": "Force utilisateur ; portée 10ps ; une main ; haute létalité : une figurine blessée par cette arme pioches 2 cartes blessures et n'applique que celle ayant la valeur le plus haute.",
+        "description": "Force utilisateur ; portée 10ps ; une main ; haute létalité : une figurine blessée par cette arme pioche 2 cartes blessures et n'applique que celle ayant la valeur la plus haute.",
         "price": 30,
         "rarity": "vert"
       },
@@ -2054,11 +2054,12 @@
       {
         "id": "bouclier-leger",
         "name": "Bouclier léger",
-        "description": "+2 à la sauvegarde.",
+        "description": "+2 à la sauvegarde, +1 pour toucher au corps à corps.",
         "price": 40,
         "rarity": "gris",
         "mods": {
-          "svg": -2
+          "svg": -2,
+          "com": -1
         }
       },
       {
@@ -2075,18 +2076,17 @@
       {
         "id": "bouclier-khajiit",
         "name": "Bouclier Khajiit",
-        "description": "+2 à la sauvegarde ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps (-2 si utilisé avec une épée) ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps.",
+        "description": "+2 à la sauvegarde ; Parade : Vos adversaires ont -1 pour vous toucher au corps à corps (-2 si utilisé avec une épée).",
         "price": 40,
         "rarity": "gris",
         "mods": {
-          "svg": -2,
-          "com": 1
+          "svg": -2
         }
       },
       {
         "id": "bouclier-de-jade",
         "name": "Bouclier de Jade",
-        "description": "+1 à la sauvegarde ; +1 attaque avec ce bouclier avec la règle Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
+        "description": "+1 à la sauvegarde ; +1 attaque force utilisateur avec ce bouclier avec la règle Contondant : Lorsque votre adversaire tire une carte blessure à la suite d'une attaque infligée par cette arme, vous pouvez annuler le premier tirage et prendre une seconde carte, si vous le faite, vous devez obligatoirement accepter le second tirage.",
         "price": 40,
         "rarity": "gris",
         "mods": {
@@ -2097,12 +2097,11 @@
       {
         "id": "bouclier-des-larmes",
         "name": "Bouclier des larmes",
-        "description": "+2 à la sauvegarde ; le porteur provoque la peur ; -1 à la force de l'arme ennemie ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps.",
+        "description": "+2 à la sauvegarde ; le porteur provoque la peur ; -1 à la force de l'arme ennemie.",
         "price": 50,
         "rarity": "vert",
         "mods": {
-          "svg": -2,
-          "com": 1
+          "svg": -2
         },
         "skills": [
           "Peur"
@@ -2111,18 +2110,17 @@
       {
         "id": "bouclier-de-cristal",
         "name": "Bouclier de Cristal",
-        "description": "+2 à la sauvegarde ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps ; +2 en renommé.",
+        "description": "+2 à la sauvegarde; +2 en renommé.",
         "price": 80,
         "rarity": "vert",
         "mods": {
-          "svg": -2,
-          "com": 1
+          "svg": -2
         }
       },
       {
         "id": "bouclier-etherique",
-        "name": "Bouclier Ethérique",
-        "description": "+2 à la sauvegarde ; le porteur gagne la compétence « dissipation » ; les ennemies subissent un malus de -1 pour toucher le propriétaire au tir comme au corps à corps.",
+        "name": "Bouclier Éthérique",
+        "description": "+2 à la sauvegarde ; le porteur gagne la compétence « dissipation » ; les ennemis subissent un malus de -1 pour toucher le propriétaire au tir comme au corps à corps.",
         "price": 70,
         "rarity": "vert",
         "mods": {
@@ -2154,13 +2152,12 @@
       },
       {
         "id": "mur-d-argent-envoute",
-        "name": "Mur d'argent envouté",
-        "description": "+3 à la sauvegarde ; les ennemies subissent un malus de -1 pour toucher le propriétaire au tir comme au corps à corps ; +1 pour toucher ; -1 à la force de l'arme ennemie ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps.",
+        "name": "Mur d'argent envoûté",
+        "description": "+3 à la sauvegarde ; les ennemis subissent un malus de -1 pour toucher le propriétaire au tir comme au corps à corps ; +1 pour toucher ; -1 à la force de l'arme ennemie.",
         "price": 100,
         "rarity": "jaune",
         "mods": {
-          "svg": -3,
-          "com": 1
+          "svg": -3
         }
       }
     ]
@@ -2339,7 +2336,7 @@
       {
         "id": "gants-de-velours-acides",
         "name": "Gants de Velours Acides",
-        "description": "L'équipement de cette figurine ne peut pas être prise par une figurine fouillant le propriétaire.",
+        "description": "L'équipement de cette figurine ne peut pas être pris par une figurine fouillant le propriétaire.",
         "price": 80,
         "rarity": "vert"
       },

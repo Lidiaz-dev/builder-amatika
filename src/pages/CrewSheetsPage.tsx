@@ -8,7 +8,8 @@ import {
   crewItemsReminder,
   crewSpellsReminder,
   crewUpkeep,
-  memberStats,
+  sheetStats,
+  starred,
   crewPath,
   isActive,
   lootItems,
@@ -96,7 +97,8 @@ export default function CrewSheetsPage() {
           const p = profileOf(faction, m)
           if (!p) return null
           const loot = lootItems(m)
-          const worn = [...wornItems(m).map((e) => e.name), ...loot.filter((l) => l.ref.slot === 'porte').map((l) => l.item?.name ?? '?')]
+          const sheet = sheetStats(p, m)
+          const worn = [...wornItems(m).map((e) => e.name), ...loot.filter((l) => l.ref.slot === 'porte').map((l) => l.item?.name ?? '?')].map((n) => starred(n, sheet.saveItems))
           const bag = [...bagItems(m).map((e) => e.name), ...loot.filter((l) => l.ref.slot === 'sac').map((l) => l.item?.name ?? '?')]
           const scars = (m.injuries ?? []).map((r) => injuryById(r.cardId)?.name ?? r.cardId)
           const u = memberUpkeep(p, m)
@@ -106,7 +108,7 @@ export default function CrewSheetsPage() {
                 <h2>{memberName(m) || '—'}</h2>
                 <span>{p.name}</span>
               </header>
-              <StatLine stats={memberStats(p, m)} variant="table" />
+              <StatLine stats={sheet.stats} variant="table" marked={{ svg: sheet.saveChanged }} />
               <dl style={{ gridRow: `span ${sheetRows}` }}>
                 <dt>Compétences</dt>
                 <dd>{memberSkills(p, m).join(', ') || '—'}</dd>

@@ -15,7 +15,7 @@
     "id": "prospection",
     "name": "Prospection",
     "tree": "general",
-    "description": "Lors de la phase « transformer les cristaux brut », la bande jette 1D10 supplémentaire par figurine possédant cette compétence, en ne conservant que les résultats les plus élevés (en fonction du nombre de cristaux brut)."
+    "description": "Après le déploiement, y compris les figurines ayant la compétence infiltration, le joueur possédant cette compétence place un cristal supplémentaire à 15ps de son point de déploiement, puis ce cristal est déplacé de 1D10ps de manière aléatoire."
   },
   {
     "id": "maitrise-technique",
@@ -123,7 +123,7 @@
     "id": "peur",
     "name": "Peur",
     "tree": "force",
-    "description": "La figurine provoque la peur comme expliqué dans les règles."
+    "description": "La figurine provoque la peur comme expliqué dans les règles, de plus elle possède la règle Sans peur."
   },
   {
     "id": "frappe-puissante",

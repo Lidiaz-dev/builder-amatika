@@ -1325,3 +1325,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .cards-list li { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.4rem 0; border-bottom: 1px dashed var(--border); }
 .cards-list-item { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
 .cards-list li.exhausted .cards-list-item strong { color: var(--ko); }
+
+/* Couronne sauteuse */
+.crown-icon { font-size: 0.95em; margin-left: 0.15rem; cursor: help; }
+.crown-switch { margin: 0.2rem 0 0.6rem; }

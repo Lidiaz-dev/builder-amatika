@@ -340,7 +340,7 @@ export default function CrewBuilderPage() {
           {campaign ? (
             <>
               <Total label="Trésor" value={`${campaign.po} PO`} alert={campaign.po < 0} tip="Pièces d'or disponibles pour recruter, acheter et payer l'entretien." />
-              <Total label="Cristaux" value={`${campaign.cristaux}`} tip="Cristaux transformés : ils se vendent 25 PO pièce dans « Trésor… »." />
+              <Total label="Cristaux" value={`${campaign.cristaux}`} tip={`Cristaux de la bande : ils se vendent ${CRYSTAL_PRICE} PO pièce dans « Trésor… », ou rapportent 1 point de prestige chacun en fin de campagne.`} />
               <Total label="Prestige" value={`${campaign.prestige}`} tip="Prestige gagné au fil des parties." />
               <Total label="Entretien" value={`${upkeep.po} PO${upkeep.cristaux ? ` + ${upkeep.cristaux} cristal` : ''}`} tip="À payer après chaque partie pour garder la bande (le chef ne coûte rien)." />
               <Total label="Membres" value={`${active.length}`} alert={active.length > MAX_ON_TABLE} tip={`Membres actifs. ${MAX_ON_TABLE} figurines maximum sur la table par partie.`} />

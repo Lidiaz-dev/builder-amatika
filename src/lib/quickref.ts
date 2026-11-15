@@ -39,6 +39,7 @@ const BLOCKS: QuickBlock[] = [
           'Un point de déploiement par joueur sur les bords, à égale distance de ses voisins, et au moins un point au centre pour les créatures ([schémas](/regles/deploiement)).',
           "**Lieux d'intérêt** : joueurs + 1, à plus de 8 ps les uns des autres. Le joueur avec le moins de prestige place le premier, puis chacun, de la plus grande valeur d'Éclaireur à la plus faible.",
           '**Cristaux bruts** : 3 par joueur, en quadrillage, puis dispersés de 1D10 cm.',
+          "**Prospection** : après le déploiement, chaque figurine qui l'a place un cristal de plus à 15 ps de son point de déploiement, puis le disperse de 1D10 ps.",
           '**Initiative** : 1D10 + bonus Éclaireur. Du plus haut au plus bas, chacun choisit un point du bord et déploie à 6 ps du point.',
           '10 figurines maximum par bande sur la table.',
         ],
@@ -56,7 +57,6 @@ const BLOCKS: QuickBlock[] = [
             text: '**Début de round** :',
             sub: [
               'test de déroute pour les bandes avec 25 % ou plus de figurines hors de combat ;',
-              'déroute volontaire possible à partir du round 4 ;',
               'arrivée des créatures (voir « Arrivée des créatures »).',
             ],
           },
@@ -136,14 +136,14 @@ const BLOCKS: QuickBlock[] = [
       {
         kind: 'defs',
         rows: [
-          ['Se déplacer', "Jusqu'à son mouvement, jamais au contact d'un ennemi debout. Un ennemi frôlé à 1 ps peut faire une mise au contact, qu'on évite avec un test d'Agilité réussi."],
+          ['Se déplacer', "Jusqu'à son mouvement, jamais au contact d'un ennemi debout. Un ennemi frôlé à 1 ps peut faire une mise au contact, qu'on évite avec un test d'Agilité réussi. **Arme de jet** : un tir gratuit après le mouvement (sans le bonus de Viser). **Quitter la table** : au contact d'un autre point de déploiement que le sien, la figurine sort, définitivement."],
           ['Charger', "Un mouvement jusqu'au contact d'un ennemi debout, puis une attaque gratuite. La cible ne peut pas faire de mise au contact."],
           ['Attaquer', 'Contre un ennemi au contact, sans riposte. Répartir ses attaques avant de lancer les dés.'],
           ['Tirer', "Impossible au corps à corps, ou après un test d'Agilité raté pendant l'activation. Cible obligatoire : l'ennemi visible le plus proche s'il est à 12 ps ou moins (sauf depuis 2 ps de hauteur)."],
           ['Viser', "+2 pour toucher si l'action suivante est un tir."],
           ['Recharger', 'Recharge une arme à rechargement (arbalète, poudre noire).'],
-          ['Fouiller', "Un corps au contact (ennemi au sol, ou mort de n'importe quel camp). L'équipement va dans le sac. Impossible si un ennemi libre de Force égale ou supérieure est à 5 ps ou moins, sauf si un allié est plus proche de lui."],
-          ['Ramasser', "Un cristal brut, ou un lieu d'intérêt : on tire une carte du paquet correspondant. Même restriction que pour fouiller."],
+          ['Fouiller', "Un corps au contact (ennemi au sol, ou mort de n'importe quel camp). **Par fouille : un seul objet, ou un seul cristal, ou tout son or**, mis dans le sac. Impossible si un ennemi libre de Force égale ou supérieure est à 5 ps ou moins, sauf si un allié est plus proche de lui."],
+          ['Ramasser', "Un cristal (il va dans le sac), ou un lieu d'intérêt : on tire une carte du paquet correspondant. Même restriction que pour fouiller."],
           ['Se cacher', "Dernière action seulement, aucun ennemi visible à 5 ps. Test d'Agilité : réussi → pion caché, intouchable ; raté → le tour s'arrête."],
           ['Rester caché', "Si la figurine commence cachée et qu'aucun ennemi n'est à 5 ps : automatique, le tour s'arrête."],
           ['Se révéler', "Première action d'une figurine cachée. On la place à 3 ps du pion, à plus de 1 ps de tout ennemi debout."],
@@ -180,7 +180,7 @@ const BLOCKS: QuickBlock[] = [
           {
             caption: 'Au tir',
             rows: [
-              ['+1', 'Bout portant (5 ps ou moins)'],
+              ['+1', 'Bout portant (4 ps ou moins)'],
               ['+2', 'Viser juste avant'],
               ['+1 / +2', 'Grande / Très grande cible'],
               ['+1', 'Tirer vers le bas (3 ps ou plus)'],
@@ -248,7 +248,7 @@ const BLOCKS: QuickBlock[] = [
       {
         kind: 'list',
         items: [
-          '**Caractéristique** (Agilité, Force…) : 1D10 ≤ la caractéristique. 10 = réussite, 1 = échec. Force brute, sans le bonus des armes.',
+          '**Caractéristique** (Agilité, Force…) : 1D10 ≥ la caractéristique. 10 = réussite, 1 = échec. Force brute, sans le bonus des armes.',
           '**Commandement** : 2D10 ≥ Commandement. 20 = réussite, 2 = échec.',
           '**Chef** : une figurine à 6 ps ou moins utilise le Commandement du chef (sans ligne de vue), sauf si le chef est mort ou en fuite.',
         ],
@@ -261,9 +261,9 @@ const BLOCKS: QuickBlock[] = [
       {
         kind: 'list',
         items: [
-          '**Déroute** : en début de round, si 25 % ou plus de la bande est hors de combat. Commandement le plus élevé de la bande, −1 par figurine hors de combat. Raté → la bande quitte la table avec son butin, et il faut refaire le test à chaque round.',
-          '**Peur** : un mouvement qui finit à 5 ps ou moins d\'une figurine qui fait peur, et en vue, demande un test de commandement (un seul par activation). Pareil si la figurine commence son activation à moins de 5 ps. Raté → jeton fuite, ses actions restantes servent à s\'éloigner.',
-          "Une figurine qui fait peur, après chacun de ses mouvements, fait tester les ennemis à 5 ps. Ceux qui ratent fuient de leur mouvement à l'opposé. Elle est elle-même immunisée.",
+          '**Déroute** : en début de round, si 25 % ou plus de la bande est hors de combat. Commandement le plus élevé de la bande, −1 par figurine hors de combat. Raté → au prochain tour, ses figurines ne font que fuir vers le bord le plus proche (ni ramasser, ni attaquer, ni tirer), celles qui sortent sont sauves ; ses invocations et sorts en jeu sont annulés. Nouveau test au round suivant : réussi → la bande se reprend.',
+          "**Peur** : un mouvement qui finit à 5 ps ou moins d'une figurine qui fait peur, **et en ligne de vue**, demande un test de commandement (un seul par activation). Pareil si la figurine commence son activation à moins de 5 ps et en vue. Raté → **jeton Peur** : sa prochaine action sert à le retirer. Une charge garde son attaque gratuite.",
+          'Une figurine qui fait peur, après chacun de ses mouvements, fait tester les ennemis à 5 ps et en vue. Ceux qui ratent reçoivent un jeton Peur.',
         ],
       },
     ],

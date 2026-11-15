@@ -20,6 +20,7 @@ import {
   listSheets,
   listUsers,
   removeFromDay,
+  setCrown,
   removePlayer,
   setCampaignBudget,
   startNight,
@@ -174,6 +175,7 @@ Préparation pas encore validée : ${names}.` : ''
             entries={entries}
             busy={busy}
             onAdd={(email, pseudo) => run(() => addPlayer(campaign.id, email, pseudo))}
+            onCrown={(email, crown) => run(() => setCrown(campaign.id, email, crown))}
             onRemove={(email) =>
               confirm(`Retirer ${entries.find((x) => x.email === email)?.pseudo || email} de la campagne ? Sa bande n'est pas supprimée ; il pourra être réinscrit avec une nouvelle bande (reroll).`) &&
               run(() => removePlayer(campaign.id, email))
@@ -238,6 +240,15 @@ function MyCrewPanel({ campaign, entry, day, locked, onChanged }: {
               </span>
             )}
           </p>
+          <label className="switch crown-switch" data-tip="Règle optionnelle : le porteur gagne 1 prestige et 2 cartes Trésor à chaque après-bataille.">
+            <input
+              type="checkbox"
+              checked={!!entry.crown}
+              onChange={(e) => { void setCrown(campaign.id, entry.email, e.target.checked).then(onChanged) }}
+            />
+            <span className="switch-track" aria-hidden="true" />
+            <span><CrownIcon /> J'ai la couronne sauteuse</span>
+          </label>
           <CampaignCrewPanel campaign={campaign} crewId={entry.crewId} email={entry.email} day={day} onChanged={onChanged} />
           {locked ? (
             <p className="muted small">Votre bande a rejoint la journée en cours : pas de reroll avant sa clôture.</p>
@@ -315,6 +326,7 @@ function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, on
               <li key={email}>
                 <div className="row wrap">
                   <strong>{e?.crewName ?? '—'}</strong>
+                  {e?.crown && <CrownIcon />}
                   <span className="muted small" data-tip={email}>{who(email)}</span>
                   {e?.crewId && <Link className="link-btn small" to={`/bandes/${e.crewId}/fiches`}>Voir les fiches</Link>}
                   {day.status === 'preparation' && (day.ready?.includes(email)
@@ -361,10 +373,11 @@ function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, on
 }
 
 /** Organisateur : joueurs de la campagne. Ajout par email, par pseudo ou depuis la liste des inscrits. */
-function PlayersPanel({ entries, busy, onAdd, onRemove }: {
+function PlayersPanel({ entries, busy, onAdd, onRemove, onCrown }: {
   entries: Entry[]
   busy: boolean
   onAdd: (email: string, pseudo?: string) => void
+  onCrown: (email: string, crown: boolean) => void
   onRemove: (email: string) => void
 }) {
   const [value, setValue] = useState('')
@@ -404,10 +417,15 @@ function PlayersPanel({ entries, busy, onAdd, onRemove }: {
         {entries.map((e) => (
           <li key={e.email} className="row wrap between">
             <span>
-              <strong data-tip={e.email}>{e.pseudo || e.email}</strong>{' '}
+              <strong data-tip={e.email}>{e.pseudo || e.email}</strong>{e.crown && <> <CrownIcon /></>}{' '}
               <span className="muted small">{e.crewName ? `${e.crewName} (${factionById(e.factionId ?? '')?.name})${e.ready ? '' : ' · en préparation'}` : 'pas encore de bande'}</span>
             </span>
-            <button className="btn ghost small danger" onClick={() => onRemove(e.email)} disabled={busy}>Retirer</button>
+            <span className="row">
+              <button className="btn ghost small" onClick={() => onCrown(e.email, !e.crown)} disabled={busy || !e.crewId} data-tip={e.crown ? 'Retirer la couronne sauteuse à ce joueur' : 'Donner la couronne sauteuse à ce joueur'}>
+                {e.crown ? 'Retirer la couronne' : 'Donner la couronne'}
+              </button>
+              <button className="btn ghost small danger" onClick={() => onRemove(e.email)} disabled={busy}>Retirer</button>
+            </span>
           </li>
         ))}
       </ul>
@@ -470,4 +488,9 @@ function BudgetLine({ budget, admin, busy, onSave }: { budget: number; admin: bo
       <span className="muted small">S'applique aux bandes pas encore validées pour la campagne.</span>
     </form>
   )
+}
+
+/** Petit logo : ce joueur porte la couronne sauteuse. */
+function CrownIcon() {
+  return <span className="crown-icon" role="img" aria-label="Couronne sauteuse" data-tip="Porte la couronne sauteuse">👑</span>
 }

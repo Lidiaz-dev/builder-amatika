@@ -120,7 +120,7 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
       </header>
 
       <div className="live-counters card">
-        <Counter label="Cristaux bruts ramassés" value={game.rawCrystals} onDelta={(d) => mutate((g) => ({ game: { rawCrystals: Math.max(0, g.rawCrystals + d) } }))} big />
+        <Counter label="Cristaux ramassés" value={game.rawCrystals} onDelta={(d) => mutate((g) => ({ game: { rawCrystals: Math.max(0, g.rawCrystals + d) } }))} big />
         <label className="field narrow">
           <span>PO trouvées</span>
           <NumberInput label="PO trouvées" min={0} step={5} value={game.poFound} onChange={(v) => mutate(() => ({ game: { poFound: v } }))} />

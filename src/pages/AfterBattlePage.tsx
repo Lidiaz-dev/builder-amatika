@@ -27,7 +27,7 @@ import Modal from '../components/Modal'
 import InjuryPicker from '../components/InjuryPicker'
 import AdvancePicker from '../components/AdvancePicker'
 import LootPicker, { type LootPick } from '../components/LootPicker'
-import { submitSheetIfNeeded } from '../lib/groupCampaign'
+import { getMyEntry, submitSheetIfNeeded } from '../lib/groupCampaign'
 import { DECKS } from '../lib/decks'
 import RarityDot from '../components/RarityDot'
 import RuleText from '../components/RuleText'
@@ -75,8 +75,11 @@ interface WizardSnapshot {
   /** Cartes Marché noir distribuées (clés d'objets) et indices de celles achetées. */
   market?: string[]
   marketBought?: number[]
-  /** Cristaux magiques du butin vendus tout de suite (25 PO pièce). */
+  /** Cristaux du butin vendus tout de suite (CRYSTAL_PRICE pièce). */
   crystalsSold?: number
+  /** Couronne sauteuse : la bande la porte, et les 2 cartes Trésor reçues. */
+  crown?: boolean
+  crownCards?: string[]
 }
 
 /** Objets du paquet Marché noir, par catégorie : pour noter les cartes piochées à la table. */
@@ -86,6 +89,22 @@ const MARKET_CHOICES = (() => {
     .map((c) => ({ name: c.name, items: c.items.filter((it) => refs.has(itemKey(c.id, it.id))).map((it) => ({ key: itemKey(c.id, it.id), name: it.name, price: it.price })) }))
     .filter((c) => c.items.length)
 })()
+
+/** Objets du paquet Trésor, par catégorie (couronne sauteuse). */
+const TREASURE_CHOICES = (() => {
+  const refs = new Set((DECKS.find((d) => d.id === 'objets')?.cards ?? []).map((c) => c.ref))
+  return itemCategories
+    .map((c) => ({ name: c.name, items: c.items.filter((it) => refs.has(itemKey(c.id, it.id))).map((it) => ({ key: itemKey(c.id, it.id), name: it.name })) }))
+    .filter((c) => c.items.length)
+})()
+
+/** Cartes tirées au hasard dans le paquet Trésor (exemplaires compris). */
+function drawTreasure(count: number): string[] {
+  const deck = [...(DECKS.find((d) => d.id === 'objets')?.cards ?? [])]
+  const out: string[] = []
+  while (out.length < count && deck.length) out.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0].ref)
+  return out
+}
 
 /** Cartes Marché noir distribuées : 4, plus 1 par figurine avec Soldat de la Pègre. */
 function drawMarket(count: number): string[] {
@@ -120,6 +139,8 @@ export default function AfterBattlePage() {
   const [poFound, setPoFound] = useState(0)
   const [prestigeGained, setPrestigeGained] = useState(0)
   const [crystalsSold, setCrystalsSold] = useState(0)
+  const [crown, setCrown] = useState(false)
+  const [crownCards, setCrownCards] = useState<string[]>([])
   // Entretien
   const [leaving, setLeaving] = useState<string[]>([])
   // Objets utilisés : jet de réserve de chaque poison (par id d'objet)
@@ -151,6 +172,7 @@ export default function AfterBattlePage() {
     setMarket(null)
     setMarketBought([])
     setCrystalsSold(0)
+    setCrownCards([])
     setRolls([])
     if (live) {
       setTitle(live.title)
@@ -177,6 +199,13 @@ export default function AfterBattlePage() {
     }
   }
 
+  // Campagne de groupe : la couronne sauteuse est pré-cochée si le joueur a indiqué la porter.
+  useEffect(() => {
+    if (!original?.groupCampaign) return
+    if (readSnapshot(original.id)?.crown !== undefined) return
+    getMyEntry(original.groupCampaign.id).then((e) => setCrown(!!e?.crown)).catch(() => {})
+  }, [original])
+
   useEffect(() => {
     getCrew(id!).then((c) => {
       setOriginal(c)
@@ -200,6 +229,8 @@ export default function AfterBattlePage() {
         setMarket(snap.market ?? null)
         setMarketBought(snap.marketBought ?? [])
         setCrystalsSold(snap.crystalsSold ?? 0)
+        if (snap.crown !== undefined) setCrown(snap.crown)
+        setCrownCards(snap.crownCards ?? [])
         setResumed(snap.step > 0)
       } else {
         startFrom(c)
@@ -212,14 +243,14 @@ export default function AfterBattlePage() {
     if (!original || !draft || saving) return
     const snap: WizardSnapshot = {
       base: original.updatedAt, step, draft, exits, logs, title, participants, rawCrystals, rolls,
-      poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market: market ?? undefined, marketBought, crystalsSold,
+      poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market: market ?? undefined, marketBought, crystalsSold, crown, crownCards,
     }
     try {
       localStorage.setItem(wizardKey(original.id), JSON.stringify(snap))
     } catch {
       // Stockage indisponible (navigation privée…) : l'assistant marche quand même, sans reprise.
     }
-  }, [original, draft, step, exits, logs, title, participants, rawCrystals, rolls, poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market, marketBought, crystalsSold, saving])
+  }, [original, draft, step, exits, logs, title, participants, rawCrystals, rolls, poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market, marketBought, crystalsSold, crown, crownCards, saving])
 
   if (original === undefined) return <p className="muted">Chargement…</p>
   const faction = original ? factionById(original.factionId) : undefined
@@ -296,13 +327,8 @@ export default function AfterBattlePage() {
   }
   const playing = participants.map(memberById).filter(Boolean)
   const alivePlaying = playing.filter(isActive)
-  const prospectors = alivePlaying.filter((m) => {
-    const p = profileOf(faction, m)
-    return p && memberSkills(p, m).some((s) => s.toLowerCase() === 'prospection')
-  }).length
-  const diceCount = rawCrystals > 0 ? rawCrystals + prospectors : 0
-  const keptCrystals = [...rolls.slice(0, diceCount)].filter((r): r is number => r !== null).sort((a, b) => b - a).slice(0, rawCrystals)
-  const crystalsGained = keptCrystals.reduce((s, r) => s + r, 0)
+  // Plus de transformation des cristaux bruts : chaque cristal ramassé est un cristal magique.
+  const crystalsGained = rawCrystals
   /**
    * Objets qui rapportent à la bande à chaque partie (« Une bande possédant cet objet gagne +20PO
    * à la fin de chaque partie ») : portés, au sac ou au coffre du camp.
@@ -382,12 +408,19 @@ export default function AfterBattlePage() {
     }
     if (k === S.loot) {
       const sold = Math.min(crystalsSold, crystalsGained)
-      if (crystalsGained) lines.push(`${crystalsGained} cristaux magiques (cristaux bruts : ${keptCrystals.join(', ')})`)
+      if (crystalsGained) lines.push(`${crystalsGained} cristal(aux) ramassé(s)`)
       if (sold) lines.push(`${sold} cristaux vendus : +${sold * CRYSTAL_PRICE} PO`)
       if (poFound) lines.push(`${poFound} PO récupérées`)
       if (prestigeGained) lines.push(`${prestigeGained} de prestige`)
       for (const r of recurring) lines.push(`${r.name} : ${[r.po && `+${r.po} PO`, r.prestige && `+${r.prestige} prestige`].filter(Boolean).join(', ')}`)
-      const delta = { cristaux: crystalsGained - sold, po: poFound + sold * CRYSTAL_PRICE + recurringPo, prestige: prestigeGained + recurringPrestige }
+      if (crown) {
+        lines.push(`Couronne sauteuse : +1 prestige${crownCards.length ? `, ${crownCards.map((k) => itemByKey(k)?.name ?? k).join(' et ')} au coffre du camp` : ''}`)
+        if (crownCards.length && c.campaign) {
+          const stock = c.campaign.stock ?? { equipment: [], loot: [] }
+          c = { ...c, campaign: { ...c.campaign, stock: { ...stock, loot: [...stock.loot, ...crownCards.map((key) => ({ id: newId(), key, slot: 'sac' as const }))] } } }
+        }
+      }
+      const delta = { cristaux: crystalsGained - sold, po: poFound + sold * CRYSTAL_PRICE + recurringPo, prestige: prestigeGained + recurringPrestige + (crown ? 1 : 0) }
       if (delta.cristaux || delta.po || delta.prestige) c = withTreasury(c, delta, `${title} : butin`)
     }
     if (k === S.upkeep) {
@@ -562,7 +595,6 @@ export default function AfterBattlePage() {
   const preset = !!original?.campaign?.currentGame
   const levelers = draft.members.filter((m) => isActive(m) && pendingLevels(m) > 0)
   const usedEntries = draft.members.filter(isActive).flatMap((m) => lootItems(m).filter(({ ref }) => ref.used).map((e) => ({ m, ...e })))
-  const missingCrystalRoll = step === S.loot && diceCount > 0 && Array.from({ length: diceCount }, (_, i) => rolls[i] ?? null).some((r) => r === null)
   const missingPoisonRoll = step === S.items && usedEntries.some(({ ref, item }) => item?.consumable === 'poison' && (poisonRolls[ref.id] ?? null) === null)
   const deficit = treasury.po - upkeepPo
   const crDeficit = treasury.cristaux - upkeepCr
@@ -574,7 +606,6 @@ export default function AfterBattlePage() {
   const blockReason: string | null =
     step === S.participants && participants.length === 0 ? 'Choisissez au moins une figurine.'
       : missingPoisonRoll ? 'Lancez le dé de chaque poison utilisé.'
-        : missingCrystalRoll ? 'Lancez tous les dés des cristaux bruts.'
           : step === S.upkeep && deficit < 0 ? `Il manque ${-deficit} PO pour payer l'entretien : vendez des objets ou des cristaux, ou laissez partir des soldats.`
             : step === S.upkeep && crDeficit < 0 ? `Il manque ${-crDeficit} cristal(aux) pour l'entretien.`
               : step === S.xp && learners.some((m) => (xp[m.id]?.participation ?? null) === null) ? `Lancez le dé de participation de : ${learners.filter((m) => (xp[m.id]?.participation ?? null) === null).map((m) => nameOf(faction, m)).join(', ')}.`
@@ -718,26 +749,15 @@ export default function AfterBattlePage() {
         {step === S.loot && (
           <>
             <h2>Butin</h2>
-            <h3>Cristaux bruts</h3>
+            <h3>Cristaux</h3>
             <div className="row wrap">
-              <label className="field narrow">
-                <span>Cristaux bruts</span>
-                <NumberInput label="Cristaux bruts" min={0} value={rawCrystals} onChange={(n) => { setRawCrystals(n); setRolls(Array(n ? n + prospectors : 0).fill(null)) }} />
-              </label>
-              {diceCount > 0 && <button className="btn small" onClick={() => setRolls(Array.from({ length: diceCount }, () => d10()))}>🎲 Tout lancer</button>}
-            </div>
-            {prospectors > 0 && rawCrystals > 0 && (
-              <p className="muted small">Prospection : {prospectors} dé(s) en plus, seuls les {rawCrystals} meilleurs résultats comptent.</p>
-            )}
-            {diceCount > 0 && (
-              <div className="dice-row">
-                {Array.from({ length: diceCount }, (_, i) => (
-                  <DiceInput key={i} value={rolls[i] ?? null} onChange={(v) => setRolls((r) => { const n = [...r]; n[i] = v; return n })} label={`Dé ${i + 1}`} />
-                ))}
+              <div className="field narrow">
+                <span>Cristaux ramassés</span>
+                <NumberInput label="Cristaux ramassés" min={0} value={rawCrystals} onChange={setRawCrystals} />
               </div>
-            )}
-            {rawCrystals > 0 && <p><strong>{crystalsGained}</strong> cristaux magiques obtenus.</p>}
-            {crystalsGained > 0 && !missingCrystalRoll && (
+            </div>
+            <p className="muted small">Chaque cristal ramassé est un cristal magique : il se garde (1 point de prestige en fin de campagne) ou se vend {CRYSTAL_PRICE} PO.</p>
+            {crystalsGained > 0 && (
               <div className="row wrap crystal-sale">
                 <label className="row">
                   Vendre
@@ -748,7 +768,6 @@ export default function AfterBattlePage() {
                 <span className="muted small">Vous en garderez {crystalsGained - Math.min(crystalsSold, crystalsGained)}.</span>
               </div>
             )}
-            {missingCrystalRoll && <p className="notice small">Lancez tous les dés des cristaux bruts pour continuer.</p>}
 
             <h3>Or et prestige</h3>
             <div className="row wrap">
@@ -773,6 +792,40 @@ export default function AfterBattlePage() {
                 </li>
               ))}
             </ul>
+            <h3>Couronne sauteuse</h3>
+            <label className="switch">
+              <input type="checkbox" checked={crown} onChange={(e) => setCrown(e.target.checked)} />
+              <span className="switch-track" aria-hidden="true" />
+              <span>👑 Ma bande a la couronne sauteuse</span>
+            </label>
+            {crown && (
+              <>
+                <p className="muted small">+1 prestige et 2 cartes du paquet Trésor, rangées dans le coffre du camp.</p>
+                <div className="row wrap">
+                  {crownCards.map((key, i) => (
+                    <ItemChip
+                      key={i}
+                      lootKey={key}
+                      after={<button className="tag-remove" onClick={() => setCrownCards((cs) => cs.filter((_, j) => j !== i))} aria-label="Retirer cette carte">×</button>}
+                    />
+                  ))}
+                  {crownCards.length < 2 && (
+                    <>
+                      <button className="btn small" onClick={() => setCrownCards((cs) => [...cs, ...drawTreasure(2 - cs.length)])}>🂠 Tirer {2 - crownCards.length} carte{crownCards.length ? '' : 's'} Trésor</button>
+                      <select value="" onChange={(e) => e.target.value && setCrownCards((cs) => [...cs, e.target.value].slice(0, 2))} aria-label="Carte Trésor piochée à la table">
+                        <option value="">+ Noter une carte piochée…</option>
+                        {TREASURE_CHOICES.map((c) => (
+                          <optgroup key={c.name} label={c.name}>
+                            {c.items.map((it) => <option key={it.key} value={it.key}>{it.name}</option>)}
+                          </optgroup>
+                        ))}
+                      </select>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
+
             <h3>Marché noir</h3>
             {!market ? (
               <>
