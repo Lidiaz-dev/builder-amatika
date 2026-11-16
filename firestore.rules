@@ -58,6 +58,21 @@ service cloud.firestore {
           || (isPlayer(cid) && email == myEmail() && request.resource.data.email == email);
       }
 
+      // Envois entre joueurs (phase Commerce) : créés par l'expéditeur, reçus par le destinataire
+      // une fois la journée clôturée (il ne peut que les marquer comme reçus).
+      match /gifts/{gid} {
+        allow read: if isAdmin() || (verified() && (resource.data.to == myEmail() || resource.data.from == myEmail()));
+        allow create: if isPlayer(cid)
+          && request.resource.data.from == myEmail()
+          && request.resource.data.to in campaign(cid).emails
+          && request.resource.data.to != myEmail()
+          && request.resource.data.claimed == false;
+        allow update: if verified() && resource.data.to == myEmail()
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['claimed'])
+          && request.resource.data.claimed == true;
+        allow delete: if isAdmin();
+      }
+
       match /days/{dayId} {
         allow read: if isAdmin() || isPlayer(cid);
         allow create, delete: if isAdmin();

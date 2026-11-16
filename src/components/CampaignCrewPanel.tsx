@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { factionById } from '../data'
-import { abandonGame, activeMembers, crewPath, withoutUndo, emptyStock, withTreasury, crewCost, MAX_ON_TABLE, memberName, newId, profileOf, type Crew } from '../lib/crew'
+import { memberTitle, abandonGame, activeMembers, crewPath, withoutUndo, emptyStock, withTreasury, crewCost, MAX_ON_TABLE, newId, profileOf, type Crew } from '../lib/crew'
 import { useAuth } from '../lib/auth'
-import { getMySheet, isAdmin, isDayReady, isOpen, joinDay, registerCrew, setDayReady, type Day, type GroupCampaign, type Sheet } from '../lib/groupCampaign'
+import { markGiftsReceived, receiveGifts, type Gift, getMySheet, isAdmin, isDayReady, isOpen, joinDay, registerCrew, setDayReady, type Day, type GroupCampaign, type Sheet } from '../lib/groupCampaign'
 import { getCrew, saveCrew } from '../lib/storage'
 import { isLegal, validateCrew } from '../lib/validate'
 import LiveGamePanel from './LiveGamePanel'
@@ -35,9 +35,32 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
   const open = !!day && isOpen(day.status)
   const joined = open && !!day?.participants.includes(email)
 
+  const [received, setReceived] = useState<Gift[]>([])
+
   useEffect(() => {
     getCrew(crewId).then(setCrew).catch(() => setCrew(null))
   }, [crewId])
+
+  // Envois des autres joueurs (phase Commerce) : reçus une fois leur journée clôturée.
+  const hasCampaign = !!crew?.campaign
+  useEffect(() => {
+    if (!hasCampaign) return
+    let cancelled = false
+    getCrew(crewId)
+      .then(async (fresh) => {
+        if (!fresh || cancelled) return
+        const res = await receiveGifts(fresh, campaign)
+        if (!res || cancelled) return
+        const saved = await saveCrew(res.crew)
+        await markGiftsReceived(campaign.id, res.gifts.map((g) => g.id))
+        if (cancelled) return
+        first.current = true
+        setCrew(saved)
+        setReceived(res.gifts)
+      })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [hasCampaign, crewId, campaign])
   useEffect(() => {
     if (joined && day?.status === 'nuit') getMySheet(campaign.id, day.number).then(setSheet).catch(() => setSheet(null))
   }, [joined, day, campaign.id])
@@ -113,7 +136,24 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
   if (!crew) return <p className="error">Bande introuvable : créez-en une nouvelle (reroll).</p>
   const faction = factionById(crew.factionId)
   if (!faction) return null
-  const err = error && <p className="error">{error}</p>
+  const err = (
+    <>
+      {error && <p className="error">{error}</p>}
+      {received.length > 0 && (
+        <div className="notice ok-notice small">
+          <strong>Envois reçus :</strong>
+          <ul>
+            {received.map((g) => (
+              <li key={g.id}>
+                {g.fromName} (journée {g.day}) : {[g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} cristal(aux)` : '', ...g.items.map((i) => i.name)].filter(Boolean).join(', ')}
+                {g.items.length ? ' · objets rangés au coffre du camp' : ''}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </>
+  )
 
   // 1. Bande en préparation : on la construit dans le builder, puis on la valide pour la campagne.
   if (!crew.campaign) {
@@ -233,7 +273,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
                     disabled={validated || m.missNextGame || (!on && prep.length >= MAX_ON_TABLE)}
                     onChange={() => setPrep(on ? prep.filter((x) => x !== m.id) : [...prep, m.id])}
                   />
-                  <MemberPeek faction={faction} member={m}><strong>{memberName(m) || p?.name}</strong></MemberPeek> <span className="muted small">{p?.name} · niv. {m.level}</span>
+                  <MemberPeek faction={faction} member={m}><strong>{memberTitle(faction, m, false)}</strong></MemberPeek> <span className="muted small">{p?.name} · niv. {m.level}</span>
                   {m.missNextGame && <span className="badge ko">Blessure grave : repos</span>}
                 </label>
               </li>

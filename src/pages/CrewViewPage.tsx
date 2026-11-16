@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { factionById, injuryById, spellById } from '../data'
-import { actionsOf, effectiveStats, emptyStock, isActive, lootItems, memberName, memberSkills, profileOf, wornItems, bagItems, type Crew } from '../lib/crew'
+import { memberTitle, actionsOf, effectiveStats, emptyStock, isActive, lootItems, memberSkills, profileOf, wornItems, bagItems, type Crew } from '../lib/crew'
 import { getCampaign, type GroupCampaign } from '../lib/groupCampaign'
 import { getCrew } from '../lib/storage'
 import StatLine from '../components/StatLine'
@@ -79,7 +79,7 @@ export default function CrewViewPage() {
           return (
             <article key={m.id} className="unit-card">
               <header className="unit-band">
-                <h3>{memberName(m) || p.name}</h3>
+                <h3>{memberTitle(faction, m, false)}</h3>
                 <span className="unit-role">{p.name}{c ? ` · niv. ${m.level} · ${m.xp} XP · ${actionsOf(m)} actions` : ''}</span>
               </header>
               <div className="unit-body">

@@ -1,5 +1,5 @@
 import { equipmentById, factionById, itemByKey, racialRequirement, spellById, type Profile } from '../data'
-import {
+import { noteOf,
   activeMembers,
   crewCost,
   handsAvailable,
@@ -25,7 +25,7 @@ export interface Issue {
 export function validateMember(profile: Profile, member: Member, inCampaign = false): Issue[] {
   const issues: Issue[] = []
   const err = (message: string) => issues.push({ severity: 'error', message, memberId: member.id })
-  const who = memberName(member) || profile.name
+  const who = [memberName(member) || profile.name, noteOf(member)].filter(Boolean).join(' ')
 
   for (const ref of member.equipment) {
     const item = equipmentById(ref.itemId)

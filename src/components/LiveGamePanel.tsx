@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { equipmentById, injuryById, itemByKey, type Faction } from '../data'
 import {
+  memberTitle,
   actionsOf,
   effectiveStats,
   emptyTally,
@@ -13,7 +14,6 @@ import {
   type LiveGame,
   type LiveTally,
   type Member,
-  memberName,
   abandonGame,
 } from '../lib/crew'
 import { applyInjury, revertInjury } from '../lib/campaign'
@@ -55,7 +55,7 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
       return { ...c, members: out.members ?? c.members, campaign: { ...c.campaign!, currentGame: { ...g, ...out.game } } }
     })
   const replaceIn = (members: Member[], m: Member) => members.map((x) => (x.id === m.id ? m : x))
-  const nameOf = (m: Member) => memberName(m) || profileOf(faction, m)?.name || '?'
+  const nameOf = (m: Member) => memberTitle(faction, m)
   const tallyOf = (g: LiveGame, id: string) => g.tallies[id] ?? emptyTally()
   const tally = (id: string) => tallyOf(game, id)
   const bump = (id: string, key: keyof LiveTally, delta: number) =>

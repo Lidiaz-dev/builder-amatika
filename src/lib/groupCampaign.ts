@@ -15,7 +15,7 @@ import {
 } from 'firebase/firestore'
 import type { User } from 'firebase/auth'
 import { auth, db } from './firebase'
-import { newId, type Crew } from './crew'
+import { newId, withTreasury, type Crew } from './crew'
 
 /**
  * Campagne de groupe : l'organisateur crée la campagne, y inscrit des joueurs (par email),
@@ -189,8 +189,10 @@ export async function deleteCampaign(id: string) {
 export async function cancelDay(c: GroupCampaign) {
   if (!c.dayNumber || !isOpen(c.dayStatus)) throw new Error("Il n'y a pas de journée en cours à annuler.")
   const sheets = await getDocs(collection(database(), 'campaigns', c.id, 'days', String(c.dayNumber), 'sheets'))
+  const gifts = await getDocs(query(giftsCol(c.id), where('day', '==', c.dayNumber)))
   const batch = writeBatch(database())
   sheets.docs.forEach((s) => batch.delete(s.ref))
+  gifts.docs.forEach((g) => batch.delete(g.ref))
   batch.delete(dayRef(c.id, c.dayNumber))
   batch.update(campaignRef(c.id), { dayNumber: c.dayNumber - 1, dayStatus: c.dayNumber > 1 ? 'cloturee' : null })
   await batch.commit()
@@ -268,6 +270,86 @@ export async function createDay(c: GroupCampaign) {
 /** Joueur : rejoint (ou quitte) la journée en préparation. */
 export async function joinDay(c: GroupCampaign, join: boolean) {
   await updateDoc(dayRef(c.id, c.dayNumber), join ? { participants: arrayUnion(myEmail()) } : { participants: arrayRemove(myEmail()), ready: arrayRemove(myEmail()) })
+}
+
+/** Envoi gratuit d'un joueur à un autre (phase Commerce du rapport), reçu à la clôture de la journée. */
+export interface Gift {
+  id: string
+  day: number
+  from: string
+  fromName: string
+  to: string
+  toName: string
+  po: number
+  cristaux: number
+  items: { kind: 'equipment' | 'loot'; key: string; name: string }[]
+  createdAt: string
+  claimed: boolean
+}
+export type GiftDraft = Pick<Gift, 'to' | 'toName' | 'po' | 'cristaux' | 'items'>
+
+const giftsCol = (id: string) => collection(database(), 'campaigns', id, 'gifts')
+export const currentEmail = () => myEmail()
+
+/** Joueur : enregistre ses envois avec son rapport de fin de nuit. Renvoie false hors phase de nuit. */
+export async function sendGifts(crew: Crew, gifts: GiftDraft[]): Promise<boolean> {
+  if (!gifts.length) return true
+  const state = await crewDayState(crew).catch(() => null)
+  if (!state?.participant || state.day?.status !== 'nuit') return false
+  const batch = writeBatch(database())
+  for (const g of gifts) {
+    const id = newId()
+    batch.set(doc(giftsCol(state.campaign.id), id), {
+      ...g, id, day: state.day.number, from: myEmail(), fromName: crew.name || 'Bande sans nom', createdAt: new Date().toISOString(), claimed: false,
+    })
+  }
+  await batch.commit()
+  return true
+}
+
+/** Organisateur : envois d'une journée (récapitulatif). */
+export async function listDayGifts(id: string, day: number): Promise<Gift[]> {
+  const snap = await getDocs(query(giftsCol(id), where('day', '==', day)))
+  return snap.docs.map((d) => d.data() as Gift)
+}
+
+/**
+ * Joueur : envois qui lui sont destinés, dont la journée est clôturée et qui ne sont pas encore reçus.
+ * Renvoie la bande avec ces envois (PO et cristaux au trésor, objets au coffre du camp), ou null s'il n'y a rien.
+ */
+export async function receiveGifts(crew: Crew, c: GroupCampaign): Promise<{ crew: Crew; gifts: Gift[] } | null> {
+  if (!crew.campaign) return null
+  const snap = await getDocs(query(giftsCol(c.id), where('to', '==', myEmail()), where('claimed', '==', false)))
+  const done = new Set(crew.campaign.receivedGifts ?? [])
+  const closed = (g: Gift) => g.day < c.dayNumber || (g.day === c.dayNumber && c.dayStatus === 'cloturee')
+  const gifts = snap.docs.map((d) => d.data() as Gift).filter((g) => closed(g) && !done.has(g.id))
+  if (!gifts.length) return null
+  let next: Crew = crew
+  for (const g of gifts) {
+    const camp = next.campaign!
+    const stock = camp.stock ?? { equipment: [], loot: [] }
+    next = {
+      ...next,
+      campaign: {
+        ...camp,
+        receivedGifts: [...(camp.receivedGifts ?? []), g.id],
+        stock: {
+          equipment: [...stock.equipment, ...g.items.filter((i) => i.kind === 'equipment').map((i) => i.key)],
+          loot: [...stock.loot, ...g.items.filter((i) => i.kind === 'loot').map((i) => ({ id: newId(), key: i.key, slot: 'sac' as const }))],
+        },
+      },
+    }
+    const label = `Envoi de ${g.fromName} (journée ${g.day})${g.items.length ? ` : ${g.items.map((i) => i.name).join(', ')} au coffre` : ''}`
+    next = withTreasury(next, { po: g.po, cristaux: g.cristaux }, label)
+  }
+  return { crew: next, gifts }
+}
+
+/** Joueur : marque ses envois comme reçus (après avoir enregistré sa bande). */
+export async function markGiftsReceived(id: string, ids: string[]) {
+  const batch = writeBatch(database())
+  for (const gid of ids) batch.update(doc(giftsCol(id), gid), { claimed: true })
+  await batch.commit()
 }
 
 /** Organisateur : retire un joueur de la journée en cours (sa partie éventuelle est abandonnée). */

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { factionById, injuryById, skillByName, spellById, TREE_LABELS, withGrantedSkills } from '../data'
-import {
+import { noteOf,
   actionsOf,
   bagItems,
   crewCost,
@@ -105,7 +105,7 @@ export default function CrewSheetsPage() {
           return (
             <article key={m.id} className="sheet" style={{ gridRow: `span ${4 + sheetRows}` }}>
               <header>
-                <h2>{memberName(m) || '—'}</h2>
+                <h2>{memberName(m) || '—'}{noteOf(m) && <small className="sheet-note"> {noteOf(m)}</small>}</h2>
                 <span>{p.name}</span>
               </header>
               <StatLine stats={sheet.stats} variant="table" marked={{ svg: sheet.saveChanged }} />

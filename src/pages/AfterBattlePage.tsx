@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { equipmentById, factionById, injuryById, itemByKey, itemCategories, itemKey, type Faction } from '../data'
-import {
+import { equipmentById, factionById, injuryById, itemByKey, itemCategories, itemKey, spellById, type Faction } from '../data'
+import { memberTitle,
   CRYSTAL_PRICE,
   isActive,
   isChef,
@@ -27,14 +27,14 @@ import Modal from '../components/Modal'
 import InjuryPicker from '../components/InjuryPicker'
 import AdvancePicker from '../components/AdvancePicker'
 import LootPicker, { type LootPick } from '../components/LootPicker'
-import { getMyEntry, submitSheetIfNeeded } from '../lib/groupCampaign'
+import { currentEmail, getMyEntry, listEntries, sendGifts, submitSheetIfNeeded, type Entry, type GiftDraft } from '../lib/groupCampaign'
 import { DECKS } from '../lib/decks'
 import RarityDot from '../components/RarityDot'
 import RuleText from '../components/RuleText'
 
-const STEPS = ['Participants', 'Objets utilisés', 'Morts et blessures', 'Butin', 'Entretien', 'Expérience', 'Niveaux', 'Résumé']
+const STEPS = ['Participants', 'Objets utilisés', 'Morts et blessures', 'Butin', 'Commerce', 'Entretien', 'Expérience', 'Niveaux', 'Résumé']
 // Index des étapes.
-const S = { participants: 0, items: 1, injuries: 2, loot: 3, upkeep: 4, xp: 5, levels: 6, summary: 7 }
+const S = { participants: 0, items: 1, injuries: 2, loot: 3, trade: 4, upkeep: 5, xp: 6, levels: 7, summary: 8 }
 
 interface XpInput {
   participation: number | null
@@ -50,10 +50,10 @@ const TO_STOCK = '__coffre'
 /** Marque des objets notés comme trouvés dans le bilan lui-même. */
 const FOUND_IN_REPORT = 'bilan'
 
-const nameOf = (faction: Faction, m: Member) => memberName(m) || profileOf(faction, m)?.name || '?'
+const nameOf = (faction: Faction, m: Member) => memberTitle(faction, m)
 
 // Brouillon de l'assistant conservé dans le navigateur, pour reprendre là où on s'était arrêté.
-const wizardKey = (crewId: string) => `amatika.wizard.${crewId}`
+const wizardKey = (crewId: string) => `amatika.wizard2.${crewId}`
 
 interface WizardSnapshot {
   /** Version de la bande au démarrage de l'assistant : si elle a changé, le brouillon est périmé. */
@@ -80,6 +80,14 @@ interface WizardSnapshot {
   /** Couronne sauteuse : la bande la porte, et les 2 cartes Trésor reçues. */
   crown?: boolean
   crownCards?: string[]
+  /** Envois à d'autres joueurs (phase Commerce). */
+  gifts?: PlannedGift[]
+}
+
+/** Envoi préparé dans le rapport : objets repérés par leur emplacement pour pouvoir les retirer. */
+interface PlannedGift extends GiftDraft {
+  /** Emplacement de chaque objet ; `owner` : personnage (nom, note, profil) ou « coffre ». */
+  sources: { from: string; kind: 'equipment' | 'loot'; ref: string; owner?: string }[]
 }
 
 /** Objets du paquet Marché noir, par catégorie : pour noter les cartes piochées à la table. */
@@ -141,6 +149,8 @@ export default function AfterBattlePage() {
   const [crystalsSold, setCrystalsSold] = useState(0)
   const [crown, setCrown] = useState(false)
   const [crownCards, setCrownCards] = useState<string[]>([])
+  // Commerce
+  const [gifts, setGifts] = useState<PlannedGift[]>([])
   // Entretien
   const [leaving, setLeaving] = useState<string[]>([])
   // Objets utilisés : jet de réserve de chaque poison (par id d'objet)
@@ -173,6 +183,7 @@ export default function AfterBattlePage() {
     setMarketBought([])
     setCrystalsSold(0)
     setCrownCards([])
+    setGifts([])
     setRolls([])
     if (live) {
       setTitle(live.title)
@@ -231,6 +242,7 @@ export default function AfterBattlePage() {
         setCrystalsSold(snap.crystalsSold ?? 0)
         if (snap.crown !== undefined) setCrown(snap.crown)
         setCrownCards(snap.crownCards ?? [])
+        setGifts(snap.gifts ?? [])
         setResumed(snap.step > 0)
       } else {
         startFrom(c)
@@ -243,14 +255,14 @@ export default function AfterBattlePage() {
     if (!original || !draft || saving) return
     const snap: WizardSnapshot = {
       base: original.updatedAt, step, draft, exits, logs, title, participants, rawCrystals, rolls,
-      poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market: market ?? undefined, marketBought, crystalsSold, crown, crownCards,
+      poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market: market ?? undefined, marketBought, crystalsSold, crown, crownCards, gifts,
     }
     try {
       localStorage.setItem(wizardKey(original.id), JSON.stringify(snap))
     } catch {
       // Stockage indisponible (navigation privée…) : l'assistant marche quand même, sans reprise.
     }
-  }, [original, draft, step, exits, logs, title, participants, rawCrystals, rolls, poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market, marketBought, crystalsSold, crown, crownCards, saving])
+  }, [original, draft, step, exits, logs, title, participants, rawCrystals, rolls, poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market, marketBought, crystalsSold, crown, crownCards, gifts, saving])
 
   if (original === undefined) return <p className="muted">Chargement…</p>
   const faction = original ? factionById(original.factionId) : undefined
@@ -423,6 +435,31 @@ export default function AfterBattlePage() {
       const delta = { cristaux: crystalsGained - sold, po: poFound + sold * CRYSTAL_PRICE + recurringPo, prestige: prestigeGained + recurringPrestige + (crown ? 1 : 0) }
       if (delta.cristaux || delta.po || delta.prestige) c = withTreasury(c, delta, `${title} : butin`)
     }
+    if (k === S.trade && c.campaign) {
+      for (const g of gifts) {
+        let members = c.members
+        let stock = c.campaign!.stock ?? { equipment: [], loot: [] }
+        for (const src of g.sources) {
+          if (src.from === TO_STOCK) {
+            if (src.kind === 'loot') stock = { ...stock, loot: stock.loot.filter((l) => l.id !== src.ref) }
+            else {
+              const i = stock.equipment.indexOf(src.ref)
+              if (i >= 0) stock = { ...stock, equipment: stock.equipment.filter((_, j) => j !== i) }
+            }
+          } else {
+            members = members.map((m) => {
+              if (m.id !== src.from) return m
+              if (src.kind === 'loot') return { ...m, loot: (m.loot ?? []).filter((l) => l.id !== src.ref) }
+              const i = m.equipment.findIndex((r) => r.itemId === src.ref)
+              return i >= 0 ? { ...m, equipment: m.equipment.filter((_, j) => j !== i) } : m
+            })
+          }
+        }
+        c = { ...c, members, campaign: { ...c.campaign!, stock } }
+        c = withTreasury(c, { po: -g.po, cristaux: -g.cristaux }, `${title} : envoi à ${g.toName}`)
+        lines.push(`Envoyé à ${g.toName} : ${plannedText(g)}`)
+      }
+    }
     if (k === S.upkeep) {
       c = withTreasury(c, { po: -upkeepPo, cristaux: -upkeepCr }, `${title} : entretien`)
       lines.push(`Entretien payé : ${upkeepPo} PO${upkeepCr ? ` et ${upkeepCr} cristal` : ''}`)
@@ -518,6 +555,8 @@ export default function AfterBattlePage() {
     await saveCrew(final)
     // Phase de nuit : ce bilan devient le rapport de fin de nuit de la bande.
     await submitSheetIfNeeded(final, allLines).catch(() => false)
+    // Envois aux autres joueurs : reçus par eux à la clôture de la journée.
+    await sendGifts(final, gifts.map(({ to, toName, po, cristaux, items }) => ({ to, toName, po, cristaux, items }))).catch(() => false)
     try {
       localStorage.removeItem(wizardKey(final.id))
     } catch {
@@ -883,6 +922,16 @@ export default function AfterBattlePage() {
           </>
         )}
 
+        {step === S.trade && (
+          <TradeStep
+            crew={draft}
+            faction={faction}
+            campaignId={original.groupCampaign?.id}
+            gifts={gifts}
+            onChange={setGifts}
+          />
+        )}
+
         {step === S.upkeep && (
           <>
             <h2>Entretien</h2>
@@ -1016,7 +1065,9 @@ export default function AfterBattlePage() {
                     onApply={(input) => {
                       const updated = applyAdvance(m, input)
                       setMember(updated)
-                      log(`${nameOf(faction, m)} passe niveau ${updated.level} : ${updated.advances!.slice(-1)[0].label}`)
+                      const adv = updated.advances!.slice(-1)[0]
+                      const spell = adv.spellId ? spellById(adv.spellId)?.name ?? adv.spellId : ''
+                      log(`${nameOf(faction, m)} passe niveau ${updated.level} : ${adv.label}${spell ? ` · nouveau sort : ${spell}` : ''}`)
                     }}
                   />
                 </div>
@@ -1100,5 +1151,162 @@ function StepLog({ lines }: { lines: string[] }) {
     <ul className="step-log">
       {shown.map((l, i) => <li key={i}>{l}</li>)}
     </ul>
+  )
+}
+
+/** Envoi préparé, avec la provenance de chaque objet : « 50 PO, Épée (Gaston « le tireur » (Recrue)) ». */
+function plannedText(g: PlannedGift | GiftDraft & { sources?: PlannedGift['sources'] }) {
+  const items = g.items.map((i, k) => {
+    const owner = g.sources?.[k]?.owner
+    return owner ? `${i.name} (${owner === 'coffre' ? 'du coffre' : owner})` : i.name
+  })
+  return [g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} cristal(aux)` : '', ...items].filter(Boolean).join(', ') || 'rien'
+}
+
+
+/**
+ * Phase Commerce : envoyer, sans contrepartie, de l'or, des cristaux ou des objets à un autre joueur
+ * de la campagne. Retiré de la bande à la sortie de l'étape, reçu par l'autre joueur à la clôture de la journée.
+ */
+function TradeStep({ crew, faction, campaignId, gifts, onChange }: {
+  crew: Crew
+  faction: Faction
+  campaignId?: string
+  gifts: PlannedGift[]
+  onChange: (gifts: PlannedGift[]) => void
+}) {
+  const [players, setPlayers] = useState<Entry[] | null>(null)
+  const [to, setTo] = useState('')
+  const [po, setPo] = useState(0)
+  const [cristaux, setCristaux] = useState(0)
+  const [picked, setPicked] = useState<string[]>([])
+
+  useEffect(() => {
+    if (!campaignId) return
+    listEntries(campaignId)
+      .then((all) => setPlayers(all.filter((e) => e.crewId && e.email !== currentEmail())))
+      .catch(() => setPlayers([]))
+  }, [campaignId])
+
+  if (!campaignId) {
+    return (
+      <>
+        <h2>Commerce</h2>
+        <p className="muted">Les envois entre joueurs se font dans une campagne de groupe.</p>
+      </>
+    )
+  }
+
+  const c = crew.campaign!
+  const usedPo = gifts.reduce((t, g) => t + g.po, 0)
+  const usedCr = gifts.reduce((t, g) => t + g.cristaux, 0)
+  const taken = new Set(gifts.flatMap((g) => g.sources.map((s) => `${s.from}|${s.kind}|${s.ref}`)))
+  // Objets disponibles : ceux des membres actifs et du coffre, moins ceux déjà prévus dans un envoi.
+  const available: { uid: string; from: string; kind: 'equipment' | 'loot'; ref: string; key: string; name: string; owner: string }[] = []
+  const seenEq: Record<string, number> = {}
+  const addEq = (from: string, itemId: string, owner: string) => {
+    const n = (seenEq[`${from}|${itemId}`] = (seenEq[`${from}|${itemId}`] ?? 0) + 1)
+    const plannedCount = gifts.flatMap((g) => g.sources).filter((s) => s.from === from && s.kind === 'equipment' && s.ref === itemId).length
+    if (n <= plannedCount) return
+    available.push({ uid: `${from}|equipment|${itemId}|${n}`, from, kind: 'equipment', ref: itemId, key: itemId, name: equipmentById(itemId)?.name ?? itemId, owner })
+  }
+  for (const m of crew.members.filter(isActive)) {
+    for (const r of m.equipment) addEq(m.id, r.itemId, memberTitle(faction, m))
+    for (const l of m.loot ?? []) {
+      if (!taken.has(`${m.id}|loot|${l.id}`)) available.push({ uid: `${m.id}|loot|${l.id}`, from: m.id, kind: 'loot', ref: l.id, key: l.key, name: itemByKey(l.key)?.name ?? l.key, owner: memberTitle(faction, m) })
+    }
+  }
+  for (const id of c.stock?.equipment ?? []) addEq(TO_STOCK, id, 'coffre')
+  for (const l of c.stock?.loot ?? []) {
+    if (!taken.has(`${TO_STOCK}|loot|${l.id}`)) available.push({ uid: `${TO_STOCK}|loot|${l.id}`, from: TO_STOCK, kind: 'loot', ref: l.id, key: l.key, name: itemByKey(l.key)?.name ?? l.key, owner: 'coffre' })
+  }
+
+  const target = players?.find((p) => p.email === to)
+  const chosen = available.filter((a) => picked.includes(a.uid))
+  const canSend = !!target && (po > 0 || cristaux > 0 || chosen.length > 0)
+  const send = () => {
+    if (!target) return
+    onChange([
+      ...gifts,
+      {
+        to: target.email,
+        toName: `${target.pseudo || 'Joueur'} (${target.crewName ?? 'bande'})`,
+        po,
+        cristaux,
+        items: chosen.map((a) => ({ kind: a.kind, key: a.key, name: a.name })),
+        sources: chosen.map((a) => ({ from: a.from, kind: a.kind, ref: a.ref, owner: a.owner })),
+      },
+    ])
+    setPo(0)
+    setCristaux(0)
+    setPicked([])
+  }
+
+  return (
+    <>
+      <h2>Commerce</h2>
+      <p className="muted small">
+        Envoyez de l'or, des cristaux ou des objets à un autre joueur de la campagne, sans contrepartie. Ils quittent votre bande à la fin de cette
+        étape, et l'autre joueur les reçoit (PO et cristaux au trésor, objets au coffre du camp) une fois la journée clôturée.
+      </p>
+      {players === null && <p className="muted">Chargement des joueurs…</p>}
+      {players?.length === 0 && <p className="muted">Aucun autre joueur avec une bande dans la campagne.</p>}
+      {players && players.length > 0 && (
+        <div className="trade-form card">
+          <div className="row wrap">
+            <label className="field">
+              <span>Destinataire</span>
+              <select value={to} onChange={(e) => setTo(e.target.value)}>
+                <option value="">Choisir un joueur…</option>
+                {players.map((p) => <option key={p.email} value={p.email}>{p.pseudo || 'Joueur'} · {p.crewName}</option>)}
+              </select>
+            </label>
+            <div className="field narrow"><span>PO (sur {c.po - usedPo})</span><NumberInput label="PO à envoyer" min={0} max={Math.max(0, c.po - usedPo)} step={5} value={po} onChange={setPo} /></div>
+            <div className="field narrow"><span>Cristaux (sur {c.cristaux - usedCr})</span><NumberInput label="Cristaux à envoyer" min={0} max={Math.max(0, c.cristaux - usedCr)} value={cristaux} onChange={setCristaux} /></div>
+          </div>
+          <div className="field">
+            <span>Objets (cliquez pour les ajouter à l'envoi)</span>
+            {available.length === 0 ? (
+              <span className="muted small">Aucun objet disponible.</span>
+            ) : (
+              <span className="tags trade-items">
+                {available.map((a) => (
+                  <button
+                    key={a.uid}
+                    type="button"
+                    className={`tag item-chip trade-item ${picked.includes(a.uid) ? 'on' : ''}`}
+                    onClick={() => setPicked((p) => (p.includes(a.uid) ? p.filter((x) => x !== a.uid) : [...p, a.uid]))}
+                    aria-pressed={picked.includes(a.uid)}
+                    data-tip={a.owner === 'coffre' ? 'Dans le coffre du camp' : `Porté par ${a.owner}`}
+                  >
+                    {picked.includes(a.uid) ? <span className="trade-check">✓</span> : <RarityDot rarity={a.kind === 'loot' ? itemByKey(a.key)?.rarity ?? 'blanc' : 'blanc'} />}
+                    {a.name}
+                    <span className="trade-owner">· {a.owner}</span>
+                  </button>
+                ))}
+              </span>
+            )}
+          </div>
+          <div className="row">
+            <button type="button" className="btn primary" disabled={!canSend} onClick={send} style={{ marginLeft: 'auto' }}>
+              Préparer l'envoi{target ? ` à ${target.pseudo || 'ce joueur'}` : ''}
+            </button>
+          </div>
+        </div>
+      )}
+      {gifts.length > 0 && (
+        <>
+          <h3>Envois prévus</h3>
+          <ul className="plain-list trade-list">
+            {gifts.map((g, i) => (
+              <li key={i} className="row wrap between">
+                <span><strong>{g.toName}</strong> : {plannedText(g)}</span>
+                <button className="icon-btn drop-btn" onClick={() => onChange(gifts.filter((_, j) => j !== i))} aria-label="Annuler cet envoi" data-tip="Annuler cet envoi">×</button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </>
   )
 }

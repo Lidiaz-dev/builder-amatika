@@ -15,6 +15,7 @@ import {
   isAdmin,
   isOpen,
   launchDay,
+  listDayGifts,
   listDays,
   listEntries,
   listSheets,
@@ -27,6 +28,7 @@ import {
   watchCampaign,
   type Day,
   type Entry,
+  type Gift,
   type GroupCampaign,
   type Sheet,
 } from '../lib/groupCampaign'
@@ -48,9 +50,25 @@ export default function CampaignPage() {
   const [days, setDays] = useState<Day[]>([])
   const [entries, setEntries] = useState<Entry[]>([])
   const [sheets, setSheets] = useState<Sheet[]>([])
+  const [dayGifts, setDayGifts] = useState<Gift[]>([])
   const [myEntry, setMyEntry] = useState<Entry | null>(null)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [view, setView] = useState<'joueur' | 'maitre'>(() => {
+    try {
+      return localStorage.getItem('amatika.campaign.view') === 'maitre' ? 'maitre' : 'joueur'
+    } catch {
+      return 'joueur'
+    }
+  })
+  const chooseView = (v: 'joueur' | 'maitre') => {
+    setView(v)
+    try {
+      localStorage.setItem('amatika.campaign.view', v)
+    } catch {
+      // stockage indisponible : l'onglet n'est simplement pas mémorisé
+    }
+  }
 
   const load = useCallback(async () => {
     if (!id || !user?.emailVerified) return
@@ -73,6 +91,7 @@ export default function CampaignPage() {
       setDays(allDays)
       setEntries(allEntries)
       setSheets(allSheets)
+      setDayGifts(admin && current ? await listDayGifts(id, current.number).catch(() => [] as Gift[]) : [])
       setMyEntry(entry)
       setCampaign(c)
     } catch (err) {
@@ -122,6 +141,10 @@ export default function CampaignPage() {
   }
 
   const player = campaign.emails.includes(me)
+  // Maître de campagne qui joue aussi : deux espaces, un onglet pour chacun.
+  const both = admin && player
+  const showPlayer = player && (!both || view === 'joueur')
+  const showAdmin = admin && (!both || view === 'maitre')
   const dayOpen = !!day && isOpen(day.status)
 
   return (
@@ -135,22 +158,43 @@ export default function CampaignPage() {
           {day ? `Journée ${day.number} : ${DAY_STATUS_LABELS[day.status]}` : 'Aucune journée jouée'}
         </span>
       </div>
-      <BudgetLine budget={campaign.budget ?? DEFAULT_BUDGET} admin={admin} busy={busy} onSave={(b) => run(() => setCampaignBudget(campaign.id, b))} />
       {error && <p className="error">{error}</p>}
-
-      {!admin && entries.length > 0 && <ParticipantsPanel campaign={campaign} entries={entries} day={day} />}
-
-      {player && (
-        <MyCrewPanel campaign={campaign} entry={myEntry} day={day} locked={dayOpen && !!day?.participants.includes(me)} onChanged={load} />
+      {/* Budget de départ : utile seulement avant la première journée (création des bandes). */}
+      {campaign.dayNumber === 0 && (
+        <BudgetLine budget={campaign.budget ?? DEFAULT_BUDGET} admin={admin} busy={busy} onSave={(b) => run(() => setCampaignBudget(campaign.id, b))} />
       )}
 
-      {admin && (
-        <>
+      {both && (
+        <nav className="space-switch" role="tablist" aria-label="Espace">
+          <button role="tab" aria-selected={view === 'joueur'} className={`space-btn player ${view === 'joueur' ? 'on' : ''}`} onClick={() => chooseView('joueur')}>
+            <span className="space-icon" aria-hidden="true">⚔</span>
+            <span className="space-text"><strong>Mon espace joueur</strong><small>Ma bande, la journée, les participants</small></span>
+          </button>
+          <button role="tab" aria-selected={view === 'maitre'} className={`space-btn admin ${view === 'maitre' ? 'on' : ''}`} onClick={() => chooseView('maitre')}>
+            <span className="space-icon" aria-hidden="true">🛡</span>
+            <span className="space-text"><strong>Maître de campagne</strong><small>Journées, joueurs, cartes à retirer</small></span>
+          </button>
+        </nav>
+      )}
+
+      {showPlayer && (
+        <div className="campaign-zone zone-player">
+          {!both && <h2 className="zone-title">⚔ Mon espace joueur</h2>}
+          <MyCrewPanel campaign={campaign} entry={myEntry} day={day} locked={dayOpen && !!day?.participants.includes(me)} onChanged={load} />
+          {entries.length > 0 && <ParticipantsPanel campaign={campaign} entries={entries} day={day} />}
+          <DaysList days={days} me={me} player={player} />
+        </div>
+      )}
+
+      {showAdmin && (
+        <div className="campaign-zone zone-admin">
+          {!both && <h2 className="zone-title">🛡 Maître de campagne</h2>}
           <DayPanel
             campaign={campaign}
             day={day}
             entries={entries}
             sheets={sheets}
+            gifts={dayGifts}
             busy={busy}
             onCreate={() => run(() => createDay(campaign))}
             onLaunch={() => {
@@ -185,25 +229,8 @@ Préparation pas encore validée : ${names}.` : ''
             }
           />
           <CardsToRemovePanel entries={entries} />
-        </>
-      )}
-
-      <section className="card campaign-days">
-        <h2>Journées</h2>
-        {days.length === 0 && <p className="muted">Aucune journée pour le moment.</p>}
-        <ul className="plain-list">
-          {days.map((d) => (
-            <li key={d.number}>
-              <strong>Journée {d.number}</strong> · {DAY_STATUS_LABELS[d.status]} · {d.participants.length} bande{d.participants.length > 1 ? 's' : ''}
-              {d.createdAt && <span className="muted small"> · créée le {new Date(d.createdAt).toLocaleDateString('fr-FR')}</span>}
-              {player && d.participants.includes(me) && <span className="badge">Vous avez participé</span>}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {admin && (
-        <p className="danger-zone">
+          <DaysList days={days} me={me} player={false} />
+          <p className="danger-zone">
           <button
             className="btn danger small"
             disabled={busy}
@@ -212,8 +239,28 @@ Préparation pas encore validée : ${names}.` : ''
           >
             Annuler la campagne
           </button>
-        </p>
+          </p>
+        </div>
       )}
+    </section>
+  )
+}
+
+/** Historique des journées de la campagne. */
+function DaysList({ days, me, player }: { days: Day[]; me: string; player: boolean }) {
+  return (
+    <section className="card campaign-days">
+      <h2>Journées</h2>
+      {days.length === 0 && <p className="muted">Aucune journée pour le moment.</p>}
+      <ul className="plain-list">
+        {days.map((d) => (
+          <li key={d.number}>
+            <strong>Journée {d.number}</strong> · {DAY_STATUS_LABELS[d.status]} · {d.participants.length} bande{d.participants.length > 1 ? 's' : ''}
+            {d.createdAt && <span className="muted small"> · créée le {new Date(d.createdAt).toLocaleDateString('fr-FR')}</span>}
+            {player && d.participants.includes(me) && <span className="badge">Vous avez participé</span>}
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }
@@ -275,11 +322,12 @@ function MyCrewPanel({ campaign, entry, day, locked, onChanged }: {
 }
 
 /** Organisateur : pilotage de la journée (créer, lancer, nuit, clôturer, annuler). */
-function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, onRemove, onNight, onClose, onCancel }: {
+function DayPanel({ campaign, day, entries, sheets, gifts, busy, onCreate, onLaunch, onRemove, onNight, onClose, onCancel }: {
   campaign: GroupCampaign
   day: Day | null
   entries: Entry[]
   sheets: Sheet[]
+  gifts: Gift[]
   busy: boolean
   onCreate: () => void
   onLaunch: () => void
@@ -350,6 +398,19 @@ function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, on
             )
           })}
         </ul>
+      )}
+      {gifts.length > 0 && (
+        <details className="day-gifts">
+          <summary className="small">Envois entre joueurs ({gifts.length}) · reçus à la clôture</summary>
+          <ul className="small">
+            {gifts.map((g) => (
+              <li key={g.id}>
+                {who(g.from)} → {g.toName} : {[g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} cristal(aux)` : '', ...g.items.map((i) => i.name)].filter(Boolean).join(', ')}
+                {g.claimed ? ' ✓ reçu' : ''}
+              </li>
+            ))}
+          </ul>
+        </details>
       )}
       <div className="row wrap action-row">
         <button className="btn ghost small danger" onClick={onCancel} disabled={busy} data-tip="Supprime cette journée et ses rapports ; la campagne revient à la journée précédente.">

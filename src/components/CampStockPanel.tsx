@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { equipmentById, itemByKey, type Faction } from '../data'
-import { isActive, memberName, profileOf, type CampStock, type Member } from '../lib/crew'
+import { memberTitle, isActive, profileOf, type CampStock, type Member } from '../lib/crew'
 import ItemChip from './ItemChip'
 
 interface Props {
@@ -39,7 +39,7 @@ export default function CampStockPanel({ faction, members, stock, onChange, read
   }
   const liClass = (key: string) => (leaving[key] ? `item-out ${leaving[key].kind}` : undefined)
   const badge = (key: string) => (leaving[key] ? <span className={`item-out-badge ${leaving[key].kind}`}>{leaving[key].text}</span> : null)
-  const nameOf = (m: Member) => memberName(m) || profileOf(faction, m)?.name || '?'
+  const nameOf = (m: Member) => memberTitle(faction, m)
   const counts = stock.equipment.reduce<Record<string, number>>((acc, id) => ({ ...acc, [id]: (acc[id] ?? 0) + 1 }), {})
   const empty = !stock.equipment.length && !stock.loot.length
 

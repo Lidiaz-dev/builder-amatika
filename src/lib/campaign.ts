@@ -124,7 +124,17 @@ export const ADVANCE_TABLE: AdvanceRow[] = [
 export function learnableSkills(profile: Profile, known: string[]) {
   const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
   const knownSet = new Set(known.map(norm))
-  return skills.filter((s) => profile.trees.includes(s.tree) && s.id !== 'chef' && !knownSet.has(norm(s.name)))
+  return skills.filter(
+    (s) => profile.trees.includes(s.tree) && s.id !== 'chef' && !knownSet.has(norm(s.name)) && !excludedBy(s.description).some((x) => knownSet.has(norm(x))),
+  )
+}
+
+/**
+ * Compétences incompatibles, lues dans la description : « Une figurine avec la compétence « Adepte du Mal »
+ * ne peut pas choisir cette compétence. »
+ */
+function excludedBy(description: string): string[] {
+  return [...description.matchAll(/avec la compétence « ([^»]+) » ne peut pas choisir cette compétence/gi)].map((m) => m[1].trim())
 }
 
 export interface AdvanceInput {

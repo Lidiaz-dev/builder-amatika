@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { STAT_COLUMNS, type Faction } from '../data'
-import { bagItems, effectiveStats, lootItems, memberName, memberSkills, profileOf, wornItems, type Member } from '../lib/crew'
+import { memberTitle, bagItems, effectiveStats, lootItems, memberSkills, profileOf, wornItems, type Member } from '../lib/crew'
 
 const fmt = (v: number | null, dice: boolean) => (v === null ? '/' : dice ? `${v}+` : String(v))
 
@@ -44,7 +44,7 @@ export default function MemberPeek({ faction, member, children }: { faction: Fac
         createPortal(
           <div ref={card} className="peek-card" role="tooltip" style={pos ?? { top: -9999, left: -9999 }}>
             <header className="unit-band">
-              <h3>{memberName(member) || profile.name}</h3>
+              <h3>{memberTitle(faction, member, false)}</h3>
               <span className="unit-role">{profile.name} · niv. {member.level}</span>
             </header>
             <div className="peek-body">

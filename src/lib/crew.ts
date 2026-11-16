@@ -63,6 +63,8 @@ export interface Advance {
 export type MemberStatus = 'actif' | 'mort' | 'parti'
 
 export interface Member {
+  /** Note libre du joueur pour distinguer ses personnages (« le tireur »). */
+  note?: string
   id: string
   name: string
   /** Nom proposé à l'ajout (affiché en gris) : il devient le nom si on ne le change pas. */
@@ -185,6 +187,8 @@ export interface Campaign {
   log: LogEntry[]
   currentGame?: LiveGame
   stock?: CampStock
+  /** Envois d'autres joueurs déjà reçus (ids), pour ne jamais les compter deux fois. */
+  receivedGifts?: string[]
 }
 
 export type Phase = 'preparation' | 'gestion' | 'partie'
@@ -231,6 +235,19 @@ export const isMage = (profile: Profile) => profile.skills.includes('Mage')
 
 /** Nom affiché : celui saisi, sinon celui proposé à l'ajout. */
 export const memberName = (m: Member) => m.name.trim() || m.suggestedName || ''
+
+/** Note du joueur pour distinguer ses personnages (« le tireur »), entre guillemets. */
+export const noteOf = (m: Member) => (m.note?.trim() ? `« ${m.note.trim()} »` : '')
+
+/**
+ * Nom affiché partout : « Gaston « le tireur » (Recrue) ». Sans `withProfile`, le profil est omis
+ * (là où il est déjà écrit à côté, comme dans le bandeau d'une carte).
+ */
+export function memberTitle(faction: Faction | undefined, m: Member, withProfile = true) {
+  const p = profileOf(faction, m)
+  const name = memberName(m)
+  return [name || p?.name || '?', noteOf(m), withProfile && name && p ? `(${p.name})` : ''].filter(Boolean).join(' ')
+}
 
 export function newMember(factionId: string, profile: Profile, taken: string[] = []): Member {
   // Le nom proposé est directement le nom du membre (modifiable) ; on le garde à part pour le 🎲.

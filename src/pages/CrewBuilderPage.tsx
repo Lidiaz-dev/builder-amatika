@@ -18,7 +18,7 @@ import {
   baseSpellCount,
   choosesSecondSpell,
 } from '../data'
-import {
+import { memberTitle,
   actionsOf,
   crewCost,
   crewUpkeep,
@@ -423,7 +423,7 @@ export default function CrewBuilderPage() {
                 {former.map((m) => (
                   <li key={m.id}>
                     <span>
-                      {m.status === 'mort' ? '✝' : '↪'} <strong>{memberName(m) || profileOf(faction, m)?.name}</strong>{' '}
+                      {m.status === 'mort' ? '✝' : '↪'} <strong>{memberTitle(faction, m, false)}</strong>{' '}
                       <span className="muted small">{profileOf(faction, m)?.name} · {m.status === 'mort' ? 'mort' : 'a quitté la bande'} · niv. {m.level}</span>
                     </span>
                     <span className="row">
@@ -504,7 +504,7 @@ function ChefSuccession({ faction, members, onPick }: { faction: Faction; member
         <select value={pick} onChange={(e) => setPick(e.target.value)} aria-label="Nouveau chef">
           {ranked.map((m) => {
             const p = profileOf(faction, m)
-            return <option key={m.id} value={m.id}>{memberName(m) || p?.name} — Comm {p ? effectiveStats(p, m).cmd : '?'}+, {m.xp} XP</option>
+            return <option key={m.id} value={m.id}>{memberTitle(faction, m)} — Comm {p ? effectiveStats(p, m).cmd : '?'}+, {m.xp} XP</option>
           })}
         </select>
         <button className="btn primary small" onClick={() => { const m = members.find((x) => x.id === pick); if (m) onPick(m) }}>Nommer chef</button>
@@ -616,7 +616,7 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
   }, [xpPct, seenKey, member.xp])
   if (!profile) return <div className="card error">Profil inconnu : {member.profileId}</div>
 
-  const who = memberName(member) || profile.name
+  const who = memberTitle(faction, member)
   const allowed = unrestricted ? equipment : equipment.filter((e) => profile.equipment.includes(e.id))
   const categories = [...new Set(allowed.map((e) => e.category))].sort((a, b) => CATEGORY_LABELS[a].localeCompare(CATEGORY_LABELS[b], 'fr'))
   const mage = isMage(profile)
@@ -772,6 +772,16 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
           {member.promotedChef ? 'Chef · ' : ''}{profile.name}{campaign ? ` · niv. ${member.level}` : ` · ${memberCost(faction, member)} PO`}
         </span>
       </header>
+      <label className="member-note">
+        <span>Note</span>
+        <input
+          value={member.note ?? ''}
+          onChange={(e) => onChange({ ...member, note: e.target.value })}
+          placeholder="ex. le tireur, l'éclaireur…"
+          maxLength={30}
+          aria-label="Note pour distinguer ce personnage"
+        />
+      </label>
 
       <div className="unit-body">
         <StatLine stats={effectiveStats(profile, member)} base={profile.stats} />

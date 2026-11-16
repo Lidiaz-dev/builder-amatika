@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { factionById, itemByKey, type Rarity } from '../data'
-import { isActive, memberName, profileOf, type Crew } from '../lib/crew'
+import { memberTitle, isActive, type Crew } from '../lib/crew'
 import { DECKS } from '../lib/decks'
 import { getCrew } from '../lib/storage'
 import type { Entry } from '../lib/groupCampaign'
@@ -51,7 +51,7 @@ export default function CardsToRemovePanel({ entries }: { entries: Entry[] }) {
     const player = entries.find((e) => e.crewId === crew.id)
     const band = `${crew.name || 'Bande sans nom'}${player?.pseudo ? ` (${player.pseudo})` : ''}`
     for (const m of crew.members.filter(isActive)) {
-      for (const l of m.loot ?? []) if (!l.racial) add(l.key, `${band} · ${memberName(m) || profileOf(faction, m)?.name || '?'}`)
+      for (const l of m.loot ?? []) if (!l.racial) add(l.key, `${band} · ${memberTitle(faction, m)}`)
     }
     for (const l of crew.campaign?.stock?.loot ?? []) add(l.key, `${band} · coffre`)
   }

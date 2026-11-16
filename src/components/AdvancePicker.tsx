@@ -66,9 +66,12 @@ export default function AdvancePicker({ factionId, profile, member, onApply }: P
         </label>
       )}
       {row?.choice === 'hit' && (
-        <div className="segmented" role="group" aria-label="Tir ou corps à corps">
-          <button type="button" className={hit === 'tir' ? 'on' : ''} onClick={() => setHit('tir')}>Tir</button>
-          <button type="button" className={hit === 'com' ? 'on' : ''} onClick={() => setHit('com')}>Corps à corps</button>
+        <div className={`advance-choice ${hit ? 'done' : ''}`} role="group" aria-label="Tir ou corps à corps">
+          <strong>{hit ? 'Amélioration choisie :' : 'À choisir : quelle compétence de combat améliorer ?'}</strong>
+          <div className="advance-choice-buttons">
+            <button type="button" className={`btn ${hit === 'tir' ? 'primary' : ''}`} onClick={() => setHit('tir')}>🏹 Tir<small>-1 au résultat pour toucher au tir</small></button>
+            <button type="button" className={`btn ${hit === 'com' ? 'primary' : ''}`} onClick={() => setHit('com')}>⚔ Corps à corps<small>-1 au résultat pour toucher au corps à corps</small></button>
+          </div>
         </div>
       )}
       {row?.choice === 'skill' && (

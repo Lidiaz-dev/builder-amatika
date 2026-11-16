@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { profileOf, MAX_ON_TABLE, memberName, type Member } from '../lib/crew'
+import { memberTitle, profileOf, MAX_ON_TABLE, type Member } from '../lib/crew'
 import type { Faction } from '../data'
 import Modal from './Modal'
 
@@ -43,7 +43,7 @@ export default function LaunchModal({ open, faction, members, gameNumber, defaul
                   disabled={m.missNextGame || (!on && picked.length >= MAX_ON_TABLE)}
                   onChange={() => setPicked((ps) => (on ? ps.filter((x) => x !== m.id) : [...ps, m.id]))}
                 />
-                <strong>{memberName(m) || p?.name}</strong> <span className="muted small">{p?.name} · niv. {m.level}</span>
+                <strong>{memberTitle(faction, m, false)}</strong> <span className="muted small">{p?.name} · niv. {m.level}</span>
                 {m.missNextGame && <span className="badge ko">Blessure grave : repos</span>}
               </label>
             </li>

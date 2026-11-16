@@ -1,6 +1,6 @@
 import type { jsPDF } from 'jspdf'
 import { injuryById, skillByName, spellById, withGrantedSkills, STAT_COLUMNS, TREE_LABELS, type Faction } from '../data'
-import {
+import { noteOf,
   actionsOf,
   bagItems,
   crewCost,
@@ -71,7 +71,7 @@ function drawSheet(doc: jsPDF, faction: Faction, m: Member, x: number, y: number
 
   // En-tête : nom et profil.
   if (draw) {
-    doc.setFont('helvetica', 'bold').setFontSize(11.5).text(safe(memberName(m) || '-'), x + PAD, cy + 4)
+    doc.setFont('helvetica', 'bold').setFontSize(11.5).text(safe([memberName(m) || '-', noteOf(m)].filter(Boolean).join(' ')), x + PAD, cy + 4)
     doc.setFont('helvetica', 'normal').setFontSize(9).text(safe(`${m.promotedChef ? 'Chef - ' : ''}${p.name}`), x + COL_W - PAD, cy + 4, { align: 'right' })
     doc.setLineWidth(0.4).line(x + PAD, cy + 6, x + COL_W - PAD, cy + 6)
   }
