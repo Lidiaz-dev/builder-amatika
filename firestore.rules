@@ -5,8 +5,8 @@ rules_version = '2';
 // - Chaque compte ne voit et ne modifie que ses propres bandes.
 // - Seul l'organisateur (adresse vérifiée) crée les campagnes, y inscrit les joueurs
 //   et gère les journées ; il peut consulter les bandes inscrites à une campagne.
-// - Un joueur inscrit voit la campagne et sa propre inscription, rejoint les journées
-//   et rend son rapport de fin de nuit.
+// - Un joueur inscrit voit la campagne, ses participants et leurs bandes (consultation),
+//   rejoint les journées et rend son rapport de fin de nuit.
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -35,8 +35,10 @@ service cloud.firestore {
     }
 
     match /crews/{crewId} {
+      // Une bande inscrite à une campagne est consultable par l'organisateur et par les joueurs de cette campagne.
       allow read: if signedIn() && (resource.data.uid == request.auth.uid
-        || (isAdmin() && resource.data.get('campaignId', null) != null));
+        || (resource.data.get('campaignId', null) != null
+          && (isAdmin() || isPlayer(resource.data.campaignId))));
       allow delete: if signedIn() && resource.data.uid == request.auth.uid;
       allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
       allow update: if signedIn()
@@ -49,7 +51,8 @@ service cloud.firestore {
       allow write: if isAdmin();
 
       match /entries/{email} {
-        allow read: if isAdmin() || (verified() && email == myEmail());
+        // Les joueurs voient qui participe à la campagne (pseudo, bande, couronne).
+        allow read: if isAdmin() || isPlayer(cid);
         allow create, delete: if isAdmin();
         allow update: if isAdmin()
           || (isPlayer(cid) && email == myEmail() && request.resource.data.email == email);

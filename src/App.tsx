@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
 import CrewListPage from './pages/CrewListPage'
 import NewCrewPage from './pages/NewCrewPage'
+import CrewViewPage from './pages/CrewViewPage'
 import CrewBuilderPage from './pages/CrewBuilderPage'
 import CrewSheetsPage from './pages/CrewSheetsPage'
 import AfterBattlePage from './pages/AfterBattlePage'
@@ -84,6 +85,7 @@ export default function App() {
             <Route path="/campagnes" element={<RequireAuth><CampaignsPage /></RequireAuth>} />
             <Route path="/campagnes/:id" element={<RequireAuth><CampaignPage /></RequireAuth>} />
             <Route path="/campagnes/:campaignId/bandes/:id" element={<RequireAuth><CrewBuilderPage /></RequireAuth>} />
+            <Route path="/campagnes/:campaignId/consulter/:id" element={<RequireAuth><CrewViewPage /></RequireAuth>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

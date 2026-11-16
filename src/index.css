@@ -1329,3 +1329,15 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 /* Couronne sauteuse */
 .crown-icon { font-size: 0.95em; margin-left: 0.15rem; cursor: help; }
 .crown-switch { margin: 0.2rem 0 0.6rem; }
+
+/* Consultation d'une bande de campagne */
+.crew-view-totals { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; margin: 0 0 1rem; }
+.crew-view-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+.crew-view-items { display: grid; grid-template-columns: max-content 1fr; gap: 0.3rem 0.7rem; margin: 0.6rem 0 0; font-size: 0.88rem; align-items: center; }
+.crew-view-items dt { color: var(--muted); }
+.crew-view-items dd { margin: 0; }
+.participants li { padding: 0.35rem 0; border-bottom: 1px dashed var(--border); }
+.crew-view-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); }
+.crew-view-grid > .unit-card { width: auto; max-width: none; }
+.crew-view-advances { list-style: none; margin: 0; padding: 0; }
+.crew-view-advances li { margin-bottom: 0.1rem; }

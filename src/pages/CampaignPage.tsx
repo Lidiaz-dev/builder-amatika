@@ -65,7 +65,7 @@ export default function CampaignPage() {
       const current = await getDay(id, c.dayNumber)
       const [allDays, allEntries, allSheets, entry] = await Promise.all([
         listDays(id, c.dayNumber),
-        admin ? listEntries(id) : Promise.resolve([] as Entry[]),
+        listEntries(id).catch(() => [] as Entry[]),
         admin && current && (current.status === 'nuit' || current.status === 'cloturee') ? listSheets(id, current.number) : Promise.resolve([] as Sheet[]),
         c.emails.includes(me) ? getMyEntry(id) : Promise.resolve(null),
       ])
@@ -138,6 +138,8 @@ export default function CampaignPage() {
       <BudgetLine budget={campaign.budget ?? DEFAULT_BUDGET} admin={admin} busy={busy} onSave={(b) => run(() => setCampaignBudget(campaign.id, b))} />
       {error && <p className="error">{error}</p>}
 
+      {!admin && entries.length > 0 && <ParticipantsPanel campaign={campaign} entries={entries} day={day} />}
+
       {player && (
         <MyCrewPanel campaign={campaign} entry={myEntry} day={day} locked={dayOpen && !!day?.participants.includes(me)} onChanged={load} />
       )}
@@ -172,6 +174,7 @@ Préparation pas encore validée : ${names}.` : ''
             }
           />
           <PlayersPanel
+            campaignId={campaign.id}
             entries={entries}
             busy={busy}
             onAdd={(email, pseudo) => run(() => addPlayer(campaign.id, email, pseudo))}
@@ -373,11 +376,12 @@ function DayPanel({ campaign, day, entries, sheets, busy, onCreate, onLaunch, on
 }
 
 /** Organisateur : joueurs de la campagne. Ajout par email, par pseudo ou depuis la liste des inscrits. */
-function PlayersPanel({ entries, busy, onAdd, onRemove, onCrown }: {
+function PlayersPanel({ campaignId, entries, busy, onAdd, onRemove, onCrown }: {
   entries: Entry[]
   busy: boolean
   onAdd: (email: string, pseudo?: string) => void
   onCrown: (email: string, crown: boolean) => void
+  campaignId: string
   onRemove: (email: string) => void
 }) {
   const [value, setValue] = useState('')
@@ -421,6 +425,7 @@ function PlayersPanel({ entries, busy, onAdd, onRemove, onCrown }: {
               <span className="muted small">{e.crewName ? `${e.crewName} (${factionById(e.factionId ?? '')?.name})${e.ready ? '' : ' · en préparation'}` : 'pas encore de bande'}</span>
             </span>
             <span className="row">
+              {e.crewId && <Link className="btn ghost small" to={`/campagnes/${campaignId}/consulter/${e.crewId}`}>Consulter</Link>}
               <button className="btn ghost small" onClick={() => onCrown(e.email, !e.crown)} disabled={busy || !e.crewId} data-tip={e.crown ? 'Retirer la couronne sauteuse à ce joueur' : 'Donner la couronne sauteuse à ce joueur'}>
                 {e.crown ? 'Retirer la couronne' : 'Donner la couronne'}
               </button>
@@ -493,4 +498,29 @@ function BudgetLine({ budget, admin, busy, onSave }: { budget: number; admin: bo
 /** Petit logo : ce joueur porte la couronne sauteuse. */
 function CrownIcon() {
   return <span className="crown-icon" role="img" aria-label="Couronne sauteuse" data-tip="Porte la couronne sauteuse">👑</span>
+}
+
+/** Joueurs : qui participe à la campagne, avec un lien pour consulter chaque bande (et son coffre). */
+function ParticipantsPanel({ campaign, entries, day }: { campaign: GroupCampaign; entries: Entry[]; day: Day | null }) {
+  return (
+    <section className="card">
+      <h2>Participants ({entries.length})</h2>
+      <ul className="plain-list participants">
+        {entries.map((e) => (
+          <li key={e.email} className="row wrap between">
+            <span>
+              <strong>{e.pseudo || 'Joueur'}</strong>
+              {e.crown && <> <CrownIcon /></>}{' '}
+              <span className="muted small">
+                {e.crewName ? `${e.crewName} (${factionById(e.factionId ?? '')?.name ?? '?'})` : 'pas encore de bande'}
+                {e.crewName && !e.ready ? ' · en préparation' : ''}
+              </span>
+              {day && isOpen(day.status) && day.participants.includes(e.email) && <> <span className="badge">Journée {day.number}</span></>}
+            </span>
+            {e.crewId && <Link className="btn ghost small" to={`/campagnes/${campaign.id}/consulter/${e.crewId}`}>Consulter</Link>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
 }

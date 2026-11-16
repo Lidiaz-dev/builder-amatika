@@ -30,7 +30,7 @@ export default function LocationNotes() {
       <dl className="location-advice">
         {LOCATION_ADVICE.map(([k, v]) => [<dt key={`t${k}`}>{k}</dt>, <dd key={`d${k}`}>{v}</dd>])}
       </dl>
-      <p className="muted small">Moyennes calculées sur les cartes des paquets : 41,8 PO par objet, 137,5 PO par cristal brut, 50 % de réussite aux tests.</p>
+      <p className="muted small">Moyennes calculées sur les cartes des paquets : 41,8 PO par objet, 100 PO par cristal (prix de vente), 50 % de réussite aux tests.</p>
     </section>
   )
 }
