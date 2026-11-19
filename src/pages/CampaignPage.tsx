@@ -39,7 +39,7 @@ import CardsToRemovePanel from '../components/CardsToRemovePanel'
 import AdminGiftPanel from '../components/AdminGiftPanel'
 import AllGiftsPanel from '../components/AllGiftsPanel'
 import ActivityPanel from '../components/ActivityPanel'
-import { DEFAULT_BUDGET } from '../lib/crew'
+import { DEFAULT_BUDGET, crystalWord } from '../lib/crew'
 
 export default function CampaignPage() {
   const { id } = useParams()
@@ -446,7 +446,7 @@ function DayPanel({ campaign, day, entries, sheets, gifts, busy, onCreate, onLau
           <ul className="small">
             {gifts.map((g) => (
               <li key={g.id}>
-                {who(g.from)} → {g.toName} : {[g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} cristal(aux)` : '', ...g.items.map((i) => i.name)].filter(Boolean).join(', ')}
+                {who(g.from)} → {g.toName} : {[g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} ${crystalWord(g.cristaux)}` : '', ...g.items.map((i) => i.name)].filter(Boolean).join(', ')}
                 {g.message ? <em className="gift-message"> « {g.message} »</em> : null}
                 {g.claimed ? ' ✓ reçu' : ''}
               </li>

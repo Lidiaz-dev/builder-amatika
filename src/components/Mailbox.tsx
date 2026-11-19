@@ -1,3 +1,4 @@
+import { crystalWord } from '../lib/crew'
 import { useEffect, useState } from 'react'
 import { isOpen, listMyGifts, type Gift, type GroupCampaign } from '../lib/groupCampaign'
 import Modal from './Modal'
@@ -9,8 +10,8 @@ function GiftContent({ g }: { g: Gift }) {
     <span className="gift-content">
       {g.po > 0 && <span className="gift-amount">+{g.po} PO</span>}
       {g.po < 0 && <span className="gift-removed">{g.po} PO</span>}
-      {g.cristaux > 0 && <span className="gift-amount">+{g.cristaux} cristal{g.cristaux > 1 ? 'aux' : ''}</span>}
-      {g.cristaux < 0 && <span className="gift-removed">{g.cristaux} cristal{g.cristaux < -1 ? 'aux' : ''}</span>}
+      {g.cristaux > 0 && <span className="gift-amount">+{g.cristaux} {crystalWord(g.cristaux)}</span>}
+      {g.cristaux < 0 && <span className="gift-removed">{g.cristaux} {crystalWord(g.cristaux)}</span>}
       {g.items.map((i, k) => (i.kind === 'equipment' ? <ItemChip key={k} equipmentId={i.key} /> : <ItemChip key={k} lootKey={i.key} />))}
       {g.po === 0 && g.cristaux === 0 && !g.items.length && !(g.remove ?? []).length && !(g.xp ?? []).length && <span className="muted">rien</span>}
       {(g.xp ?? []).map((x, k) => <span key={`x${k}`} className="gift-amount">{x.name} +{x.amount} XP</span>)}

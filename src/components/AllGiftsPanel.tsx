@@ -1,3 +1,4 @@
+import { crystalWord } from '../lib/crew'
 import { useState } from 'react'
 import { isOpen, listAllGifts, type Entry, type Gift, type GroupCampaign } from '../lib/groupCampaign'
 
@@ -23,7 +24,7 @@ export default function AllGiftsPanel({ campaign, entries }: { campaign: GroupCa
     return "Pas encore ajouté : il n'a pas rouvert sa bande depuis"
   }
   const content = (g: Gift) =>
-    [g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} cristal(aux)` : '', ...g.items.map((i) => i.name), ...(g.xp ?? []).map((x) => `${x.name} +${x.amount} XP`), ...(g.remove ?? []).map((r) => `retirer ${r.name}`)]
+    [g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} ${crystalWord(g.cristaux)}` : '', ...g.items.map((i) => i.name), ...(g.xp ?? []).map((x) => `${x.name} +${x.amount} XP`), ...(g.remove ?? []).map((r) => `retirer ${r.name}`)]
       .filter(Boolean)
       .join(', ') || 'rien'
 

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { equipmentById, factionById, itemByKey } from '../data'
-import { isActive, memberTitle, type Crew } from '../lib/crew'
+import { isActive, memberTitle, type Crew, crystalWord } from '../lib/crew'
 import { cancelGift, listPendingGiftsTo, sendAdminGift, type Entry, type Gift, type GiftDraft, type GroupCampaign } from '../lib/groupCampaign'
 import { getCrew } from '../lib/storage'
 import LootPicker, { type LootPick } from './LootPicker'
@@ -83,7 +83,7 @@ function GivePart({ campaign, players }: { campaign: GroupCampaign; players: Pla
 
   const send = async () => {
     if (!target) return
-    const detail = [po ? `${po} PO` : '', cristaux ? `${cristaux} cristal(aux)` : '', ...items.map((i) => i.name), ...xp.map((x) => `${x.name} +${x.amount} XP`)].filter(Boolean).join(', ')
+    const detail = [po ? `${po} PO` : '', cristaux ? `${cristaux} ${crystalWord(cristaux)}` : '', ...items.map((i) => i.name), ...xp.map((x) => `${x.name} +${x.amount} XP`)].filter(Boolean).join(', ')
     if (!confirm(`Donner à ${label(target)} : ${detail} ?\n\nAjouté à sa bande dès qu'il l'ouvre.`)) return
     setBusy(true)
     setError('')
@@ -226,7 +226,7 @@ function RemovePart({ campaign, players }: { campaign: GroupCampaign; players: P
 
   const send = async () => {
     if (!target) return
-    const detail = [po ? `${po} PO` : '', cristaux ? `${cristaux} cristal(aux)` : '', ...toRemove.map((r) => `${r.name} (${r.owner})`)].filter(Boolean).join(', ')
+    const detail = [po ? `${po} PO` : '', cristaux ? `${cristaux} ${crystalWord(cristaux)}` : '', ...toRemove.map((r) => `${r.name} (${r.owner})`)].filter(Boolean).join(', ')
     if (!confirm(`Retirer à ${label(target)} : ${detail} ?\n\nAppliqué à sa bande dès qu'il l'ouvre.`)) return
     setBusy(true)
     setError('')
@@ -271,7 +271,7 @@ function RemovePart({ campaign, players }: { campaign: GroupCampaign; players: P
                   {pending.map((g) => (
                     <li key={g.id} className="row wrap between">
                       <span>
-                        <strong>{g.fromName}</strong> : {[g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} cristal(aux)` : '', ...g.items.map((i) => i.name), ...(g.remove ?? []).map((r) => `retirer ${r.name}`)].filter(Boolean).join(', ')}
+                        <strong>{g.fromName}</strong> : {[g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} ${crystalWord(g.cristaux)}` : '', ...g.items.map((i) => i.name), ...(g.remove ?? []).map((r) => `retirer ${r.name}`)].filter(Boolean).join(', ')}
                       </span>
                       <button
                         className="btn small ghost danger"

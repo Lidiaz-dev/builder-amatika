@@ -1,6 +1,6 @@
 import { factionById } from '../data'
 import { addXp } from './campaign'
-import { profileOf, withTreasury, type Crew } from './crew'
+import { profileOf, withTreasury, type Crew, crystalWord } from './crew'
 import type { Gift, GiftDraft } from './groupCampaign'
 
 /** Emplacement « coffre du camp » d'un objet envoyé. */
@@ -49,7 +49,7 @@ export function plannedText(g: PlannedGift | GiftDraft & { sources?: PlannedGift
     const owner = g.sources?.[k]?.owner
     return owner ? `${i.name} (${owner === 'coffre' ? 'du coffre' : owner})` : i.name
   })
-  return [g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} cristal(aux)` : '', ...items].filter(Boolean).join(', ') || 'rien'
+  return [g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} ${crystalWord(g.cristaux)}` : '', ...items].filter(Boolean).join(', ') || 'rien'
 }
 
 /**

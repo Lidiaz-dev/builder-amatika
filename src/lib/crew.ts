@@ -436,6 +436,9 @@ export function withTreasury(crew: Crew, delta: { po?: number; cristaux?: number
   }
 }
 
+/** « 1 cristal », « 2 cristaux » (le signe éventuel est laissé à l'appelant). */
+export const crystalWord = (n: number) => (Math.abs(n) > 1 ? 'cristaux' : 'cristal')
+
 /** Actions propres à certains profils de la bande (Mordre du Vampire), pour le rappel des compétences. */
 export function crewActionsReminder(crew: Crew): { name: string; text: string }[] {
   const faction = factionById(crew.factionId)

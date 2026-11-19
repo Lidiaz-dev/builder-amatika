@@ -1,4 +1,4 @@
-import { injuries, injuryById, skills, type Injury, type Profile, type StatKey } from '../data'
+import { injuries, injuryById, skills, withGrantedSkills, type Injury, type Profile, type StatKey } from '../data'
 import { lootItems, memberSkills, newId, wornItems, type Advance, type Member, type StatMods } from './crew'
 
 /** XP nécessaire pour atteindre les niveaux 2 à 10. */
@@ -9,8 +9,9 @@ export const levelForXp = (xp: number) => 1 + XP_THRESHOLDS.filter((t) => xp >= 
 export const nextThreshold = (xp: number) => XP_THRESHOLDS.find((t) => xp < t) ?? null
 /** Montées de niveau gagnées par l'XP mais pas encore appliquées. */
 export const pendingLevels = (m: Member) => Math.max(0, levelForXp(m.xp) - m.level)
+/** « N'apprend rien », directement ou par une autre règle (Immortel du Vampire). */
 export const learnsNothing = (profile: Profile, m: Member) =>
-  [...profile.skills, ...(m.gainedSkills ?? [])].some((s) => s.toLowerCase() === "n'apprend rien")
+  withGrantedSkills([...profile.skills, ...(m.gainedSkills ?? [])]).some((s) => s.toLowerCase() === "n'apprend rien")
 
 export function addXp(profile: Profile, m: Member, amount: number): Member {
   if (learnsNothing(profile, m)) return m

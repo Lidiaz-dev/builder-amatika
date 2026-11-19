@@ -47,6 +47,7 @@ import { memberTitle,
   leaveCrew,
   crewPath,
   type CampStock,
+  crystalWord
 } from '../lib/crew'
 import {
   applyAdvance,
@@ -548,7 +549,7 @@ function TreasuryModal({ open, crew, onClose, onApply }: { open: boolean; crew: 
       <div className="row wrap">
         <NumberInput label="Cristaux à vendre" min={1} max={Math.max(1, c.cristaux)} value={sell} onChange={setSell} />
         <span className="small">× {CRYSTAL_PRICE} PO = {sell * CRYSTAL_PRICE} PO</span>
-        <button className="btn small" disabled={sell < 1 || sell > c.cristaux} onClick={() => onApply({ cristaux: -sell, po: sell * CRYSTAL_PRICE }, `Vente de ${sell} cristal${sell > 1 ? 'aux' : ''}`)}>Vendre</button>
+        <button className="btn small" disabled={sell < 1 || sell > c.cristaux} onClick={() => onApply({ cristaux: -sell, po: sell * CRYSTAL_PRICE }, `Vente de ${sell} ${crystalWord(sell)}`)}>Vendre</button>
       </div>
       {/* Pas d'ajustement manuel : PO, cristaux et prestige se gagnent dans le rapport de fin de nuit.
           Une correction passe par le maître de campagne (« Donner ou retirer à un joueur »). */}

@@ -1,5 +1,5 @@
 import { equipmentById, factionById, itemByKey } from '../data'
-import { memberTitle, profileOf, type Crew } from './crew'
+import { memberTitle, profileOf, type Crew, crystalWord } from './crew'
 
 const MAX_ENTRIES = 400
 const COFFRE = 'coffre'
@@ -88,7 +88,7 @@ export function describeChanges(before: Crew, after: Crew): string[] {
   // --- trésor : nouvelles lignes du journal (achats, ventes, envois…)
   const oldLog = before.campaign?.log.length ?? 0
   for (const l of after.campaign.log.slice(oldLog)) {
-    const values = [l.po ? `${l.po > 0 ? '+' : ''}${l.po} PO` : '', l.cristaux ? `${l.cristaux > 0 ? '+' : ''}${l.cristaux} cristal(aux)` : '', l.prestige ? `${l.prestige > 0 ? '+' : ''}${l.prestige} prestige` : '']
+    const values = [l.po ? `${l.po > 0 ? '+' : ''}${l.po} PO` : '', l.cristaux ? `${l.cristaux > 0 ? '+' : ''}${l.cristaux} ${crystalWord(l.cristaux)}` : '', l.prestige ? `${l.prestige > 0 ? '+' : ''}${l.prestige} prestige` : '']
       .filter(Boolean)
       .join(', ')
     lines.push(`Trésor : ${l.label}${values ? ` (${values})` : ''}`)

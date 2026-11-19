@@ -16,6 +16,7 @@ import { memberTitle,
   type Crew,
   type Member,
   memberName,
+  crystalWord
 } from '../lib/crew'
 import { addXp, applyAdvance, applyInjury, d10, revertInjury, learnsNothing, pendingLevels, poisonThreshold } from '../lib/campaign'
 import { getCrew, saveCrew } from '../lib/storage'
@@ -428,7 +429,7 @@ export default function AfterBattlePage() {
     }
     if (k === S.loot) {
       const sold = Math.min(crystalsSold, crystalsGained)
-      if (crystalsGained) lines.push(`${crystalsGained} cristal(aux) ramassé(s)`)
+      if (crystalsGained) lines.push(`${crystalsGained} ${crystalWord(crystalsGained)} ramassé${crystalsGained > 1 ? 's' : ''}`)
       if (sold) lines.push(`${sold} cristaux vendus : +${sold * CRYSTAL_PRICE} PO`)
       if (poFound) lines.push(`${poFound} PO récupérées`)
       if (prestigeGained) lines.push(`${prestigeGained} de prestige`)
@@ -692,7 +693,7 @@ export default function AfterBattlePage() {
     step === S.participants && participants.length === 0 ? 'Choisissez au moins une figurine.'
       : missingPoisonRoll ? 'Lancez le dé de chaque poison utilisé.'
           : step === S.upkeep && deficit < 0 ? `Il manque ${-deficit} PO pour payer l'entretien : vendez des objets ou des cristaux, ou laissez partir des soldats.`
-            : step === S.upkeep && crDeficit < 0 ? `Il manque ${-crDeficit} cristal(aux) pour l'entretien.`
+            : step === S.upkeep && crDeficit < 0 ? `Il manque ${-crDeficit} ${crystalWord(crDeficit)} pour l'entretien.`
               : step === S.xp && learners.some((m) => (xp[m.id]?.participation ?? null) === null) ? `Lancez le dé de participation de : ${learners.filter((m) => (xp[m.id]?.participation ?? null) === null).map((m) => nameOf(faction, m)).join(', ')}.`
                 : step === S.xp && learners.some((m) => liqueurDice[m.id] && xp[m.id]?.liqueur === undefined) ? 'Lancez les dés de liqueur.'
                   : step === S.levels && levelers.length > 0 ? `Appliquez les montées de niveau de : ${levelers.map((m) => nameOf(faction, m)).join(', ')}.`
@@ -847,7 +848,7 @@ export default function AfterBattlePage() {
                 <label className="row">
                   Vendre
                   <NumberInput label="Cristaux à vendre" min={0} max={crystalsGained} value={Math.min(crystalsSold, crystalsGained)} onChange={(n) => setCrystalsSold(Math.floor(n))} />
-                  cristal(aux) sur {crystalsGained}, à {CRYSTAL_PRICE} PO pièce
+                  {crystalWord(Math.min(crystalsSold, crystalsGained))} sur {crystalsGained}, à {CRYSTAL_PRICE} PO pièce
                 </label>
                 {crystalsSold > 0 && <strong>+{Math.min(crystalsSold, crystalsGained) * CRYSTAL_PRICE} PO</strong>}
                 <span className="muted small">Vous en garderez {crystalsGained - Math.min(crystalsSold, crystalsGained)}.</span>
