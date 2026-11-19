@@ -486,6 +486,8 @@ export default function AfterBattlePage() {
   /** Revient directement à une étape déjà faite (ses effets et ceux des suivantes sont annulés). */
   function goTo(target: number) {
     if (target >= step || !exits[target]) return
+    // Revenir avant le Butin efface ses achats (la bande repart d'avant) : les cartes redeviennent achetables.
+    if (target < S.loot) setMarketBought([])
     setDraft(exits[target])
     setLogs((all) => all.map((l, i) => (i === target ? l.filter((x) => !x.startsWith('§')) : i > target ? [] : l)))
     setStep(target)
@@ -493,6 +495,7 @@ export default function AfterBattlePage() {
   }
 
   function goBack() {
+    if (step - 1 < S.loot) setMarketBought([])
     setDraft(exits[step - 1])
     setLogs((all) => all.map((l, i) => (i === step - 1 ? l.filter((x) => !x.startsWith('§')) : i >= step ? [] : l)))
     setStep(step - 1)

@@ -592,13 +592,13 @@ interface MemberCardProps {
 type Dialog = 'gear' | 'advance' | null
 
 /** Durée de l'animation quand un objet est vendu ou rangé au coffre. */
-const ITEM_OUT_MS = 450
+const ITEM_OUT_MS = 1600
 
 function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemove, onDuplicate, canDuplicate, unrestricted, stock, onStock }: MemberCardProps) {
   const profile = profileOf(faction, member)
   const [adding, setAdding] = useState('')
   const [dialog, setDialog] = useState<Dialog>(null)
-  const [leaving, setLeaving] = useState<Record<string, { kind: 'sell' | 'store'; text: string }>>({})
+  const [leaving, setLeaving] = useState<{ id: number; kind: 'sell' | 'store'; text: string }[]>([])
   // XP gagnée depuis la dernière visite (par exemple après le bilan) : la barre se remplit sous vos yeux.
   const xpNext = nextThreshold(member.xp)
   const xpPct = xpNext ? Math.min(100, (member.xp / xpNext) * 100) : 100
@@ -687,21 +687,13 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
     else onChange(next)
     setAdding('')
   }
-  // Animation de sortie (vente ou rangement au coffre) avant de retirer l'objet de la fiche.
-  const animateOut = (key: string, kind: 'sell' | 'store', text: string, action: () => void) => {
-    if (leaving[key]) return
-    setLeaving((l) => ({ ...l, [key]: { kind, text } }))
-    window.setTimeout(() => {
-      action()
-      setLeaving((l) => {
-        const n = { ...l }
-        delete n[key]
-        return n
-      })
-    }, ITEM_OUT_MS)
+  // Vente ou rangement au coffre : appliqué tout de suite, puis une confirmation s'affiche un instant.
+  const animateOut = (_key: string, kind: 'sell' | 'store', text: string, action: () => void, name = '') => {
+    action()
+    const id = Date.now() + Math.random()
+    setLeaving((l) => [...l, { id, kind, text: name ? `${name} ${text}` : text }])
+    window.setTimeout(() => setLeaving((l) => l.filter((x) => x.id !== id)), ITEM_OUT_MS)
   }
-  const outClass = (key: string) => (leaving[key] ? ` item-out ${leaving[key].kind}` : '')
-  const outBadge = (key: string) => (leaving[key] ? <span className={`item-out-badge ${leaving[key].kind}`}>{leaving[key].text}</span> : null)
   const stockCount = (id: string) => stock?.equipment.filter((x) => x === id).length ?? 0
   /** Objets du coffre que ce personnage peut prendre : équipement commun autorisé, et objets spéciaux. */
   const stockChoices = stock
@@ -888,12 +880,17 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
           Équipement <span className="muted small">({wornCount} porté{wornCount > 1 ? 's' : ''}{bagCount ? `, ${bagCount} au sac` : ''})</span>
         </summary>
         <div className="equipment">
+          {leaving.length > 0 && (
+            <div className="item-flashes" aria-live="polite">
+              {leaving.map((f) => <span key={f.id} className={`item-flash ${f.kind}`}>{f.text}</span>)}
+            </div>
+          )}
           {member.equipment.length === 0 && loot.length === 0 && <p className="muted small">Aucun équipement : combat à mains nues.</p>}
           <ul>
             {member.equipment.map((ref, i) => {
               const item = equipment.find((e) => e.id === ref.itemId)
               return (
-                <li key={`e${i}`} className={outClass(`e${i}`).trim() || undefined}>
+                <li key={`e${i}`}>
                   <span><RarityDot rarity="blanc" /> {item ? <EquipmentTag item={item} /> : ref.itemId}</span>
                   <span className="item-price">
                     {campaign && ref.undo && (
@@ -906,17 +903,16 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
                   </span>
                   <SlotToggle slot={ref.slot} onChange={(s) => setSlot(i, s)} />
                   <ItemActions
-                    onStore={onStock ? () => animateOut(`e${i}`, 'store', '→ Coffre', () => storeItem(i)) : undefined}
+                    onStore={onStock ? () => animateOut(`e${i}`, 'store', '→ Coffre', () => storeItem(i), item?.name) : undefined}
                     campaign={campaign}
-                    onSell={() => animateOut(`e${i}`, 'sell', `+${Math.floor((item?.price ?? 0) / 2)} PO`, () => removeItem(i, true))}
+                    onSell={() => animateOut(`e${i}`, 'sell', `vendu +${Math.floor((item?.price ?? 0) / 2)} PO`, () => removeItem(i, true), item?.name)}
                     onDrop={() => removeItem(i, false)}
                   />
-                  {outBadge(`e${i}`)}
                 </li>
               )
             })}
             {loot.map(({ ref, item }) => (
-              <li key={ref.id} className={`${ref.used ? 'used' : ''}${outClass(ref.id)}`.trim() || undefined}>
+              <li key={ref.id} className={ref.used ? 'used' : undefined}>
                 <span>
                   <RarityDot rarity={item?.rarity ?? 'blanc'} />{' '}
                   <InfoTag label={item?.name ?? ref.key} kicker={ref.racial ? 'Objet racial' : item?.category} className="loot-tag">
@@ -948,12 +944,11 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
                 )}
                 <SlotToggle slot={ref.slot} onChange={(s) => setLootSlot(ref.id, s)} />
                 <ItemActions
-                  onStore={onStock ? () => animateOut(ref.id, 'store', '→ Coffre', () => storeLoot(ref.id)) : undefined}
+                  onStore={onStock ? () => animateOut(ref.id, 'store', '→ Coffre', () => storeLoot(ref.id), item?.name) : undefined}
                   campaign={campaign}
-                  onSell={() => animateOut(ref.id, 'sell', `+${Math.floor((item?.price ?? 0) / 2)} PO`, () => removeLoot(ref.id, true))}
+                  onSell={() => animateOut(ref.id, 'sell', `vendu +${Math.floor((item?.price ?? 0) / 2)} PO`, () => removeLoot(ref.id, true), item?.name)}
                   onDrop={() => removeLoot(ref.id, false)}
                 />
-                {outBadge(ref.id)}
               </li>
             ))}
           </ul>

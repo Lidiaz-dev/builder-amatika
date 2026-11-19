@@ -1489,3 +1489,13 @@ q.gift-message { quotes: '« ' ' »'; }
 .activity-list li { display: flex; flex-wrap: wrap; gap: 0.2rem 0.6rem; padding: 0.3rem 0; border-bottom: 1px dashed var(--border); font-size: 0.88rem; }
 .activity-when { min-width: 7.5rem; }
 .activity-who { min-width: 6rem; }
+
+/* Confirmation d'une vente ou d'un rangement (l'action est déjà faite) */
+.item-flashes { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.4rem; }
+.item-flash { padding: 0.1rem 0.55rem; border-radius: 999px; font-family: var(--display); font-size: 0.8rem; font-weight: 700; }
+.item-flash.sell { background: var(--ok-soft); color: var(--ok); border: 1px solid var(--ok); }
+.item-flash.store { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--gold); }
+@media (prefers-reduced-motion: no-preference) {
+  .item-flash { animation: flash-in-out 1.6s ease forwards; }
+}
+@keyframes flash-in-out { 0% { opacity: 0; transform: translateY(4px); } 12% { opacity: 1; transform: none; } 75% { opacity: 1; } 100% { opacity: 0; } }

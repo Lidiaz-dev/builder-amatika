@@ -23,22 +23,14 @@ interface Props {
 export default function CampStockPanel({ faction, members, stock, onChange, readOnly, unrestricted }: Props) {
   const active = members.filter(isActive)
   const [target, setTarget] = useState<Record<string, string>>({})
-  const [leaving, setLeaving] = useState<Record<string, { kind: 'sell' | 'store'; text: string }>>({})
-  /** Petite animation de sortie, puis l'action. */
-  const out = (key: string, kind: 'sell' | 'store', text: string, action: () => void) => {
-    if (leaving[key]) return
-    setLeaving((l) => ({ ...l, [key]: { kind, text } }))
-    window.setTimeout(() => {
-      action()
-      setLeaving((l) => {
-        const n = { ...l }
-        delete n[key]
-        return n
-      })
-    }, 450)
+  const [flashes, setFlashes] = useState<{ id: number; kind: 'sell' | 'store'; text: string }[]>([])
+  /** Action appliquée tout de suite, puis une confirmation s'affiche un instant. */
+  const out = (_key: string, kind: 'sell' | 'store', text: string, action: () => void) => {
+    action()
+    const id = Date.now() + Math.random()
+    setFlashes((l) => [...l, { id, kind, text }])
+    window.setTimeout(() => setFlashes((l) => l.filter((x) => x.id !== id)), 1600)
   }
-  const liClass = (key: string) => (leaving[key] ? `item-out ${leaving[key].kind}` : undefined)
-  const badge = (key: string) => (leaving[key] ? <span className={`item-out-badge ${leaving[key].kind}`}>{leaving[key].text}</span> : null)
   const nameOf = (m: Member) => memberTitle(faction, m)
   const counts = stock.equipment.reduce<Record<string, number>>((acc, id) => ({ ...acc, [id]: (acc[id] ?? 0) + 1 }), {})
   const empty = !stock.equipment.length && !stock.loot.length
@@ -68,6 +60,11 @@ export default function CampStockPanel({ faction, members, stock, onChange, read
 
   return (
     <div className="camp-stock">
+      {flashes.length > 0 && (
+        <div className="item-flashes" aria-live="polite">
+          {flashes.map((f) => <span key={f.id} className={`item-flash ${f.kind}`}>{f.text}</span>)}
+        </div>
+      )}
       {readOnly && !empty && <p className="muted small">Consultation seulement : le coffre se modifie pendant la préparation d'une journée.</p>}
       {empty ? (
         <p className="muted small">Vide. Rangez un objet avec le bouton « Coffre » à côté de lui sur la fiche d'un personnage.</p>
@@ -77,7 +74,7 @@ export default function CampStockPanel({ faction, members, stock, onChange, read
             const e = equipmentById(id)
             if (!e) return null
             return (
-              <li key={id} className={liClass(id)}>
+              <li key={id}>
                 <span><ItemChip equipmentId={id} />{n > 1 && <strong> ×{n}</strong>}</span>
                 {!readOnly && <span className="row">
                   {memberSelect(id, id)}
@@ -90,7 +87,6 @@ export default function CampStockPanel({ faction, members, stock, onChange, read
                   </button>
                   <button className="icon-btn drop-btn" onClick={() => confirm(`Jeter « ${e.name} » ?`) && onChange(withoutEquipment(id))} aria-label={`Jeter ${e.name}`} data-tip="Jeter, sans revente">×</button>
                 </span>}
-                {badge(id)}
               </li>
             )
           })}
@@ -98,7 +94,7 @@ export default function CampStockPanel({ faction, members, stock, onChange, read
             const item = itemByKey(l.key)
             const price = item?.price ?? null
             return (
-              <li key={l.id} className={liClass(l.id)}>
+              <li key={l.id}>
                 <span><ItemChip lootKey={l.key} /></span>
                 {!readOnly && <span className="row">
                   {memberSelect(l.id)}
@@ -113,7 +109,6 @@ export default function CampStockPanel({ faction, members, stock, onChange, read
                   ) : null}
                   <button className="icon-btn drop-btn" onClick={() => confirm(`Jeter « ${item?.name ?? l.key} » ?`) && onChange(withoutLoot(l.id))} aria-label={`Jeter ${item?.name ?? l.key}`} data-tip="Jeter, sans revente">×</button>
                 </span>}
-                {badge(l.id)}
               </li>
             )
           })}

@@ -16,9 +16,8 @@ import {
 import type { User } from 'firebase/auth'
 import { auth, db } from './firebase'
 import { getCrew, saveCrew } from './storage'
-import { newId, profileOf, withTreasury, type Crew } from './crew'
-import { addXp } from './campaign'
-import { factionById } from '../data'
+import { applyReceivedGift } from './trade'
+import { newId, type Crew } from './crew'
 
 /**
  * Campagne de groupe : l'organisateur crée la campagne, y inscrit des joueurs (par email),
@@ -195,7 +194,8 @@ export async function cancelDay(c: GroupCampaign) {
   const gifts = await getDocs(query(giftsCol(c.id), where('day', '==', c.dayNumber)))
   const batch = writeBatch(database())
   sheets.docs.forEach((s) => batch.delete(s.ref))
-  gifts.docs.forEach((g) => batch.delete(g.ref))
+  // Les rapports déjà validés restent appliqués : leurs envois ne sont pas perdus, ils arrivent tout de suite.
+  gifts.docs.forEach((g) => batch.update(g.ref, { day: c.dayNumber - 1 }))
   batch.delete(dayRef(c.id, c.dayNumber))
   batch.update(campaignRef(c.id), { dayNumber: c.dayNumber - 1, dayStatus: c.dayNumber > 1 ? 'cloturee' : null })
   await batch.commit()
@@ -385,61 +385,7 @@ export async function receiveGifts(crew: Crew, c: GroupCampaign): Promise<{ crew
   const gifts = snap.docs.map((d) => d.data() as Gift).filter((g) => closed(g) && !done.has(g.id))
   if (!gifts.length) return null
   let next: Crew = crew
-  for (const g of gifts) {
-    const camp = next.campaign!
-    const stock = camp.stock ?? { equipment: [], loot: [] }
-    next = {
-      ...next,
-      campaign: {
-        ...camp,
-        receivedGifts: [...(camp.receivedGifts ?? []), g.id],
-        stock: {
-          equipment: [...stock.equipment, ...g.items.filter((i) => i.kind === 'equipment').map((i) => i.key)],
-          loot: [...stock.loot, ...g.items.filter((i) => i.kind === 'loot').map((i) => ({ id: newId(), key: i.key, slot: 'sac' as const }))],
-        },
-      },
-    }
-    // Retraits demandés par le maître de campagne (un objet déjà parti est simplement ignoré).
-    for (const r of g.remove ?? []) {
-      const camp2 = next.campaign!
-      if (r.from === '__coffre') {
-        const st = camp2.stock ?? { equipment: [], loot: [] }
-        const i = r.kind === 'loot' ? -1 : st.equipment.indexOf(r.ref)
-        next = {
-          ...next,
-          campaign: {
-            ...camp2,
-            stock: r.kind === 'loot' ? { ...st, loot: st.loot.filter((l) => l.id !== r.ref) } : { ...st, equipment: st.equipment.filter((_, j) => j !== i) },
-          },
-        }
-      } else {
-        next = {
-          ...next,
-          members: next.members.map((m) => {
-            if (m.id !== r.from) return m
-            if (r.kind === 'loot') return { ...m, loot: (m.loot ?? []).filter((l) => l.id !== r.ref) }
-            const i = m.equipment.findIndex((e) => e.itemId === r.ref)
-            return i >= 0 ? { ...m, equipment: m.equipment.filter((_, j) => j !== i) } : m
-          }),
-        }
-      }
-    }
-    // XP donnée par le maître de campagne (les figurines qui n'apprennent rien n'en gagnent pas).
-    const faction = factionById(next.factionId)
-    for (const x of g.xp ?? []) {
-      next = {
-        ...next,
-        members: next.members.map((m) => {
-          const p = m.id === x.memberId ? profileOf(faction, m) : undefined
-          return p ? addXp(p, m, x.amount) : m
-        }),
-      }
-    }
-    const removed = (g.remove ?? []).length ? ` ; retiré : ${g.remove!.map((r) => r.name).join(', ')}` : ''
-    const gainedXp = (g.xp ?? []).length ? ` ; XP : ${g.xp!.map((x) => `${x.name} +${x.amount}`).join(', ')}` : ''
-    const label = `Envoi de ${g.fromName} (journée ${g.day})${g.items.length ? ` : ${g.items.map((i) => i.name).join(', ')} au coffre` : ''}${removed}${gainedXp}`
-    next = withTreasury(next, { po: g.po, cristaux: g.cristaux }, label)
-  }
+  for (const g of gifts) next = applyReceivedGift(next, g)
   return { crew: next, gifts }
 }
 
