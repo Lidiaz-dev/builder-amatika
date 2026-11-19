@@ -10,7 +10,10 @@ function GiftContent({ g }: { g: Gift }) {
       {g.po > 0 && <span className="gift-amount">{g.po} PO</span>}
       {g.cristaux > 0 && <span className="gift-amount">{g.cristaux} cristal{g.cristaux > 1 ? 'aux' : ''}</span>}
       {g.items.map((i, k) => (i.kind === 'equipment' ? <ItemChip key={k} equipmentId={i.key} /> : <ItemChip key={k} lootKey={i.key} />))}
-      {!g.po && !g.cristaux && !g.items.length && <span className="muted">rien</span>}
+      {!g.po && !g.cristaux && !g.items.length && !(g.remove ?? []).length && !(g.xp ?? []).length && <span className="muted">rien</span>}
+      {(g.xp ?? []).map((x, k) => <span key={`x${k}`} className="gift-amount">{x.name} +{x.amount} XP</span>)}
+      {(g.remove ?? []).map((r, k) => <span key={`r${k}`} className="gift-removed" data-tip={`Retiré : ${r.owner}`}>− {r.name}</span>)}
+      {g.message && <q className="gift-message">{g.message}</q>}
     </span>
   )
 }
@@ -19,7 +22,7 @@ const when = (g: Gift) => new Date(g.createdAt).toLocaleDateString('fr-FR', { da
 
 /**
  * Boîte aux lettres d'un joueur : encart pour ce qui vient d'arriver, et historique des envois
- * reçus et envoyés (en route, reçus).
+ * reçus et envoyés.
  */
 export default function Mailbox({ campaign, refresh }: {
   campaign: GroupCampaign
@@ -34,14 +37,18 @@ export default function Mailbox({ campaign, refresh }: {
     listMyGifts(campaign.id).then(setHistory).catch(() => setHistory({ received: [], sent: [] }))
   }, [campaign.id, refresh])
 
-  const pendingIn = (history?.received ?? []).filter((g) => !g.claimed)
-  const arrival = (g: Gift) => (g.day === campaign.dayNumber && isOpen(campaign.dayStatus) ? `arrivera à la clôture de la journée ${g.day}` : 'arrivera à votre prochaine visite')
+  // Envoi fait pendant une journée (rapport) : ajouté à la clôture de cette journée ; sinon, aussitôt.
+  const waiting = (g: Gift) => !g.claimed && !g.admin && g.day === campaign.dayNumber && isOpen(campaign.dayStatus)
+  const status = (g: Gift) =>
+    g.claimed
+      ? tab === 'recus' ? '✓ Ajouté à votre bande' : '✓ Ajouté à sa bande'
+      : waiting(g) ? `Ajouté à la clôture de la journée ${g.day}` : tab === 'recus' ? 'Ajouté à l\'ouverture de votre bande' : 'Envoyé'
 
   return (
     <>
 
       <button className="btn small mail-btn" onClick={() => setOpen(true)} data-tip="Envois reçus et envoyés.">
-        📬 Boîte aux lettres{pendingIn.length ? ` (${pendingIn.length} en route)` : ''}
+        📬 Boîte aux lettres
       </button>
 
       <Modal open={open} title="Boîte aux lettres" kicker={campaign.name} onClose={() => setOpen(false)} wide>
@@ -57,7 +64,7 @@ export default function Mailbox({ campaign, refresh }: {
                 <div className="mail-head">
                   <strong>{tab === 'recus' ? `De ${g.fromName}` : `À ${g.toName}`}</strong>
                   <span className="muted small">{when(g)} · {g.day ? `journée ${g.day}` : 'avant la 1re journée'}</span>
-                  <span className={`badge ${g.claimed ? 'ok' : ''}`}>{g.claimed ? '✓ Reçu' : tab === 'recus' ? `En route : ${arrival(g)}` : 'En route'}</span>
+                  <span className={`badge ${g.claimed ? 'ok' : ''}`}>{status(g)}</span>
                 </div>
                 <GiftContent g={g} />
               </li>
@@ -70,25 +77,49 @@ export default function Mailbox({ campaign, refresh }: {
   )
 }
 
-/** Encart « Vous avez reçu… » : ce qui vient d'arriver à cette visite. */
-export function MailNotice({ fresh, onDismiss }: { fresh: Gift[]; onDismiss: () => void }) {
+const SEEN = 'amatika.mail.seen'
+const readSeen = (): string[] => {
+  try {
+    return JSON.parse(localStorage.getItem(SEEN) ?? '[]') as string[]
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Encart « Vous avez reçu… » : envois déjà ajoutés à la bande que le joueur n'a pas encore vus.
+ * Il disparaît quand on le ferme (mémorisé dans le navigateur).
+ */
+export function MailNotice({ campaignId }: { campaignId: string }) {
+  const [fresh, setFresh] = useState<Gift[]>([])
+  useEffect(() => {
+    const seen = new Set(readSeen())
+    listMyGifts(campaignId)
+      .then((h) => setFresh(h.received.filter((g) => g.claimed && !seen.has(g.id))))
+      .catch(() => setFresh([]))
+  }, [campaignId])
+  const dismiss = () => {
+    try {
+      localStorage.setItem(SEEN, JSON.stringify([...readSeen(), ...fresh.map((g) => g.id)].slice(-300)))
+    } catch {
+      // stockage indisponible : l'encart reviendra
+    }
+    setFresh([])
+  }
+  if (!fresh.length) return null
   return (
-    <>
-      {fresh.length > 0 && (
-        <div className="mail-notice">
-          <span className="mail-icon" aria-hidden="true">📬</span>
-          <div>
-            <strong>Vous avez reçu {fresh.length > 1 ? `${fresh.length} envois` : 'un envoi'} !</strong>
-            <ul>
-              {fresh.map((g) => (
-                <li key={g.id}><span className="mail-from">{g.fromName}</span> <GiftContent g={g} /></li>
-              ))}
-            </ul>
-            <p className="muted small">PO et cristaux ajoutés au trésor, objets rangés dans le coffre du camp.</p>
-          </div>
-          <button className="icon-btn" onClick={onDismiss} aria-label="Fermer">×</button>
-        </div>
-      )}
-    </>
+    <div className="mail-notice">
+      <span className="mail-icon" aria-hidden="true">📬</span>
+      <div>
+        <strong>Vous avez reçu {fresh.length > 1 ? `${fresh.length} envois` : 'un envoi'} !</strong>
+        <ul>
+          {fresh.map((g) => (
+            <li key={g.id}><span className="mail-from">{g.fromName}</span> <GiftContent g={g} /></li>
+          ))}
+        </ul>
+        <p className="muted small">Déjà ajouté à votre bande : PO et cristaux au trésor, objets dans le coffre du camp.</p>
+      </div>
+      <button className="icon-btn" onClick={dismiss} aria-label="Fermer">×</button>
+    </div>
   )
 }

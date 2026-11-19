@@ -15,7 +15,10 @@ import {
 } from 'firebase/firestore'
 import type { User } from 'firebase/auth'
 import { auth, db } from './firebase'
-import { newId, withTreasury, type Crew } from './crew'
+import { getCrew, saveCrew } from './storage'
+import { newId, profileOf, withTreasury, type Crew } from './crew'
+import { addXp } from './campaign'
+import { factionById } from '../data'
 
 /**
  * Campagne de groupe : l'organisateur crée la campagne, y inscrit des joueurs (par email),
@@ -283,10 +286,18 @@ export interface Gift {
   po: number
   cristaux: number
   items: { kind: 'equipment' | 'loot'; key: string; name: string }[]
+  /** Petit mot joint à l'envoi. */
+  message?: string
+  /** Envoi du maître de campagne : reçu à la prochaine visite, même pendant une journée. */
+  admin?: boolean
+  /** Maître de campagne : objets à retirer de la bande (oubli, erreur). `from` : id du membre ou « __coffre ». */
+  remove?: { from: string; kind: 'equipment' | 'loot'; ref: string; name: string; owner: string }[]
+  /** Maître de campagne : XP à donner à des personnages (montée de niveau ensuite entre les parties). */
+  xp?: { memberId: string; name: string; amount: number }[]
   createdAt: string
   claimed: boolean
 }
-export type GiftDraft = Pick<Gift, 'to' | 'toName' | 'po' | 'cristaux' | 'items'>
+export type GiftDraft = Pick<Gift, 'to' | 'toName' | 'po' | 'cristaux' | 'items' | 'message' | 'remove' | 'xp'>
 
 const giftsCol = (id: string) => collection(database(), 'campaigns', id, 'gifts')
 export const currentEmail = () => myEmail()
@@ -317,6 +328,25 @@ export async function sendGiftsNow(c: GroupCampaign, fromName: string, gifts: Gi
   await batch.commit()
 }
 
+/** Maître de campagne : envoi à un joueur (oubli, récompense), avec n'importe quel objet du jeu. */
+export async function sendAdminGift(c: GroupCampaign, g: GiftDraft) {
+  const id = newId()
+  await setDoc(doc(giftsCol(c.id), id), {
+    ...g, id, day: c.dayNumber, from: myEmail(), fromName: 'Maître de campagne', admin: true, createdAt: new Date().toISOString(), claimed: false,
+  })
+}
+
+/** Maître de campagne : envois pas encore reçus par ce joueur. */
+export async function listPendingGiftsTo(id: string, email: string): Promise<Gift[]> {
+  const snap = await getDocs(query(giftsCol(id), where('to', '==', norm(email)), where('claimed', '==', false)))
+  return snap.docs.map((d) => d.data() as Gift).sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+}
+
+/** Maître de campagne : annule un envoi pas encore reçu. */
+export async function cancelGift(id: string, giftId: string) {
+  await deleteDoc(doc(giftsCol(id), giftId))
+}
+
 /** Joueur : historique de ses envois, reçus et envoyés, du plus récent au plus ancien. */
 export async function listMyGifts(id: string): Promise<{ received: Gift[]; sent: Gift[] }> {
   const [r, s] = await Promise.all([
@@ -342,7 +372,7 @@ export async function receiveGifts(crew: Crew, c: GroupCampaign): Promise<{ crew
   const snap = await getDocs(query(giftsCol(c.id), where('to', '==', myEmail()), where('claimed', '==', false)))
   const done = new Set(crew.campaign.receivedGifts ?? [])
   // Reçu quand sa journée est clôturée ; un envoi fait entre deux journées est reçu tout de suite.
-  const closed = (g: Gift) => g.day < c.dayNumber || (g.day === c.dayNumber && !isOpen(c.dayStatus))
+  const closed = (g: Gift) => !!g.admin || g.day < c.dayNumber || (g.day === c.dayNumber && !isOpen(c.dayStatus))
   const gifts = snap.docs.map((d) => d.data() as Gift).filter((g) => closed(g) && !done.has(g.id))
   if (!gifts.length) return null
   let next: Crew = crew
@@ -360,10 +390,71 @@ export async function receiveGifts(crew: Crew, c: GroupCampaign): Promise<{ crew
         },
       },
     }
-    const label = `Envoi de ${g.fromName} (journée ${g.day})${g.items.length ? ` : ${g.items.map((i) => i.name).join(', ')} au coffre` : ''}`
+    // Retraits demandés par le maître de campagne (un objet déjà parti est simplement ignoré).
+    for (const r of g.remove ?? []) {
+      const camp2 = next.campaign!
+      if (r.from === '__coffre') {
+        const st = camp2.stock ?? { equipment: [], loot: [] }
+        const i = r.kind === 'loot' ? -1 : st.equipment.indexOf(r.ref)
+        next = {
+          ...next,
+          campaign: {
+            ...camp2,
+            stock: r.kind === 'loot' ? { ...st, loot: st.loot.filter((l) => l.id !== r.ref) } : { ...st, equipment: st.equipment.filter((_, j) => j !== i) },
+          },
+        }
+      } else {
+        next = {
+          ...next,
+          members: next.members.map((m) => {
+            if (m.id !== r.from) return m
+            if (r.kind === 'loot') return { ...m, loot: (m.loot ?? []).filter((l) => l.id !== r.ref) }
+            const i = m.equipment.findIndex((e) => e.itemId === r.ref)
+            return i >= 0 ? { ...m, equipment: m.equipment.filter((_, j) => j !== i) } : m
+          }),
+        }
+      }
+    }
+    // XP donnée par le maître de campagne (les figurines qui n'apprennent rien n'en gagnent pas).
+    const faction = factionById(next.factionId)
+    for (const x of g.xp ?? []) {
+      next = {
+        ...next,
+        members: next.members.map((m) => {
+          const p = m.id === x.memberId ? profileOf(faction, m) : undefined
+          return p ? addXp(p, m, x.amount) : m
+        }),
+      }
+    }
+    const removed = (g.remove ?? []).length ? ` ; retiré : ${g.remove!.map((r) => r.name).join(', ')}` : ''
+    const gainedXp = (g.xp ?? []).length ? ` ; XP : ${g.xp!.map((x) => `${x.name} +${x.amount}`).join(', ')}` : ''
+    const label = `Envoi de ${g.fromName} (journée ${g.day})${g.items.length ? ` : ${g.items.map((i) => i.name).join(', ')} au coffre` : ''}${removed}${gainedXp}`
     next = withTreasury(next, { po: g.po, cristaux: g.cristaux }, label)
   }
   return { crew: next, gifts }
+}
+
+/**
+ * Charge une bande en y ajoutant d'abord les envois qui lui sont destinés (PO, cristaux, objets, XP) :
+ * dès qu'un joueur ouvre sa bande, où que ce soit, ce qu'on lui a envoyé est déjà dedans.
+ */
+export async function loadCrewWithGifts(id: string): Promise<Crew | null> {
+  const crew = await getCrew(id)
+  if (!crew?.groupCampaign || !crew.campaign || !db || !auth?.currentUser) return crew
+  try {
+    const c = await getCampaign(crew.groupCampaign.id)
+    if (!c) return crew
+    // Seulement sa propre bande inscrite (l'organisateur consulte aussi celles des autres).
+    const entry = await getMyEntry(c.id)
+    if (entry?.crewId !== crew.id) return crew
+    const res = await receiveGifts(crew, c)
+    if (!res) return crew
+    const saved = await saveCrew(res.crew)
+    await markGiftsReceived(c.id, res.gifts.map((g) => g.id))
+    return saved
+  } catch {
+    return crew
+  }
 }
 
 /** Joueur : marque ses envois comme reçus (après avoir enregistré sa bande). */

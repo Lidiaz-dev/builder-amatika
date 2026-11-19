@@ -535,16 +535,30 @@ export default function AfterBattlePage() {
       members: kept,
       campaign: { ...draft!.campaign!, stock, games: [...draft!.campaign!.games, game], currentGame: undefined },
     }
+    // La bande ne doit pas avoir changé ailleurs depuis le début du rapport (onglet resté ouvert, autre appareil).
+    const current = await getCrew(final.id).catch(() => null)
+    if (current && current.updatedAt !== original!.updatedAt) {
+      setSaving(false)
+      alert("La bande a été modifiée ailleurs pendant le rapport (autre onglet ou autre appareil). Le rapport n'est pas enregistré, pour ne rien écraser : rechargez la page pour le reprendre.")
+      return
+    }
     // Envois aux autres joueurs d'abord (reçus à la clôture de la journée) : s'ils sont refusés,
     // le rapport n'est pas enregistré et rien n'est perdu.
     try {
-      await sendGifts(final, gifts.map(({ to, toName, po, cristaux, items }) => ({ to, toName, po, cristaux, items })))
+      await sendGifts(final, gifts.map(({ to, toName, po, cristaux, items, message }) => ({ to, toName, po, cristaux, items, ...(message ? { message } : {}) })))
     } catch (err) {
       setSaving(false)
       alert(`Les envois aux autres joueurs ont été refusés (${(err as Error).message}). Le rapport n'est pas enregistré : réessayez, ou retirez les envois à l'étape Commerce.`)
       return
     }
-    await saveCrew(final)
+    try {
+      // La bande ne doit pas avoir changé ailleurs depuis le début du rapport (sinon on écraserait ces changements).
+      await saveCrew(final, original!.updatedAt)
+    } catch (err) {
+      setSaving(false)
+      alert(`${(err as Error).message}\n\nLe rapport n'a pas pu être enregistré : la bande a été modifiée ailleurs pendant le rapport. Rechargez la page pour le reprendre.`)
+      return
+    }
     // Phase de nuit : ce bilan devient le rapport de fin de nuit de la bande.
     await submitSheetIfNeeded(final, allLines).catch(() => false)
     clearLockedPrefix(`${final.id}:g${original!.campaign!.games.length}`)

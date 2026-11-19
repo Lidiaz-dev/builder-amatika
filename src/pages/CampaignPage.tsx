@@ -36,6 +36,7 @@ import VerifyEmailNotice from '../components/VerifyEmailNotice'
 import CampaignCrewPanel from '../components/CampaignCrewPanel'
 import NumberInput from '../components/NumberInput'
 import CardsToRemovePanel from '../components/CardsToRemovePanel'
+import AdminGiftPanel from '../components/AdminGiftPanel'
 import { DEFAULT_BUDGET } from '../lib/crew'
 
 export default function CampaignPage() {
@@ -182,7 +183,7 @@ export default function CampaignPage() {
           {!both && <h2 className="zone-title">⚔ Mon espace joueur</h2>}
           <MyCrewPanel campaign={campaign} entry={myEntry} day={day} locked={dayOpen && !!day?.participants.includes(me)} onChanged={load} />
           {entries.length > 0 && <ParticipantsPanel campaign={campaign} entries={entries} day={day} />}
-          <DaysList days={days} me={me} player={player} />
+          <DaysList campaignId={campaign.id} days={days} me={me} player={player} />
         </div>
       )}
 
@@ -228,8 +229,9 @@ Préparation pas encore validée : ${names}.` : ''
               run(() => removePlayer(campaign.id, email))
             }
           />
+          <AdminGiftPanel campaign={campaign} entries={entries} />
           <CardsToRemovePanel entries={entries} />
-          <DaysList days={days} me={me} player={false} />
+          <DaysList campaignId={campaign.id} days={days} me={me} player={false} />
           <p className="danger-zone">
           <button
             className="btn danger small"
@@ -246,22 +248,57 @@ Préparation pas encore validée : ${names}.` : ''
   )
 }
 
-/** Historique des journées de la campagne. */
-function DaysList({ days, me, player }: { days: Day[]; me: string; player: boolean }) {
+/** Historique des journées de la campagne, avec les rapports de fin de nuit de chaque journée. */
+function DaysList({ campaignId, days, me, player }: { campaignId: string; days: Day[]; me: string; player: boolean }) {
   return (
     <section className="card campaign-days">
       <h2>Journées</h2>
       {days.length === 0 && <p className="muted">Aucune journée pour le moment.</p>}
       <ul className="plain-list">
-        {days.map((d) => (
+        {[...days].reverse().map((d) => (
           <li key={d.number}>
-            <strong>Journée {d.number}</strong> · {DAY_STATUS_LABELS[d.status]} · {d.participants.length} bande{d.participants.length > 1 ? 's' : ''}
-            {d.createdAt && <span className="muted small"> · créée le {new Date(d.createdAt).toLocaleDateString('fr-FR')}</span>}
-            {player && d.participants.includes(me) && <span className="badge">Vous avez participé</span>}
+            <div>
+              <strong>Journée {d.number}</strong> · {DAY_STATUS_LABELS[d.status]} · {d.participants.length} bande{d.participants.length > 1 ? 's' : ''}
+              {d.createdAt && <span className="muted small"> · créée le {new Date(d.createdAt).toLocaleDateString('fr-FR')}</span>}
+              {player && d.participants.includes(me) && <span className="badge">Vous avez participé</span>}
+            </div>
+            {(d.status === 'nuit' || d.status === 'cloturee') && <DayReports campaignId={campaignId} day={d.number} />}
           </li>
         ))}
       </ul>
     </section>
+  )
+}
+
+/** Rapports de fin de nuit d'une journée, chargés à l'ouverture. */
+function DayReports({ campaignId, day }: { campaignId: string; day: number }) {
+  const [sheets, setSheets] = useState<Sheet[] | null>(null)
+  const [error, setError] = useState('')
+  return (
+    <details
+      className="day-reports"
+      onToggle={(e) => {
+        if ((e.target as HTMLDetailsElement).open && sheets === null) {
+          listSheets(campaignId, day)
+            .then((all) => setSheets(all.sort((a, b) => a.validatedAt.localeCompare(b.validatedAt))))
+            .catch((err) => setError((err as Error).message))
+        }
+      }}
+    >
+      <summary className="small">Voir les rapports</summary>
+      {error && <p className="error small">{error}</p>}
+      {!error && sheets === null && <p className="muted small">Chargement…</p>}
+      {sheets?.length === 0 && <p className="muted small">Aucun rapport rendu pour cette journée.</p>}
+      {sheets?.map((r) => (
+        <article key={r.email} className="day-report">
+          <header>
+            <strong>{r.crewName}</strong>
+            <span className="muted small">{r.pseudo ? `${r.pseudo} · ` : ''}rendu le {new Date(r.validatedAt).toLocaleDateString('fr-FR')}</span>
+          </header>
+          {r.lines.length ? <ul className="small">{r.lines.map((l, i) => <li key={i}>{l}</li>)}</ul> : <p className="muted small">Rien à signaler.</p>}
+        </article>
+      ))}
+    </details>
   )
 }
 
@@ -406,6 +443,7 @@ function DayPanel({ campaign, day, entries, sheets, gifts, busy, onCreate, onLau
             {gifts.map((g) => (
               <li key={g.id}>
                 {who(g.from)} → {g.toName} : {[g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} cristal(aux)` : '', ...g.items.map((i) => i.name)].filter(Boolean).join(', ')}
+                {g.message ? <em className="gift-message"> « {g.message} »</em> : null}
                 {g.claimed ? ' ✓ reçu' : ''}
               </li>
             ))}

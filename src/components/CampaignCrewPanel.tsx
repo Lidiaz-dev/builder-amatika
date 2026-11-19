@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { factionById } from '../data'
 import { memberTitle, abandonGame, activeMembers, crewPath, withoutUndo, emptyStock, withTreasury, crewCost, MAX_ON_TABLE, newId, profileOf, type Crew } from '../lib/crew'
 import { useAuth } from '../lib/auth'
-import { sendGiftsNow, markGiftsReceived, receiveGifts, type Gift, getMySheet, isAdmin, isDayReady, isOpen, joinDay, registerCrew, setDayReady, type Day, type GroupCampaign, type Sheet } from '../lib/groupCampaign'
-import { getCrew, saveCrew } from '../lib/storage'
+import { sendGiftsNow, getMySheet, isAdmin, isDayReady, isOpen, joinDay, registerCrew, setDayReady, type Day, type GroupCampaign, type Sheet, loadCrewWithGifts } from '../lib/groupCampaign'
+import { saveCrew, StaleCrewError } from '../lib/storage'
 import { isLegal, validateCrew } from '../lib/validate'
 import LiveGamePanel from './LiveGamePanel'
 import Mailbox, { MailNotice } from './Mailbox'
@@ -40,33 +40,39 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
   const open = !!day && isOpen(day.status)
   const joined = open && !!day?.participants.includes(email)
 
-  const [received, setReceived] = useState<Gift[]>([])
   const [mailRefresh, setMailRefresh] = useState(0)
 
-  useEffect(() => {
-    getCrew(crewId).then(setCrew).catch(() => setCrew(null))
-  }, [crewId])
-
-  // Envois des autres joueurs (phase Commerce) : reçus une fois leur journée clôturée.
-  const hasCampaign = !!crew?.campaign
-  useEffect(() => {
-    if (!hasCampaign) return
-    let cancelled = false
-    getCrew(crewId)
-      .then(async (fresh) => {
-        if (!fresh || cancelled) return
-        const res = await receiveGifts(fresh, campaign)
-        if (!res || cancelled) return
-        const saved = await saveCrew(res.crew)
-        await markGiftsReceived(campaign.id, res.gifts.map((g) => g.id))
-        if (cancelled) return
+  // Les envois reçus sont ajoutés à la bande dès son chargement.
+  const first = useRef(true)
+  // Version de la bande sur laquelle on travaille : un enregistrement ne peut pas écraser une version plus récente.
+  const base = useRef<string | undefined>(undefined)
+  const reloadCrew = useCallback(() => {
+    loadCrewWithGifts(crewId)
+      .then((c) => {
+        base.current = c?.updatedAt
         first.current = true
-        setCrew(saved)
-        setReceived(res.gifts)
+        setCrew(c)
       })
-      .catch(() => {})
-    return () => { cancelled = true }
-  }, [hasCampaign, crewId, campaign])
+      .catch(() => setCrew(null))
+  }, [crewId])
+  useEffect(() => reloadCrew(), [reloadCrew])
+  /** Enregistre la bande ; si elle a changé ailleurs, on la recharge au lieu de l'écraser. */
+  const persist = useCallback(
+    async (c: Crew) => {
+      try {
+        const saved = await saveCrew(c, base.current)
+        base.current = saved.updatedAt
+        return saved
+      } catch (e) {
+        if (e instanceof StaleCrewError) {
+          setError(e.message)
+          reloadCrew()
+        }
+        throw e
+      }
+    },
+    [reloadCrew],
+  )
   useEffect(() => {
     if (joined && day?.status === 'nuit') getMySheet(campaign.id, day.number).then(setSheet).catch(() => setSheet(null))
   }, [joined, day, campaign.id])
@@ -74,7 +80,6 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
   // Sauvegarde automatique (préparation, partie en direct), 600 ms après la dernière modification.
   const latest = useRef<Crew | null>(null)
   const dirty = useRef(false)
-  const first = useRef(true)
   useEffect(() => {
     if (!crew) return
     latest.current = crew
@@ -85,12 +90,12 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
     dirty.current = true
     const t = setTimeout(() => {
       dirty.current = false
-      saveCrew(crew).catch((e) => setError(e.message))
+      persist(crew).catch((e) => setError(e.message))
     }, 600)
     return () => clearTimeout(t)
-  }, [crew])
+  }, [crew, persist])
   useEffect(() => () => {
-    if (dirty.current && latest.current) void saveCrew(latest.current)
+    if (dirty.current && latest.current) void saveCrew(latest.current, base.current).catch(() => {})
   }, [])
 
   // Journée annulée (ou bande retirée de la journée) : la partie en cours est abandonnée d'office.
@@ -120,7 +125,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
   }, [crew, joined, day, campaign])
 
   async function saveThenGo(path: string) {
-    if (latest.current) await saveCrew(latest.current)
+    if (latest.current) await persist(latest.current)
     dirty.current = false
     navigate(path)
   }
@@ -167,7 +172,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
             const now = new Date().toISOString()
             const started: Crew = { ...crew, campaign: { startedAt: now, po: gold, cristaux: 0, prestige: 0, games: [], log: [{ date: now, label: 'Début de la campagne', po: gold }] } }
             act(async () => {
-              const saved = await saveCrew(started)
+              const saved = await persist(started)
               await registerCrew(campaign.id, saved)
               setCrew(saved)
             })
@@ -194,10 +199,10 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
         <span>Trésor {c.po} PO · {c.cristaux} cristaux · {c.prestige} prestige · {activeMembers(crew).length} membres · {c.games.length} partie{c.games.length > 1 ? 's' : ''}</span>
         <span className="row">
           <button className="btn small" onClick={() => setStockOpen(true)} data-tip="Objets rangés au camp.">Coffre ({stock.equipment.length + stock.loot.length})</button>
-          <Mailbox campaign={campaign} refresh={mailRefresh + received.length} />
+          <Mailbox campaign={campaign} refresh={mailRefresh} />
         </span>
       </div>
-      <MailNotice fresh={received} onDismiss={() => setReceived([])} />
+      <MailNotice campaignId={campaign.id} />
       <Modal open={stockOpen} title="Coffre du camp" kicker={crew.name} onClose={() => setStockOpen(false)} wide>
         <CampStockPanel
           faction={faction}
@@ -254,8 +259,8 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
                   act(async () => {
                     const res = applyGifts(crew, plannedGifts, 'Commerce')
                     // L'envoi d'abord : s'il est refusé, rien n'est retiré de la bande.
-                    await sendGiftsNow(campaign, crew.name || 'Bande sans nom', plannedGifts.map(({ to, toName, po, cristaux, items }) => ({ to, toName, po, cristaux, items })))
-                    const saved = await saveCrew(res.crew)
+                    await sendGiftsNow(campaign, crew.name || 'Bande sans nom', plannedGifts.map(({ to, toName, po, cristaux, items, message }) => ({ to, toName, po, cristaux, items, ...(message ? { message } : {}) })))
+                    const saved = await persist(res.crew)
                     first.current = true
                     setCrew(saved)
                     setPlannedGifts([])
@@ -344,7 +349,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
                 onClick={() => act(async () => {
                   if (dirty.current && latest.current) {
                     dirty.current = false
-                    await saveCrew(latest.current)
+                    await persist(latest.current)
                   }
                   await setDayReady(campaign, true)
                 })}

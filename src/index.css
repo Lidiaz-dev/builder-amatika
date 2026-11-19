@@ -1448,3 +1448,33 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .mail-list li.pending { opacity: 0.85; }
 .mail-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.6rem; }
 .mail-head .badge { margin-left: auto; }
+
+/* Message joint à un envoi */
+.gift-message { flex-basis: 100%; font-style: italic; color: var(--ink-title); }
+q.gift-message { quotes: '« ' ' »'; }
+
+/* Rapports de fin de nuit par journée */
+.campaign-days li { display: flex; flex-direction: column; gap: 0.3rem; }
+.day-reports > summary { cursor: pointer; color: var(--accent); }
+.day-report { border-left: 3px solid var(--border-strong); padding: 0.3rem 0 0.3rem 0.7rem; margin: 0.5rem 0; }
+.day-report header { display: flex; flex-wrap: wrap; gap: 0.3rem 0.6rem; align-items: baseline; }
+.day-report ul { margin: 0.3rem 0 0; padding-left: 1.1rem; }
+
+/* Maître de campagne : envoi à un joueur */
+.admin-gift > summary h2 { display: inline; font-size: 1.05rem; }
+.admin-gift-form { gap: 0.8rem; margin-top: 0.6rem; }
+.admin-gift-picker { border: 1px dashed var(--border); border-radius: var(--radius); padding: 0.6rem; }
+.admin-gift textarea { width: 100%; }
+
+.tag.remove-item.on { background: var(--ko-soft); border-color: var(--ko); color: var(--ko); text-decoration: line-through; }
+.remove-check { color: var(--ko); font-weight: 700; }
+.gift-removed { font-family: var(--display); font-weight: 700; color: var(--ko); padding: 0.05rem 0.45rem; border: 1px solid var(--ko); border-radius: 3px; background: var(--ko-soft); }
+/* Donner / retirer (maître de campagne) */
+.admin-gift h2 { font-size: 1.05rem; }
+.admin-part { border: 1px solid var(--border); border-radius: var(--radius); margin-top: 0.6rem; padding: 0.4rem 0.8rem; background: rgb(255 248 228 / 0.4); }
+.admin-part > summary { cursor: pointer; font-family: var(--display); font-weight: 700; padding: 0.2rem 0; }
+.admin-part.give > summary { color: var(--ok); }
+.admin-part.remove > summary { color: var(--ko); }
+.admin-pending li { padding: 0.3rem 0; border-bottom: 1px dashed var(--border); }
+
+.admin-xp li { padding: 0.25rem 0; border-bottom: 1px dashed var(--border); }

@@ -1,0 +1,331 @@
+import { useCallback, useEffect, useState } from 'react'
+import { equipmentById, factionById, itemByKey } from '../data'
+import { isActive, memberTitle, type Crew } from '../lib/crew'
+import { cancelGift, listPendingGiftsTo, sendAdminGift, type Entry, type Gift, type GiftDraft, type GroupCampaign } from '../lib/groupCampaign'
+import { getCrew } from '../lib/storage'
+import LootPicker, { type LootPick } from './LootPicker'
+import NumberInput from './NumberInput'
+import ItemChip from './ItemChip'
+import RarityDot from './RarityDot'
+
+type Players = Entry[]
+
+/** Choix du joueur (aucun présélectionné). */
+function PlayerSelect({ players, value, onChange }: { players: Players; value: string; onChange: (v: string) => void }) {
+  return (
+    <label className="field">
+      <span>Joueur</span>
+      <select value={value} onChange={(e) => onChange(e.target.value)}>
+        <option value="">Choisir un joueur…</option>
+        {players.map((p) => <option key={p.email} value={p.email}>{p.pseudo || p.email} · {p.crewName}</option>)}
+      </select>
+    </label>
+  )
+}
+
+const label = (p: Entry) => `${p.pseudo || 'Joueur'} (${p.crewName ?? 'bande'})`
+
+/**
+ * Maître de campagne : donner ou retirer des PO, des cristaux et des objets à un joueur
+ * (oubli, erreur, récompense). Appliqué à la prochaine visite du joueur, même pendant une journée.
+ */
+export default function AdminGiftPanel({ campaign, entries }: { campaign: GroupCampaign; entries: Entry[] }) {
+  const players = entries.filter((e) => e.crewId)
+  if (players.length === 0) {
+    return (
+      <section className="card admin-gift">
+        <h2>Donner ou retirer à un joueur</h2>
+        <p className="muted">Aucun joueur avec une bande.</p>
+      </section>
+    )
+  }
+  return (
+    <section className="card admin-gift">
+      <h2>Donner ou retirer à un joueur</h2>
+      <p className="muted small">
+        Pour corriger un oubli ou une erreur. Appliqué à la bande du joueur dès qu'il l'ouvre, même pendant une journée.
+      </p>
+      <GivePart campaign={campaign} players={players} />
+      <RemovePart campaign={campaign} players={players} />
+    </section>
+  )
+}
+
+/** Donner : PO, cristaux et n'importe quel objet du jeu (au coffre du camp). */
+function GivePart({ campaign, players }: { campaign: GroupCampaign; players: Players }) {
+  const [to, setTo] = useState('')
+  const [po, setPo] = useState(0)
+  const [cristaux, setCristaux] = useState(0)
+  const [items, setItems] = useState<GiftDraft['items']>([])
+  const [xp, setXp] = useState<NonNullable<GiftDraft['xp']>>([])
+  const [xpMember, setXpMember] = useState('')
+  const [xpAmount, setXpAmount] = useState(0)
+  const [message, setMessage] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [done, setDone] = useState('')
+  const [error, setError] = useState('')
+  const target = players.find((p) => p.email === to)
+  // Bande du joueur : pour choisir à quel personnage donner de l'XP.
+  const [crew, setCrew] = useState<Crew | null>(null)
+  useEffect(() => {
+    setCrew(null)
+    setXp([])
+    setXpMember('')
+    if (target?.crewId) getCrew(target.crewId).then(setCrew).catch(() => setCrew(null))
+  }, [target?.crewId])
+  const faction = crew ? factionById(crew.factionId) : undefined
+  const members = crew ? crew.members.filter(isActive) : []
+  const add = (pick: LootPick) => {
+    if (pick.kind === 'loot') setItems((l) => [...l, { kind: 'loot', key: pick.key, name: itemByKey(pick.key)?.name ?? pick.key }])
+    else setItems((l) => [...l, { kind: 'equipment', key: pick.itemId, name: equipmentById(pick.itemId)?.name ?? pick.itemId }])
+  }
+  const canSend = !!target && (po > 0 || cristaux > 0 || items.length > 0 || xp.length > 0) && !busy
+
+  const send = async () => {
+    if (!target) return
+    const detail = [po ? `${po} PO` : '', cristaux ? `${cristaux} cristal(aux)` : '', ...items.map((i) => i.name), ...xp.map((x) => `${x.name} +${x.amount} XP`)].filter(Boolean).join(', ')
+    if (!confirm(`Donner à ${label(target)} : ${detail} ?\n\nAjouté à sa bande dès qu'il l'ouvre.`)) return
+    setBusy(true)
+    setError('')
+    try {
+      await sendAdminGift(campaign, { to: target.email, toName: label(target), po, cristaux, items, ...(xp.length ? { xp } : {}), ...(message.trim() ? { message: message.trim() } : {}) })
+      setDone(`Donné à ${label(target)} : ${detail}. Ajouté à sa bande dès qu'il l'ouvre.`)
+      setPo(0)
+      setCristaux(0)
+      setItems([])
+      setXp([])
+      setMessage('')
+    } catch (err) {
+      setError((err as Error).message)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <details className="admin-part give">
+      <summary>➕ Donner</summary>
+      <div className="stack admin-gift-form">
+        <div className="row wrap">
+          <PlayerSelect players={players} value={to} onChange={(v) => { setTo(v); setDone('') }} />
+          <div className="field narrow"><span>PO</span><NumberInput label="PO à donner" min={0} step={5} value={po} onChange={setPo} /></div>
+          <div className="field narrow"><span>Cristaux</span><NumberInput label="Cristaux à donner" min={0} value={cristaux} onChange={setCristaux} /></div>
+        </div>
+        <div className="field">
+          <span>Objets (n'importe quel objet du jeu, rangé au coffre du camp)</span>
+          {items.length > 0 && (
+            <span className="tags">
+              {items.map((i, k) => (
+                <ItemChip
+                  key={k}
+                  equipmentId={i.kind === 'equipment' ? i.key : undefined}
+                  lootKey={i.kind === 'loot' ? i.key : undefined}
+                  after={<button className="tag-remove" onClick={() => setItems((l) => l.filter((_, j) => j !== k))} aria-label={`Retirer ${i.name}`}>×</button>}
+                />
+              ))}
+            </span>
+          )}
+          <div className="admin-gift-picker"><LootPicker allowedEquipment={null} foundOnly onPick={add} /></div>
+        </div>
+        {target && (
+          <div className="field">
+            <span>Expérience (le joueur fera ensuite la montée de niveau depuis sa bande, entre les parties)</span>
+            {xp.length > 0 && (
+              <ul className="plain-list admin-xp">
+                {xp.map((x, k) => (
+                  <li key={k} className="row between">
+                    <span><strong>{x.name}</strong> : +{x.amount} XP</span>
+                    <button className="icon-btn drop-btn" onClick={() => setXp((l) => l.filter((_, j) => j !== k))} aria-label="Retirer">×</button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {!crew ? (
+              <span className="muted small">Chargement de la bande…</span>
+            ) : (
+              <div className="row wrap">
+                <select value={xpMember} onChange={(e) => setXpMember(e.target.value)} aria-label="Personnage">
+                  <option value="">Choisir un personnage…</option>
+                  {members.map((m) => <option key={m.id} value={m.id}>{memberTitle(faction, m)} · {m.xp} XP</option>)}
+                </select>
+                <NumberInput label="XP à donner" min={0} value={xpAmount} onChange={setXpAmount} />
+                <button
+                  type="button"
+                  className="btn small"
+                  disabled={!xpMember || xpAmount <= 0}
+                  onClick={() => {
+                    const m = members.find((x) => x.id === xpMember)
+                    if (!m) return
+                    setXp((l) => [...l, { memberId: m.id, name: memberTitle(faction, m), amount: xpAmount }])
+                    setXpAmount(0)
+                    setXpMember('')
+                  }}
+                >
+                  + Ajouter
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+        <label className="field">
+          <span>Message (facultatif)</span>
+          <textarea value={message} onChange={(e) => setMessage(e.target.value)} maxLength={200} rows={2} placeholder="Ex. : oubli de la journée 3, le casque trouvé dans les ruines." />
+        </label>
+        {error && <p className="error">{error}</p>}
+        {done && <p className="notice ok-notice small">{done}</p>}
+        <div className="row">
+          <button className="btn primary" style={{ marginLeft: 'auto' }} disabled={!canSend} onClick={send}>Donner{target ? ` à ${target.pseudo || 'ce joueur'}` : ''}</button>
+        </div>
+      </div>
+    </details>
+  )
+}
+
+/**
+ * Retirer : PO, cristaux et objets de la bande du joueur (rechargée à chaque ouverture),
+ * et annulation des envois pas encore ajoutés à sa bande.
+ */
+function RemovePart({ campaign, players }: { campaign: GroupCampaign; players: Players }) {
+  const [to, setTo] = useState('')
+  const [crew, setCrew] = useState<Crew | null | undefined>(undefined)
+  const [pending, setPending] = useState<Gift[]>([])
+  const [po, setPo] = useState(0)
+  const [cristaux, setCristaux] = useState(0)
+  const [picked, setPicked] = useState<string[]>([])
+  const [message, setMessage] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [done, setDone] = useState('')
+  const [error, setError] = useState('')
+  const target = players.find((p) => p.email === to)
+
+  const reload = useCallback(() => {
+    setPicked([])
+    if (!target?.crewId) {
+      setCrew(undefined)
+      setPending([])
+      return
+    }
+    setCrew(null)
+    getCrew(target.crewId).then((c) => setCrew(c)).catch(() => setCrew(undefined))
+    listPendingGiftsTo(campaign.id, target.email).then(setPending).catch(() => setPending([]))
+  }, [target?.crewId, target?.email, campaign.id])
+  useEffect(() => reload(), [reload])
+
+  const faction = crew ? factionById(crew.factionId) : undefined
+  const owned: { uid: string; from: string; kind: 'equipment' | 'loot'; ref: string; key: string; name: string; owner: string }[] = []
+  if (crew) {
+    for (const m of crew.members.filter(isActive)) {
+      m.equipment.forEach((r, i) => owned.push({ uid: `${m.id}|e|${r.itemId}|${i}`, from: m.id, kind: 'equipment', ref: r.itemId, key: r.itemId, name: equipmentById(r.itemId)?.name ?? r.itemId, owner: memberTitle(faction, m) }))
+      for (const l of m.loot ?? []) owned.push({ uid: `${m.id}|l|${l.id}`, from: m.id, kind: 'loot', ref: l.id, key: l.key, name: itemByKey(l.key)?.name ?? l.key, owner: memberTitle(faction, m) })
+    }
+    ;(crew.campaign?.stock?.equipment ?? []).forEach((id, i) => owned.push({ uid: `c|e|${id}|${i}`, from: '__coffre', kind: 'equipment', ref: id, key: id, name: equipmentById(id)?.name ?? id, owner: 'coffre' }))
+    for (const l of crew.campaign?.stock?.loot ?? []) owned.push({ uid: `c|l|${l.id}`, from: '__coffre', kind: 'loot', ref: l.id, key: l.key, name: itemByKey(l.key)?.name ?? l.key, owner: 'coffre' })
+  }
+  const toRemove = owned.filter((o) => picked.includes(o.uid))
+  const canSend = !!target && (po > 0 || cristaux > 0 || toRemove.length > 0) && !busy
+
+  const send = async () => {
+    if (!target) return
+    const detail = [po ? `${po} PO` : '', cristaux ? `${cristaux} cristal(aux)` : '', ...toRemove.map((r) => `${r.name} (${r.owner})`)].filter(Boolean).join(', ')
+    if (!confirm(`Retirer à ${label(target)} : ${detail} ?\n\nAppliqué à sa bande dès qu'il l'ouvre.`)) return
+    setBusy(true)
+    setError('')
+    try {
+      await sendAdminGift(campaign, {
+        to: target.email,
+        toName: label(target),
+        po: -po,
+        cristaux: -cristaux,
+        items: [],
+        remove: toRemove.map(({ from, kind, ref, name, owner }) => ({ from, kind, ref, name, owner })),
+        ...(message.trim() ? { message: message.trim() } : {}),
+      })
+      setDone(`Retrait demandé à ${label(target)} : ${detail}. Appliqué dès qu'il ouvre sa bande.`)
+      setPo(0)
+      setCristaux(0)
+      setMessage('')
+      reload()
+    } catch (err) {
+      setError((err as Error).message)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <details className="admin-part remove" onToggle={(e) => (e.target as HTMLDetailsElement).open && reload()}>
+      <summary>➖ Retirer</summary>
+      <div className="stack admin-gift-form">
+        <div className="row wrap">
+          <PlayerSelect players={players} value={to} onChange={(v) => { setTo(v); setDone('') }} />
+          <div className="field narrow"><span>PO à retirer{crew?.campaign ? ` (sur ${crew.campaign.po})` : ''}</span><NumberInput label="PO à retirer" min={0} step={5} value={po} onChange={setPo} /></div>
+          <div className="field narrow"><span>Cristaux à retirer{crew?.campaign ? ` (sur ${crew.campaign.cristaux})` : ''}</span><NumberInput label="Cristaux à retirer" min={0} value={cristaux} onChange={setCristaux} /></div>
+        </div>
+
+        {target && (
+          <>
+            {pending.length > 0 && (
+              <div className="field">
+                <span>Envois pas encore ajoutés à sa bande (il ne l'a pas rouverte depuis)</span>
+                <ul className="plain-list admin-pending">
+                  {pending.map((g) => (
+                    <li key={g.id} className="row wrap between">
+                      <span>
+                        <strong>{g.fromName}</strong> : {[g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} cristal(aux)` : '', ...g.items.map((i) => i.name), ...(g.remove ?? []).map((r) => `retirer ${r.name}`)].filter(Boolean).join(', ')}
+                      </span>
+                      <button
+                        className="btn small ghost danger"
+                        disabled={busy}
+                        onClick={() => confirm('Annuler cet envoi ? Il ne sera jamais reçu.') && cancelGift(campaign.id, g.id).then(reload).catch((e) => setError((e as Error).message))}
+                      >
+                        Annuler l'envoi
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className="field">
+              <span className="row wrap between">
+                Objets de sa bande (cliquez pour les retirer)
+                <button type="button" className="link-btn small" onClick={reload}>↻ Actualiser</button>
+              </span>
+              {crew === null ? (
+                <span className="muted small">Chargement de la bande…</span>
+              ) : crew === undefined ? (
+                <span className="error small">Bande introuvable.</span>
+              ) : owned.length === 0 ? (
+                <span className="muted small">Cette bande n'a aucun objet.</span>
+              ) : (
+                <span className="tags trade-items">
+                  {owned.map((o) => (
+                    <button
+                      key={o.uid}
+                      type="button"
+                      className={`tag item-chip trade-item remove-item ${picked.includes(o.uid) ? 'on' : ''}`}
+                      aria-pressed={picked.includes(o.uid)}
+                      onClick={() => setPicked((r) => (r.includes(o.uid) ? r.filter((x) => x !== o.uid) : [...r, o.uid]))}
+                    >
+                      {picked.includes(o.uid) ? <span className="remove-check">✕</span> : <RarityDot rarity={o.kind === 'loot' ? itemByKey(o.key)?.rarity ?? 'blanc' : 'blanc'} />}
+                      {o.name}
+                      <span className="trade-owner">· {o.owner}</span>
+                    </button>
+                  ))}
+                </span>
+              )}
+            </div>
+          </>
+        )}
+        <label className="field">
+          <span>Message (facultatif)</span>
+          <textarea value={message} onChange={(e) => setMessage(e.target.value)} maxLength={200} rows={2} placeholder="Ex. : épée comptée deux fois." />
+        </label>
+        {error && <p className="error">{error}</p>}
+        {done && <p className="notice ok-notice small">{done}</p>}
+        <div className="row">
+          <button className="btn primary" style={{ marginLeft: 'auto' }} disabled={!canSend} onClick={send}>Retirer{target ? ` à ${target.pseudo || 'ce joueur'}` : ''}</button>
+        </div>
+      </div>
+    </details>
+  )
+}

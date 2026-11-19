@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import CrewWelcome from '../components/CrewWelcome'
 import {
@@ -49,12 +49,14 @@ import { memberTitle,
   type CampStock,
 } from '../lib/crew'
 import {
+  applyAdvance,
+  pendingLevels,
   learnsNothing,
   levelForXp,
   nextThreshold,
 } from '../lib/campaign'
 import { randomName } from '../lib/names'
-import { deleteCrew, getCrew, saveCrew } from '../lib/storage'
+import { deleteCrew, saveCrew, StaleCrewError } from '../lib/storage'
 import { isLegal, validateCrew, type Issue } from '../lib/validate'
 import StatLine from '../components/StatLine'
 import SkillTag from '../components/SkillTag'
@@ -64,12 +66,14 @@ import RarityDot from '../components/RarityDot'
 import InfoTag from '../components/InfoTag'
 import EquipmentTag from '../components/EquipmentTag'
 import AllowedGear from '../components/AllowedGear'
+import AdvancePicker from '../components/AdvancePicker'
 import { formatMods } from '../lib/format'
 import Modal from '../components/Modal'
 import RuleText from '../components/RuleText'
-import { crewDayState, getCampaign, lockReason, type CrewDayState } from '../lib/groupCampaign'
+import { crewDayState, getCampaign, loadCrewWithGifts, lockReason, type CrewDayState } from '../lib/groupCampaign'
 import CampaignDayBanner from '../components/CampaignDayBanner'
 import CampStockPanel from '../components/CampStockPanel'
+import { MailNotice } from '../components/Mailbox'
 import NumberInput from '../components/NumberInput'
 
 const SPELL_GROUPS: { label: string; match: (s: Spell) => boolean }[] = [
@@ -106,12 +110,33 @@ export default function CrewBuilderPage() {
   const [dayState, setDayState] = useState<CrewDayState | null | undefined>(undefined)
   const firstLoad = useRef(true)
 
-  useEffect(() => {
-    getCrew(id!)
+  // Version de la bande sur laquelle on travaille : un enregistrement ne peut pas écraser une version plus récente.
+  const base = useRef<string | undefined>(undefined)
+  const reloadCrew = useCallback(() => {
+    loadCrewWithGifts(id!)
       // Noms proposés jamais modifiés : ils sont affichés comme de vrais noms (ils le deviennent à l'enregistrement).
-      .then((c) => setCrew(c && { ...c, members: c.members.map((m) => (!m.name.trim() && m.suggestedName ? { ...m, name: m.suggestedName } : m)) }))
+      .then((c) => {
+        base.current = c?.updatedAt
+        firstLoad.current = true
+        setCrew(c && { ...c, members: c.members.map((m) => (!m.name.trim() && m.suggestedName ? { ...m, name: m.suggestedName } : m)) })
+      })
       .catch(() => setCrew(null))
   }, [id])
+  useEffect(() => reloadCrew(), [reloadCrew])
+  /** Enregistre la bande ; si elle a changé ailleurs (rapport, autre onglet), on la recharge au lieu de l'écraser. */
+  const persist = useCallback(
+    async (c: Crew) => {
+      try {
+        const saved = await saveCrew(c, base.current)
+        base.current = saved.updatedAt
+        return saved
+      } catch (e) {
+        if (e instanceof StaleCrewError) reloadCrew()
+        throw e
+      }
+    },
+    [reloadCrew],
+  )
 
   const groupId = crew?.groupCampaign?.id
   const crewId = crew?.id
@@ -158,7 +183,7 @@ export default function CrewBuilderPage() {
     const t = setTimeout(() => {
       setSaveState('saving')
       dirty.current = false
-      saveCrew(crew)
+      persist(crew)
         .then(() => {
           setSaveState('saved')
           // Les noms proposés non modifiés sont devenus de vrais noms : on les affiche comme tels.
@@ -173,14 +198,14 @@ export default function CrewBuilderPage() {
         })
     }, 800)
     return () => clearTimeout(t)
-  }, [crew])
+  }, [crew, persist])
 
   // En quittant la page (ou l'onglet), on enregistre tout de suite ce qui reste en attente.
   useEffect(() => {
     const flushNow = () => {
       if (dirty.current && latest.current) {
         dirty.current = false
-        void saveCrew(latest.current)
+        void saveCrew(latest.current, base.current).catch(() => {})
       }
     }
     window.addEventListener('beforeunload', flushNow)
@@ -195,7 +220,7 @@ export default function CrewBuilderPage() {
     if (dirty.current && latest.current) {
       dirty.current = false
       setSaveState('saving')
-      await saveCrew(latest.current)
+      await persist(latest.current)
       setSaveState('saved')
     }
     navigate(path)
@@ -280,6 +305,7 @@ export default function CrewBuilderPage() {
         <span>›</span> {crew.name || 'Bande sans nom'}
       </nav>
       {dayState && <CampaignDayBanner state={dayState} lock={lock} editPath={routeLock ? crewPath(crew) : undefined} />}
+      {dayState && <MailNotice campaignId={dayState.campaign.id} />}
       {welcome && (
         <CrewWelcome
           name={crew.name.trim()}
@@ -575,7 +601,7 @@ interface MemberCardProps {
   onStock?: (stock: CampStock, member: Member) => void
 }
 
-type Dialog = 'gear' | null
+type Dialog = 'gear' | 'advance' | null
 
 /** Durée de l'animation quand un objet est vendu ou rangé au coffre. */
 const ITEM_OUT_MS = 450
@@ -855,6 +881,11 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
               </ul>
             )}
 
+            {pendingLevels(member) > 0 && (
+              <button className="btn small primary" onClick={() => setDialog('advance')} data-tip="Jet de progression pour chaque niveau gagné : caractéristique, compétence ou sort.">
+                ▲ Monter de niveau ({pendingLevels(member)})
+              </button>
+            )}
             <p className="muted small">XP, montées de niveau, blessures, morts et objets trouvés se règlent dans le rapport d'après-bataille. Les objets spéciaux s'achètent au marché noir, dans le rapport.</p>
             <p className="muted small">
               Arbres : {profile.trees.length ? profile.trees.map((t) => TREE_LABELS[t] ?? t).join(', ') : 'aucun'} · entretien{' '}
@@ -1051,6 +1082,22 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
         </button>
       </footer>
 
+      {profile && (
+        <Modal open={dialog === 'advance'} title={`Montée de niveau : ${who}`} kicker={`${pendingLevels(member)} en attente`} onClose={() => setDialog(null)} wide>
+          <AdvancePicker
+            key={member.level}
+            factionId={faction.id}
+            profile={profile}
+            member={member}
+            lockPrefix={`${member.id}:hors-partie`}
+            onApply={(input) => {
+              const updated = applyAdvance(member, input)
+              onChange(updated)
+              if (pendingLevels(updated) === 0) setDialog(null)
+            }}
+          />
+        </Modal>
+      )}
       <Modal open={dialog === 'gear'} title={`Équipement autorisé : ${profile.name}`} kicker={faction.name} onClose={() => setDialog(null)}>
         <AllowedGear profile={profile} factionId={faction.id} unrestricted={!!unrestricted} />
       </Modal>

@@ -60,10 +60,26 @@ export async function getCrew(id: string): Promise<Crew | null> {
   }
 }
 
-export async function saveCrew(crew: Crew): Promise<Crew> {
+/** La bande a été enregistrée ailleurs (autre onglet, autre appareil, rapport) depuis qu'on l'a chargée. */
+export class StaleCrewError extends Error {
+  constructor() {
+    super('La bande a été modifiée ailleurs : elle a été rechargée, refaites la dernière modification si besoin.')
+    this.name = 'StaleCrewError'
+  }
+}
+
+/**
+ * Enregistre une bande. Avec `base` (date de la version qu'on a chargée), refuse d'écraser une version
+ * plus récente enregistrée ailleurs : un onglet resté ouvert ne peut plus effacer un rapport.
+ */
+export async function saveCrew(crew: Crew, base?: string): Promise<Crew> {
   // Un nom proposé et non modifié est gardé tel quel.
   const members = crew.members.map((m) => (m.name.trim() || !m.suggestedName ? m : { ...m, name: m.suggestedName }))
   const saved = { ...crew, members, updatedAt: new Date().toISOString() }
+  if (base) {
+    const current = await getCrew(crew.id).catch(() => null)
+    if (current && current.updatedAt !== base) throw new StaleCrewError()
+  }
   if (!db) {
     writeLocal([saved, ...readLocal().filter((c) => c.id !== crew.id)])
     return saved

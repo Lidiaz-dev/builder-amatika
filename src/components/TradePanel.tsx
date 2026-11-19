@@ -24,6 +24,7 @@ export default function TradePanel({ crew, faction, campaignId, gifts, onChange,
   const [po, setPo] = useState(0)
   const [cristaux, setCristaux] = useState(0)
   const [picked, setPicked] = useState<string[]>([])
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     if (!campaignId) return
@@ -78,11 +79,13 @@ export default function TradePanel({ crew, faction, campaignId, gifts, onChange,
         po,
         cristaux,
         items: chosen.map((a) => ({ kind: a.kind, key: a.key, name: a.name })),
+        ...(message.trim() ? { message: message.trim() } : {}),
         sources: chosen.map((a) => ({ from: a.from, kind: a.kind, ref: a.ref, owner: a.owner })),
       },
     ])
     setPo(0)
     setCristaux(0)
+    setMessage('')
     setPicked([])
   }
 
@@ -131,6 +134,10 @@ export default function TradePanel({ crew, faction, campaignId, gifts, onChange,
               </span>
             )}
           </div>
+          <label className="field">
+            <span>Message (facultatif)</span>
+            <textarea value={message} onChange={(e) => setMessage(e.target.value)} maxLength={200} rows={2} placeholder="Un petit mot pour accompagner l'envoi…" />
+          </label>
           <div className="row">
             <button type="button" className="btn primary" disabled={!canSend} onClick={send} style={{ marginLeft: 'auto' }}>
               Préparer l'envoi{target ? ` à ${target.pseudo || 'ce joueur'}` : ''}
@@ -144,7 +151,7 @@ export default function TradePanel({ crew, faction, campaignId, gifts, onChange,
           <ul className="plain-list trade-list">
             {gifts.map((g, i) => (
               <li key={i} className="row wrap between">
-                <span><strong>{g.toName}</strong> : {plannedText(g)}</span>
+                <span><strong>{g.toName}</strong> : {plannedText(g)}{g.message && <em className="gift-message"> « {g.message} »</em>}</span>
                 <button className="icon-btn drop-btn" onClick={() => onChange(gifts.filter((_, j) => j !== i))} aria-label="Annuler cet envoi" data-tip="Annuler cet envoi">×</button>
               </li>
             ))}

@@ -62,11 +62,15 @@ service cloud.firestore {
       // une fois la journée clôturée (il ne peut que les marquer comme reçus).
       match /gifts/{gid} {
         allow read: if isAdmin() || (verified() && (resource.data.to == myEmail() || resource.data.from == myEmail()));
-        allow create: if isPlayer(cid)
+        allow create: if (isPlayer(cid) || isAdmin())
           && request.resource.data.from == myEmail()
           && request.resource.data.to in campaign(cid).emails
           && request.resource.data.to != myEmail()
-          && request.resource.data.claimed == false;
+          && request.resource.data.claimed == false
+          // Seul le maître de campagne peut marquer un envoi « admin » (reçu tout de suite).
+          && (request.resource.data.get('admin', false) == false || isAdmin())
+          && (request.resource.data.get('remove', []).size() == 0 || isAdmin())
+          && (request.resource.data.get('xp', []).size() == 0 || isAdmin());
         allow update: if verified() && resource.data.to == myEmail()
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['claimed'])
           && request.resource.data.claimed == true;
@@ -87,7 +91,8 @@ service cloud.firestore {
             && (!(myEmail() in request.resource.data.get('ready', [])) || myEmail() in request.resource.data.participants));
 
         match /sheets/{email} {
-          allow read: if isAdmin() || (verified() && email == myEmail());
+          // Les rapports de fin de nuit sont consultables par tous les joueurs de la campagne (suivi).
+          allow read: if isAdmin() || isPlayer(cid);
           allow delete: if isAdmin();
           allow create, update: if isPlayer(cid)
             && email == myEmail()

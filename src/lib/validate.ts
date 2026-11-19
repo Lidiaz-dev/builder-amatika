@@ -22,6 +22,44 @@ export interface Issue {
   memberId?: string
 }
 
+type GearSlot = 'melee' | 'ranged' | 'armor' | 'shield' | 'helmet' | 'gloves' | 'hat' | 'shoes' | 'talisman'
+
+interface Gear {
+  name: string
+  slot: GearSlot
+  hands: number
+  exclusiveMelee: boolean
+  shieldVsShots: boolean
+}
+
+/** Catégories d'objets de trésor / marché noir, rangées comme l'équipement commun. */
+const LOOT_SLOTS: Record<string, GearSlot> = {
+  dagues: 'melee', batons: 'melee', 'marteaux-et-massues': 'melee', 'marteaux-lourds': 'melee', haches: 'melee',
+  'haches-lourdes': 'melee', epees: 'melee', 'epees-lourdes': 'melee', morgenstern: 'melee', fleaux: 'melee',
+  hallebardes: 'melee', lances: 'melee',
+  'arcs-courts': 'ranged', arcs: 'ranged', 'arcs-longs': 'ranged', arbaletes: 'ranged', 'arbaletes-de-poings': 'ranged',
+  frondes: 'ranged', 'etoiles-couteaux-et-haches-de-jet': 'ranged', sarbacanes: 'ranged', javelots: 'ranged',
+  pistolets: 'ranged', arquebuses: 'ranged',
+  'armures-de-cuir': 'armor', 'armures-legeres': 'armor', 'armures-lourdes': 'armor', 'armures-completes': 'armor',
+  boucliers: 'shield', casques: 'helmet', gants: 'gloves', chapeaux: 'hat', chaussures: 'shoes', talismans: 'talisman',
+}
+
+/** Un objet de trésor porté, vu comme une pièce d'équipement (mains lues dans sa description). */
+function lootGear(key: string): Gear | null {
+  const slot = LOOT_SLOTS[key.split('/')[0]]
+  const item = itemByKey(key)
+  if (!slot || !item) return null
+  const d = item.description.toLowerCase()
+  const hands = slot === 'melee' || slot === 'ranged' || slot === 'shield' ? (/deux mains/.test(d) ? 2 : 1) : 0
+  return {
+    name: item.name,
+    slot,
+    hands,
+    exclusiveMelee: /ne peut pas être utilisée? avec une seconde arme de corps à corps/.test(d),
+    shieldVsShots: /bouclier possible uniquement contre les tirs/.test(d),
+  }
+}
+
 export function validateMember(profile: Profile, member: Member, inCampaign = false): Issue[] {
   const issues: Issue[] = []
   const err = (message: string) => issues.push({ severity: 'error', message, memberId: member.id })
@@ -39,18 +77,29 @@ export function validateMember(profile: Profile, member: Member, inCampaign = fa
     }
   }
 
-  const worn = wornItems(member)
-  const melee = worn.filter((e) => e.category === 'melee')
-  const ranged = worn.filter((e) => e.category === 'ranged')
-  const shields = worn.filter((e) => e.category === 'shield')
-  const armors = worn.filter((e) => e.category === 'armor')
-  const helmets = worn.filter((e) => e.category === 'helmet')
+  // Tout ce qui est porté : équipement commun et objets de trésor / marché noir (armes, armures…).
+  const worn: Gear[] = [
+    ...wornItems(member).map((e) => ({ name: e.name, slot: e.category as GearSlot, hands: e.hands, exclusiveMelee: !!e.exclusiveMelee, shieldVsShots: !!e.shieldVsShots })),
+    ...(member.loot ?? []).filter((l) => l.slot === 'porte').map((l) => lootGear(l.key)).filter((g): g is Gear => !!g),
+  ]
+  const melee = worn.filter((e) => e.slot === 'melee')
+  const ranged = worn.filter((e) => e.slot === 'ranged')
+  const shields = worn.filter((e) => e.slot === 'shield')
+  const names = (list: Gear[]) => list.map((e) => e.name).join(', ')
+  const once = (slot: GearSlot, label: string) => {
+    const list = worn.filter((e) => e.slot === slot)
+    if (list.length > 1) err(`${who} : ${label} (porte : ${names(list)}). Mettez les autres dans le sac.`)
+  }
 
-  if (ranged.length > 1) err(`${who} : une seule arme de tir portée.`)
-  if (shields.length > 1) err(`${who} : un seul bouclier.`)
-  if (armors.length > 1) err(`${who} : une seule armure (cuir, légère, lourde ou complète).`)
-  if (helmets.length > 1) err(`${who} : un seul casque.`)
-  if (melee.length > 2) err(`${who} : deux armes de corps à corps au maximum.`)
+  if (ranged.length > 1) err(`${who} : une seule arme de tir portée (porte : ${names(ranged)}).`)
+  once('shield', 'un seul bouclier')
+  once('armor', 'une seule armure (cuir, légère, lourde ou complète)')
+  once('helmet', 'un seul casque')
+  once('gloves', 'une seule paire de gants')
+  once('hat', 'un seul chapeau')
+  once('shoes', 'une seule paire de chaussures')
+  once('talisman', 'un seul talisman')
+  if (melee.length > 2) err(`${who} : deux armes de corps à corps au maximum (porte : ${names(melee)}).`)
   if (melee.length > 1 && melee.some((e) => e.exclusiveMelee)) {
     err(`${who} : ${melee.find((e) => e.exclusiveMelee)!.name} ne se combine pas avec une seconde arme de corps à corps.`)
   }
