@@ -99,11 +99,9 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
     if (dirty.current && latest.current) void saveCrew(latest.current, base.current).catch(() => {})
   }, [])
 
-  // Journée annulée (ou bande retirée de la journée) : la partie en cours est abandonnée d'office.
-  useEffect(() => {
-    if (crew?.campaign?.currentGame && !joined) setCrew(abandonGame(crew))
-  }, [crew, joined])
-
+  // Partie en cours alors que la bande ne semble plus dans la journée (journée annulée, bande retirée,
+  // ou simple erreur de chargement) : rien n'est effacé d'office, le joueur choisit (voir `orphanGame`).
+  const orphanGame = !!crew?.campaign?.currentGame && !joined
   // Journée lancée : la partie démarre d'elle-même avec les membres choisis en préparation.
   useEffect(() => {
     if (!crew?.campaign || crew.campaign.currentGame || !joined || day?.status !== 'en-cours') return
@@ -196,6 +194,32 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
   const stockEditable = between || (day?.status === 'preparation' && !isDayReady(day, email))
   const summary = (
     <>
+      {orphanGame && (
+        <div className="notice">
+          <p>
+            <strong>Partie en cours conservée.</strong> Votre bande a une partie notée en direct
+            (« {crew.campaign!.currentGame!.title} »), mais elle ne fait plus partie de la journée en cours : journée annulée, ou bande retirée par l'organisateur.
+            Rien n'a été effacé. Si c'est une erreur, rechargez la page ; sinon, vous pouvez abandonner cette partie.
+          </p>
+          <div className="row wrap">
+            <button className="btn small" onClick={() => window.location.reload()}>↻ Recharger</button>
+            <button
+              className="btn small ghost danger"
+              disabled={busy}
+              onClick={() => {
+                if (!confirm(`Abandonner la partie « ${crew.campaign!.currentGame!.title} » ? Ce qui a été noté pendant la partie (blessures, butin, XP) sera perdu.`)) return
+                act(async () => {
+                  const saved = await persist(abandonGame(crew))
+                  first.current = true
+                  setCrew(saved)
+                })
+              }}
+            >
+              Abandonner la partie
+            </button>
+          </div>
+        </div>
+      )}
       <div className="muted small row wrap campaign-summary">
         <span>Trésor {c.po} PO · {c.cristaux} cristaux · {c.prestige} prestige · {activeMembers(crew).length} membres · {c.games.length} partie{c.games.length > 1 ? 's' : ''}</span>
         <span className="row">

@@ -21,6 +21,7 @@ import { memberTitle,
 import { addXp, applyAdvance, applyInjury, d10, revertInjury, learnsNothing, pendingLevels, poisonThreshold } from '../lib/campaign'
 import { getCrew, saveCrew } from '../lib/storage'
 import { reportDraftKey } from '../lib/reportDraft'
+import { describeChanges } from '../lib/activity'
 import DiceInput from '../components/DiceInput'
 import Counter from '../components/Counter'
 import NumberInput from '../components/NumberInput'
@@ -189,6 +190,8 @@ export default function AfterBattlePage() {
   const [lootFor, setLootFor] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
   const [resumed, setResumed] = useState(false)
+  /** Brouillon commencé sur une version de la bande qui a changé depuis : le joueur choisit. */
+  const [conflict, setConflict] = useState<{ snap: WizardSnapshot; current: Crew; changes: string[] } | null>(null)
   /** Relance le chargement (envois reçus pendant le rapport). */
   const [reload, setReload] = useState(0)
   const [checking, setChecking] = useState(false)
@@ -257,7 +260,30 @@ export default function AfterBattlePage() {
       setOriginal(c)
       if (!c) return
       const snap = readSnapshot(c.id)
+      if (snap && snap.base !== c.updatedAt) {
+        // La bande a changé ailleurs depuis le début du rapport : le brouillon n'est jamais jeté d'office.
+        const before = snap.exits[0] ?? snap.draft
+        const changes = describeChanges(before, c)
+        // Trésor modifié sans ligne de journal : signalé quand même.
+        const [b, a] = [before.campaign, c.campaign]
+        if (b && a && (b.po !== a.po || b.cristaux !== a.cristaux) && !changes.some((l) => l.startsWith('Trésor'))) {
+          changes.push(`Trésor : ${b.po} → ${a.po} PO, ${b.cristaux} → ${a.cristaux} ${crystalWord(a.cristaux)}`)
+        }
+        if (changes.length || snap.step > 0) {
+          setConflict({ snap, current: c, changes })
+          return
+        }
+      }
       if (snap && snap.base === c.updatedAt) {
+        restore(snap)
+      } else {
+        startFrom(c)
+      }
+    }).catch(() => setOriginal(null))
+  }, [id, reload])
+
+  /** Reprend un brouillon enregistré sur cet appareil. */
+  function restore(snap: WizardSnapshot) {
         setStep(snap.step)
         setDraft(snap.draft)
         setExits(snap.exits)
@@ -280,11 +306,7 @@ export default function AfterBattlePage() {
         setGifts(snap.gifts ?? [])
         setWaived(snap.waived ?? [])
         setResumed(snap.step > 0)
-      } else {
-        startFrom(c)
-      }
-    }).catch(() => setOriginal(null))
-  }, [id, reload])
+  }
 
   // Téléphone : la frise des étapes défile pour garder l'étape en cours visible.
   useEffect(() => {
@@ -306,6 +328,52 @@ export default function AfterBattlePage() {
   }, [original, draft, step, exits, logs, title, participants, rawCrystals, rolls, poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market, marketBought, crystalsSold, crown, crownCards, gifts, waived, saving])
 
   if (original === undefined) return <p className="muted">Chargement…</p>
+  if (conflict) {
+    const { snap, current, changes } = conflict
+    return (
+      <section className="after-battle">
+        <h1>Après la bataille</h1>
+        <div className="card stack">
+          <h2>Votre rapport commencé est conservé</h2>
+          <p>
+            Vous aviez commencé le rapport « {snap.title} » (étape {STEPS[Math.min(snap.step, STEPS.length - 1)]}), mais la bande
+            a été modifiée ailleurs depuis (autre onglet, autre appareil, envoi reçu…). Rien n'a été effacé.
+          </p>
+          {changes.length > 0 ? (
+            <>
+              <p className="small"><strong>Changements faits ailleurs :</strong></p>
+              <ul className="small">{changes.map((l, i) => <li key={i}>{l}</li>)}</ul>
+            </>
+          ) : (
+            <p className="muted small">Aucun changement visible dans la bande (simple réenregistrement).</p>
+          )}
+          <div className="row wrap">
+            <button
+              className="btn primary"
+              onClick={() => {
+                // Le brouillon repart sur la version à jour : à l'enregistrement, il remplace ces changements.
+                restore({ ...snap, base: current.updatedAt })
+                setConflict(null)
+              }}
+            >
+              Reprendre mon rapport
+            </button>
+            <button
+              className="btn ghost"
+              onClick={() => {
+                if (!confirm('Recommencer le rapport depuis la bande à jour ? Ce que vous aviez rempli dans le rapport sera perdu.')) return
+                startFrom(current)
+                setConflict(null)
+              }}
+            >
+              Recommencer avec la bande à jour
+            </button>
+          </div>
+          {changes.length > 0 && <p className="muted small">En reprenant votre rapport, ces changements seront remplacés par ce que contient le rapport à son enregistrement.</p>}
+        </div>
+      </section>
+    )
+  }
   const faction = original ? factionById(original.factionId) : undefined
   if (!original || !draft || !faction) return <p className="error">Bande introuvable. <Link to="/bandes">Retour</Link></p>
   if (!original.campaign) {
@@ -586,7 +654,7 @@ export default function AfterBattlePage() {
     const current = await getCrew(final.id).catch(() => null)
     if (current && current.updatedAt !== original!.updatedAt) {
       setSaving(false)
-      alert("La bande a été modifiée ailleurs pendant le rapport (autre onglet ou autre appareil). Le rapport n'est pas enregistré, pour ne rien écraser : rechargez la page pour le reprendre.")
+      alert("La bande a été modifiée ailleurs pendant le rapport (autre onglet ou autre appareil). Le rapport n'est pas enregistré, pour ne rien écraser. Rechargez la page : votre rapport est conservé et vous pourrez le reprendre.")
       return
     }
     // Envois aux autres joueurs d'abord (reçus dès que le destinataire ouvre sa bande) : s'ils sont refusés,
@@ -603,7 +671,7 @@ export default function AfterBattlePage() {
       await saveCrew(final, original!.updatedAt, { activity: [`Rapport d'après-bataille enregistré : ${title}`] })
     } catch (err) {
       setSaving(false)
-      alert(`${(err as Error).message}\n\nLe rapport n'a pas pu être enregistré : la bande a été modifiée ailleurs pendant le rapport. Rechargez la page pour le reprendre.`)
+      alert(`${(err as Error).message}\n\nLe rapport n'a pas pu être enregistré : la bande a été modifiée ailleurs pendant le rapport. Rechargez la page : votre rapport est conservé et vous pourrez le reprendre.`)
       return
     }
     // Phase de nuit : ce bilan devient le rapport de fin de nuit de la bande.

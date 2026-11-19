@@ -42,7 +42,6 @@ import { memberTitle,
   type Crew,
   type Member,
   type Slot,
-  abandonGame,
   DEFAULT_BUDGET,
   emptyStock,
   leaveCrew,
@@ -162,11 +161,8 @@ export default function CrewBuilderPage() {
       .catch(() => {})
   }, [groupId, notValidated])
 
-  // Journée annulée (campagne supprimée, bande retirée…) : la partie en cours est abandonnée d'office.
-  useEffect(() => {
-    if (dayState === undefined || !crew?.groupCampaign || !crew.campaign?.currentGame) return
-    if (!dayState?.participant) setCrew((c) => (c ? abandonGame(c) : c))
-  }, [dayState, crew])
+  // Une partie en cours n'est jamais abandonnée d'office (une lecture ratée de la journée effacerait
+  // ce que le joueur a noté) : seulement par le joueur, depuis la page de la campagne.
 
   // Dernière version de la bande et présence de modifications pas encore enregistrées.
   const latest = useRef<Crew | null>(null)
