@@ -54,6 +54,9 @@ export default function AdminGiftPanel({ campaign, entries }: { campaign: GroupC
 /** Donner : PO, cristaux et n'importe quel objet du jeu (au coffre du camp). */
 function GivePart({ campaign, players }: { campaign: GroupCampaign; players: Players }) {
   const [to, setTo] = useState('')
+  // Montants en cours de saisie, puis ajoutés à l'envoi avec leur bouton.
+  const [poInput, setPoInput] = useState(0)
+  const [crInput, setCrInput] = useState(0)
   const [po, setPo] = useState(0)
   const [cristaux, setCristaux] = useState(0)
   const [items, setItems] = useState<GiftDraft['items']>([])
@@ -80,9 +83,13 @@ function GivePart({ campaign, players }: { campaign: GroupCampaign; players: Pla
     else setItems((l) => [...l, { kind: 'equipment', key: pick.itemId, name: equipmentById(pick.itemId)?.name ?? pick.itemId }])
   }
   const canSend = !!target && (po > 0 || cristaux > 0 || items.length > 0 || xp.length > 0) && !busy
+  const empty = po === 0 && cristaux === 0 && items.length === 0 && xp.length === 0
+  /** Montant saisi mais pas ajouté : on le signale avant d'envoyer. */
+  const forgotten = poInput > 0 || crInput > 0
 
   const send = async () => {
     if (!target) return
+    if (forgotten && !confirm(`Le montant saisi (${[poInput ? `${poInput} PO` : '', crInput ? `${crInput} ${crystalWord(crInput)}` : ''].filter(Boolean).join(', ')}) n'a pas été ajouté avec son bouton « + Ajouter » : il ne sera pas envoyé. Continuer ?`)) return
     const detail = [po ? `${po} PO` : '', cristaux ? `${cristaux} ${crystalWord(cristaux)}` : '', ...items.map((i) => i.name), ...xp.map((x) => `${x.name} +${x.amount} XP`)].filter(Boolean).join(', ')
     if (!confirm(`Donner à ${label(target)} : ${detail} ?\n\nAjouté à sa bande dès qu'il l'ouvre.`)) return
     setBusy(true)
@@ -92,6 +99,8 @@ function GivePart({ campaign, players }: { campaign: GroupCampaign; players: Pla
       setDone(`Donné à ${label(target)} : ${detail}. Ajouté à sa bande dès qu'il l'ouvre.`)
       setPo(0)
       setCristaux(0)
+      setPoInput(0)
+      setCrInput(0)
       setItems([])
       setXp([])
       setMessage('')
@@ -106,40 +115,31 @@ function GivePart({ campaign, players }: { campaign: GroupCampaign; players: Pla
     <details className="admin-part give">
       <summary>➕ Donner</summary>
       <div className="stack admin-gift-form">
-        <div className="row wrap">
-          <PlayerSelect players={players} value={to} onChange={(v) => { setTo(v); setDone('') }} />
-          <div className="field narrow"><span>PO</span><NumberInput label="PO à donner" min={0} step={5} value={po} onChange={setPo} /></div>
-          <div className="field narrow"><span>Cristaux</span><NumberInput label="Cristaux à donner" min={0} value={cristaux} onChange={setCristaux} /></div>
+        <PlayerSelect players={players} value={to} onChange={(v) => { setTo(v); setDone('') }} />
+        <div className="row wrap admin-amounts">
+          <div className="field">
+            <span>PO</span>
+            <div className="row amount-add">
+              <NumberInput label="PO à donner" min={0} step={5} value={poInput} onChange={setPoInput} />
+              <button type="button" className="btn small" disabled={poInput <= 0} onClick={() => { setPo((n) => n + poInput); setPoInput(0) }}>+ Ajouter</button>
+            </div>
+          </div>
+          <div className="field">
+            <span>Cristaux</span>
+            <div className="row amount-add">
+              <NumberInput label="Cristaux à donner" min={0} value={crInput} onChange={setCrInput} />
+              <button type="button" className="btn small" disabled={crInput <= 0} onClick={() => { setCristaux((n) => n + crInput); setCrInput(0) }}>+ Ajouter</button>
+            </div>
+          </div>
         </div>
         <div className="field">
           <span>Objets (n'importe quel objet du jeu, rangé au coffre du camp)</span>
-          {items.length > 0 && (
-            <span className="tags">
-              {items.map((i, k) => (
-                <ItemChip
-                  key={k}
-                  equipmentId={i.kind === 'equipment' ? i.key : undefined}
-                  lootKey={i.kind === 'loot' ? i.key : undefined}
-                  after={<button className="tag-remove" onClick={() => setItems((l) => l.filter((_, j) => j !== k))} aria-label={`Retirer ${i.name}`}>×</button>}
-                />
-              ))}
-            </span>
-          )}
-          <div className="admin-gift-picker"><LootPicker allowedEquipment={null} foundOnly onPick={add} /></div>
+          <div className="admin-gift-picker"><LootPicker allowedEquipment={null} foundOnly searchable submitLabel="+ Ajouter l'objet" onPick={add} /></div>
         </div>
         {target && (
-          <div className="field">
-            <span>Expérience (le joueur fera ensuite la montée de niveau depuis sa bande, entre les parties)</span>
-            {xp.length > 0 && (
-              <ul className="plain-list admin-xp">
-                {xp.map((x, k) => (
-                  <li key={k} className="row between">
-                    <span><strong>{x.name}</strong> : +{x.amount} XP</span>
-                    <button className="icon-btn drop-btn" onClick={() => setXp((l) => l.filter((_, j) => j !== k))} aria-label="Retirer">×</button>
-                  </li>
-                ))}
-              </ul>
-            )}
+          <details className="admin-xp-part">
+            <summary>Expérience{xp.length ? ` (${xp.length})` : ''}</summary>
+            <p className="muted small">Le joueur fera ensuite la montée de niveau depuis sa bande, entre les parties.</p>
             {!crew ? (
               <span className="muted small">Chargement de la bande…</span>
             ) : (
@@ -165,8 +165,30 @@ function GivePart({ campaign, players }: { campaign: GroupCampaign; players: Pla
                 </button>
               </div>
             )}
-          </div>
+          </details>
         )}
+        <div className="field admin-basket">
+          <span>Contenu de l'envoi</span>
+          {empty ? (
+            <p className="muted small">Rien pour l'instant : ajoutez des PO, des cristaux, des objets ou de l'XP.</p>
+          ) : (
+            <div className="tags">
+              {po > 0 && <span className="tag gift-amount">+{po} PO <button className="tag-remove" onClick={() => setPo(0)} aria-label="Retirer les PO">×</button></span>}
+              {cristaux > 0 && <span className="tag gift-amount">+{cristaux} {crystalWord(cristaux)} <button className="tag-remove" onClick={() => setCristaux(0)} aria-label="Retirer les cristaux">×</button></span>}
+              {items.map((i, k) => (
+                <ItemChip
+                  key={k}
+                  equipmentId={i.kind === 'equipment' ? i.key : undefined}
+                  lootKey={i.kind === 'loot' ? i.key : undefined}
+                  after={<button className="tag-remove" onClick={() => setItems((l) => l.filter((_, j) => j !== k))} aria-label={`Retirer ${i.name}`}>×</button>}
+                />
+              ))}
+              {xp.map((x, k) => (
+                <span key={`x${k}`} className="tag gift-amount">{x.name} +{x.amount} XP <button className="tag-remove" onClick={() => setXp((l) => l.filter((_, j) => j !== k))} aria-label="Retirer l'XP">×</button></span>
+              ))}
+            </div>
+          )}
+        </div>
         <label className="field">
           <span>Message (facultatif)</span>
           <textarea value={message} onChange={(e) => setMessage(e.target.value)} maxLength={200} rows={2} placeholder="Ex. : oubli de la journée 3, le casque trouvé dans les ruines." />

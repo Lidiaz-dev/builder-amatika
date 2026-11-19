@@ -17,16 +17,27 @@ interface Props {
   buyOnly?: boolean
   /** Bouton Fermer en bas à gauche (la fenêtre n'a alors pas de pied à elle). */
   onClose?: () => void
+  /** Champ de recherche par nom au-dessus de la liste. */
+  searchable?: boolean
+  /** Texte du bouton de validation. */
+  submitLabel?: string
 }
 
+/** Comparaison sans accents ni majuscules. */
+const fold = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+
 /** Donner un objet : trouvé (gratuit) ou acheté (déduit du trésor). */
-export default function LootPicker({ allowedEquipment, onPick, foundOnly, buyOnly, onClose }: Props) {
+export default function LootPicker({ allowedEquipment, onPick, foundOnly, buyOnly, onClose, searchable, submitLabel }: Props) {
   const [source, setSource] = useState<'loot' | 'equipment'>('loot')
   const [value, setValue] = useState('')
   const [chosenPaid, setPaid] = useState(false)
+  const [search, setSearch] = useState('')
+  const matches = (name: string) => !search.trim() || fold(name).includes(fold(search.trim()))
   const paid = buyOnly || chosenPaid
 
-  const common = equipment.filter((e) => !allowedEquipment || allowedEquipment.includes(e.id))
+  const common = equipment.filter((e) => (!allowedEquipment || allowedEquipment.includes(e.id)) && matches(e.name))
+  const lootCats = itemCategories.map((c) => ({ ...c, items: c.items.filter((it) => matches(it.name)) })).filter((c) => c.items.length)
+  const count = source === 'loot' ? lootCats.reduce((n, c) => n + c.items.length, 0) : common.length
   const cats = ([...new Set(common.map((e) => e.category))] as EquipmentCategory[]).sort((a, b) => CATEGORY_LABELS[a].localeCompare(CATEGORY_LABELS[b], 'fr'))
   const selectedLoot = source === 'loot' && value ? itemByKey(value) : undefined
   const selectedEq = source === 'equipment' && value ? equipment.find((e) => e.id === value) : undefined
@@ -45,10 +56,22 @@ export default function LootPicker({ allowedEquipment, onPick, foundOnly, buyOnl
         <button type="button" className={source === 'equipment' ? 'on' : ''} onClick={() => { setSource('equipment'); setValue('') }}>Équipement commun</button>
       </div>
 
+      {searchable && (
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value)
+            setValue('')
+          }}
+          placeholder="Rechercher un objet par son nom…"
+          aria-label="Rechercher un objet"
+        />
+      )}
       <select value={value} onChange={(e) => setValue(e.target.value)} aria-label="Objet">
-        <option value="">Choisir un objet…</option>
+        <option value="">{search.trim() ? `${count} objet${count > 1 ? 's' : ''} trouvé${count > 1 ? 's' : ''}…` : 'Choisir un objet…'}</option>
         {source === 'loot'
-          ? itemCategories.filter((c) => c.items.length).map((c) => (
+          ? lootCats.map((c) => (
               <optgroup key={c.id} label={c.name}>
                 {c.items.map((it) => (
                   <option key={it.id} value={itemKey(c.id, it.id)}>
@@ -79,7 +102,7 @@ export default function LootPicker({ allowedEquipment, onPick, foundOnly, buyOnl
       )}
       <div className="picker-footer">
         {onClose && <button type="button" className="btn small ghost" onClick={onClose}>Fermer</button>}
-        <button type="button" className="btn primary" disabled={!value} onClick={submit}>{buyOnly ? `Acheter (${price} PO)` : foundOnly ? "Ajouter l'objet trouvé" : "Donner l'objet"}</button>
+        <button type="button" className="btn primary" disabled={!value} onClick={submit}>{submitLabel ?? (buyOnly ? `Acheter (${price} PO)` : foundOnly ? "Ajouter l'objet trouvé" : "Donner l'objet")}</button>
       </div>
     </div>
   )

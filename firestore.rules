@@ -58,14 +58,15 @@ service cloud.firestore {
           || (isPlayer(cid) && email == myEmail() && request.resource.data.email == email);
       }
 
-      // Envois entre joueurs (phase Commerce) : créés par l'expéditeur, reçus par le destinataire
-      // une fois la journée clôturée (il ne peut que les marquer comme reçus).
+      // Envois entre joueurs et du maître de campagne : créés par l'expéditeur, reçus par le
+      // destinataire dès qu'il ouvre sa bande (il ne peut que les marquer comme reçus).
       match /gifts/{gid} {
         allow read: if isAdmin() || (verified() && (resource.data.to == myEmail() || resource.data.from == myEmail()));
         allow create: if (isPlayer(cid) || isAdmin())
           && request.resource.data.from == myEmail()
           && request.resource.data.to in campaign(cid).emails
-          && request.resource.data.to != myEmail()
+          // Pas d'envoi à soi-même, sauf le maître de campagne (corrections et tests sur sa propre bande).
+          && (request.resource.data.to != myEmail() || isAdmin())
           && request.resource.data.claimed == false
           // Seul le maître de campagne peut marquer un envoi « admin » (reçu tout de suite).
           && (request.resource.data.get('admin', false) == false || isAdmin())

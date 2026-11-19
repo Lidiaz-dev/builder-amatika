@@ -1501,3 +1501,13 @@ q.gift-message { quotes: '« ' ' »'; }
 @keyframes flash-in-out { 0% { opacity: 0; transform: translateY(4px); } 12% { opacity: 1; transform: none; } 75% { opacity: 1; } 100% { opacity: 0; } }
 
 .check-list .waiver { display: flex; align-items: center; gap: 0.4rem; margin: 0.2rem 0 0 1.6rem; font-size: 0.85rem; color: var(--ink-title); }
+
+/* Admin : envoi en plusieurs ajouts */
+.admin-xp-part { border: 1px dashed var(--border-strong); border-radius: 6px; padding: 0.3rem 0.6rem; }
+.admin-xp-part summary { cursor: pointer; font-family: var(--display); font-size: 0.9rem; }
+.admin-xp-part[open] { display: flex; flex-direction: column; gap: 0.4rem; padding-bottom: 0.6rem; }
+.admin-basket { padding: 0.5rem 0.6rem; border: 1px solid var(--gold); border-radius: 6px; background: var(--warn-soft); }
+.admin-amounts { gap: 0.5rem 1.2rem; }
+.admin-amounts .field { flex: none; }
+.amount-add { flex-wrap: nowrap; align-items: center; gap: 0.4rem; }
+.amount-add .num-input { flex: none; align-self: center; }
