@@ -374,7 +374,7 @@ export default function CrewBuilderPage() {
               <button className="btn totals-btn" onClick={() => setStockOpen(true)} data-tip="Objets rangés au camp : les redonner, les vendre ou les jeter.">
                 Coffre ({(campaign.stock?.equipment.length ?? 0) + (campaign.stock?.loot.length ?? 0)})
               </button>
-              <button className="btn totals-btn" onClick={() => setTreasuryOpen(true)} data-tip="Caisse de la bande : vendre des cristaux, ajuster PO, cristaux ou prestige à la main, et consulter le journal des dépenses et gains.">Trésor…</button>
+              <button className="btn totals-btn" onClick={() => setTreasuryOpen(true)} data-tip="Caisse de la bande : vendre des cristaux et consulter le journal des dépenses et gains.">Trésor…</button>
             </>
           ) : (
             <>
@@ -540,13 +540,8 @@ function ChefSuccession({ faction, members, onPick }: { faction: Faction; member
 }
 
 function TreasuryModal({ open, crew, onClose, onApply }: { open: boolean; crew: Crew; onClose: () => void; onApply: (d: Delta, label: string) => void }) {
-  const [po, setPo] = useState(0)
-  const [cristaux, setCristaux] = useState(0)
-  const [prestige, setPrestige] = useState(0)
-  const [label, setLabel] = useState('')
   const [sell, setSell] = useState(1)
   const c = crew.campaign!
-  const reset = () => { setPo(0); setCristaux(0); setPrestige(0); setLabel('') }
   return (
     <Modal open={open} title="Trésor de la bande" kicker={`${c.po} PO · ${c.cristaux} cristaux · ${c.prestige} prestige`} onClose={onClose} wide>
       <h4>Vendre des cristaux</h4>
@@ -555,18 +550,11 @@ function TreasuryModal({ open, crew, onClose, onApply }: { open: boolean; crew: 
         <span className="small">× {CRYSTAL_PRICE} PO = {sell * CRYSTAL_PRICE} PO</span>
         <button className="btn small" disabled={sell < 1 || sell > c.cristaux} onClick={() => onApply({ cristaux: -sell, po: sell * CRYSTAL_PRICE }, `Vente de ${sell} cristal${sell > 1 ? 'aux' : ''}`)}>Vendre</button>
       </div>
-      <h4>Ajustement manuel</h4>
-      <div className="row wrap">
-        <div className="field narrow"><span>PO</span><NumberInput label="PO" step={5} value={po} onChange={setPo} /></div>
-        <div className="field narrow"><span>Cristaux</span><NumberInput label="Cristaux" value={cristaux} onChange={setCristaux} /></div>
-        <div className="field narrow"><span>Prestige</span><NumberInput label="Prestige" value={prestige} onChange={setPrestige} /></div>
-        <label className="field grow"><span>Motif</span><input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Ex. : récompense de scénario" /></label>
-      </div>
-      <div>
-        <button className="btn small primary" disabled={!po && !cristaux && !prestige} onClick={() => { onApply({ po, cristaux, prestige }, label || 'Ajustement manuel'); reset() }}>
-          Appliquer
-        </button>
-      </div>
+      {/* Pas d'ajustement manuel : PO, cristaux et prestige se gagnent dans le rapport de fin de nuit.
+          Une correction passe par le maître de campagne (« Donner ou retirer à un joueur »). */}
+      <p className="muted small">
+        PO, cristaux et prestige se gagnent dans le rapport de fin de nuit. Pour corriger une erreur, demandez au maître de campagne.
+      </p>
       <h4>Journal</h4>
       <ul className="ledger">
         {[...c.log].reverse().slice(0, 30).map((l, i) => (
