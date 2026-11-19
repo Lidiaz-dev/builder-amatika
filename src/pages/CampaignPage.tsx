@@ -442,7 +442,7 @@ function DayPanel({ campaign, day, entries, sheets, gifts, busy, onCreate, onLau
       )}
       {gifts.length > 0 && (
         <details className="day-gifts">
-          <summary className="small">Envois entre joueurs ({gifts.length}) · reçus à la clôture</summary>
+          <summary className="small">Envois entre joueurs ({gifts.length})</summary>
           <ul className="small">
             {gifts.map((g) => (
               <li key={g.id}>

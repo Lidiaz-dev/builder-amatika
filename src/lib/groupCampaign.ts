@@ -1,3 +1,4 @@
+import { addGiftsToReportDraft } from './reportDraft'
 import {
   arrayRemove,
   arrayUnion,
@@ -275,7 +276,7 @@ export async function joinDay(c: GroupCampaign, join: boolean) {
   await updateDoc(dayRef(c.id, c.dayNumber), join ? { participants: arrayUnion(myEmail()) } : { participants: arrayRemove(myEmail()), ready: arrayRemove(myEmail()) })
 }
 
-/** Envoi gratuit d'un joueur à un autre (phase Commerce du rapport), reçu à la clôture de la journée. */
+/** Envoi gratuit d'un joueur à un autre, reçu dès que le destinataire ouvre sa bande. */
 export interface Gift {
   id: string
   day: number
@@ -380,9 +381,8 @@ export async function receiveGifts(crew: Crew, c: GroupCampaign): Promise<{ crew
   if (!crew.campaign) return null
   const snap = await getDocs(query(giftsCol(c.id), where('to', '==', myEmail()), where('claimed', '==', false)))
   const done = new Set(crew.campaign.receivedGifts ?? [])
-  // Reçu quand sa journée est clôturée ; un envoi fait entre deux journées est reçu tout de suite.
-  const closed = (g: Gift) => !!g.admin || g.day < c.dayNumber || (g.day === c.dayNumber && !isOpen(c.dayStatus))
-  const gifts = snap.docs.map((d) => d.data() as Gift).filter((g) => closed(g) && !done.has(g.id))
+  // Tout envoi est reçu tout de suite, quelle que soit la phase de la journée.
+  const gifts = snap.docs.map((d) => d.data() as Gift).filter((g) => !done.has(g.id))
   if (!gifts.length) return null
   let next: Crew = crew
   for (const g of gifts) next = applyReceivedGift(next, g)
@@ -406,6 +406,8 @@ export async function loadCrewWithGifts(id: string): Promise<Crew | null> {
     if (!res) return crew
     const saved = await saveCrew(res.crew)
     await markGiftsReceived(c.id, res.gifts.map((g) => g.id))
+    // Rapport de fin de nuit commencé : les envois y sont ajoutés aussi, il continue où il en était.
+    addGiftsToReportDraft(crew.id, crew.updatedAt, saved.updatedAt, res.gifts)
     return saved
   } catch {
     return crew

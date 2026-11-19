@@ -1,6 +1,6 @@
 import { crystalWord } from '../lib/crew'
 import { useEffect, useState } from 'react'
-import { isOpen, listMyGifts, type Gift, type GroupCampaign } from '../lib/groupCampaign'
+import { listMyGifts, type Gift, type GroupCampaign } from '../lib/groupCampaign'
 import Modal from './Modal'
 import ItemChip from './ItemChip'
 
@@ -40,12 +40,10 @@ export default function Mailbox({ campaign, refresh }: {
     listMyGifts(campaign.id).then(setHistory).catch(() => setHistory({ received: [], sent: [] }))
   }, [campaign.id, refresh])
 
-  // Envoi fait pendant une journée (rapport) : ajouté à la clôture de cette journée ; sinon, aussitôt.
-  const waiting = (g: Gift) => !g.claimed && !g.admin && g.day === campaign.dayNumber && isOpen(campaign.dayStatus)
   const status = (g: Gift) =>
     g.claimed
       ? tab === 'recus' ? '✓ Ajouté à votre bande' : '✓ Ajouté à sa bande'
-      : waiting(g) ? `Ajouté à la clôture de la journée ${g.day}` : tab === 'recus' ? 'Ajouté à l\'ouverture de votre bande' : 'Envoyé'
+      : tab === 'recus' ? 'Ajouté à l\'ouverture de votre bande' : 'Envoyé, ajouté quand il ouvrira sa bande'
 
   return (
     <>

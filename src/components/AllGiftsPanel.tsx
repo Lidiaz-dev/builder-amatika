@@ -1,6 +1,6 @@
 import { crystalWord } from '../lib/crew'
 import { useState } from 'react'
-import { isOpen, listAllGifts, type Entry, type Gift, type GroupCampaign } from '../lib/groupCampaign'
+import { listAllGifts, type Entry, type Gift, type GroupCampaign } from '../lib/groupCampaign'
 
 /**
  * Maître de campagne : tous les envois de la campagne, avec leur état. Un envoi pas encore ajouté
@@ -16,7 +16,6 @@ export default function AllGiftsPanel({ campaign, entries }: { campaign: GroupCa
   const who = (email: string) => entries.find((e) => e.email === email)
   const reason = (g: Gift) => {
     if (g.claimed) return '✓ Ajouté à sa bande'
-    if (!g.admin && g.day === campaign.dayNumber && isOpen(campaign.dayStatus)) return `Attend la clôture de la journée ${g.day}`
     const e = who(g.to)
     if (!e) return "Le destinataire n'est plus dans la campagne"
     if (!e.crewId) return "Le destinataire n'a pas de bande"

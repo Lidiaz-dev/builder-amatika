@@ -8,7 +8,7 @@ import RarityDot from './RarityDot'
 
 /**
  * Phase Commerce : envoyer de l'or, des cristaux ou des objets à un autre joueur
- * de la campagne. Retiré de la bande à la sortie de l'étape, reçu par l'autre joueur à la clôture de la journée.
+ * de la campagne. Retiré de la bande à la sortie de l'étape, reçu par l'autre joueur dès qu'il ouvre sa bande.
  */
 export default function TradePanel({ crew, faction, campaignId, gifts, onChange, intro }: {
   crew: Crew

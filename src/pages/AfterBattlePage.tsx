@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { equipmentById, factionById, injuryById, itemByKey, itemCategories, itemKey, spellById, type Faction } from '../data'
 import { memberTitle,
@@ -20,6 +20,7 @@ import { memberTitle,
 } from '../lib/crew'
 import { addXp, applyAdvance, applyInjury, d10, revertInjury, learnsNothing, pendingLevels, poisonThreshold } from '../lib/campaign'
 import { getCrew, saveCrew } from '../lib/storage'
+import { reportDraftKey } from '../lib/reportDraft'
 import DiceInput from '../components/DiceInput'
 import Counter from '../components/Counter'
 import NumberInput from '../components/NumberInput'
@@ -28,17 +29,19 @@ import Modal from '../components/Modal'
 import InjuryPicker from '../components/InjuryPicker'
 import AdvancePicker from '../components/AdvancePicker'
 import LootPicker, { type LootPick } from '../components/LootPicker'
-import { getMyEntry, sendGifts, submitSheetIfNeeded } from '../lib/groupCampaign'
+import { getMyEntry, loadCrewWithGifts, sendGifts, submitSheetIfNeeded } from '../lib/groupCampaign'
 import { DECKS } from '../lib/decks'
-import TradePanel from '../components/TradePanel'
-import { applyGifts, type PlannedGift } from '../lib/trade'
+import { type PlannedGift } from '../lib/trade'
 import { clearLockedPrefix, getLocked, setLocked } from '../lib/lockedRolls'
 import RarityDot from '../components/RarityDot'
 import RuleText from '../components/RuleText'
 
-const STEPS = ['Participants', 'Objets utilisés', 'Morts et blessures', 'Butin', 'Commerce', 'Entretien', 'Expérience', 'Niveaux', 'Résumé']
+// Le commerce se fait hors du rapport, depuis la page de la campagne (avant ou après).
+const STEPS = ['Participants', 'Objets utilisés', 'Morts et blessures', 'Butin', 'Entretien', 'Expérience', 'Niveaux', 'Résumé']
 // Index des étapes.
-const S = { participants: 0, items: 1, injuries: 2, loot: 3, trade: 4, upkeep: 5, xp: 6, levels: 7, summary: 8 }
+const S = { participants: 0, items: 1, injuries: 2, loot: 3, upkeep: 4, xp: 5, levels: 6, summary: 7 }
+/** Ancienne étape Commerce (5e étape) des brouillons enregistrés avant son retrait. */
+const OLD_TRADE = 4
 
 interface XpInput {
   participation: number | null
@@ -57,7 +60,7 @@ const FOUND_IN_REPORT = 'bilan'
 const nameOf = (faction: Faction, m: Member) => memberTitle(faction, m)
 
 // Brouillon de l'assistant conservé dans le navigateur, pour reprendre là où on s'était arrêté.
-const wizardKey = (crewId: string) => `amatika.wizard2.${crewId}`
+const wizardKey = reportDraftKey
 
 interface WizardSnapshot {
   /** Version de la bande au démarrage de l'assistant : si elle a changé, le brouillon est périmé. */
@@ -86,8 +89,10 @@ interface WizardSnapshot {
   /** Couronne sauteuse : la bande la porte, et les 2 cartes Trésor reçues. */
   crown?: boolean
   crownCards?: string[]
-  /** Envois à d'autres joueurs (phase Commerce). */
+  /** Envois à d'autres joueurs (ancienne étape Commerce : déjà retirés de la bande, envoyés à l'enregistrement). */
   gifts?: PlannedGift[]
+  /** 2 : sans l'étape Commerce. */
+  v?: number
 }
 
 
@@ -125,10 +130,24 @@ function drawMarket(count: number): string[] {
 
 function readSnapshot(crewId: string): WizardSnapshot | null {
   try {
-    return JSON.parse(localStorage.getItem(wizardKey(crewId)) ?? 'null') as WizardSnapshot | null
+    const snap = JSON.parse(localStorage.getItem(wizardKey(crewId)) ?? 'null') as WizardSnapshot | null
+    return snap && !snap.v ? withoutTradeStep(snap) : snap
   } catch {
     return null
   }
+}
+
+/**
+ * Brouillon commencé avec l'étape Commerce : on la retire sans rien perdre.
+ * Arrêté sur le Commerce : ses envois n'étaient pas encore appliqués, ils sont abandonnés (à refaire hors du rapport).
+ * Plus loin : les envois sont déjà retirés de la bande, ils restent et partent à l'enregistrement.
+ */
+function withoutTradeStep(snap: WizardSnapshot): WizardSnapshot {
+  const logs = snap.logs.length > OLD_TRADE
+    ? [...snap.logs.slice(0, S.loot), [...snap.logs[S.loot], ...snap.logs[OLD_TRADE]], ...snap.logs.slice(OLD_TRADE + 1)]
+    : snap.logs
+  if (snap.step <= OLD_TRADE) return { ...snap, v: 2, logs, gifts: [] }
+  return { ...snap, v: 2, logs, step: snap.step - 1, exits: snap.exits.filter((_, i) => i !== OLD_TRADE) }
 }
 
 export default function AfterBattlePage() {
@@ -170,6 +189,11 @@ export default function AfterBattlePage() {
   const [lootFor, setLootFor] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
   const [resumed, setResumed] = useState(false)
+  /** Relance le chargement (envois reçus pendant le rapport). */
+  const [reload, setReload] = useState(0)
+  const [checking, setChecking] = useState(false)
+  const [mailInfo, setMailInfo] = useState<string | null>(null)
+  const receivedBefore = useRef(0)
 
   /** Démarre l'assistant depuis la bande, pré-rempli avec la partie en cours si elle existe. */
   function startFrom(c: Crew) {
@@ -221,7 +245,15 @@ export default function AfterBattlePage() {
   }, [original])
 
   useEffect(() => {
-    getCrew(id!).then((c) => {
+    // Les envois reçus sont ajoutés à la bande et au brouillon du rapport avant de le reprendre.
+    loadCrewWithGifts(id!).then((c) => {
+      setChecking((was) => {
+        if (was) {
+          const n = (c?.campaign?.receivedGifts?.length ?? 0) - receivedBefore.current
+          setMailInfo(n > 0 ? `${n} envoi${n > 1 ? 's' : ''} reçu${n > 1 ? 's' : ''} : ajouté${n > 1 ? 's' : ''} au trésor et au coffre du camp.` : 'Aucun nouvel envoi.')
+        }
+        return false
+      })
       setOriginal(c)
       if (!c) return
       const snap = readSnapshot(c.id)
@@ -252,7 +284,7 @@ export default function AfterBattlePage() {
         startFrom(c)
       }
     }).catch(() => setOriginal(null))
-  }, [id])
+  }, [id, reload])
 
   // Téléphone : la frise des étapes défile pour garder l'étape en cours visible.
   useEffect(() => {
@@ -264,7 +296,7 @@ export default function AfterBattlePage() {
     if (!original || !draft || saving) return
     const snap: WizardSnapshot = {
       base: original.updatedAt, step, draft, exits, logs, title, participants, rawCrystals, rolls,
-      poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market: market ?? undefined, marketBought, crystalsSold, crown, crownCards, gifts, waived,
+      poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market: market ?? undefined, marketBought, crystalsSold, crown, crownCards, gifts, waived, v: 2,
     }
     try {
       localStorage.setItem(wizardKey(original.id), JSON.stringify(snap))
@@ -444,11 +476,6 @@ export default function AfterBattlePage() {
       const delta = { cristaux: crystalsGained - sold, po: poFound + sold * CRYSTAL_PRICE + recurringPo, prestige: prestigeGained + recurringPrestige + (crown ? 1 : 0) }
       if (delta.cristaux || delta.po || delta.prestige) c = withTreasury(c, delta, `${title} : butin`)
     }
-    if (k === S.trade && c.campaign) {
-      const res = applyGifts(c, gifts, title)
-      c = res.crew
-      lines.push(...res.lines)
-    }
     if (k === S.upkeep) {
       c = withTreasury(c, { po: -upkeepPo, cristaux: -upkeepCr }, `${title} : entretien`)
       lines.push(`Entretien payé : ${upkeepPo} PO${upkeepCr ? ` et ${upkeepCr} cristal` : ''}`)
@@ -499,6 +526,8 @@ export default function AfterBattlePage() {
     if (target >= step || !exits[target]) return
     // Revenir avant le Butin efface ses achats (la bande repart d'avant) : les cartes redeviennent achetables.
     if (target < S.loot) setMarketBought([])
+    // Envois d'un ancien brouillon : revenir avant l'entretien les remet dans la bande.
+    if (target < S.upkeep) setGifts([])
     setDraft(exits[target])
     setLogs((all) => all.map((l, i) => (i === target ? l.filter((x) => !x.startsWith('§')) : i > target ? [] : l)))
     setStep(target)
@@ -507,6 +536,7 @@ export default function AfterBattlePage() {
 
   function goBack() {
     if (step - 1 < S.loot) setMarketBought([])
+    if (step - 1 < S.upkeep) setGifts([])
     setDraft(exits[step - 1])
     setLogs((all) => all.map((l, i) => (i === step - 1 ? l.filter((x) => !x.startsWith('§')) : i >= step ? [] : l)))
     setStep(step - 1)
@@ -556,13 +586,13 @@ export default function AfterBattlePage() {
       alert("La bande a été modifiée ailleurs pendant le rapport (autre onglet ou autre appareil). Le rapport n'est pas enregistré, pour ne rien écraser : rechargez la page pour le reprendre.")
       return
     }
-    // Envois aux autres joueurs d'abord (reçus à la clôture de la journée) : s'ils sont refusés,
+    // Envois aux autres joueurs d'abord (reçus dès que le destinataire ouvre sa bande) : s'ils sont refusés,
     // le rapport n'est pas enregistré et rien n'est perdu.
     try {
       await sendGifts(final, gifts.map(({ to, toName, po, cristaux, items, message }) => ({ to, toName, po, cristaux, items, ...(message ? { message } : {}) })))
     } catch (err) {
       setSaving(false)
-      alert(`Les envois aux autres joueurs ont été refusés (${(err as Error).message}). Le rapport n'est pas enregistré : réessayez, ou retirez les envois à l'étape Commerce.`)
+      alert(`Les envois aux autres joueurs ont été refusés (${(err as Error).message}). Le rapport n'est pas enregistré : réessayez.`)
       return
     }
     try {
@@ -709,7 +739,23 @@ export default function AfterBattlePage() {
           <h1>Après la bataille</h1>
           <p className="step-sub">{original.name} · {treasury.po} PO · {treasury.cristaux} cristaux · {treasury.prestige} prestige</p>
         </div>
+        {original.groupCampaign && (
+          <button
+            className="btn small"
+            disabled={checking || saving}
+            onClick={() => {
+              receivedBefore.current = original.campaign?.receivedGifts?.length ?? 0
+              setMailInfo(null)
+              setChecking(true)
+              setReload((n) => n + 1)
+            }}
+            data-tip="Ajoute au rapport ce que d'autres joueurs viennent de vous envoyer (PO, cristaux, objets au coffre)."
+          >
+            {checking ? 'Vérification…' : '📬 Recevoir les envois'}
+          </button>
+        )}
       </header>
+      {mailInfo && <p className="notice ok-notice" role="status">{mailInfo}</p>}
 
       {resumed && (
         <p className="notice small row wrap between">
@@ -969,16 +1015,6 @@ export default function AfterBattlePage() {
           </>
         )}
 
-        {step === S.trade && (
-          <TradePanel
-            crew={draft}
-            faction={faction}
-            campaignId={original.groupCampaign?.id}
-            gifts={gifts}
-            onChange={setGifts}
-          />
-        )}
-
         {step === S.upkeep && (
           <>
             <h2>Entretien</h2>
@@ -1145,7 +1181,7 @@ export default function AfterBattlePage() {
               {logs.flat().length === 0 && <li className="muted">Rien à signaler.</li>}
             </ul>
             <p>Trésor après la partie : <strong>{treasury.po} PO</strong>, {treasury.cristaux} cristaux, {treasury.prestige} prestige.</p>
-            <p className="muted small">Ensuite, achetez et vendez de l'équipement ou recrutez depuis le builder.</p>
+            <p className="muted small">Ensuite, achetez et vendez de l'équipement ou recrutez depuis le builder.{original.groupCampaign ? ' Le commerce avec les autres joueurs se fait depuis la page de la campagne (⇄ Commerce).' : ''}</p>
           </>
         )}
       </div>

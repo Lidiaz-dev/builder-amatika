@@ -1,3 +1,4 @@
+import { reportInProgress } from '../lib/reportDraft'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { factionById } from '../data'
@@ -230,13 +231,18 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
     />
   )
 
-  // Commerce entre deux journées : les envois partent tout de suite, l'autre joueur les reçoit à sa prochaine visite.
-  const betweenDays = (
+  // Commerce avec les autres joueurs, à tout moment sauf pendant la partie : les envois partent tout de suite.
+  /** Rapport de fin de nuit commencé (brouillon) : un envoi modifie la bande, le brouillon repartirait de zéro. */
+  const reportStarted = reportInProgress(crew.id)
+  const trade = (manage = true) => (
     <div className="campaign-step">
       <div className="row wrap">
-        <Link className="btn" to={crewPath(crew)} data-tip="Entre deux journées, la bande se modifie librement : équipement, achats, recrutement.">⚒ Gérer ma bande</Link>
+        {manage && <Link className="btn" to={crewPath(crew)} data-tip="Entre deux journées, la bande se modifie librement : équipement, achats, recrutement.">⚒ Gérer ma bande</Link>}
         <button className="btn" onClick={() => setTradeOpen((o) => !o)} aria-expanded={tradeOpen}>⇄ Commerce</button>
       </div>
+      {tradeOpen && reportStarted && (
+        <p className="notice">Votre rapport de fin de nuit est commencé : l'envoi est retiré de votre bande et de votre rapport, qui reprend là où vous en étiez.</p>
+      )}
       {tradeOpen && (
         <div className="between-trade">
           <TradePanel
@@ -245,7 +251,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
             campaignId={campaign.id}
             gifts={plannedGifts}
             onChange={setPlannedGifts}
-            intro="Envoyez de l'or, des cristaux ou des objets à un autre joueur. Entre deux journées, l'envoi part tout de suite : l'autre joueur le reçoit (PO et cristaux au trésor, objets au coffre du camp) à sa prochaine visite."
+            intro="Envoyez de l'or, des cristaux ou des objets à un autre joueur. L'envoi part tout de suite : l'autre joueur le reçoit (PO et cristaux au trésor, objets au coffre du camp) dès qu'il ouvre sa bande."
           />
           {plannedGifts.length > 0 && (
             <div className="row">
@@ -284,7 +290,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
       <div className="campaign-step">
         {summary}
         <p className="muted">Bande prête : en attente de la prochaine journée. Vous pouvez la gérer et commercer d'ici là.</p>
-        {betweenDays}
+        {trade()}
         {err}
       </div>
     )
@@ -298,7 +304,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
           {summary}
           <p><strong>Journée {day.number}</strong> en préparation : rejoignez-la pour y participer.</p>
           <button className="btn primary" disabled={busy} onClick={() => act(() => joinDay(campaign, true))}>⚑ Rejoindre la journée</button>
-          {betweenDays}
+          {trade()}
           {err}
         </div>
       )
@@ -361,6 +367,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
           )}
         </div>
         <p className="muted small">La préparation est verrouillée quand l'organisateur lance la journée.</p>
+        {trade(false)}
         {err}
       </div>
     )
@@ -371,7 +378,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
       <div className="campaign-step">
         {summary}
         <p className="muted">Votre bande ne participe pas à la journée {day.number} : vous pouvez la gérer et commercer.</p>
-        {betweenDays}
+        {trade()}
         {err}
       </div>
     )
@@ -393,6 +400,8 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
       <div className="campaign-step">
         {summary}
         <p className="notice ok">✓ Rapport de fin de nuit validé. En attente de la clôture de la journée par l'organisateur.</p>
+        {trade(false)}
+        {err}
       </div>
     )
   }
@@ -403,6 +412,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
         <strong>☾ Phase de nuit</strong> : faites la récupération de votre bande (poison, blessures, butin, cristaux, entretien), puis votre rapport de fin de nuit (XP et montées de niveau).
       </p>
       <button className="btn primary" onClick={() => saveThenGo(`/bandes/${crew.id}/apres-partie`)}>☾ Récupération et rapport de fin de nuit</button>
+      {trade(false)}
       {err}
     </div>
   )
