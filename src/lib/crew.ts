@@ -220,6 +220,8 @@ export interface Crew {
   groupCampaign?: { id: string; name: string }
   /** Préparation de la journée de campagne : membres qui y participeront. */
   dayPrep?: { campaignId: string; day: number; members: string[] }
+  /** Journal d'activité (campagne de groupe) : ce que le joueur a fait sur sa bande, pour le maître de campagne. */
+  activity?: { at: string; text: string }[]
   createdAt: string
   updatedAt: string
 }

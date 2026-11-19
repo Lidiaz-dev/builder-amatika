@@ -1483,3 +1483,9 @@ q.gift-message { quotes: '« ' ' »'; }
 .all-gifts > summary h2 { display: inline; font-size: 1.05rem; }
 .all-gifts-list li { padding: 0.4rem 0; border-bottom: 1px dashed var(--border); display: flex; flex-direction: column; gap: 0.2rem; }
 .all-gifts-list li.pending .badge { background: var(--warn-soft); color: var(--warn); }
+
+/* Maître de campagne : activité des joueurs */
+.activity-panel > summary h2 { display: inline; font-size: 1.05rem; }
+.activity-list li { display: flex; flex-wrap: wrap; gap: 0.2rem 0.6rem; padding: 0.3rem 0; border-bottom: 1px dashed var(--border); font-size: 0.88rem; }
+.activity-when { min-width: 7.5rem; }
+.activity-who { min-width: 6rem; }

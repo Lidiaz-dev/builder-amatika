@@ -553,7 +553,7 @@ export default function AfterBattlePage() {
     }
     try {
       // La bande ne doit pas avoir changé ailleurs depuis le début du rapport (sinon on écraserait ces changements).
-      await saveCrew(final, original!.updatedAt)
+      await saveCrew(final, original!.updatedAt, { activity: [`Rapport d'après-bataille enregistré : ${title}`] })
     } catch (err) {
       setSaving(false)
       alert(`${(err as Error).message}\n\nLe rapport n'a pas pu être enregistré : la bande a été modifiée ailleurs pendant le rapport. Rechargez la page pour le reprendre.`)

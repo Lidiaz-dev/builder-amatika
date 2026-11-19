@@ -1,5 +1,6 @@
 import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore'
 import type { Crew } from './crew'
+import { describeChanges, withActivity } from './activity'
 import { auth, db } from './firebase'
 
 /**
@@ -72,13 +73,17 @@ export class StaleCrewError extends Error {
  * Enregistre une bande. Avec `base` (date de la version qu'on a chargée), refuse d'écraser une version
  * plus récente enregistrée ailleurs : un onglet resté ouvert ne peut plus effacer un rapport.
  */
-export async function saveCrew(crew: Crew, base?: string): Promise<Crew> {
+export async function saveCrew(crew: Crew, base?: string, opts: { activity?: string[] } = {}): Promise<Crew> {
   // Un nom proposé et non modifié est gardé tel quel.
   const members = crew.members.map((m) => (m.name.trim() || !m.suggestedName ? m : { ...m, name: m.suggestedName }))
-  const saved = { ...crew, members, updatedAt: new Date().toISOString() }
-  if (base) {
-    const current = await getCrew(crew.id).catch(() => null)
-    if (current && current.updatedAt !== base) throw new StaleCrewError()
+  let saved: Crew = { ...crew, members, updatedAt: new Date().toISOString() }
+  // Bande de campagne de groupe : on compare avec la version enregistrée pour le journal d'activité.
+  const tracked = !!crew.groupCampaign && !!crew.campaign
+  const current = base || tracked ? await getCrew(crew.id).catch(() => null) : null
+  if (base && current && current.updatedAt !== base) throw new StaleCrewError()
+  if (tracked && current) {
+    // Les actions déjà notées ailleurs (rapport) arrivent toutes faites ; sinon on décrit les changements.
+    saved = withActivity({ ...saved, activity: current.activity ?? saved.activity }, opts.activity ?? describeChanges(current, saved))
   }
   if (!db) {
     writeLocal([saved, ...readLocal().filter((c) => c.id !== crew.id)])

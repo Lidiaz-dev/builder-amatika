@@ -88,26 +88,32 @@ const readSeen = (): string[] => {
   }
 }
 
+function markSeen(gifts: Gift[]) {
+  try {
+    localStorage.setItem(SEEN, JSON.stringify([...readSeen(), ...gifts.map((g) => g.id)].slice(-300)))
+  } catch {
+    // stockage indisponible : l'encart pourra revenir
+  }
+}
+
 /**
  * Encart « Vous avez reçu… » : envois déjà ajoutés à la bande que le joueur n'a pas encore vus.
- * Il disparaît quand on le ferme (mémorisé dans le navigateur).
+ * Il n'est montré qu'une fois : à la visite suivante il a disparu (on peut aussi le fermer tout de suite).
  */
 export function MailNotice({ campaignId }: { campaignId: string }) {
   const [fresh, setFresh] = useState<Gift[]>([])
   useEffect(() => {
     const seen = new Set(readSeen())
     listMyGifts(campaignId)
-      .then((h) => setFresh(h.received.filter((g) => g.claimed && !seen.has(g.id))))
+      .then((h) => {
+        const unseen = h.received.filter((g) => g.claimed && !seen.has(g.id))
+        setFresh(unseen)
+        // Affiché une seule fois : dès que la bande a été consultée, l'encart ne reviendra plus.
+        if (unseen.length) markSeen(unseen)
+      })
       .catch(() => setFresh([]))
   }, [campaignId])
-  const dismiss = () => {
-    try {
-      localStorage.setItem(SEEN, JSON.stringify([...readSeen(), ...fresh.map((g) => g.id)].slice(-300)))
-    } catch {
-      // stockage indisponible : l'encart reviendra
-    }
-    setFresh([])
-  }
+  const dismiss = () => setFresh([])
   if (!fresh.length) return null
   return (
     <div className="mail-notice">

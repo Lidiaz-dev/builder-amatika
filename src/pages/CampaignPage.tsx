@@ -38,6 +38,7 @@ import NumberInput from '../components/NumberInput'
 import CardsToRemovePanel from '../components/CardsToRemovePanel'
 import AdminGiftPanel from '../components/AdminGiftPanel'
 import AllGiftsPanel from '../components/AllGiftsPanel'
+import ActivityPanel from '../components/ActivityPanel'
 import { DEFAULT_BUDGET } from '../lib/crew'
 
 export default function CampaignPage() {
@@ -232,6 +233,7 @@ Préparation pas encore validée : ${names}.` : ''
           />
           <AdminGiftPanel campaign={campaign} entries={entries} />
           <AllGiftsPanel campaign={campaign} entries={entries} />
+          <ActivityPanel entries={entries} />
           <CardsToRemovePanel entries={entries} />
           <DaysList campaignId={campaign.id} days={days} me={me} player={false} />
           <p className="danger-zone">
