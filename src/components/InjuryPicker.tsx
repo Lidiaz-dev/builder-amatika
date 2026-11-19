@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { injuries, type Injury } from '../data'
 import { drawInjury } from '../lib/campaign'
+import { clearLocked, getLocked, setLocked } from '../lib/lockedRolls'
 import RuleText from './RuleText'
 
 interface Props {
@@ -12,6 +13,8 @@ interface Props {
   onClose?: () => void
   /** Bilan d'après-bataille : seulement les cartes qui ont un effet sur la figurine. */
   lastingOnly?: boolean
+  /** Clé du tirage : une carte piochée par le site est verrouillée jusqu'à ce qu'elle soit appliquée. */
+  lockKey?: string
 }
 
 // Une entrée par nom de carte, les cartes à effet durable en premier.
@@ -35,13 +38,21 @@ function standUp(c: Injury): string {
 }
 
 /** Choix d'une carte Blessure : celle piochée à la table, ou un tirage virtuel. */
-export default function InjuryPicker({ onApply, onNegotiate, onClose, lastingOnly }: Props) {
-  const [card, setCard] = useState<Injury | null>(null)
-  const [drawn, setDrawn] = useState(false)
+export default function InjuryPicker({ onApply, onNegotiate, onClose, lastingOnly, lockKey }: Props) {
+  const lockedId = lockKey ? getLocked<string>(lockKey) : undefined
+  const [card, setCard] = useState<Injury | null>(() => injuries.find((c) => c.id === lockedId) ?? null)
+  const [drawn, setDrawn] = useState(!!lockedId)
 
   const pick = (c: Injury | null, virtual: boolean) => {
     setCard(c)
     setDrawn(virtual)
+    if (lockKey && virtual && c) setLocked(lockKey, c.id)
+  }
+  const apply = (c: Injury) => {
+    if (lockKey) clearLocked(lockKey)
+    onApply(c)
+    setCard(null)
+    setDrawn(false)
   }
 
   return (
@@ -49,6 +60,7 @@ export default function InjuryPicker({ onApply, onNegotiate, onClose, lastingOnl
       <div className="row wrap">
         <select
           value={card && !drawn ? card.id : ''}
+          disabled={drawn}
           onChange={(e) => pick(injuries.find((c) => c.id === e.target.value) ?? null, false)}
           aria-label="Carte piochée"
         >
@@ -62,7 +74,9 @@ export default function InjuryPicker({ onApply, onNegotiate, onClose, lastingOnl
           ))}
         </select>
         <span className="muted small">ou</span>
-        <button type="button" className="btn small" onClick={() => pick(drawInjury(), true)}>🂠 Piocher une carte</button>
+        <button type="button" className="btn small" disabled={drawn} onClick={() => pick(drawInjury(), true)} data-tip={drawn ? 'Carte piochée par le site : appliquez-la.' : undefined}>
+          {drawn ? '🔒 Carte piochée' : '🂠 Piocher une carte'}
+        </button>
       </div>
 
       {card && (
@@ -83,10 +97,10 @@ export default function InjuryPicker({ onApply, onNegotiate, onClose, lastingOnl
           {card?.special === 'negotiate' ? (
             <>
               <button type="button" className="btn small" onClick={() => pick(drawInjury(), true)}>Refuser : piocher une autre carte</button>
-              <button type="button" className="btn primary" onClick={() => onNegotiate?.()}>Payer 20 PO</button>
+              <button type="button" className="btn primary" onClick={() => { if (lockKey) clearLocked(lockKey); onNegotiate?.() }}>Payer 20 PO</button>
             </>
           ) : (
-            <button type="button" className="btn primary" disabled={!card || (lastingOnly && !card.lasting && !card.special)} onClick={() => { if (card) { onApply(card); setCard(null) } }}>
+            <button type="button" className="btn primary" disabled={!card || (lastingOnly && !card.lasting && !card.special)} onClick={() => { if (card) apply(card) }}>
               Appliquer
             </button>
           )}

@@ -27,8 +27,11 @@ import Modal from '../components/Modal'
 import InjuryPicker from '../components/InjuryPicker'
 import AdvancePicker from '../components/AdvancePicker'
 import LootPicker, { type LootPick } from '../components/LootPicker'
-import { currentEmail, getMyEntry, listEntries, sendGifts, submitSheetIfNeeded, type Entry, type GiftDraft } from '../lib/groupCampaign'
+import { getMyEntry, sendGifts, submitSheetIfNeeded } from '../lib/groupCampaign'
 import { DECKS } from '../lib/decks'
+import TradePanel from '../components/TradePanel'
+import { applyGifts, type PlannedGift } from '../lib/trade'
+import { clearLockedPrefix, getLocked, setLocked } from '../lib/lockedRolls'
 import RarityDot from '../components/RarityDot'
 import RuleText from '../components/RuleText'
 
@@ -84,11 +87,6 @@ interface WizardSnapshot {
   gifts?: PlannedGift[]
 }
 
-/** Envoi préparé dans le rapport : objets repérés par leur emplacement pour pouvoir les retirer. */
-interface PlannedGift extends GiftDraft {
-  /** Emplacement de chaque objet ; `owner` : personnage (nom, note, profil) ou « coffre ». */
-  sources: { from: string; kind: 'equipment' | 'loot'; ref: string; owner?: string }[]
-}
 
 /** Objets du paquet Marché noir, par catégorie : pour noter les cartes piochées à la table. */
 const MARKET_CHOICES = (() => {
@@ -249,6 +247,11 @@ export default function AfterBattlePage() {
       }
     }).catch(() => setOriginal(null))
   }, [id])
+
+  // Téléphone : la frise des étapes défile pour garder l'étape en cours visible.
+  useEffect(() => {
+    document.querySelector('.stepper li.on')?.scrollIntoView({ inline: 'center', block: 'nearest' })
+  }, [step])
 
   // Enregistre le brouillon à chaque changement.
   useEffect(() => {
@@ -436,29 +439,9 @@ export default function AfterBattlePage() {
       if (delta.cristaux || delta.po || delta.prestige) c = withTreasury(c, delta, `${title} : butin`)
     }
     if (k === S.trade && c.campaign) {
-      for (const g of gifts) {
-        let members = c.members
-        let stock = c.campaign!.stock ?? { equipment: [], loot: [] }
-        for (const src of g.sources) {
-          if (src.from === TO_STOCK) {
-            if (src.kind === 'loot') stock = { ...stock, loot: stock.loot.filter((l) => l.id !== src.ref) }
-            else {
-              const i = stock.equipment.indexOf(src.ref)
-              if (i >= 0) stock = { ...stock, equipment: stock.equipment.filter((_, j) => j !== i) }
-            }
-          } else {
-            members = members.map((m) => {
-              if (m.id !== src.from) return m
-              if (src.kind === 'loot') return { ...m, loot: (m.loot ?? []).filter((l) => l.id !== src.ref) }
-              const i = m.equipment.findIndex((r) => r.itemId === src.ref)
-              return i >= 0 ? { ...m, equipment: m.equipment.filter((_, j) => j !== i) } : m
-            })
-          }
-        }
-        c = { ...c, members, campaign: { ...c.campaign!, stock } }
-        c = withTreasury(c, { po: -g.po, cristaux: -g.cristaux }, `${title} : envoi à ${g.toName}`)
-        lines.push(`Envoyé à ${g.toName} : ${plannedText(g)}`)
-      }
+      const res = applyGifts(c, gifts, title)
+      c = res.crew
+      lines.push(...res.lines)
     }
     if (k === S.upkeep) {
       c = withTreasury(c, { po: -upkeepPo, cristaux: -upkeepCr }, `${title} : entretien`)
@@ -552,11 +535,19 @@ export default function AfterBattlePage() {
       members: kept,
       campaign: { ...draft!.campaign!, stock, games: [...draft!.campaign!.games, game], currentGame: undefined },
     }
+    // Envois aux autres joueurs d'abord (reçus à la clôture de la journée) : s'ils sont refusés,
+    // le rapport n'est pas enregistré et rien n'est perdu.
+    try {
+      await sendGifts(final, gifts.map(({ to, toName, po, cristaux, items }) => ({ to, toName, po, cristaux, items })))
+    } catch (err) {
+      setSaving(false)
+      alert(`Les envois aux autres joueurs ont été refusés (${(err as Error).message}). Le rapport n'est pas enregistré : réessayez, ou retirez les envois à l'étape Commerce.`)
+      return
+    }
     await saveCrew(final)
     // Phase de nuit : ce bilan devient le rapport de fin de nuit de la bande.
     await submitSheetIfNeeded(final, allLines).catch(() => false)
-    // Envois aux autres joueurs : reçus par eux à la clôture de la journée.
-    await sendGifts(final, gifts.map(({ to, toName, po, cristaux, items }) => ({ to, toName, po, cristaux, items }))).catch(() => false)
+    clearLockedPrefix(`${final.id}:g${original!.campaign!.games.length}`)
     try {
       localStorage.removeItem(wizardKey(final.id))
     } catch {
@@ -630,6 +621,34 @@ export default function AfterBattlePage() {
     )
   }
 
+  /** Clé des jets verrouillés de ce rapport (bande + numéro de partie). */
+  const rollKey = `${original.id}:g${original.campaign.games.length}`
+  const marketDrawn = !!getLocked<boolean>(`${rollKey}:market`)
+  const crownDrawn = !!getLocked<boolean>(`${rollKey}:crown`)
+  const rollAllXp = () =>
+    setXp((all) => {
+      const n = { ...all }
+      for (const m of alivePlaying) {
+        const p = profileOf(faction, m)
+        if (p && learnsNothing(p, m)) continue
+        const cur = n[m.id] ?? { participation: null, places: 0, damage: 0, kills: 0 }
+        const partKey = `${rollKey}:part:${m.id}`
+        let participation = cur.participation ?? getLocked<number>(partKey) ?? null
+        if (participation === null) {
+          participation = d10()
+          setLocked(partKey, participation)
+        }
+        const dice = liqueurDice[m.id] ?? 0
+        const liqKey = `${rollKey}:liqueur:${m.id}`
+        let liqueur = cur.liqueur ?? getLocked<number>(liqKey)
+        if (dice && liqueur === undefined) {
+          liqueur = Array.from({ length: dice }, d10).reduce((a, b) => a + b, 0)
+          setLocked(liqKey, liqueur)
+        }
+        n[m.id] = { ...cur, participation, ...(liqueur !== undefined ? { liqueur } : {}) }
+      }
+      return n
+    })
   /** Participants déjà choisis (partie notée en direct) : l'étape « Qui a participé ? » est sautée. */
   const preset = !!original?.campaign?.currentGame
   const levelers = draft.members.filter((m) => isActive(m) && pendingLevels(m) > 0)
@@ -743,7 +762,7 @@ export default function AfterBattlePage() {
                     {item?.consumable === 'poison' ? (
                       <span className="poison-row">
                         <span className="muted small">perdu sur {threshold} ou moins</span>
-                        <DiceInput value={roll} onChange={(v) => setPoisonRolls((r) => ({ ...r, [ref.id]: v }))} />
+                        <DiceInput value={roll} onChange={(v) => setPoisonRolls((r) => ({ ...r, [ref.id]: v }))} lockKey={`${rollKey}:poison:${ref.id}`} label="Jet de réserve du poison" />
                         {roll !== null && <span className={`badge ${roll > threshold ? 'ok' : 'ko'}`}>{roll > threshold ? 'Conservé' : 'Épuisé'}</span>}
                       </span>
                     ) : (
@@ -845,12 +864,12 @@ export default function AfterBattlePage() {
                     <ItemChip
                       key={i}
                       lootKey={key}
-                      after={<button className="tag-remove" onClick={() => setCrownCards((cs) => cs.filter((_, j) => j !== i))} aria-label="Retirer cette carte">×</button>}
+                      after={crownDrawn ? <span className="tag-remove" aria-label="Tirage verrouillé">🔒</span> : <button className="tag-remove" onClick={() => setCrownCards((cs) => cs.filter((_, j) => j !== i))} aria-label="Retirer cette carte">×</button>}
                     />
                   ))}
-                  {crownCards.length < 2 && (
+                  {crownCards.length < 2 && !crownDrawn && (
                     <>
-                      <button className="btn small" onClick={() => setCrownCards((cs) => [...cs, ...drawTreasure(2 - cs.length)])}>🂠 Tirer {2 - crownCards.length} carte{crownCards.length ? '' : 's'} Trésor</button>
+                      <button className="btn small" onClick={() => { setCrownCards((cs) => [...cs, ...drawTreasure(2 - cs.length)]); setLocked(`${rollKey}:crown`, true) }}>🂠 Tirer {2 - crownCards.length} carte{crownCards.length ? '' : 's'} Trésor</button>
                       <select value="" onChange={(e) => e.target.value && setCrownCards((cs) => [...cs, e.target.value].slice(0, 2))} aria-label="Carte Trésor piochée à la table">
                         <option value="">+ Noter une carte piochée…</option>
                         {TREASURE_CHOICES.map((c) => (
@@ -869,7 +888,7 @@ export default function AfterBattlePage() {
             {!market ? (
               <>
                 <div className="row wrap">
-                  <button className="btn" onClick={() => setMarket(drawMarket(4 + pegre))}>🂠 Tirer {4 + pegre} cartes au hasard</button>
+                  <button className="btn" onClick={() => { setMarket(drawMarket(4 + pegre)); setLocked(`${rollKey}:market`, true) }}>🂠 Tirer {4 + pegre} cartes au hasard</button>
                   <button className="btn" onClick={() => setMarket([])} data-tip="Vous piochez les cartes à la table et vous les notez ici.">✎ Noter les cartes piochées à la table</button>
                 </div>
                 <p className="muted small">4 cartes{pegre ? `, +${pegre} pour Soldat de la Pègre` : ''}. Les cartes non achetées retournent dans le paquet.</p>
@@ -893,7 +912,7 @@ export default function AfterBattlePage() {
                           <span className="badge ok">✓ Acheté</span>
                         ) : (
                           <div className="row">
-                            <button className="icon-btn drop-btn" onClick={() => removeMarketCard(i)} aria-label="Retirer cette carte" data-tip="Retirer cette carte (erreur de saisie)">×</button>
+                            {!marketDrawn && <button className="icon-btn drop-btn" onClick={() => removeMarketCard(i)} aria-label="Retirer cette carte" data-tip="Retirer cette carte (erreur de saisie)">×</button>}
                             <select value={buyer[i] ?? alivePlaying[0]?.id ?? TO_STOCK} onChange={(e) => setBuyer((b) => ({ ...b, [i]: e.target.value }))} aria-label="Qui reçoit l'objet">
                               <optgroup label="Personnages">
                                 {alivePlaying.map((m) => <option key={m.id} value={m.id}>{nameOf(faction, m)}</option>)}
@@ -908,14 +927,14 @@ export default function AfterBattlePage() {
                   })}
                 </ul>
                 {market.length === 0 && <p className="muted small">Aucune carte notée pour l'instant.</p>}
-                <select value="" onChange={(e) => e.target.value && setMarket((m) => [...(m ?? []), e.target.value])} aria-label="Ajouter une carte Marché noir">
+                {!marketDrawn && <select value="" onChange={(e) => e.target.value && setMarket((m) => [...(m ?? []), e.target.value])} aria-label="Ajouter une carte Marché noir">
                   <option value="">+ Ajouter une carte piochée…</option>
                   {MARKET_CHOICES.map((c) => (
                     <optgroup key={c.name} label={c.name}>
                       {c.items.map((it) => <option key={it.key} value={it.key}>{it.name}{it.price !== null ? ` — ${it.price} PO` : ''}</option>)}
                     </optgroup>
                   ))}
-                </select>
+                </select>}
               </>
             )}
             <StepLog lines={logs[S.loot]} />
@@ -923,7 +942,7 @@ export default function AfterBattlePage() {
         )}
 
         {step === S.trade && (
-          <TradeStep
+          <TradePanel
             crew={draft}
             faction={faction}
             campaignId={original.groupCampaign?.id}
@@ -984,67 +1003,65 @@ export default function AfterBattlePage() {
             <h2>Expérience</h2>
             <p className="muted small">
               Participation : 1D10 · lieu d'intérêt fouillé : 5 XP · points de vie retirés : 2 à 10 XP chacun selon la figurine (« XP apporté »)
-              · ennemi tué : 5 XP.
+              · ennemi tué : 5 XP. Un dé lancé par le site est verrouillé 🔒.
             </p>
-            <div className="table-wrap">
-              <table className="ref-table xp-table">
-                <thead>
-                  <tr><th>Figurine</th><th>Participation</th><th>Lieux fouillés</th><th>XP de PV retirés</th><th>Ennemis tués</th>{hasLiqueur && <th>Liqueur</th>}<th>Total</th></tr>
-                </thead>
-                <tbody>
-                  {alivePlaying.map((m) => {
-                    const p = profileOf(faction, m)
-                    const v = xp[m.id] ?? { participation: null, places: 0, damage: 0, kills: 0 }
-                    const set = (patch: Partial<XpInput>) => setXp((all) => ({ ...all, [m.id]: { ...v, ...patch } }))
-                    if (p && learnsNothing(p, m)) {
-                      return <tr key={m.id}><td><strong>{nameOf(faction, m)}</strong></td><td colSpan={hasLiqueur ? 6 : 5} className="muted">N'apprend rien</td></tr>
-                    }
-                    return (
-                      <tr key={m.id}>
-                        <td><strong>{nameOf(faction, m)}</strong><br /><span className="muted small">{m.xp} XP</span></td>
-                        <td><DiceInput value={v.participation} onChange={(r) => set({ participation: r })} /></td>
-                        <td><Counter label="Lieux fouillés" hideLabel value={v.places} onDelta={(d) => set({ places: Math.max(0, v.places + d) })} /></td>
-                        <td><Counter label="XP de PV retirés" hideLabel editable steps={[1, 5]} value={v.damage} onDelta={(d) => set({ damage: Math.max(0, v.damage + d) })} /></td>
-                        <td><Counter label="Ennemis tués" hideLabel value={v.kills} onDelta={(d) => set({ kills: Math.max(0, v.kills + d) })} /></td>
-                        {hasLiqueur && (
-                          <td>
-                            {liqueurDice[m.id] ? (
-                              <span className="dice-input">
-                                <NumberInput label="XP de liqueur" min={0} value={v.liqueur ?? null} placeholder={`${liqueurDice[m.id]}D10`} onChange={(n) => set({ liqueur: n })} />
-                                <button type="button" className="btn small" onClick={() => set({ liqueur: Array.from({ length: liqueurDice[m.id] }, d10).reduce((a, b) => a + b, 0) })} title="Lancer les dés">🎲</button>
-                              </span>
-                            ) : '—'}
-                          </td>
-                        )}
-                        <td>
-                          <strong>+{xpTotal(m.id)}</strong>
-                          {gearXp(m.id).xp > 0 && <><br /><span className="muted small" data-tip="XP donnée par un objet porté">dont {gearXp(m.id).names.join(', ')}</span></>}
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            </div>
-            <button
-              className="btn small"
-              onClick={() => setXp((all) => {
-                const n = { ...all }
-                for (const m of alivePlaying) {
-                  const cur = n[m.id] ?? { participation: null, places: 0, damage: 0, kills: 0 }
-                  const dice = liqueurDice[m.id] ?? 0
-                  n[m.id] = {
-                    ...cur,
-                    participation: cur.participation ?? d10(),
-                    // Liqueurs bues : leurs D10 d'XP sont lancés avec la participation.
-                    ...(dice && cur.liqueur === undefined ? { liqueur: Array.from({ length: dice }, d10).reduce((a, b) => a + b, 0) } : {}),
-                  }
-                }
-                return n
-              })}
-            >
+            <button className="btn small" onClick={rollAllXp}>
               🎲 Lancer toutes les participations{hasLiqueur ? ' et les liqueurs' : ''}
             </button>
+            <div className="xp-cards">
+              {alivePlaying.map((m) => {
+                const p = profileOf(faction, m)
+                const v = xp[m.id] ?? { participation: null, places: 0, damage: 0, kills: 0 }
+                const set = (patch: Partial<XpInput>) => setXp((all) => ({ ...all, [m.id]: { ...(all[m.id] ?? v), ...patch } }))
+                if (p && learnsNothing(p, m)) {
+                  return (
+                    <article key={m.id} className="xp-card muted-card">
+                      <header><strong>{nameOf(faction, m)}</strong><span className="muted small">N'apprend rien</span></header>
+                    </article>
+                  )
+                }
+                const liqueurKey = `${rollKey}:liqueur:${m.id}`
+                const liqueurLocked = getLocked<number>(liqueurKey)
+                return (
+                  <article key={m.id} className="xp-card">
+                    <header>
+                      <strong>{nameOf(faction, m)}</strong>
+                      <span className="xp-card-total" data-tip={`${m.xp} XP avant la partie`}>+{xpTotal(m.id)} XP</span>
+                    </header>
+                    <dl>
+                      <dt>Participation <small>1D10</small></dt>
+                      <dd><DiceInput value={v.participation} onChange={(r) => set({ participation: r })} lockKey={`${rollKey}:part:${m.id}`} label="Jet de participation" /></dd>
+                      <dt>Lieux fouillés <small>5 XP chacun</small></dt>
+                      <dd><Counter label="Lieux fouillés" hideLabel value={v.places} onDelta={(d) => set({ places: Math.max(0, v.places + d) })} /></dd>
+                      <dt>PV retirés <small>XP de la figurine touchée</small></dt>
+                      <dd><Counter label="XP de PV retirés" hideLabel editable steps={[1, 5]} value={v.damage} onDelta={(d) => set({ damage: Math.max(0, v.damage + d) })} /></dd>
+                      <dt>Ennemis tués <small>5 XP chacun</small></dt>
+                      <dd><Counter label="Ennemis tués" hideLabel value={v.kills} onDelta={(d) => set({ kills: Math.max(0, v.kills + d) })} /></dd>
+                      {liqueurDice[m.id] ? (
+                        <>
+                          <dt>Liqueur <small>{liqueurDice[m.id]}D10</small></dt>
+                          <dd>
+                            {liqueurLocked !== undefined ? (
+                              <span className="dice-input dice-locked" data-tip="Jet lancé par le site : il ne peut plus être relancé."><strong>{liqueurLocked}</strong> 🔒</span>
+                            ) : (
+                              <span className="dice-input">
+                                <NumberInput label="XP de liqueur" min={0} value={v.liqueur ?? null} placeholder={`${liqueurDice[m.id]}D10`} onChange={(n) => set({ liqueur: n })} />
+                                <button type="button" className="btn small" onClick={() => {
+                                  const r = Array.from({ length: liqueurDice[m.id] }, d10).reduce((a, b) => a + b, 0)
+                                  setLocked(liqueurKey, r)
+                                  set({ liqueur: r })
+                                }} title="Lancer les dés (une seule fois)">🎲</button>
+                              </span>
+                            )}
+                          </dd>
+                        </>
+                      ) : null}
+                    </dl>
+                    {gearXp(m.id).xp > 0 && <p className="muted small" data-tip="XP donnée par un objet porté">dont {gearXp(m.id).names.join(', ')}</p>}
+                  </article>
+                )
+              })}
+            </div>
           </>
         )}
 
@@ -1058,6 +1075,7 @@ export default function AfterBattlePage() {
                 <div key={m.id} className="leveler">
                   <h3>{nameOf(faction, m)} <span className="muted small">{m.xp} XP · {pendingLevels(m)} niveau(x) à appliquer</span></h3>
                   <AdvancePicker
+                    lockPrefix={rollKey}
                     key={`${m.id}-${m.level}`}
                     factionId={faction.id}
                     profile={p}
@@ -1112,6 +1130,7 @@ export default function AfterBattlePage() {
         {injuryFor && (
           <InjuryPicker
             onClose={() => setInjuryFor(null)}
+            lockKey={`${rollKey}:inj:${injuryFor}`}
             lastingOnly
             onApply={(card) => {
               const m = memberById(injuryFor)
@@ -1151,162 +1170,5 @@ function StepLog({ lines }: { lines: string[] }) {
     <ul className="step-log">
       {shown.map((l, i) => <li key={i}>{l}</li>)}
     </ul>
-  )
-}
-
-/** Envoi préparé, avec la provenance de chaque objet : « 50 PO, Épée (Gaston « le tireur » (Recrue)) ». */
-function plannedText(g: PlannedGift | GiftDraft & { sources?: PlannedGift['sources'] }) {
-  const items = g.items.map((i, k) => {
-    const owner = g.sources?.[k]?.owner
-    return owner ? `${i.name} (${owner === 'coffre' ? 'du coffre' : owner})` : i.name
-  })
-  return [g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} cristal(aux)` : '', ...items].filter(Boolean).join(', ') || 'rien'
-}
-
-
-/**
- * Phase Commerce : envoyer, sans contrepartie, de l'or, des cristaux ou des objets à un autre joueur
- * de la campagne. Retiré de la bande à la sortie de l'étape, reçu par l'autre joueur à la clôture de la journée.
- */
-function TradeStep({ crew, faction, campaignId, gifts, onChange }: {
-  crew: Crew
-  faction: Faction
-  campaignId?: string
-  gifts: PlannedGift[]
-  onChange: (gifts: PlannedGift[]) => void
-}) {
-  const [players, setPlayers] = useState<Entry[] | null>(null)
-  const [to, setTo] = useState('')
-  const [po, setPo] = useState(0)
-  const [cristaux, setCristaux] = useState(0)
-  const [picked, setPicked] = useState<string[]>([])
-
-  useEffect(() => {
-    if (!campaignId) return
-    listEntries(campaignId)
-      .then((all) => setPlayers(all.filter((e) => e.crewId && e.email !== currentEmail())))
-      .catch(() => setPlayers([]))
-  }, [campaignId])
-
-  if (!campaignId) {
-    return (
-      <>
-        <h2>Commerce</h2>
-        <p className="muted">Les envois entre joueurs se font dans une campagne de groupe.</p>
-      </>
-    )
-  }
-
-  const c = crew.campaign!
-  const usedPo = gifts.reduce((t, g) => t + g.po, 0)
-  const usedCr = gifts.reduce((t, g) => t + g.cristaux, 0)
-  const taken = new Set(gifts.flatMap((g) => g.sources.map((s) => `${s.from}|${s.kind}|${s.ref}`)))
-  // Objets disponibles : ceux des membres actifs et du coffre, moins ceux déjà prévus dans un envoi.
-  const available: { uid: string; from: string; kind: 'equipment' | 'loot'; ref: string; key: string; name: string; owner: string }[] = []
-  const seenEq: Record<string, number> = {}
-  const addEq = (from: string, itemId: string, owner: string) => {
-    const n = (seenEq[`${from}|${itemId}`] = (seenEq[`${from}|${itemId}`] ?? 0) + 1)
-    const plannedCount = gifts.flatMap((g) => g.sources).filter((s) => s.from === from && s.kind === 'equipment' && s.ref === itemId).length
-    if (n <= plannedCount) return
-    available.push({ uid: `${from}|equipment|${itemId}|${n}`, from, kind: 'equipment', ref: itemId, key: itemId, name: equipmentById(itemId)?.name ?? itemId, owner })
-  }
-  for (const m of crew.members.filter(isActive)) {
-    for (const r of m.equipment) addEq(m.id, r.itemId, memberTitle(faction, m))
-    for (const l of m.loot ?? []) {
-      if (!taken.has(`${m.id}|loot|${l.id}`)) available.push({ uid: `${m.id}|loot|${l.id}`, from: m.id, kind: 'loot', ref: l.id, key: l.key, name: itemByKey(l.key)?.name ?? l.key, owner: memberTitle(faction, m) })
-    }
-  }
-  for (const id of c.stock?.equipment ?? []) addEq(TO_STOCK, id, 'coffre')
-  for (const l of c.stock?.loot ?? []) {
-    if (!taken.has(`${TO_STOCK}|loot|${l.id}`)) available.push({ uid: `${TO_STOCK}|loot|${l.id}`, from: TO_STOCK, kind: 'loot', ref: l.id, key: l.key, name: itemByKey(l.key)?.name ?? l.key, owner: 'coffre' })
-  }
-
-  const target = players?.find((p) => p.email === to)
-  const chosen = available.filter((a) => picked.includes(a.uid))
-  const canSend = !!target && (po > 0 || cristaux > 0 || chosen.length > 0)
-  const send = () => {
-    if (!target) return
-    onChange([
-      ...gifts,
-      {
-        to: target.email,
-        toName: `${target.pseudo || 'Joueur'} (${target.crewName ?? 'bande'})`,
-        po,
-        cristaux,
-        items: chosen.map((a) => ({ kind: a.kind, key: a.key, name: a.name })),
-        sources: chosen.map((a) => ({ from: a.from, kind: a.kind, ref: a.ref, owner: a.owner })),
-      },
-    ])
-    setPo(0)
-    setCristaux(0)
-    setPicked([])
-  }
-
-  return (
-    <>
-      <h2>Commerce</h2>
-      <p className="muted small">
-        Envoyez de l'or, des cristaux ou des objets à un autre joueur de la campagne, sans contrepartie. Ils quittent votre bande à la fin de cette
-        étape, et l'autre joueur les reçoit (PO et cristaux au trésor, objets au coffre du camp) une fois la journée clôturée.
-      </p>
-      {players === null && <p className="muted">Chargement des joueurs…</p>}
-      {players?.length === 0 && <p className="muted">Aucun autre joueur avec une bande dans la campagne.</p>}
-      {players && players.length > 0 && (
-        <div className="trade-form card">
-          <div className="row wrap">
-            <label className="field">
-              <span>Destinataire</span>
-              <select value={to} onChange={(e) => setTo(e.target.value)}>
-                <option value="">Choisir un joueur…</option>
-                {players.map((p) => <option key={p.email} value={p.email}>{p.pseudo || 'Joueur'} · {p.crewName}</option>)}
-              </select>
-            </label>
-            <div className="field narrow"><span>PO (sur {c.po - usedPo})</span><NumberInput label="PO à envoyer" min={0} max={Math.max(0, c.po - usedPo)} step={5} value={po} onChange={setPo} /></div>
-            <div className="field narrow"><span>Cristaux (sur {c.cristaux - usedCr})</span><NumberInput label="Cristaux à envoyer" min={0} max={Math.max(0, c.cristaux - usedCr)} value={cristaux} onChange={setCristaux} /></div>
-          </div>
-          <div className="field">
-            <span>Objets (cliquez pour les ajouter à l'envoi)</span>
-            {available.length === 0 ? (
-              <span className="muted small">Aucun objet disponible.</span>
-            ) : (
-              <span className="tags trade-items">
-                {available.map((a) => (
-                  <button
-                    key={a.uid}
-                    type="button"
-                    className={`tag item-chip trade-item ${picked.includes(a.uid) ? 'on' : ''}`}
-                    onClick={() => setPicked((p) => (p.includes(a.uid) ? p.filter((x) => x !== a.uid) : [...p, a.uid]))}
-                    aria-pressed={picked.includes(a.uid)}
-                    data-tip={a.owner === 'coffre' ? 'Dans le coffre du camp' : `Porté par ${a.owner}`}
-                  >
-                    {picked.includes(a.uid) ? <span className="trade-check">✓</span> : <RarityDot rarity={a.kind === 'loot' ? itemByKey(a.key)?.rarity ?? 'blanc' : 'blanc'} />}
-                    {a.name}
-                    <span className="trade-owner">· {a.owner}</span>
-                  </button>
-                ))}
-              </span>
-            )}
-          </div>
-          <div className="row">
-            <button type="button" className="btn primary" disabled={!canSend} onClick={send} style={{ marginLeft: 'auto' }}>
-              Préparer l'envoi{target ? ` à ${target.pseudo || 'ce joueur'}` : ''}
-            </button>
-          </div>
-        </div>
-      )}
-      {gifts.length > 0 && (
-        <>
-          <h3>Envois prévus</h3>
-          <ul className="plain-list trade-list">
-            {gifts.map((g, i) => (
-              <li key={i} className="row wrap between">
-                <span><strong>{g.toName}</strong> : {plannedText(g)}</span>
-                <button className="icon-btn drop-btn" onClick={() => onChange(gifts.filter((_, j) => j !== i))} aria-label="Annuler cet envoi" data-tip="Annuler cet envoi">×</button>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-    </>
   )
 }

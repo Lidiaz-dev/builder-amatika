@@ -1394,3 +1394,57 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .space-text strong { font-family: var(--display); font-size: 0.95rem; }
 .space-text small { color: var(--muted); font-size: 0.75rem; }
 @media (prefers-reduced-motion: no-preference) { .space-btn.on { transform: translateY(-1px); } }
+
+/* Jet verrouillé (lancé par le site) */
+.dice-locked { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.2rem 0.6rem; border: 1px solid var(--border-strong); border-radius: 3px; background: var(--surface-2); font-variant-numeric: lining-nums tabular-nums; }
+.dice-locked strong { font-size: 1.05rem; }
+
+/* Bilan, étape Expérience : une carte par figurine (lisible sur téléphone) */
+.xp-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 0.8rem; margin-top: 0.8rem; }
+.xp-card { border: 1px solid var(--border-strong); border-radius: var(--radius); background: var(--surface); padding: 0.6rem 0.8rem; }
+.xp-card.muted-card { opacity: 0.7; }
+.xp-card header { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; margin-bottom: 0.4rem; }
+.xp-card-total { font-family: var(--display); font-weight: 700; color: var(--ok); font-size: 1.05rem; }
+.xp-card dl { display: grid; grid-template-columns: 1fr auto; gap: 0.45rem 0.6rem; align-items: center; margin: 0; }
+.xp-card dt { font-size: 0.88rem; }
+.xp-card dt small { display: block; color: var(--muted); font-size: 0.72rem; }
+.xp-card dd { margin: 0; justify-self: end; }
+
+/* ===== Téléphone : page de campagne et rapport ===== */
+.campaign-page { overflow-wrap: anywhere; }
+.campaign-page .row { flex-wrap: wrap; min-width: 0; }
+.campaign-page input, .campaign-page select { max-width: 100%; }
+.campaign-budget label { flex-wrap: wrap; }
+.step-card .btn { white-space: normal; text-align: center; max-width: 100%; }
+@media (max-width: 600px) {
+  /* Frise des étapes du rapport : une seule ligne qui défile, l'étape en cours reste visible. */
+  .stepper { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-left: -16px; margin-right: -16px; padding: 0 16px; }
+  .stepper::-webkit-scrollbar { display: none; }
+  .stepper li { flex: none; }
+  .campaign-zone { padding: 0.6rem; margin-left: -6px; margin-right: -6px; }
+  .campaign-page .card { padding-left: 0.75rem; padding-right: 0.75rem; }
+  .campaign-page .plain-list li > .row { width: 100%; justify-content: flex-end; }
+}
+
+/* Commerce entre deux journées */
+.between-trade { border: 1px solid var(--border); border-radius: var(--radius); padding: 0.6rem 0.8rem; background: rgb(255 248 228 / 0.5); display: flex; flex-direction: column; gap: 0.6rem; }
+.between-trade h2 { font-size: 1rem; margin: 0; }
+
+/* Boîte aux lettres : envois reçus et envoyés */
+.mail-btn { align-self: flex-start; }
+.mail-notice { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.7rem 0.9rem; border: 2px solid var(--gold); border-radius: var(--radius); background: var(--warn-soft); }
+.mail-notice > div { flex: 1; min-width: 0; }
+.mail-notice ul { list-style: none; margin: 0.35rem 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; }
+.mail-notice p { margin: 0; }
+.mail-icon { font-size: 1.6rem; line-height: 1; }
+@media (prefers-reduced-motion: no-preference) { .mail-icon { animation: mail-bounce 0.8s ease-out 2; } }
+@keyframes mail-bounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-5px); } }
+.mail-from { font-weight: 700; margin-right: 0.3rem; }
+.gift-content { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0.3rem; }
+.gift-amount { font-family: var(--display); font-weight: 700; padding: 0.05rem 0.45rem; border: 1px solid var(--border); border-radius: 3px; background: rgb(255 248 228 / 0.6); }
+.mail-tabs { margin-bottom: 0.7rem; }
+.mail-list { list-style: none; margin: 0; padding: 0; }
+.mail-list li { padding: 0.5rem 0; border-bottom: 1px dashed var(--border); display: flex; flex-direction: column; gap: 0.3rem; }
+.mail-list li.pending { opacity: 0.85; }
+.mail-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.6rem; }
+.mail-head .badge { margin-left: auto; }

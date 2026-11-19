@@ -5,22 +5,26 @@ import { SpellDetails } from './SpellTag'
 import { ADVANCE_TABLE, describeAdvance, learnableSkills, type AdvanceInput } from '../lib/campaign'
 import { isMage, memberSkills, type Member } from '../lib/crew'
 import DiceInput from './DiceInput'
+import { getLocked, setLocked } from '../lib/lockedRolls'
 
 interface Props {
   factionId: string
   profile: Profile
   member: Member
   onApply: (input: AdvanceInput) => void
+  /** Préfixe des jets verrouillés (rapport en cours) : jet d'évolution et pioche de sorts une seule fois. */
+  lockPrefix?: string
 }
 
 /** Montée de niveau : jet sur la table d'évolution, choix éventuels, nouveau sort pour un mage. */
-export default function AdvancePicker({ factionId, profile, member, onApply }: Props) {
+export default function AdvancePicker({ factionId, profile, member, onApply, lockPrefix }: Props) {
   const [roll, setRoll] = useState<number | null>(null)
   const [chosenRoll, setChosenRoll] = useState<number | undefined>()
   const [hit, setHit] = useState<'tir' | 'com' | undefined>()
   const [skill, setSkill] = useState('')
   const [spellId, setSpellId] = useState('')
-  const [drawn, setDrawn] = useState<string[] | null>(null)
+  const spellsKey = lockPrefix ? `${lockPrefix}:spells:${member.id}:${member.level + 1}` : ''
+  const [drawn, setDrawn] = useState<string[] | null>(() => (spellsKey ? getLocked<string[]>(spellsKey) ?? null : null))
 
   const level = member.level + 1
   const input: AdvanceInput = { roll: roll ?? 0, chosenRoll, hit, skill: skill || undefined, spellId: spellId || undefined }
@@ -31,7 +35,9 @@ export default function AdvancePicker({ factionId, profile, member, onApply }: P
   const learnable = learnableSkills(profile, memberSkills(profile, member))
   const spells = spellsFor(factionId, profile.id).filter((sp) => !(member.spellIds ?? []).includes(sp.id))
   const drawFive = () => {
-    setDrawn([...spells].sort(() => Math.random() - 0.5).slice(0, 5).map((sp) => sp.id))
+    const five = [...spells].sort(() => Math.random() - 0.5).slice(0, 5).map((sp) => sp.id)
+    if (spellsKey) setLocked(spellsKey, five)
+    setDrawn(five)
     setSpellId('')
   }
   const offered = drawn ? spells.filter((sp) => drawn.includes(sp.id)) : spells
@@ -45,7 +51,12 @@ export default function AdvancePicker({ factionId, profile, member, onApply }: P
       </p>
       <div className="row wrap">
         <span>Jet sur la table d'évolution :</span>
-        <DiceInput value={roll} onChange={(v) => { setRoll(v); setChosenRoll(undefined); setHit(undefined); setSkill('') }} />
+        <DiceInput
+          value={roll}
+          onChange={(v) => { if (v !== roll) { setRoll(v); setChosenRoll(undefined); setHit(undefined); setSkill('') } }}
+          lockKey={lockPrefix ? `${lockPrefix}:adv:${member.id}:${level}` : undefined}
+          label="Jet d'évolution"
+        />
       </div>
 
       <ol className="advance-table">
@@ -101,8 +112,8 @@ export default function AdvancePicker({ factionId, profile, member, onApply }: P
               <option value="">Choisir…</option>
               {offered.map((sp) => <option key={sp.id} value={sp.id}>{sp.name} ({sp.type}, {sp.value}+)</option>)}
             </select>
-            <button type="button" className="btn small" onClick={drawFive}>{drawn ? 'Repiocher 5' : 'Piocher 5'}</button>
-            {drawn && <button type="button" className="btn small ghost" onClick={() => setDrawn(null)}>Tous</button>}
+            {!drawn && <button type="button" className="btn small" onClick={drawFive}>Piocher 5</button>}
+            {drawn && <span className="muted small" data-tip="Pioche faite par le site : elle ne peut plus être refaite.">🔒 5 sorts piochés</span>}
           </div>
         </label>
       )}

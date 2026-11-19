@@ -229,6 +229,7 @@ export default function LiveGamePanel({ crew, faction, onChange, onFinish, finis
         {injuryFor && (
           <InjuryPicker
             onClose={() => setInjuryFor(null)}
+            lockKey={`${crew.id}:${game.id}:inj:${injuryFor}`}
             onApply={(card) => {
               const id = injuryFor
               const knocked = card.kind !== 'meme-pas-mal' && !card.special

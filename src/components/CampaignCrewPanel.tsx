@@ -3,10 +3,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import { factionById } from '../data'
 import { memberTitle, abandonGame, activeMembers, crewPath, withoutUndo, emptyStock, withTreasury, crewCost, MAX_ON_TABLE, newId, profileOf, type Crew } from '../lib/crew'
 import { useAuth } from '../lib/auth'
-import { markGiftsReceived, receiveGifts, type Gift, getMySheet, isAdmin, isDayReady, isOpen, joinDay, registerCrew, setDayReady, type Day, type GroupCampaign, type Sheet } from '../lib/groupCampaign'
+import { sendGiftsNow, markGiftsReceived, receiveGifts, type Gift, getMySheet, isAdmin, isDayReady, isOpen, joinDay, registerCrew, setDayReady, type Day, type GroupCampaign, type Sheet } from '../lib/groupCampaign'
 import { getCrew, saveCrew } from '../lib/storage'
 import { isLegal, validateCrew } from '../lib/validate'
 import LiveGamePanel from './LiveGamePanel'
+import Mailbox, { MailNotice } from './Mailbox'
+import TradePanel from './TradePanel'
+import { applyGifts, plannedText, type PlannedGift } from '../lib/trade'
 import CampStockPanel from './CampStockPanel'
 import Modal from './Modal'
 import MemberPeek from './MemberPeek'
@@ -30,12 +33,15 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
   const [sheet, setSheet] = useState<Sheet | null>(null)
   const [busy, setBusy] = useState(false)
   const [stockOpen, setStockOpen] = useState(false)
+  const [tradeOpen, setTradeOpen] = useState(false)
+  const [plannedGifts, setPlannedGifts] = useState<PlannedGift[]>([])
   const [error, setError] = useState('')
 
   const open = !!day && isOpen(day.status)
   const joined = open && !!day?.participants.includes(email)
 
   const [received, setReceived] = useState<Gift[]>([])
+  const [mailRefresh, setMailRefresh] = useState(0)
 
   useEffect(() => {
     getCrew(crewId).then(setCrew).catch(() => setCrew(null))
@@ -139,19 +145,6 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
   const err = (
     <>
       {error && <p className="error">{error}</p>}
-      {received.length > 0 && (
-        <div className="notice ok-notice small">
-          <strong>Envois reçus :</strong>
-          <ul>
-            {received.map((g) => (
-              <li key={g.id}>
-                {g.fromName} (journée {g.day}) : {[g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} cristal(aux)` : '', ...g.items.map((i) => i.name)].filter(Boolean).join(', ')}
-                {g.items.length ? ' · objets rangés au coffre du camp' : ''}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </>
   )
 
@@ -192,13 +185,19 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
   const game = c.currentGame
   const stock = c.stock ?? emptyStock()
   // Le coffre se modifie pendant la préparation (journée rejointe, pas encore validée) ; sinon on le consulte.
-  const stockEditable = !!day && day.status === 'preparation' && joined && !isDayReady(day, email)
+  // Coffre modifiable entre deux journées, ou pendant la préparation (tant qu'elle n'est pas validée).
+  const between = !open || !joined
+  const stockEditable = between || (day?.status === 'preparation' && !isDayReady(day, email))
   const summary = (
     <>
-      <p className="muted small row wrap campaign-summary">
+      <div className="muted small row wrap campaign-summary">
         <span>Trésor {c.po} PO · {c.cristaux} cristaux · {c.prestige} prestige · {activeMembers(crew).length} membres · {c.games.length} partie{c.games.length > 1 ? 's' : ''}</span>
-        <button className="btn small" onClick={() => setStockOpen(true)} data-tip="Objets rangés au camp.">Coffre ({stock.equipment.length + stock.loot.length})</button>
-      </p>
+        <span className="row">
+          <button className="btn small" onClick={() => setStockOpen(true)} data-tip="Objets rangés au camp.">Coffre ({stock.equipment.length + stock.loot.length})</button>
+          <Mailbox campaign={campaign} refresh={mailRefresh + received.length} />
+        </span>
+      </div>
+      <MailNotice fresh={received} onDismiss={() => setReceived([])} />
       <Modal open={stockOpen} title="Coffre du camp" kicker={crew.name} onClose={() => setStockOpen(false)} wide>
         <CampStockPanel
           faction={faction}
@@ -226,12 +225,62 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
     />
   )
 
-  // 2. Pas de journée ouverte.
+  // Commerce entre deux journées : les envois partent tout de suite, l'autre joueur les reçoit à sa prochaine visite.
+  const betweenDays = (
+    <div className="campaign-step">
+      <div className="row wrap">
+        <Link className="btn" to={crewPath(crew)} data-tip="Entre deux journées, la bande se modifie librement : équipement, achats, recrutement.">⚒ Gérer ma bande</Link>
+        <button className="btn" onClick={() => setTradeOpen((o) => !o)} aria-expanded={tradeOpen}>⇄ Commerce</button>
+      </div>
+      {tradeOpen && (
+        <div className="between-trade">
+          <TradePanel
+            crew={crew}
+            faction={faction}
+            campaignId={campaign.id}
+            gifts={plannedGifts}
+            onChange={setPlannedGifts}
+            intro="Envoyez de l'or, des cristaux ou des objets à un autre joueur. Entre deux journées, l'envoi part tout de suite : l'autre joueur le reçoit (PO et cristaux au trésor, objets au coffre du camp) à sa prochaine visite."
+          />
+          {plannedGifts.length > 0 && (
+            <div className="row">
+              <button
+                className="btn primary"
+                style={{ marginLeft: 'auto' }}
+                disabled={busy}
+                onClick={() => {
+                  const detail = plannedGifts.map((g) => `• ${g.toName} : ${plannedText(g)}`).join('\n')
+                  if (!confirm(`Confirmer l'envoi ?\n\n${detail}\n\nL'envoi part tout de suite et ne peut pas être annulé.`)) return
+                  act(async () => {
+                    const res = applyGifts(crew, plannedGifts, 'Commerce')
+                    // L'envoi d'abord : s'il est refusé, rien n'est retiré de la bande.
+                    await sendGiftsNow(campaign, crew.name || 'Bande sans nom', plannedGifts.map(({ to, toName, po, cristaux, items }) => ({ to, toName, po, cristaux, items })))
+                    const saved = await saveCrew(res.crew)
+                    first.current = true
+                    setCrew(saved)
+                    setPlannedGifts([])
+                    setTradeOpen(false)
+                    setMailRefresh((n) => n + 1)
+                  })
+                }}
+              >
+                ⇄ Envoyer maintenant
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+
+  // 2. Pas de journée ouverte : la bande se gère, le commerce est ouvert.
   if (!open || !day) {
     return (
       <div className="campaign-step">
         {summary}
-        <p className="muted">Bande prête : en attente de la prochaine journée.</p>
+        <p className="muted">Bande prête : en attente de la prochaine journée. Vous pouvez la gérer et commercer d'ici là.</p>
+        {betweenDays}
+        {err}
       </div>
     )
   }
@@ -244,6 +293,7 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
           {summary}
           <p><strong>Journée {day.number}</strong> en préparation : rejoignez-la pour y participer.</p>
           <button className="btn primary" disabled={busy} onClick={() => act(() => joinDay(campaign, true))}>⚑ Rejoindre la journée</button>
+          {betweenDays}
           {err}
         </div>
       )
@@ -315,7 +365,9 @@ export default function CampaignCrewPanel({ campaign, crewId, email, day, onChan
     return (
       <div className="campaign-step">
         {summary}
-        <p className="muted">Votre bande ne participe pas à la journée {day.number}.</p>
+        <p className="muted">Votre bande ne participe pas à la journée {day.number} : vous pouvez la gérer et commercer.</p>
+        {betweenDays}
+        {err}
       </div>
     )
   }

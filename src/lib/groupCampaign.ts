@@ -307,6 +307,26 @@ export async function sendGifts(crew: Crew, gifts: GiftDraft[]): Promise<boolean
   return true
 }
 
+/** Joueur : envois faits entre deux journées (aucune journée ouverte, ou une journée qu'il ne joue pas). */
+export async function sendGiftsNow(c: GroupCampaign, fromName: string, gifts: GiftDraft[]) {
+  const batch = writeBatch(database())
+  for (const g of gifts) {
+    const id = newId()
+    batch.set(doc(giftsCol(c.id), id), { ...g, id, day: c.dayNumber, from: myEmail(), fromName, createdAt: new Date().toISOString(), claimed: false })
+  }
+  await batch.commit()
+}
+
+/** Joueur : historique de ses envois, reçus et envoyés, du plus récent au plus ancien. */
+export async function listMyGifts(id: string): Promise<{ received: Gift[]; sent: Gift[] }> {
+  const [r, s] = await Promise.all([
+    getDocs(query(giftsCol(id), where('to', '==', myEmail()))),
+    getDocs(query(giftsCol(id), where('from', '==', myEmail()))),
+  ])
+  const sort = (a: Gift, b: Gift) => b.createdAt.localeCompare(a.createdAt)
+  return { received: r.docs.map((d) => d.data() as Gift).sort(sort), sent: s.docs.map((d) => d.data() as Gift).sort(sort) }
+}
+
 /** Organisateur : envois d'une journée (récapitulatif). */
 export async function listDayGifts(id: string, day: number): Promise<Gift[]> {
   const snap = await getDocs(query(giftsCol(id), where('day', '==', day)))
@@ -321,7 +341,8 @@ export async function receiveGifts(crew: Crew, c: GroupCampaign): Promise<{ crew
   if (!crew.campaign) return null
   const snap = await getDocs(query(giftsCol(c.id), where('to', '==', myEmail()), where('claimed', '==', false)))
   const done = new Set(crew.campaign.receivedGifts ?? [])
-  const closed = (g: Gift) => g.day < c.dayNumber || (g.day === c.dayNumber && c.dayStatus === 'cloturee')
+  // Reçu quand sa journée est clôturée ; un envoi fait entre deux journées est reçu tout de suite.
+  const closed = (g: Gift) => g.day < c.dayNumber || (g.day === c.dayNumber && !isOpen(c.dayStatus))
   const gifts = snap.docs.map((d) => d.data() as Gift).filter((g) => closed(g) && !done.has(g.id))
   if (!gifts.length) return null
   let next: Crew = crew
@@ -443,7 +464,8 @@ export function lockReason(crew: Pick<Crew, 'campaign' | 'groupCampaign'>, state
   }
   if (state.participant && state.day?.status === 'en-cours') return 'Partie en cours : notez-la depuis la campagne.'
   if (state.participant && state.day?.status === 'nuit') return 'Phase de nuit : faites votre récupération et votre rapport depuis la campagne.'
-  return "Bande de campagne : elle se modifie seulement pendant la préparation d'une journée qu'elle a rejointe."
+  // Entre deux journées, ou pendant une journée qu'elle ne joue pas : la bande se gère librement.
+  return null
 }
 
 /**
