@@ -382,6 +382,8 @@ export default function AfterBattlePage() {
   const alivePlaying = playing.filter(isActive)
   // Plus de transformation des cristaux bruts : chaque cristal ramassé est un cristal magique.
   const crystalsGained = rawCrystals
+  /** Cristaux vendables au Butin : ceux ramassés et ceux déjà au trésor (brouillon d'avant le butin). */
+  const crystalsOwned = (c: Crew) => crystalsGained + (c.campaign?.cristaux ?? 0)
   /**
    * Objets qui rapportent à la bande à chaque partie (« Une bande possédant cet objet gagne +20PO
    * à la fin de chaque partie ») : portés, au sac ou au coffre du camp.
@@ -460,9 +462,9 @@ export default function AfterBattlePage() {
       setLiqueurDice(dice)
     }
     if (k === S.loot) {
-      const sold = Math.min(crystalsSold, crystalsGained)
+      const sold = Math.min(crystalsSold, crystalsOwned(c))
       if (crystalsGained) lines.push(`${crystalsGained} ${crystalWord(crystalsGained)} ramassé${crystalsGained > 1 ? 's' : ''}`)
-      if (sold) lines.push(`${sold} cristaux vendus : +${sold * CRYSTAL_PRICE} PO`)
+      if (sold) lines.push(`${sold} ${crystalWord(sold)} vendu${sold > 1 ? "s" : ""} : +${sold * CRYSTAL_PRICE} PO`)
       if (poFound) lines.push(`${poFound} PO récupérées`)
       if (prestigeGained) lines.push(`${prestigeGained} de prestige`)
       for (const r of recurring) lines.push(`${r.name} : ${[r.po && `+${r.po} PO`, r.prestige && `+${r.prestige} prestige`].filter(Boolean).join(', ')}`)
@@ -889,17 +891,25 @@ export default function AfterBattlePage() {
               </div>
             </div>
             <p className="muted small">Chaque cristal ramassé est un cristal magique : il se garde (1 point de prestige en fin de campagne) ou se vend {CRYSTAL_PRICE} PO.</p>
-            {crystalsGained > 0 && (
-              <div className="row wrap crystal-sale">
-                <label className="row">
-                  Vendre
-                  <NumberInput label="Cristaux à vendre" min={0} max={crystalsGained} value={Math.min(crystalsSold, crystalsGained)} onChange={(n) => setCrystalsSold(Math.floor(n))} />
-                  {crystalWord(Math.min(crystalsSold, crystalsGained))} sur {crystalsGained}, à {CRYSTAL_PRICE} PO pièce
-                </label>
-                {crystalsSold > 0 && <strong>+{Math.min(crystalsSold, crystalsGained) * CRYSTAL_PRICE} PO</strong>}
-                <span className="muted small">Vous en garderez {crystalsGained - Math.min(crystalsSold, crystalsGained)}.</span>
-              </div>
-            )}
+            {crystalsOwned(draft) > 0 && (() => {
+              const owned = crystalsOwned(draft)
+              const sold = Math.min(crystalsSold, owned)
+              const stocked = draft.campaign?.cristaux ?? 0
+              return (
+                <div className="row wrap crystal-sale">
+                  <label className="row">
+                    Vendre
+                    <NumberInput label="Cristaux à vendre" min={0} max={owned} value={sold} onChange={(n) => setCrystalsSold(Math.floor(n))} />
+                    {crystalWord(sold)} sur {owned}, à {CRYSTAL_PRICE} PO pièce
+                  </label>
+                  {sold > 0 && <strong>+{sold * CRYSTAL_PRICE} PO</strong>}
+                  <span className="muted small">
+                    {crystalsGained > 0 && stocked > 0 ? `${crystalsGained} ramassé${crystalsGained > 1 ? 's' : ''} + ${stocked} déjà au trésor. ` : stocked > 0 ? `${stocked} déjà au trésor. ` : ''}
+                    Vous en garderez {owned - sold}.
+                  </span>
+                </div>
+              )
+            })()}
 
             <h3>Or et prestige</h3>
             <div className="row wrap">
