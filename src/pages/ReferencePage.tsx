@@ -304,7 +304,7 @@ function FactionPage({ query }: { query: string }) {
       {faction.notes.map((n, i) => <p key={i} className="notice">{n}</p>)}
       {racialItemsOf(faction.id).map((it) => (
         <p key={it.key} className="notice">
-          <strong>Objet racial :</strong> {it.name} ({it.price ?? '—'} PO), achetable dès la création de la bande
+          <strong>Objet racial :</strong> {it.name} ({it.price ?? '—'} PO), achetable à la création de la bande et entre les parties
           {it.requires ? ` par les modèles ayant accès à : ${equipment.find((e) => e.id === it.requires)?.name ?? it.requires}` : ''}. <span className="muted">{it.description}</span>
         </p>
       ))}
@@ -419,7 +419,7 @@ function ItemsRef({ query }: { query: string }) {
                             <span className="fx"> Fiche : {[formatMods(it.mods), ...(it.skills ?? [])].filter(Boolean).join(', ')}</span>
                           )}
                           {racialFactionsOf(itemKey(cat.id, it.id)).map((f) => (
-                            <span key={f} className="badge racial-badge" title="Achetable par cette faction dès la création de la bande">Objet racial : {f}</span>
+                            <span key={f} className="badge racial-badge" title="Achetable par cette faction, à la création et entre les parties">Objet racial : {f}</span>
                           ))}
                         </td>
                         <td className="nowrap">{it.price !== null ? `${it.price} PO` : '—'}</td>

@@ -33,7 +33,7 @@ export interface LootRef {
   slot: Slot
   /** Consommable utilisé pendant la partie en cours (défaussé ou testé après la bataille). */
   used?: boolean
-  /** Objet racial acheté à la création : son prix compte dans le coût de la bande. */
+  /** Objet racial de la faction (à la création ou en campagne) : son prix compte dans le coût de la bande. */
   racial?: boolean
   undo?: ItemUndo
   /** Ramassé pendant cette partie (id de la partie en direct) : mis en avant dans le bilan. */
@@ -65,6 +65,8 @@ export type MemberStatus = 'actif' | 'mort' | 'parti'
 export interface Member {
   /** Note libre du joueur pour distinguer ses personnages (« le tireur »). */
   note?: string
+  /** Recruté pendant la préparation, encore annulable : prix remboursé. */
+  recruitUndo?: { po: number }
   id: string
   name: string
   /** Nom proposé à l'ajout (affiché en gris) : il devient le nom si on ne le change pas. */
@@ -167,6 +169,31 @@ export function leaveCrew(crew: Crew, memberId: string): Crew {
   }
 }
 
+/**
+ * Annule un recrutement de la préparation : la recrue disparaît, son prix et ses achats annulables
+ * sont remboursés, les objets pris au coffre (ou tout autre objet) y retournent.
+ */
+export function undoRecruit(crew: Crew, memberId: string): { crew: Crew; po: number } {
+  const m = crew.members.find((x) => x.id === memberId)
+  if (!m?.recruitUndo || !crew.campaign) return { crew, po: 0 }
+  let po = m.recruitUndo.po
+  const stock = crew.campaign.stock ?? emptyStock()
+  const equipment = [...stock.equipment]
+  const loot = [...stock.loot]
+  for (const r of m.equipment) {
+    if (r.undo && 'po' in r.undo) po += r.undo.po
+    else equipment.push(r.itemId)
+  }
+  for (const l of m.loot ?? []) {
+    if (l.undo && 'po' in l.undo) po += l.undo.po
+    else loot.push({ id: l.id, key: l.key, slot: 'sac' })
+  }
+  return {
+    crew: { ...crew, members: crew.members.filter((x) => x.id !== memberId), campaign: { ...crew.campaign, stock: { equipment, loot } } },
+    po,
+  }
+}
+
 /** Adresse du builder d'une bande : celles d'une campagne de groupe se gèrent depuis la campagne. */
 export const crewPath = (crew: Pick<Crew, 'id' | 'groupCampaign'>) =>
   crew.groupCampaign ? `/campagnes/${crew.groupCampaign.id}/bandes/${crew.id}` : `/bandes/${crew.id}`
@@ -174,6 +201,7 @@ export const crewPath = (crew: Pick<Crew, 'id' | 'groupCampaign'>) =>
 /** La préparation est finie (partie lancée, bilan fait) : les ajouts ne sont plus annulables. */
 export const withoutUndo = (m: Member): Member => ({
   ...m,
+  recruitUndo: undefined,
   equipment: m.equipment.map((r) => (r.undo ? { ...r, undo: undefined } : r)),
   loot: m.loot?.map((r) => (r.undo ? { ...r, undo: undefined } : r)),
 })

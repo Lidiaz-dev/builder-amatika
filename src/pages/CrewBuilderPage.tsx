@@ -30,6 +30,7 @@ import { memberTitle,
   lootItems,
   MAX_ON_TABLE,
   memberCost,
+  undoRecruit,
   memberSkills,
   memberUpkeep,
   newId,
@@ -262,8 +263,12 @@ export default function CrewBuilderPage() {
   const addMember = (p: Profile) => {
     const recruit = newMember(crew.factionId, p, crew.members.map(memberName))
     fresh.current.add(recruit.id)
-    const next = { ...crew, members: [...crew.members, recruit] }
+    const next = { ...crew, members: [...crew.members, campaign ? { ...recruit, recruitUndo: { po: p.cost } } : recruit] }
     setCrew(campaign ? withTreasury(next, { po: -p.cost }, `Recrutement : ${p.name}`) : next)
+  }
+  const cancelRecruit = (m: Member) => {
+    const res = undoRecruit(crew, m.id)
+    setCrew(withTreasury(res.crew, { po: res.po }, `Recrutement annulé : ${memberTitle(faction, m)}`))
   }
   const duplicateMember = (m: Member) => {
     const freshName = randomName(crew.factionId, crew.members.map(memberName))
@@ -437,6 +442,7 @@ export default function CrewBuilderPage() {
               stock={campaign ? campaign.stock ?? emptyStock() : undefined}
               onStock={(stock, next) => updateStock(stock, next)}
               onRemove={() => (campaign ? setCrew(leaveCrew(crew, m.id)) : removeMember(m.id))}
+              onUndoRecruit={campaign && m.recruitUndo ? () => cancelRecruit(m) : undefined}
               onDuplicate={() => duplicateMember(m)}
               unrestricted={!!crew.unrestricted}
               canDuplicate={!campaign && (!!crew.unrestricted || active.filter((x) => x.profileId === m.profileId).length < (profileOf(faction, m)?.max ?? 0))}
@@ -582,6 +588,8 @@ interface MemberCardProps {
   issues: Issue[]
   onChange: (m: Member, delta?: Delta, label?: string) => void
   onRemove: () => void
+  /** Recrue de la préparation : annuler le recrutement (remboursé). */
+  onUndoRecruit?: () => void
   onDuplicate: () => void
   canDuplicate: boolean
   unrestricted: boolean
@@ -595,7 +603,7 @@ type Dialog = 'gear' | 'advance' | null
 /** Durée de l'animation quand un objet est vendu ou rangé au coffre. */
 const ITEM_OUT_MS = 1600
 
-function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemove, onDuplicate, canDuplicate, unrestricted, stock, onStock }: MemberCardProps) {
+function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemove, onUndoRecruit, onDuplicate, canDuplicate, unrestricted, stock, onStock }: MemberCardProps) {
   const profile = profileOf(faction, member)
   const [adding, setAdding] = useState('')
   const [dialog, setDialog] = useState<Dialog>(null)
@@ -677,8 +685,13 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
       return
     }
     if (itemId.startsWith('racial:')) {
-      // Objet racial acheté à la création : payé sur le budget de la bande.
-      onChange({ ...member, loot: [...(member.loot ?? []), { id: newId(), key: itemId.slice(7), slot: 'porte' as Slot, racial: true }] })
+      // Objet racial : sur le budget à la création, avec le trésor en campagne (annulable pendant la préparation).
+      const key = itemId.slice(7)
+      const it = itemByKey(key)
+      const price = it?.price ?? 0
+      const next = { ...member, loot: [...(member.loot ?? []), { id: newId(), key, slot: 'porte' as Slot, racial: true, ...(campaign ? { undo: { po: price } } : {}) }] }
+      if (campaign) onChange(next, { po: -price }, `Achat : ${it?.name ?? key} (${who})`)
+      else onChange(next)
       setAdding('')
       return
     }
@@ -720,7 +733,13 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
   }
   const undoLoot = (lootId: string) => {
     const ref = (member.loot ?? []).find((l) => l.id === lootId)
-    if (!ref || !stock || !onStock) return
+    if (!ref) return
+    const next = { ...member, loot: (member.loot ?? []).filter((l) => l.id !== lootId) }
+    if (ref.undo && 'po' in ref.undo) {
+      onChange(next, { po: ref.undo.po }, `Achat annulé : ${itemByKey(ref.key)?.name ?? ref.key} (${who})`)
+      return
+    }
+    if (!stock || !onStock) return
     onStock({ ...stock, loot: [...stock.loot, { ...ref, slot: 'sac', undo: undefined }] }, { ...member, loot: (member.loot ?? []).filter((l) => l.id !== lootId) })
   }
   const storeLoot = (lootId: string) => {
@@ -776,6 +795,12 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
           )}
         </span>
         <span className="unit-role">
+          {onUndoRecruit && member.recruitUndo && (
+            <UndoButton
+              onClick={onUndoRecruit}
+              tip={`Annuler le recrutement : ${member.recruitUndo.po} PO remboursés${member.equipment.length || member.loot?.length ? ', ses achats aussi, et ce qu\'il a pris au coffre y retourne' : ''}`}
+            />
+          )}
           {member.promotedChef ? 'Chef · ' : ''}{profile.name}{campaign ? ` · niv. ${member.level}` : ` · ${memberCost(faction, member)} PO`}
         </span>
       </header>
@@ -925,7 +950,7 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
                     )}
                     {item?.price !== null && item?.price !== undefined && <p className="small muted">Valeur : {item.price} PO (revente {Math.floor(item.price / 2)} PO)</p>}
                   </InfoTag>
-                  {ref.racial && <span className="badge racial-badge" title="Objet racial acheté à la création">Racial</span>}
+                  {ref.racial && <span className="badge racial-badge" title="Objet racial de la faction">Racial</span>}
                 </span>
                 {item?.consumable && ref.used ? (
                   ref.used ? (
@@ -939,7 +964,7 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
                   )
                 ) : (
                   <span className="item-price">
-                    {campaign && ref.undo && <UndoButton onClick={() => undoLoot(ref.id)} tip="Annuler : l'objet retourne au coffre" />}
+                    {campaign && ref.undo && <UndoButton onClick={() => undoLoot(ref.id)} tip={'po' in ref.undo ? `Annuler l'achat : ${ref.undo.po} PO remboursés` : "Annuler : l'objet retourne au coffre"} />}
                     <span className="muted small">{item?.price ?? '—'} PO</span>
                   </span>
                 )}
@@ -967,8 +992,8 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
                 ))}
               </optgroup>
             ))}
-            {!campaign && racialItems.length > 0 && (
-              <optgroup label={`Objet racial (${faction.name})`}>
+            {racialItems.length > 0 && (
+              <optgroup label={campaign ? `Acheter : objet racial (${faction.name})` : `Objet racial (${faction.name})`}>
                 {racialItems.map((it) => (
                   <option key={it.key} value={`racial:${it.key}`}>{it.name} — {it.price ?? 0} PO</option>
                 ))}

@@ -555,6 +555,7 @@ export default function AfterBattlePage() {
       // La partie est finie : les objets ne sont plus « trouvés pendant la partie ».
       .map((m) => ({
         ...m,
+        recruitUndo: undefined,
         equipment: m.equipment.map((ref) => ({ ...ref, found: undefined, undo: undefined })),
         loot: m.loot?.map((ref) => ({ ...ref, found: undefined, undo: undefined })),
       }))
