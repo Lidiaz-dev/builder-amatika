@@ -151,6 +151,7 @@ const BLOCKS: QuickBlock[] = [
           ['Lancer un sort', 'Mage seulement, pas au corps à corps. Chaque sort une seule fois par activation.'],
           ['Dissiper', 'Mot clé Dissipation. Un sort « reste en jeu », une fois par activation.'],
           ['Canaliser', "Mage ou Dissipation : l'action suivante (lancer ou dissiper) se fait à 3D10, en gardant les 2 de son choix."],
+          ['Mordre', "Vampire seulement, 1 action. Mêmes conditions que Fouiller (ennemi hors de combat ou mort, au contact). Sans effet pour la victime ; un Vampire qui a mordu une figurine non démon et non mort-vivant ne paie pas son entretien après la partie."],
           ['Utiliser un objet', 'Un objet du sac (fiole, poison sur une arme). Pas de potion au corps à corps.'],
         ],
       },
@@ -275,7 +276,7 @@ const BLOCKS: QuickBlock[] = [
       {
         kind: 'list',
         items: [
-          '**Lancer** : 2D10 ≥ valeur du sort. +1 par niveau de magie, −1 par sort « reste en jeu » déjà maintenu, −1 par invocation contrôlée.',
+          '**Lancer** : 2D10 ≥ valeur du sort. +1 par niveau de magie, −1 par sort « reste en jeu » déjà maintenu, −1 par invocation contrôlée, −1 par ennemi avec Dissipation à 12 ps ou moins.',
           "**Fiasco** : sur un double, le lanceur subit une touche de Force égale à la valeur du dé (double 6 → Force 6), après l'effet du sort.",
           '**Dissiper** : 2D10 ≥ valeur du sort, mêmes modificateurs.',
           "**Projectile** : vise l'ennemi le plus proche (sauf en hauteur). **Éphémère** : effet immédiat. **Reste en jeu** : seul type dissipable ; le lanceur l'annule quand il veut, sans action.",

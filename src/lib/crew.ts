@@ -299,8 +299,14 @@ export function crewCost(crew: Crew) {
   return crew.members.reduce((sum, m) => sum + memberCost(faction, m), 0)
 }
 
-export function memberUpkeep(profile: Profile | undefined, member: Member) {
-  if (!profile || isChef(profile, member)) return { po: 0, cristaux: 0 }
+/**
+ * Entretien d'un membre. Le chef ne coûte rien, sauf un chef dont le profil a son propre entretien
+ * (Vampire : 1 cristal). `waived` : la condition d'annulation est remplie pour cette partie (il a mordu).
+ */
+export function memberUpkeep(profile: Profile | undefined, member: Member, waived = false) {
+  if (!profile || waived) return { po: 0, cristaux: 0 }
+  const ownChefUpkeep = profile.role === 'chef' && (profile.upkeep.po > 0 || profile.upkeep.cristaux > 0)
+  if (isChef(profile, member) && !ownChefUpkeep) return { po: 0, cristaux: 0 }
   const po = profile.upkeep.perLevel ? profile.upkeep.po * member.level : profile.upkeep.po
   return { po, cristaux: profile.upkeep.cristaux }
 }
@@ -428,6 +434,22 @@ export function withTreasury(crew: Crew, delta: { po?: number; cristaux?: number
       log: [...c.log, { date: new Date().toISOString(), label, ...delta }],
     },
   }
+}
+
+/** Actions propres à certains profils de la bande (Mordre du Vampire), pour le rappel des compétences. */
+export function crewActionsReminder(crew: Crew): { name: string; text: string }[] {
+  const faction = factionById(crew.factionId)
+  if (!faction) return []
+  const out: { name: string; text: string }[] = []
+  const bites = crew.members.filter(isActive).some((m) => profileOf(faction, m)?.upkeep.waiver)
+  if (bites) {
+    const note = crew.members.map((m) => profileOf(faction, m)?.notes.find((n) => n.startsWith('Mordre'))).find(Boolean)
+    out.push({
+      name: 'Mordre (action)',
+      text: `${note ?? 'Mordre coûte 1 action, mêmes restrictions que la fouille.'} Un Vampire qui a mordu une figurine non démon et non mort-vivant durant la partie ne paie pas son entretien.`,
+    })
+  }
+  return out
 }
 
 /** Rappel des objets portés ou au sac par les membres actifs : nom et règle, sans doublon. */

@@ -5489,10 +5489,13 @@
         "upkeep": {
           "po": 0,
           "perLevel": false,
-          "cristaux": 1
+          "cristaux": 1,
+          "waiver": "la figurine a mordu une figurine non démon et non mort vivant durant la partie précédente"
         },
         "xpValue": 7,
-        "notes": [],
+        "notes": [
+          "Mordre coûte 1 action et suis exactement les mêmes restrictions que la fouille (uniquement les figurines ennemies misent hors de combat, ou toutes figurines morte, il faut être au contact de la figurine mordue et cette actin est impossible si un ennemie avec une force supérieur est visible dans un rayon de 5ps etc…). Cette action ne peut être effectuée que par un vampire.\nSe faire mordre est sans aucune incidence pour la victime."
+        ],
         "role": "chef"
       },
       {

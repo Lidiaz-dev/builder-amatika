@@ -206,7 +206,26 @@ def parse_bandes(paras, hyp):
                     profile["equipment"] = parse_equipment(l.split(":", 1)[1])
                     seen_equipment = True
                 elif l.startswith("Entretien"):
-                    profile["upkeep"], profile["xpValue"] = parse_upkeep(l.split(":", 1)[1])
+                    raw_upkeep = l.split(":", 1)[1]
+                    # « …, ou 0 si la figurine a mordu … durant la partie précédente. Mordre coûte 1 action … »
+                    waiver = re.search(r",?\s*ou 0 si (.+?)\.(?=\S|\s|$)", raw_upkeep)
+                    if waiver:
+                        rest = raw_upkeep[waiver.end():].strip()
+                        raw_upkeep = raw_upkeep[: waiver.start()]
+                        if rest:
+                            profile["notes"].append(rest)
+                    upkeep, xp = parse_upkeep(raw_upkeep)
+                    if waiver:
+                        upkeep["waiver"] = waiver.group(1).strip()
+                        hyp.append(f"Entretien de {profile['name']} : annulé si {upkeep['waiver']}.")
+                    profile["upkeep"] = upkeep
+                    if xp is not None:
+                        profile["xpValue"] = xp
+                elif re.match(r"XP apport[ée]\s*:", l, re.I):
+                    # « XP apporté » sur sa propre ligne (et non à la suite de l'entretien).
+                    m = re.search(r"(\d+)", l)
+                    if m:
+                        profile["xpValue"] = int(m.group(1))
                 elif l.startswith("Arbre"):
                     raw = l.split(":", 1)[1].replace("tir reconnaissance", "tir, reconnaissance")
                     profile["trees"] = [TREES.get(t.lower().strip(" ."), slug(t)) for t in split_list(raw)]

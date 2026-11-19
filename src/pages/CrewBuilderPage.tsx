@@ -368,7 +368,7 @@ export default function CrewBuilderPage() {
               <Total label="Trésor" value={`${campaign.po} PO`} alert={campaign.po < 0} tip="Pièces d'or disponibles pour recruter, acheter et payer l'entretien." />
               <Total label="Cristaux" value={`${campaign.cristaux}`} tip={`Cristaux de la bande : ils se vendent ${CRYSTAL_PRICE} PO pièce dans « Trésor… », ou rapportent 1 point de prestige chacun en fin de campagne.`} />
               <Total label="Prestige" value={`${campaign.prestige}`} tip="Prestige gagné au fil des parties." />
-              <Total label="Entretien" value={`${upkeep.po} PO${upkeep.cristaux ? ` + ${upkeep.cristaux} cristal` : ''}`} tip="À payer après chaque partie pour garder la bande (le chef ne coûte rien)." />
+              <Total label="Entretien" value={`${upkeep.po} PO${upkeep.cristaux ? ` + ${upkeep.cristaux} cristal` : ''}`} tip="À payer après chaque partie pour garder la bande (le chef ne coûte rien, sauf exception comme le Vampire)." />
               <Total label="Membres" value={`${active.length}`} alert={active.length > MAX_ON_TABLE} tip={`Membres actifs. ${MAX_ON_TABLE} figurines maximum sur la table par partie.`} />
               <Total label="Parties" value={`${campaign.games.length}`} />
               <button className="btn totals-btn" onClick={() => setStockOpen(true)} data-tip="Objets rangés au camp : les redonner, les vendre ou les jeter.">
@@ -381,7 +381,7 @@ export default function CrewBuilderPage() {
               <Total label="Faction" value={faction.name} />
               <Total label="Dépensé" value={`${cost} / ${crew.budget} PO`} alert={cost > crew.budget} tip="Coût des recrues et de leur équipement, sur le budget de départ." />
               <Total label="Reste" value={`${crew.budget - cost} PO`} alert={cost > crew.budget} tip="Pour une bande de campagne, ce qui reste devient son trésor quand elle est validée pour la campagne." />
-              <Total label="Entretien" value={`${upkeep.po} PO${upkeep.cristaux ? ` + ${upkeep.cristaux} cristal` : ''}`} tip="À payer après chaque partie pour garder la bande (le chef ne coûte rien)." />
+              <Total label="Entretien" value={`${upkeep.po} PO${upkeep.cristaux ? ` + ${upkeep.cristaux} cristal` : ''}`} tip="À payer après chaque partie pour garder la bande (le chef ne coûte rien, sauf exception comme le Vampire)." />
               <Total label="Membres" value={`${crew.members.length}`} alert={crew.members.length > MAX_ON_TABLE} />
             </>
           )}

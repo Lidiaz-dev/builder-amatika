@@ -5,6 +5,7 @@ import { noteOf,
   actionsOf,
   bagItems,
   crewCost,
+  crewActionsReminder,
   crewItemsReminder,
   crewSpellsReminder,
   crewUpkeep,
@@ -49,6 +50,7 @@ export default function CrewSheetsPage() {
     const p = profileOf(faction, m)
     return p ? memberSkills(p, m) : []
   }))])
+  const actions = crewActionsReminder(crew)
   const carried = crewItemsReminder(crew)
   const spellsKnown = crewSpellsReminder(crew)
 
@@ -151,7 +153,7 @@ export default function CrewSheetsPage() {
         })}
       </div>
 
-      {withRules && usedSkills.length > 0 && (
+      {withRules && usedSkills.length + actions.length > 0 && (
         <section className="sheet-rules">
           <h2>Rappel des compétences</h2>
           <dl>
@@ -159,6 +161,12 @@ export default function CrewSheetsPage() {
               <div key={name}>
                 <dt>{name}</dt>
                 <dd>{skillByName(name)?.description ?? 'Pas encore de description dans les règles.'}</dd>
+              </div>
+            ))}
+            {actions.map((a) => (
+              <div key={a.name}>
+                <dt>{a.name}</dt>
+                <dd>{a.text}</dd>
               </div>
             ))}
           </dl>

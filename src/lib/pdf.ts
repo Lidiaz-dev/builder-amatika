@@ -4,6 +4,7 @@ import { noteOf,
   actionsOf,
   bagItems,
   crewCost,
+  crewActionsReminder,
   crewItemsReminder,
   crewSpellsReminder,
   crewUpkeep,
@@ -229,7 +230,7 @@ export async function downloadSheetsPdf(crew: Crew, faction: Faction, withRules:
       const p = profileOf(faction, m)
       return p ? memberSkills(p, m) : []
     }))])
-    const skillEntries = used.map((name) => ({ name, text: skillByName(name)?.description ?? 'Pas encore de description dans les règles.' }))
+    const skillEntries = [...used.map((name) => ({ name, text: skillByName(name)?.description ?? 'Pas encore de description dans les règles.' })), ...crewActionsReminder(crew)]
     const end = reminderPages(doc, 'Rappel des compétences', skillEntries, bottom)
     const afterItems = reminderPages(doc, 'Rappel des objets', crewItemsReminder(crew), bottom, end)
     reminderPages(doc, 'Rappel des sorts', crewSpellsReminder(crew), bottom, afterItems)

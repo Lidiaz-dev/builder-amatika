@@ -80,6 +80,8 @@ interface WizardSnapshot {
   marketBought?: number[]
   /** Cristaux du butin vendus tout de suite (CRYSTAL_PRICE pièce). */
   crystalsSold?: number
+  /** Membres dont l'entretien est annulé pour cette partie (Vampire qui a mordu). */
+  waived?: string[]
   /** Couronne sauteuse : la bande la porte, et les 2 cartes Trésor reçues. */
   crown?: boolean
   crownCards?: string[]
@@ -146,6 +148,7 @@ export default function AfterBattlePage() {
   const [prestigeGained, setPrestigeGained] = useState(0)
   const [crystalsSold, setCrystalsSold] = useState(0)
   const [crown, setCrown] = useState(false)
+  const [waived, setWaived] = useState<string[]>([])
   const [crownCards, setCrownCards] = useState<string[]>([])
   // Commerce
   const [gifts, setGifts] = useState<PlannedGift[]>([])
@@ -182,6 +185,7 @@ export default function AfterBattlePage() {
     setCrystalsSold(0)
     setCrownCards([])
     setGifts([])
+    setWaived([])
     setRolls([])
     if (live) {
       setTitle(live.title)
@@ -241,6 +245,7 @@ export default function AfterBattlePage() {
         if (snap.crown !== undefined) setCrown(snap.crown)
         setCrownCards(snap.crownCards ?? [])
         setGifts(snap.gifts ?? [])
+        setWaived(snap.waived ?? [])
         setResumed(snap.step > 0)
       } else {
         startFrom(c)
@@ -258,14 +263,14 @@ export default function AfterBattlePage() {
     if (!original || !draft || saving) return
     const snap: WizardSnapshot = {
       base: original.updatedAt, step, draft, exits, logs, title, participants, rawCrystals, rolls,
-      poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market: market ?? undefined, marketBought, crystalsSold, crown, crownCards, gifts,
+      poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market: market ?? undefined, marketBought, crystalsSold, crown, crownCards, gifts, waived,
     }
     try {
       localStorage.setItem(wizardKey(original.id), JSON.stringify(snap))
     } catch {
       // Stockage indisponible (navigation privée…) : l'assistant marche quand même, sans reprise.
     }
-  }, [original, draft, step, exits, logs, title, participants, rawCrystals, rolls, poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market, marketBought, crystalsSold, crown, crownCards, gifts, saving])
+  }, [original, draft, step, exits, logs, title, participants, rawCrystals, rolls, poFound, prestigeGained, leaving, poisonRolls, xp, liqueurDice, market, marketBought, crystalsSold, crown, crownCards, gifts, waived, saving])
 
   if (original === undefined) return <p className="muted">Chargement…</p>
   const faction = original ? factionById(original.factionId) : undefined
@@ -368,8 +373,8 @@ export default function AfterBattlePage() {
 
   // Entretien calculé sur le brouillon (après les morts).
   const stayers = draft.members.filter((m) => isActive(m) && !leaving.includes(m.id))
-  const upkeepPo = stayers.reduce((s, m) => s + memberUpkeep(profileOf(faction, m), m).po, 0)
-  const upkeepCr = stayers.reduce((s, m) => s + memberUpkeep(profileOf(faction, m), m).cristaux, 0)
+  const upkeepPo = stayers.reduce((s, m) => s + memberUpkeep(profileOf(faction, m), m, waived.includes(m.id)).po, 0)
+  const upkeepCr = stayers.reduce((s, m) => s + memberUpkeep(profileOf(faction, m), m, waived.includes(m.id)).cristaux, 0)
   const treasury = draft.campaign!
 
   const hasLiqueur = Object.values(liqueurDice).some(Boolean)
@@ -446,6 +451,11 @@ export default function AfterBattlePage() {
     if (k === S.upkeep) {
       c = withTreasury(c, { po: -upkeepPo, cristaux: -upkeepCr }, `${title} : entretien`)
       lines.push(`Entretien payé : ${upkeepPo} PO${upkeepCr ? ` et ${upkeepCr} cristal` : ''}`)
+      for (const mid of waived) {
+        const m = c.members.find((x) => x.id === mid)
+        const p = m && profileOf(faction!, m)
+        if (m && p?.upkeep.waiver) lines.push(`${nameOf(faction!, m)} : pas d'entretien (${p.upkeep.waiver})`)
+      }
       if (leaving.length) {
         c = withTreasury(c, { prestige: -10 * leaving.length }, `${title} : soldats non payés`)
         lines.push(`Non payés, quittent la bande : ${leaving.map((mid) => nameOf(faction!, memberById(mid))).join(', ')} (-${10 * leaving.length} prestige)`)
@@ -993,20 +1003,34 @@ export default function AfterBattlePage() {
               </div>
             )}
             {crDeficit < 0 && <p className="notice">Il manque {-crDeficit} cristal pour l'entretien en cristaux.</p>}
-            <p className="muted small">Cochés : entretien payé, le soldat reste. Le chef ne coûte rien.</p>
+            <p className="muted small">Cochés : entretien payé, le soldat reste. Le chef ne coûte rien, sauf exception indiquée sur son profil.</p>
             <ul className="check-list">
               {draft.members.filter(isActive).map((m) => {
                 const p = profileOf(faction, m)
-                const u = memberUpkeep(p, m)
+                const u = memberUpkeep(p, m, waived.includes(m.id))
+                const base = memberUpkeep(p, m)
                 const on = leaving.includes(m.id)
+                // Un chef qui a son propre entretien (Vampire) part s'il n'est ni payé ni dispensé (il a mordu).
+                const chefLocked = isChef(p, m) && !on && !((u.cristaux > 0 && u.cristaux > treasury.cristaux) || (u.po > 0 && u.po > treasury.po))
+                const canWaive = !!p?.upkeep.waiver && participants.includes(m.id) && (base.po > 0 || base.cristaux > 0)
                 return (
                   <li key={m.id}>
                     <label>
-                      <input type="checkbox" checked={!on} disabled={isChef(p, m)} onChange={() => setLeaving((l) => (on ? l.filter((x) => x !== m.id) : [...l, m.id]))} aria-label={`Entretien payé : ${nameOf(faction, m)}`} />
+                      <input type="checkbox" checked={!on} disabled={chefLocked} onChange={() => setLeaving((l) => (on ? l.filter((x) => x !== m.id) : [...l, m.id]))} aria-label={`Entretien payé : ${nameOf(faction, m)}`} />
                       <strong>{nameOf(faction, m)}</strong>{' '}
                       <span className="muted small">{u.cristaux ? `${u.cristaux} cristal` : `${u.po} PO`}{on ? ' · non payé, quitte la bande' : ' · payé'}</span>
                       {m.leavesAfterGame && <span className="badge ko">Part après la partie</span>}
                     </label>
+                    {canWaive && (
+                      <label className="waiver">
+                        <input
+                          type="checkbox"
+                          checked={waived.includes(m.id)}
+                          onChange={(e) => setWaived((w) => (e.target.checked ? [...w, m.id] : w.filter((x) => x !== m.id)))}
+                        />
+                        🩸 A mordu (non démon, non mort-vivant) : pas d'entretien
+                      </label>
+                    )}
                   </li>
                 )
               })}

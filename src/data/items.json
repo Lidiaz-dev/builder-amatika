@@ -2065,12 +2065,11 @@
       {
         "id": "bouclier-solide",
         "name": "Bouclier solide",
-        "description": "+3 à la sauvegarde ; Encombrée : vous avez un malus de -1 pour toucher au corps à corps.",
+        "description": "+3 à la sauvegarde.",
         "price": 40,
         "rarity": "gris",
         "mods": {
-          "svg": -3,
-          "com": 1
+          "svg": -3
         }
       },
       {

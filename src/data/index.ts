@@ -26,7 +26,8 @@ export interface Profile {
   skillChoices: string[][]
   equipment: string[]
   trees: string[]
-  upkeep: { po: number; perLevel: boolean; cristaux: number }
+  /** `waiver` : condition qui annule l'entretien de la partie (« a mordu une figurine… », Vampire). */
+  upkeep: { po: number; perLevel: boolean; cristaux: number; waiver?: string }
   /** Expérience gagnée par point de vie retiré à cette figurine. */
   /** XP gagnée par l'adversaire pour chaque point de vie retiré à ce profil (colonne XP du Compendium). */
   xpValue: number | null
