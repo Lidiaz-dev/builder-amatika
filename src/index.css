@@ -1478,3 +1478,8 @@ q.gift-message { quotes: '« ' ' »'; }
 .admin-pending li { padding: 0.3rem 0; border-bottom: 1px dashed var(--border); }
 
 .admin-xp li { padding: 0.25rem 0; border-bottom: 1px dashed var(--border); }
+
+/* Maître de campagne : tous les envois */
+.all-gifts > summary h2 { display: inline; font-size: 1.05rem; }
+.all-gifts-list li { padding: 0.4rem 0; border-bottom: 1px dashed var(--border); display: flex; flex-direction: column; gap: 0.2rem; }
+.all-gifts-list li.pending .badge { background: var(--warn-soft); color: var(--warn); }

@@ -305,17 +305,26 @@ export const currentEmail = () => myEmail()
 /** Joueur : enregistre ses envois avec son rapport de fin de nuit. Renvoie false hors phase de nuit. */
 export async function sendGifts(crew: Crew, gifts: GiftDraft[]): Promise<boolean> {
   if (!gifts.length) return true
-  const state = await crewDayState(crew).catch(() => null)
-  if (!state?.participant || state.day?.status !== 'nuit') return false
+  const state = await crewDayState(crew)
+  // Les envois ne sont jamais abandonnés en silence : sans campagne, le rapport s'arrête avec un message.
+  if (!state) throw new Error("bande introuvable dans sa campagne")
+  // Pendant la nuit d'une journée jouée : reçus à sa clôture. Sinon (journée déjà clôturée…) : reçus tout de suite.
+  const day = state.participant && state.day?.status === 'nuit' ? state.day.number : state.campaign.dayNumber
   const batch = writeBatch(database())
   for (const g of gifts) {
     const id = newId()
     batch.set(doc(giftsCol(state.campaign.id), id), {
-      ...g, id, day: state.day.number, from: myEmail(), fromName: crew.name || 'Bande sans nom', createdAt: new Date().toISOString(), claimed: false,
+      ...g, id, day, from: myEmail(), fromName: crew.name || 'Bande sans nom', createdAt: new Date().toISOString(), claimed: false,
     })
   }
   await batch.commit()
   return true
+}
+
+/** Maître de campagne : tous les envois de la campagne, du plus récent au plus ancien. */
+export async function listAllGifts(id: string): Promise<Gift[]> {
+  const snap = await getDocs(giftsCol(id))
+  return snap.docs.map((d) => d.data() as Gift).sort((a, b) => b.createdAt.localeCompare(a.createdAt))
 }
 
 /** Joueur : envois faits entre deux journées (aucune journée ouverte, ou une journée qu'il ne joue pas). */
