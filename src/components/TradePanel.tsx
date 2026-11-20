@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { equipmentById, itemByKey, type Faction } from '../data'
+import { equipmentById, itemByKey, itemTypeOf, type Faction } from '../data'
 import { isActive, memberTitle, type Crew } from '../lib/crew'
 import { plannedText, TO_STOCK, type PlannedGift } from '../lib/trade'
 import { currentEmail, listEntries, type Entry } from '../lib/groupCampaign'
@@ -127,7 +127,7 @@ export default function TradePanel({ crew, faction, campaignId, gifts, onChange,
                     data-tip={a.owner === 'coffre' ? 'Dans le coffre du camp' : `Porté par ${a.owner}`}
                   >
                     {picked.includes(a.uid) ? <span className="trade-check">✓</span> : <RarityDot rarity={a.kind === 'loot' ? itemByKey(a.key)?.rarity ?? 'blanc' : 'blanc'} />}
-                    {a.name}
+                    {a.name}{a.kind === 'loot' && <em className="item-type">{itemTypeOf(a.key)}</em>}
                     <span className="trade-owner">· {a.owner}</span>
                   </button>
                 ))}

@@ -15,6 +15,7 @@ import {
   type Profile,
   type Spell,
   racialItemsOf,
+  itemTypeOf,
   baseSpellCount,
   choosesSecondSpell,
 } from '../data'
@@ -937,7 +938,7 @@ function MemberCard({ fresh, faction, member, campaign, issues, onChange, onRemo
               <li key={ref.id} className={ref.used ? 'used' : undefined}>
                 <span>
                   <RarityDot rarity={item?.rarity ?? 'blanc'} />{' '}
-                  <InfoTag label={item?.name ?? ref.key} kicker={ref.racial ? 'Objet racial' : item?.category} className="loot-tag">
+                  <InfoTag label={item?.name ?? ref.key} kicker={ref.racial ? 'Objet racial' : item?.category} className="loot-tag" suffix={<em className="item-type">{itemTypeOf(ref.key)}</em>}>
                     <p><RuleText text={item?.description ?? ''} /></p>
                     {(item?.mods || item?.skills) && (
                       <p className="notice small">

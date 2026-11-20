@@ -361,6 +361,53 @@ export const RACIAL_ITEMS: Record<string, RacialItem[]> = {
   ondin: [{ key: 'javelots/javelot-paamidien', requires: 'javelot' }],
 }
 
+/** Type d'un objet de trésor ou du marché noir, au singulier (« armure complète »), d'après sa catégorie. */
+const ITEM_TYPES: Record<string, string> = {
+  ustensiles: 'ustensile',
+  fioles: 'fiole',
+  poisons: 'poison',
+  dagues: 'dague',
+  batons: 'bâton',
+  'marteaux-et-massues': 'marteau / massue',
+  'marteaux-lourds': 'marteau lourd',
+  haches: 'hache',
+  'haches-lourdes': 'hache lourde',
+  epees: 'épée',
+  'epees-lourdes': 'épée lourde',
+  morgenstern: 'morgenstern',
+  fleaux: 'fléau',
+  hallebardes: 'hallebarde',
+  lances: 'lance',
+  'arcs-courts': 'arc court',
+  arcs: 'arc',
+  'arcs-longs': 'arc long',
+  arbaletes: 'arbalète',
+  'arbaletes-de-poings': 'arbalète de poing',
+  frondes: 'fronde',
+  'etoiles-couteaux-et-haches-de-jet': 'arme de jet',
+  sarbacanes: 'sarbacane',
+  javelots: 'javelot',
+  pistolets: 'pistolet',
+  arquebuses: 'arquebuse',
+  'armures-de-cuir': 'armure de cuir',
+  'armures-legeres': 'armure légère',
+  'armures-lourdes': 'armure lourde',
+  'armures-completes': 'armure complète',
+  boucliers: 'bouclier',
+  casques: 'casque',
+  gants: 'gants',
+  chapeaux: 'chapeau',
+  chaussures: 'chaussures',
+  talismans: 'talisman',
+  renomme: 'renommée',
+}
+
+/** Type d'un objet à partir de sa catégorie (id) ou de sa clé « catégorie/objet ». */
+export const itemTypeOf = (categoryOrKey: string) => {
+  const cat = categoryOrKey.split('/')[0]
+  return ITEM_TYPES[cat] ?? itemCategories.find((c) => c.id === cat)?.name.toLowerCase() ?? ''
+}
+
 /** Objets raciaux d'une faction, prêts à afficher. */
 export const racialItemsOf = (factionId: string) =>
   (RACIAL_ITEMS[factionId] ?? []).flatMap((r) => {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { equipmentById, itemByKey, type Faction } from '../data'
 import { memberTitle, isActive, profileOf, type CampStock, type Member } from '../lib/crew'
 import ItemChip from './ItemChip'
@@ -58,6 +58,42 @@ export default function CampStockPanel({ faction, members, stock, onChange, read
     )
   }
 
+  /** Une ligne du coffre : l'objet et sa valeur en haut, puis « Donner à … » et la vente / le rebut. */
+  const row = (r: {
+    key: string
+    chip: ReactNode
+    count: number
+    value: number | null
+    select: ReactNode
+    canGive: boolean
+    onGive: () => void
+    onSell?: () => void
+    onDrop: () => void
+    name: string
+  }) => (
+    <li key={r.key} className="camp-item">
+      <div className="camp-item-head">
+        <span className="camp-item-name">{r.chip}{r.count > 1 && <strong className="camp-count">×{r.count}</strong>}</span>
+        {r.value !== null && <span className="muted small">valeur {r.value} PO</span>}
+      </div>
+      {!readOnly && (
+        <div className="camp-item-actions">
+          <span className="camp-give">
+            <span className="muted small">Donner à</span>
+            {r.select}
+            <button className="btn small" disabled={!r.canGive} onClick={r.onGive}>Donner</button>
+          </span>
+          <span className="camp-out">
+            {r.onSell && r.value ? (
+              <button className="btn small ghost" onClick={r.onSell} data-tip="Vendre pour la moitié du prix">Vendre {Math.floor(r.value / 2)} PO</button>
+            ) : null}
+            <button className="icon-btn drop-btn" onClick={r.onDrop} aria-label={`Jeter ${r.name}`} data-tip="Jeter, sans revente">×</button>
+          </span>
+        </div>
+      )}
+    </li>
+  )
+
   return (
     <div className="camp-stock">
       {flashes.length > 0 && (
@@ -73,44 +109,40 @@ export default function CampStockPanel({ faction, members, stock, onChange, read
           {Object.entries(counts).map(([id, n]) => {
             const e = equipmentById(id)
             if (!e) return null
-            return (
-              <li key={id}>
-                <span><ItemChip equipmentId={id} />{n > 1 && <strong> ×{n}</strong>}</span>
-                {!readOnly && <span className="row">
-                  {memberSelect(id, id)}
-                  <button className="btn small" disabled={!takers(id).length} onClick={() => {
-                    const m = pick(id, id)
-                    if (m) out(id, 'store', `→ ${nameOf(m)}`, () => onChange(withoutEquipment(id), { ...m, equipment: [...m.equipment, { itemId: id, slot: 'sac' }] }))
-                  }}>Donner</button>
-                  <button className="btn small ghost" onClick={() => out(id, 'sell', `+${Math.floor(e.price / 2)} PO`, () => onChange(withoutEquipment(id), undefined, { po: Math.floor(e.price / 2) }, `Vente : ${e.name} (coffre du camp)`))} data-tip="Vendre pour la moitié du prix">
-                    Vendre {Math.floor(e.price / 2)} PO
-                  </button>
-                  <button className="icon-btn drop-btn" onClick={() => confirm(`Jeter « ${e.name} » ?`) && onChange(withoutEquipment(id))} aria-label={`Jeter ${e.name}`} data-tip="Jeter, sans revente">×</button>
-                </span>}
-              </li>
-            )
+            return row({
+              key: id,
+              chip: <ItemChip equipmentId={id} />,
+              count: n,
+              value: e.price,
+              select: memberSelect(id, id),
+              canGive: takers(id).length > 0,
+              onGive: () => {
+                const m = pick(id, id)
+                if (m) out(id, 'store', `→ ${nameOf(m)}`, () => onChange(withoutEquipment(id), { ...m, equipment: [...m.equipment, { itemId: id, slot: 'sac' }] }))
+              },
+              onSell: () => out(id, 'sell', `+${Math.floor(e.price / 2)} PO`, () => onChange(withoutEquipment(id), undefined, { po: Math.floor(e.price / 2) }, `Vente : ${e.name} (coffre du camp)`)),
+              onDrop: () => confirm(`Jeter « ${e.name} » ?`) && onChange(withoutEquipment(id)),
+              name: e.name,
+            })
           })}
           {stock.loot.map((l) => {
             const item = itemByKey(l.key)
             const price = item?.price ?? null
-            return (
-              <li key={l.id}>
-                <span><ItemChip lootKey={l.key} /></span>
-                {!readOnly && <span className="row">
-                  {memberSelect(l.id)}
-                  <button className="btn small" disabled={!active.length} onClick={() => {
-                    const m = pick(l.id)
-                    if (m) out(l.id, 'store', `→ ${nameOf(m)}`, () => onChange(withoutLoot(l.id), { ...m, loot: [...(m.loot ?? []), { ...l, slot: 'sac' }] }))
-                  }}>Donner</button>
-                  {price ? (
-                    <button className="btn small ghost" onClick={() => out(l.id, 'sell', `+${Math.floor(price / 2)} PO`, () => onChange(withoutLoot(l.id), undefined, { po: Math.floor(price / 2) }, `Vente : ${item?.name} (coffre du camp)`))} data-tip="Vendre pour la moitié du prix">
-                      Vendre {Math.floor(price / 2)} PO
-                    </button>
-                  ) : null}
-                  <button className="icon-btn drop-btn" onClick={() => confirm(`Jeter « ${item?.name ?? l.key} » ?`) && onChange(withoutLoot(l.id))} aria-label={`Jeter ${item?.name ?? l.key}`} data-tip="Jeter, sans revente">×</button>
-                </span>}
-              </li>
-            )
+            return row({
+              key: l.id,
+              chip: <ItemChip lootKey={l.key} />,
+              count: 1,
+              value: price,
+              select: memberSelect(l.id),
+              canGive: active.length > 0,
+              onGive: () => {
+                const m = pick(l.id)
+                if (m) out(l.id, 'store', `→ ${nameOf(m)}`, () => onChange(withoutLoot(l.id), { ...m, loot: [...(m.loot ?? []), { ...l, slot: 'sac' }] }))
+              },
+              onSell: price ? () => out(l.id, 'sell', `+${Math.floor(price / 2)} PO`, () => onChange(withoutLoot(l.id), undefined, { po: Math.floor(price / 2) }, `Vente : ${item?.name} (coffre du camp)`)) : undefined,
+              onDrop: () => confirm(`Jeter « ${item?.name ?? l.key} » ?`) && onChange(withoutLoot(l.id)),
+              name: item?.name ?? l.key,
+            })
           })}
         </ul>
       )}

@@ -1240,9 +1240,15 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 /* Stock du camp */
 .camp-stock > summary h2 { display: inline; font-size: 1.05rem; }
 .camp-list { list-style: none; margin: 0.5rem 0 0; padding: 0; }
-.camp-list li { display: flex; justify-content: space-between; align-items: center; gap: 0.6rem; flex-wrap: wrap; padding: 0.35rem 0; border-bottom: 1px dashed var(--border); }
-.camp-list li > .row { gap: 0.35rem; flex-wrap: wrap; }
-.camp-list select { max-width: 11rem; }
+.camp-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.camp-item { display: flex; flex-direction: column; gap: 0.45rem; padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: var(--radius); background: rgb(255 248 228 / 0.55); }
+.camp-item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+.camp-item-name { display: inline-flex; align-items: center; gap: 0.35rem; }
+.camp-count { font-family: var(--display); color: var(--ink-title); }
+.camp-item-actions { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; padding-top: 0.4rem; border-top: 1px dashed var(--border); }
+.camp-give { display: inline-flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+.camp-give select { max-width: 13rem; }
+.camp-out { display: inline-flex; align-items: center; gap: 0.35rem; margin-left: auto; }
 
 /* Objet vendu ou rangé au coffre : il s'efface, une étiquette indique où il part */
 .equipment li, .camp-list li { position: relative; }
@@ -1511,3 +1517,7 @@ q.gift-message { quotes: '« ' ' »'; }
 .admin-amounts .field { flex: none; }
 .amount-add { flex-wrap: nowrap; align-items: center; gap: 0.4rem; }
 .amount-add .num-input { flex: none; align-self: center; }
+
+/* Type d'un objet (« armure complète ») à côté de son nom */
+.item-type { margin-left: 0.4rem; color: var(--muted); font-size: 0.85em; font-weight: 400; }
+.ref-table .item-type { display: block; margin-left: 1.1rem; }

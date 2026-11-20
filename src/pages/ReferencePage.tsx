@@ -9,6 +9,7 @@ import {
   itemKey,
   racialFactionsOf,
   racialItemsOf,
+  itemTypeOf,
   lore,
   rules,
   skills,
@@ -412,7 +413,10 @@ function ItemsRef({ query }: { query: string }) {
                   <tbody>
                     {list.map((it) => (
                       <tr key={it.id}>
-                        <td className="nowrap"><RarityDot rarity={it.rarity} /> <strong><Highlight text={it.name} query={query} /></strong></td>
+                        <td className="nowrap">
+                          <RarityDot rarity={it.rarity} /> <strong><Highlight text={it.name} query={query} /></strong>
+                          <em className="item-type">{itemTypeOf(cat.id)}</em>
+                        </td>
                         <td>
                           <RuleText text={it.description} query={query} />
                           {(it.mods || it.skills) && (

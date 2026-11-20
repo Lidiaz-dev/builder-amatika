@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { equipmentById, factionById, itemByKey } from '../data'
+import { equipmentById, factionById, itemByKey, itemTypeOf } from '../data'
 import { isActive, memberTitle, type Crew, crystalWord } from '../lib/crew'
 import { cancelGift, listPendingGiftsTo, sendAdminGift, type Entry, type Gift, type GiftDraft, type GroupCampaign } from '../lib/groupCampaign'
 import { getCrew } from '../lib/storage'
@@ -329,7 +329,7 @@ function RemovePart({ campaign, players }: { campaign: GroupCampaign; players: P
                       onClick={() => setPicked((r) => (r.includes(o.uid) ? r.filter((x) => x !== o.uid) : [...r, o.uid]))}
                     >
                       {picked.includes(o.uid) ? <span className="remove-check">✕</span> : <RarityDot rarity={o.kind === 'loot' ? itemByKey(o.key)?.rarity ?? 'blanc' : 'blanc'} />}
-                      {o.name}
+                      {o.name}{o.kind === 'loot' && <em className="item-type">{itemTypeOf(o.key)}</em>}
                       <span className="trade-owner">· {o.owner}</span>
                     </button>
                   ))}

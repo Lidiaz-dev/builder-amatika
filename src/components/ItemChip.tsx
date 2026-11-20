@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { CATEGORY_LABELS, equipmentById, itemByKey } from '../data'
+import { CATEGORY_LABELS, equipmentById, itemByKey, itemTypeOf } from '../data'
 import { equipmentMods, formatMods } from '../lib/format'
 import InfoTag from './InfoTag'
 import RarityDot from './RarityDot'
@@ -35,7 +35,7 @@ export default function ItemChip({ equipmentId, lootKey, after }: { equipmentId?
   if (!item) return <span className="tag item-chip">{lootKey}</span>
   const mods = [formatMods(item.mods), ...(item.skills ?? [])].filter(Boolean).join(', ')
   return (
-    <InfoTag label={item.name} kicker={item.category} className="item-chip" icon={<RarityDot rarity={item.rarity} />} after={after}>
+    <InfoTag label={item.name} kicker={item.category} className="item-chip" icon={<RarityDot rarity={item.rarity} />} suffix={<em className="item-type">{itemTypeOf(lootKey!)}</em>} after={after}>
       <p><RuleText text={item.description} /></p>
       {mods && <p className="notice small">Effet sur la fiche quand il est porté : {mods}</p>}
       {item.price !== null && <p className="small muted">Valeur : {item.price} PO (revente {Math.floor(item.price / 2)} PO)</p>}
