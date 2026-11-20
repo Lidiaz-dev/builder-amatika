@@ -295,10 +295,12 @@ export interface Gift {
   remove?: { from: string; kind: 'equipment' | 'loot'; ref: string; name: string; owner: string }[]
   /** Maître de campagne : XP à donner à des personnages (montée de niveau ensuite entre les parties). */
   xp?: { memberId: string; name: string; amount: number }[]
+  /** Maître de campagne : sorts appris (add) ou oubliés (remove) par des mages. */
+  spells?: { memberId: string; name: string; spellId: string; spellName: string; action: 'add' | 'remove' }[]
   createdAt: string
   claimed: boolean
 }
-export type GiftDraft = Pick<Gift, 'to' | 'toName' | 'po' | 'cristaux' | 'items' | 'message' | 'remove' | 'xp'>
+export type GiftDraft = Pick<Gift, 'to' | 'toName' | 'po' | 'cristaux' | 'items' | 'message' | 'remove' | 'xp' | 'spells'>
 
 const giftsCol = (id: string) => collection(database(), 'campaigns', id, 'gifts')
 export const currentEmail = () => myEmail()

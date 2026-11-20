@@ -13,8 +13,11 @@ function GiftContent({ g }: { g: Gift }) {
       {g.cristaux > 0 && <span className="gift-amount">+{g.cristaux} {crystalWord(g.cristaux)}</span>}
       {g.cristaux < 0 && <span className="gift-removed">{g.cristaux} {crystalWord(g.cristaux)}</span>}
       {g.items.map((i, k) => (i.kind === 'equipment' ? <ItemChip key={k} equipmentId={i.key} /> : <ItemChip key={k} lootKey={i.key} />))}
-      {g.po === 0 && g.cristaux === 0 && !g.items.length && !(g.remove ?? []).length && !(g.xp ?? []).length && <span className="muted">rien</span>}
+      {g.po === 0 && g.cristaux === 0 && !g.items.length && !(g.remove ?? []).length && !(g.xp ?? []).length && !(g.spells ?? []).length && <span className="muted">rien</span>}
       {(g.xp ?? []).map((x, k) => <span key={`x${k}`} className="gift-amount">{x.name} +{x.amount} XP</span>)}
+      {(g.spells ?? []).map((s, k) => (
+        <span key={`s${k}`} className={s.action === 'add' ? 'gift-amount' : 'gift-removed'}>{s.action === 'add' ? '+' : '−'} Sort {s.spellName} ({s.name})</span>
+      ))}
       {(g.remove ?? []).map((r, k) => <span key={`r${k}`} className="gift-removed" data-tip={`Retiré : ${r.owner}`}>− {r.name}</span>)}
       {g.message && <q className="gift-message">{g.message}</q>}
     </span>

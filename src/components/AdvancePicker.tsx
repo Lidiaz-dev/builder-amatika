@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { skillByName, spellById, spellsFor, TREE_LABELS, type Profile } from '../data'
+import { choosesDrawOrigin, skillByName, spellById, spellsFor, TREE_LABELS, type Profile } from '../data'
 import RuleText from './RuleText'
 import { SpellDetails } from './SpellTag'
 import { ADVANCE_TABLE, describeAdvance, learnableSkills, type AdvanceInput } from '../lib/campaign'
@@ -34,8 +34,19 @@ export default function AdvancePicker({ factionId, profile, member, onApply, loc
   const mage = isMage(profile)
   const learnable = learnableSkills(profile, memberSkills(profile, member))
   const spells = spellsFor(factionId, profile.id).filter((sp) => !(member.spellIds ?? []).includes(sp.id))
+  // Mage Nécromant : nombre de cartes piochées dans la liste raciale (le reste dans la liste générale).
+  const originChoice = mage && choosesDrawOrigin(factionId, profile)
+  const racialPool = spells.filter((sp) => sp.factions.includes(factionId))
+  const generalPool = spells.filter((sp) => sp.factions.length === 0 && !sp.universal)
+  const [racialCount, setRacialCount] = useState(Math.min(3, racialPool.length))
+  const shuffle = <T,>(list: T[]) => [...list].sort(() => Math.random() - 0.5)
   const drawFive = () => {
-    const five = [...spells].sort(() => Math.random() - 0.5).slice(0, 5).map((sp) => sp.id)
+    const five = originChoice
+      ? [
+          ...shuffle(racialPool).slice(0, Math.min(racialCount, racialPool.length)),
+          ...shuffle(generalPool).slice(0, 5 - Math.min(racialCount, racialPool.length)),
+        ].map((sp) => sp.id)
+      : shuffle(spells).slice(0, 5).map((sp) => sp.id)
     if (spellsKey) setLocked(spellsKey, five)
     setDrawn(five)
     setSpellId('')
@@ -104,13 +115,33 @@ export default function AdvancePicker({ factionId, profile, member, onApply, loc
           <p><RuleText text={skillByName(skill)?.description ?? 'Pas encore de description dans les règles.'} self={skill} /></p>
         </div>
       )}
+      {originChoice && !drawn && (
+        <div className="draw-origin">
+          <p className="small">
+            <strong>Mage Nécromant :</strong> choisissez d'où viennent les 5 cartes piochées, entre la liste de sorts Nécromant et la liste générale.
+          </p>
+          <label className="draw-origin-slider">
+            <span>Liste générale : <strong>{5 - racialCount}</strong></span>
+            <input
+              type="range"
+              min={0}
+              max={Math.min(5, racialPool.length)}
+              step={1}
+              value={racialCount}
+              onChange={(e) => setRacialCount(Number(e.target.value))}
+              aria-label="Nombre de cartes de la liste Nécromant"
+            />
+            <span>Nécromant : <strong>{racialCount}</strong></span>
+          </label>
+        </div>
+      )}
       {mage && (
         <label className="field">
           <span>Nouveau sort (le mage pioche 5 sorts et en garde un)</span>
           <div className="row">
             <select className="grow" value={spellId} onChange={(e) => setSpellId(e.target.value)}>
               <option value="">Choisir…</option>
-              {offered.map((sp) => <option key={sp.id} value={sp.id}>{sp.name} ({sp.type}, {sp.value}+)</option>)}
+              {offered.map((sp) => <option key={sp.id} value={sp.id}>{sp.name} ({sp.type}, {sp.value}+){originChoice && drawn ? (sp.factions.includes(factionId) ? ' · Nécromant' : ' · générale') : ''}</option>)}
             </select>
             {!drawn && <button type="button" className="btn small" onClick={drawFive}>Piocher 5</button>}
             {drawn && <span className="muted small" data-tip="Pioche faite par le site : elle ne peut plus être refaite.">🔒 5 sorts piochés</span>}

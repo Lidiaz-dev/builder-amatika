@@ -1,4 +1,4 @@
-import { equipmentById, factionById, itemByKey } from '../data'
+import { equipmentById, factionById, itemByKey, spellById } from '../data'
 import { memberTitle, profileOf, type Crew, crystalWord } from './crew'
 
 const MAX_ENTRIES = 400
@@ -82,6 +82,8 @@ export function describeChanges(before: Crew, after: Crew): string[] {
     }
     if (m.xp !== old.xp) lines.push(`${memberTitle(faction, m)} : ${m.xp > old.xp ? '+' : ''}${m.xp - old.xp} XP (${m.xp} XP)`)
     if ((m.note ?? '') !== (old.note ?? '') && p) lines.push(`${memberTitle(faction, m)} : note changée`)
+    for (const id of (m.spellIds ?? []).filter((x) => !(old.spellIds ?? []).includes(x))) lines.push(`${memberTitle(faction, m)} apprend le sort « ${spellById(id)?.name ?? id} »`)
+    for (const id of (old.spellIds ?? []).filter((x) => !(m.spellIds ?? []).includes(x))) lines.push(`${memberTitle(faction, m)} oublie le sort « ${spellById(id)?.name ?? id} »`)
   }
   for (const m of before.members) if (!after.members.some((x) => x.id === m.id)) lines.push(`${memberTitle(faction, m)} est effacé de la bande`)
 

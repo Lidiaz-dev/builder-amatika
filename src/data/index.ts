@@ -275,6 +275,12 @@ export function startingSpellIds(factionId: string, profile: Profile) {
   return racial ? [...universal, racial.id] : universal
 }
 
+/**
+ * Mage Nécromant : à chaque montée de niveau, il choisit d'où vient chacune des 5 cartes piochées
+ * (liste raciale Nécromant ou liste générale), puis garde un des sorts tirés.
+ */
+export const choosesDrawOrigin = (factionId: string, profile: Profile) => factionId === 'necromant' && profile.skills.includes('Mage')
+
 /** Faction sans sort racial (Cités-États) : le 2e sort de départ se choisit parmi 5 tirés au hasard. */
 export const choosesSecondSpell = (factionId: string, profile: Profile) =>
   baseSpellCount(profile) >= 2 && !racialStartingSpell(factionId, profile)

@@ -1521,3 +1521,9 @@ q.gift-message { quotes: '« ' ' »'; }
 /* Type d'un objet (« armure complète ») à côté de son nom */
 .item-type { margin-left: 0.4rem; color: var(--muted); font-size: 0.85em; font-weight: 400; }
 .ref-table .item-type { display: block; margin-left: 1.1rem; }
+
+/* Mage Nécromant : origine des 5 cartes piochées */
+.draw-origin { padding: 0.5rem 0.7rem; border: 1px dashed var(--border-strong); border-radius: var(--radius); display: flex; flex-direction: column; gap: 0.4rem; }
+.draw-origin p { margin: 0; }
+.draw-origin-slider { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.6rem; font-size: 0.9rem; }
+.draw-origin-slider input { width: 100%; accent-color: var(--accent); }

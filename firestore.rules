@@ -71,7 +71,8 @@ service cloud.firestore {
           // Seul le maître de campagne peut marquer un envoi « admin » (reçu tout de suite).
           && (request.resource.data.get('admin', false) == false || isAdmin())
           && (request.resource.data.get('remove', []).size() == 0 || isAdmin())
-          && (request.resource.data.get('xp', []).size() == 0 || isAdmin());
+          && (request.resource.data.get('xp', []).size() == 0 || isAdmin())
+          && (request.resource.data.get('spells', []).size() == 0 || isAdmin());
         allow update: if verified() && resource.data.to == myEmail()
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['claimed'])
           && request.resource.data.claimed == true;

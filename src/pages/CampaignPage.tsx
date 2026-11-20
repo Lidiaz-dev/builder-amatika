@@ -446,7 +446,7 @@ function DayPanel({ campaign, day, entries, sheets, gifts, busy, onCreate, onLau
           <ul className="small">
             {gifts.map((g) => (
               <li key={g.id}>
-                {who(g.from)} → {g.toName} : {[g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} ${crystalWord(g.cristaux)}` : '', ...g.items.map((i) => i.name)].filter(Boolean).join(', ')}
+                {who(g.from)} → {g.toName} : {[g.po ? `${g.po} PO` : '', g.cristaux ? `${g.cristaux} ${crystalWord(g.cristaux)}` : '', ...g.items.map((i) => i.name), ...(g.xp ?? []).map((x) => `${x.name} +${x.amount} XP`), ...(g.remove ?? []).map((r) => `retirer ${r.name}`), ...(g.spells ?? []).map((s) => `${s.action === 'add' ? 'sort' : 'retirer le sort'} ${s.spellName} (${s.name})`)].filter(Boolean).join(', ')}
                 {g.message ? <em className="gift-message"> « {g.message} »</em> : null}
                 {g.claimed ? ' ✓ reçu' : ''}
               </li>

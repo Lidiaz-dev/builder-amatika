@@ -95,8 +95,23 @@ export function applyReceivedGift(crew: Crew, g: Gift): Crew {
   for (const x of g.xp ?? []) {
     next = { ...next, members: next.members.map((m) => { const p = m.id === x.memberId ? profileOf(faction, m) : undefined; return p ? addXp(p, m, x.amount) : m }) }
   }
+  // Sorts appris ou oubliés (maître de campagne) : un sort déjà connu, ou déjà oublié, est ignoré.
+  for (const sp of g.spells ?? []) {
+    next = {
+      ...next,
+      members: next.members.map((m) => {
+        if (m.id !== sp.memberId) return m
+        const known = m.spellIds ?? []
+        if (sp.action === 'add') return known.includes(sp.spellId) ? m : { ...m, spellIds: [...known, sp.spellId] }
+        return { ...m, spellIds: known.filter((id) => id !== sp.spellId) }
+      }),
+    }
+  }
+  const learned = (g.spells ?? []).filter((s) => s.action === 'add')
+  const forgot = (g.spells ?? []).filter((s) => s.action === 'remove')
+  const spellText = `${learned.length ? ` ; sorts appris : ${learned.map((s) => `${s.spellName} (${s.name})`).join(', ')}` : ''}${forgot.length ? ` ; sorts retirés : ${forgot.map((s) => `${s.spellName} (${s.name})`).join(', ')}` : ''}`
   const removed = (g.remove ?? []).length ? ` ; retiré : ${g.remove!.map((r) => r.name).join(', ')}` : ''
   const gainedXp = (g.xp ?? []).length ? ` ; XP : ${g.xp!.map((x) => `${x.name} +${x.amount}`).join(', ')}` : ''
-  const label = `Envoi de ${g.fromName} (journée ${g.day})${g.items.length ? ` : ${g.items.map((i) => i.name).join(', ')} au coffre` : ''}${removed}${gainedXp}`
+  const label = `Envoi de ${g.fromName} (journée ${g.day})${g.items.length ? ` : ${g.items.map((i) => i.name).join(', ')} au coffre` : ''}${removed}${gainedXp}${spellText}`
   return withTreasury(next, { po: g.po, cristaux: g.cristaux }, label)
 }
